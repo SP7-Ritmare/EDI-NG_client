@@ -214,6 +214,8 @@ var edi = (function() {
             var originalQuery = query;
             var queryInstance = replaceAll(query, /\$(.*)\$/i, $("#" + principal + "_uri").val() );
             var queryInstance = queryInstance.replace("</http:>", "");
+            var sparql = new SPARQL(settings.sparqlEndpoint);
+
             thisOne.addClass("loading");
             sparql.specificQuery(
                 queryInstance,
@@ -246,7 +248,7 @@ var edi = (function() {
 
     var prepareDependents = function() {
         doDebug("prepareDependents");
-        $(".dependent]").each(function() {
+        $(".dependent").each(function() {
             prepareDependent($(this));
         });
     }

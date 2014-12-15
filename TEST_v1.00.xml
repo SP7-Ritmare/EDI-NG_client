@@ -14,6 +14,7 @@
     <!--added CF 20140521 -->
     <requiresAuthentication>true</requiresAuthentication>
     <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint>
+    <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresValidation>false</requiresValidation>
     <baseDocument><![CDATA[
     <gmd:MD_Metadata
