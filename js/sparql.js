@@ -1,0 +1,104 @@
+var SPARQL = (function(url) {
+    var virtuosoUrl = "http://sp7.irea.cnr.it:8890/sparql";
+
+    if ( typeof url !== "undefined") {
+        virtuosoUrl = url;
+    }
+    function getSparqlQuery(uri, currentMetadataLanguage) {
+        var sparql;
+        sparql =    "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX dct:<http://purl.org/dc/terms/> " +
+                    "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX skos:<http://www.w3.org/2004/02/skos/core#> " +
+                    
+                    "SELECT DISTINCT <" + uri + "> AS ?uri ?c ?l ?a ?z " +
+                    "WHERE { " +
+                    "	{ " +
+                    "	  ?c rdf:type skos:Concept. " +
+                    "	  ?c skos:inScheme <" + uri + ">. " +
+                    "	  OPTIONAL { " +
+                    "	      ?c skos:prefLabel ?l. " +
+                    '	      FILTER ( LANG(?l) = "en" ) ' +
+                    "	  } " +
+                    "	} " +
+                            
+                    "	OPTIONAL { " +
+                    "	    ?c skos:prefLabel ?z. " + 
+                    '	    FILTER ( LANG(?z) = "zxx" ) ' +
+                    "	} " +
+                    "	OPTIONAL { " +
+                    "	    ?c skos:prefLabel ?a. " + 
+                    '	    FILTER ( LANG(?a) = "' + currentMetadataLanguage + '" ) ' +
+                    "	} " +
+                    "	" +
+                    "} " +
+                                    "ORDER BY ASC(?a) ASC(?l)";
+                                    // doDebug(sparql);
+        return sparql;
+    };
+
+    function specificQuery(query, callback, errorCallback, language) {
+        if ( typeof language === "undefined" ) {
+            language = "it";
+        }
+        var newQuery = query.toString().replace(/\$lang\$/g, language);
+        $.ajax({
+            url: virtuosoUrl,
+            type: "get",
+            dataType: "json",
+            crossDomain: true,
+            data: {
+                query: newQuery,
+                format: "application/sparql-results+json",
+                save:"display",
+                fname : undefined
+            },
+            success: function(data) {
+                if ( typeof callback === "function") {
+                    callback(data);
+                }
+            },
+            error: function() {
+                console.log(arguments);
+                if ( typeof errorCallback === "function") {
+                    errorCallback(data);
+                }
+            }
+        });
+
+    }
+    function query(uri, callback, errorCallback, language) {
+        if ( typeof language === "undefined" ) {
+            language = "it";
+        }
+        var sparqlQuery = getSparqlQuery(uri, language);
+        $.ajax({
+            url: virtuosoUrl,
+            type: "get",
+            dataType: "json",
+            data: {
+                query: sparqlQuery,
+                format: "application/sparql-results+json",
+                save:"display",
+                fname : undefined
+            },
+            success: function(data) {
+                if ( typeof callback === "function") {
+                    callback(data);
+                }
+            },
+            error: function() {
+                console.log(arguments);
+                if ( typeof errorCallback === "function") {
+                    errorCallback(data);
+                }
+            }
+        });
+    }
+    return {
+        getSparqlQuery: getSparqlQuery,
+        query: query,
+        specificQuery: specificQuery
+    };
+});
+
