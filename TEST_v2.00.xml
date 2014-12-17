@@ -5,13 +5,11 @@
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
 <template>
-  <settings><!--indica l'item in cui reperire la lingua -->
+  <settings>
     <defaultLanguage>it</defaultLanguage>
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-
-    <!--added CF 20140521 -->
     <requiresAuthentication>true</requiresAuthentication>
     <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
@@ -41,6 +39,7 @@
       <id>languages</id>
       <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
       <type>virtuosoCodelist</type>
+      <url>http://sp7.irea.cnr.it:8891/sparql</url>
     </datasource>
     <datasource>
       <id>scopes</id>
@@ -90,6 +89,7 @@
     </datasource>
     <datasource>
       <id>person</id>
+      <url>http://sp7.irea.cnr.it:8891/sparql</url>
       <singleton>false</singleton>
       <query>
         <![CDATA[
@@ -106,7 +106,6 @@
         ]]>
       </query>
       <searchItem>resp_md_1</searchItem>
-      <!-- <triggerItem>resp_md_1_uri</triggerItem> -->
       <type>
         sparql
       </type>
@@ -135,7 +134,6 @@
       </type>
     </datasource>
   </datasources>
-
   <group>
     <id>info_md</id>
     <label xml:lang="en">Information on metadata</label>
@@ -158,6 +156,7 @@
         </item>
       </produces>
     </element>
+    <!--
     <element>
       <id>field_types</id>
       <label xml:lang="en">Field types</label>
@@ -210,6 +209,7 @@
         </item>
       </produces>
     </element>
+    -->
     <!--Lingua dei metadati: -->
     <element>
       <id>ling_md</id>
@@ -229,7 +229,10 @@
           <datasource>languages</datasource>
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
+          <!-- dovrebbe essere superfluo
           <hasValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</hasValue>
+          -->
+          <isLanguageNeutral>true</isLanguageNeutral>
           <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
         </item>
         <item>
@@ -296,12 +299,21 @@
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:parentIdentifier</hasRoot>
       <produces>
+        <!--
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:parentIdentifier/gco:CharacterString</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>URN</hasDatatype>
           <hasValue>auto</hasValue>
+        </item>
+        -->
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:parentIdentifier/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasValue>
         </item>
       </produces>
     </element>
@@ -320,7 +332,9 @@
           <isFixed>true</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>scopes</datasource>
+          <!-- dovrebbe essere superfluo 
           <hasValue>http://inspire-registry.jrc.ec.europa.eu/registers/Types/items</hasValue>
+          -->
           <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Types/items/1</defaultValue>
         </item>
         <item>
@@ -330,12 +344,21 @@
           <hasDatatype>string</hasDatatype>
           <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#MD_ScopeCode</hasValue>
         </item>
+        <!--
         <item>
           <hasIndex>3</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>dataset</hasValue>
+        </item>
+        -->
+        <item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode</hasValue>
         </item>
       </produces>
     </element>
@@ -352,7 +375,7 @@
       <produces>
         <item>
           <hasIndex>1</hasIndex>
-          <outIndex>2</outIndex>
+          <outIndex>1</outIndex>
           <label xml:lang="en">Email</label>
           <label xml:lang="it">Email</label>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</hasPath>
@@ -363,22 +386,24 @@
         </item>
         <item>
           <hasIndex>2</hasIndex>
-          <outIndex>1</outIndex>
+          <outIndex>2</outIndex>
           <label xml:lang="en">Institute</label>
           <label xml:lang="it">Ente</label>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <id>gmd:organisationName</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <query><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE {
-                          <$1$> ns:org ?o.
-                          ?o rdfs:label ?l.
-                        }
-                        ]]></query>
+            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+            SELECT ?l
+            FROM <http://ritmare.it/rdfdata/project>
+            WHERE {
+              <$1$> vcard:org ?o.
+              ?o foaf:name ?l.
+              FILTER(LANG(?l)='it')
+            }
+          ]]></query>
         </item>
         <item>
           <hasIndex>3</hasIndex>
@@ -389,15 +414,16 @@
           <isFixed>false</isFixed>
           <id>gmd:CI_OnlineResource</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <query><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE {
-                          <$1$> ns:org ?i.
-                          ?i foaf:homepage ?l.
-                        }
-                        ]]></query>
+            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+            SELECT ?l
+            FROM <http://ritmare.it/rdfdata/project>
+            WHERE {
+              <$1$> vcard:org ?i.
+              ?i foaf:homepage ?l.
+            }
+          ]]></query>
         </item>
         <item>
           <hasIndex>4</hasIndex>
@@ -410,23 +436,36 @@
         <item>
           <hasIndex>5</hasIndex>
           <outIndex>5</outIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>codelist</hasDatatype>
-          <datasource>fixedRoles</datasource>
-          <hasValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items</hasValue>
-          <defaultValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items/2</defaultValue>
-        </item>
-        <item>
-          <hasIndex>6</hasIndex>
-          <outIndex>6</outIndex>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode</hasPath>
           <isFixed>true</isFixed>
           <datasource>fixedRoles</datasource>
           <hasDatatype>codelist</hasDatatype>
+          <!-- dovrebbe essere superfluo
           <hasValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items</hasValue>
+          -->
           <defaultValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items/2</defaultValue>
         </item>
+        <!--
+        <item>
+          <hasIndex>6</hasIndex>
+          <outIndex>6</outIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>codelist</hasDatatype>
+          <datasource>fixedRoles</datasource>
+          <hasValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items</hasValue>          
+          <defaultValue>http://www.rndt.gov.it/codelists/CI_FixedRoleCode/items/2</defaultValue>
+        </item>
+        -->
+        <item>
+          <hasIndex>6</hasIndex>
+          <outIndex>6</outIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode</hasValue>
+        </item>
+        <!-- a quale scopo?
         <item>
           <hasIndex>7</hasIndex>
           <hasPath></hasPath>
@@ -443,7 +482,7 @@
           <datasource>personS</datasource>
           <field>homepage</field>
         </item>
-
+        -->
       </produces>
     </element>
     <!--Data dei metadati -->
@@ -462,7 +501,6 @@
           <hasPath>/gmd:MD_Metadata/gmd:dateStamp/gco:Date</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>date</hasDatatype>
-          <!--<hasValue>user-defined</hasValue> -->
           <queryStringParameter>date</queryStringParameter>
         </item>
       </produces>
@@ -508,7 +546,38 @@
     <id>id_dati</id>
     <label xml:lang="en">Data identification</label>
     <label xml:lang="it">Identificazione dei dati</label>
-    <!--Sistema di riferimento spaziale -->
+    <!--Sistema di riferimento spaziale 
+This is the element I included into the template as ETRS UTM 32:
+
+<gmd:referenceSystemInfo>
+<gmd:MD_ReferenceSystem>
+<gmd:referenceSystemIdentifier>
+<gmd:RS_Identifier>
+<gmd:code>
+<gco:CharacterString>http://www.opengis.net/def/crs/EPSG/0/3044</gco:CharacterString>
+</gmd:code>
+</gmd:RS_Identifier>
+</gmd:referenceSystemIdentifier>
+</gmd:MD_ReferenceSystem>
+</gmd:referenceSystemInfo>
+
+We have original WGS84 UTM32 CRS as follows:
+
+<gmd:referenceSystemInfo>
+<gmd:MD_ReferenceSystem>
+<gmd:referenceSystemIdentifier>
+<gmd:RS_Identifier>
+<gmd:code>
+<gco:CharacterString>EPSG:32632</gco:CharacterString>
+</gmd:code>
+<gmd:codeSpace>
+<gco:CharacterString>http://www.opengis.net/def/crs/EPSG/0/32632</gco:CharacterString>
+</gmd:codeSpace>
+</gmd:RS_Identifier>
+</gmd:referenceSystemIdentifier>
+</gmd:MD_ReferenceSystem>
+</gmd:referenceSystemInfo>    
+    -->
     <element>
       <id>sist_rif_spa</id>
       <label xml:lang="en">Spatial reference system</label>
@@ -517,7 +586,7 @@
       <help xml:lang="it">Esprime il sistema di riferimento in cui sono inquadrati il dato (o risorsa) georiferito. Esiste in RNDT una lista di riferimento la quale riporta alcune abbreviazioni comunemente usate a denotare i sistemi di riferimento adottati in Italia, ma non &#232; rigorosa dal punto di vista della nomenclatura topografica.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier</hasRoot>
+      <hasRoot>/gmd:MD_Metadata</hasRoot>
       <produces>
         <item>
           <hasIndex>1</hasIndex>
@@ -537,6 +606,30 @@
         </item>
       </produces>
     </element>
+    <element>
+      <id>sist_rif_spa_inspire</id>
+      <label xml:lang="en">Spatial reference system to be included for INSPIRE compliance</label>
+      <label xml:lang="it">Sistema di riferimento spaziale per compliance con INSPIRE</label>
+      <isMandatory>forAll</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>EPSG:32632</hasValue>
+        </item>
+        <item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://www.epsg-registry.org/</hasValue>
+        </item>
+      </produces>
+    </element>    
     <!--Titolo -->
     <element>
       <id>tit</id>
@@ -586,8 +679,10 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>dateTypes</datasource>
+          <!-- dovrebbe essere superfluo 
           <hasValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items</hasValue>
-          <defaultValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items/2</defaultValue>
+          -->
+          <defaultValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items/3</defaultValue>
         </item>
         <item>
           <hasIndex>3</hasIndex>
@@ -606,6 +701,9 @@
         </item>
       </produces>
     </element>
+    
+    
+    
     <!--Identificatore -->
     <element>
       <id>id</id>
@@ -617,7 +715,7 @@
       <produces>
         <item>
           <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:parentIdentifier/gco:CharacterString</hasValue>
@@ -1209,349 +1307,5 @@
       </produces>
     </element>
   </group>
-  <!--Estensione dei dati -->
-  <group>
-    <id>est_dati</id>
-    <label xml:lang="en">Data extension</label>
-    <label xml:lang="it">Estensione dei dati</label>
-    <!--Tipo di rappresentazione spaziale -->
-    <element>
-      <id>tip_rap_spa</id>
-      <label xml:lang="en">Spatial representation type</label>
-      <label xml:lang="it">Tipo di rappresentazione spaziale</label>
-      <help xml:lang="en">The spatial representation type that is associated with the data.</help>
-      <help xml:lang="it">&#200; il tipo di rappresentazione spaziale dei dati, come codificata dalla lista prevista dal recepimento della Direttiva INSPIRE. Va pertanto selezionato da essa, come proposto dal men&#249; a tendina.</help>
-      <isMandatory>forAll</isMandatory>
-      <isMultiple>true</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>code</hasDatatype>
-          <hasValue>http://www.rndt.gov.it/codelists/MD_SpatialRepresentationTypeCode/items</hasValue>
-          <queryStringParameter>spatialrepresentationtype</queryStringParameter>
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode/@codeList</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode</hasValue>
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode/@codeListValue</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--E' necessario uno solo tra i seguenti due: -->
-    <isMandatory>forAll</isMandatory>
-    <!--Scala equivalente (denominatore) -->
-    <element>
-      <alternativeTo>dist</alternativeTo>
-      <id>sca_equ</id>
-      <label xml:lang="en">Equivalent scale (denominator)</label>
-      <label xml:lang="it">Scala equivalente (denominatore)</label>
-      <help xml:lang="en">foo</help>
-      <help xml:lang="it">&#200; il primo dei due valori alternativi per fornire la densit&#224; spaziale del dato (risoluzione spaziale); &#232; necessario fornire solo uno dei due fattori: la scala equivalente &#232; il denominatore della scala equivalente (ad es. 50000 per una scala 1:50000)</help>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:equivalentScale/gmd:MD_RepresentativeFraction/gmd:denominator</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:equivalentScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>int</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--Distanza -->
-    <element>
-      <alternativeTo>sca_equ</alternativeTo>
-      <id>dist</id>
-      <label xml:lang="en">Distance (at ground, in metres)</label>
-      <label xml:lang="it">Distanza (al suolo, in metri)</label>
-      <help xml:lang="en">foo</help>
-      <help xml:lang="it">&#200; il secondo dei due valori alternativi per fornire la densit&#224; spaziale del dato (risoluzione spaziale); &#232; necessario fornire solo uno dei due fattori: la distanza rappresenta la risoluzione geometrica al suolo espressa come valore numerico espresso in metri (ad es. per una risoluzione di 10 metri, indicare 10).</help>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:distance</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:distance/gco:Distance</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>int</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:distance/gco:Distance/@uom</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/uom/ML_gmxUom.xml#m</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--Lingua -->
-    <element>
-      <id>ling</id>
-      <label xml:lang="en">Language</label>
-      <label xml:lang="it">Lingua</label>
-      <help xml:lang="en">foo</help>
-      <help xml:lang="it">Linguaggio utilizzato per i dati (o risorse), le lingue selezionabili sono le 23 lingue ufficiali della UE, codificate come da men&#249; a tendina. NOTA: Per la conformit&#224; al profilo RNDT (recepimento Italiano INSPIRE) la lingua da preferirsi &#232; l&apos;Italiano (valore di default).</help>
-      <isMandatory>forAll</isMandatory>
-      <isMultiple>true</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>code</hasDatatype>
-          <hasValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</hasValue>
-          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode/@codeList</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>http://www.loc.gov/standards/iso639-2/</hasValue>
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode/@codeListValue</hasPath>
-          <isFixed>true</isFixed>
-          <isLanguageNeutral>true</isLanguageNeutral>
-          <queryStringParameter>lang</queryStringParameter>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--Set di caratteri -->
-    <element>
-      <id>charset</id>
-      <label xml:lang="en">Character set</label>
-      <label xml:lang="it">Set di caratteri</label>
-      <help xml:lang="en">Optional field. Select the name of the standard pertaining the character set used for data.</help>
-      <help xml:lang="it">Campo opzionale. Selezionare il nome dello standard corrispondente al set di caratteri utilizzato per i dati.</help>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet/gmd:MD_CharacterSetCode</hasPath>
-          <datasource>charsets</datasource>
-          <show>combobox</show>
-          <hasDatatype>codelist</hasDatatype>
-          <isFixed>false</isFixed>
-          <isLanguageNeutral>true</isLanguageNeutral>
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet/gmd:MD_CharacterSetCode/@codeList</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>URI</hasDatatype>
-          <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_CharacterSetCode</hasValue>
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet/gmd:MD_CharacterSetCode/@codeListValue</hasPath>
-          <isFixed>true</isFixed>
-          <isLanguageNeutral>true</isLanguageNeutral>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet/gmd:MD_CharacterSetCode</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--Categoria tematica -->
-    <element>
-      <id>cat_tem</id>
-      <label xml:lang="en">Topic category</label>
-      <label xml:lang="it">Categoria tematica</label>
-      <help xml:lang="en">The thematic category the resource can be ascribed to.</help>
-      <help xml:lang="it">Tema principale cui si riferiscono i dati (o risorse) e vincolata ad una lista (men&#249; a tendina) di categorie generali.</help>
-      <isMandatory>forAll</isMandatory>
-      <isMultiple>true</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>code</hasDatatype>
-          <hasValue>http://inspire-registry.jrc.ec.europa.eu/registers/TopicCategories/items</hasValue>
-          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/TopicCategories/items/14</defaultValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
-        </item>
-      </produces>
-    </element>
-    <!--Localizzazione geografica -->
-    <element>
-      <id>loc_geo</id>
-      <label xml:lang="en">Geographic localisation</label>
-      <label xml:lang="it">Localizzazione geografica</label>
-      <help xml:lang="en">foo</help>
-      <help xml:lang="it">Esprime l&apos;estensione della risorsa nello spazio geografico sotto forma di un ipotetico riquadro di delimitazione (Bounding Box), ovvero esprime la massima estensione del dato come si ottiene dalla coordinata pi&#249; occidentale, pi&#249; orientale, pi&#249; meridionale e pi&#249; settentrionale. Le coordinate debbono essere espresse in gradi decimali, con almeno due cifre dopo la virgola, nel sistema WGS84.</help>
-      <isMandatory>forAll</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <westLongitude>
-            <outIndex>1</outIndex>
-            <label xml:lang="en">W longitude</label>
-            <label xml:lang="it">Longitudine O</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal</hasPath>
-            <queryStringParameter>westlon</queryStringParameter>
-          </westLongitude>
-          <eastLongitude>
-            <outIndex>2</outIndex>
-            <label xml:lang="en">E longitude</label>
-            <label xml:lang="it">Longitudine E</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal</hasPath>
-            <queryStringParameter>eastlon</queryStringParameter>
-          </eastLongitude>
-          <southLatitude>
-            <outIndex>3</outIndex>
-            <label xml:lang="en">S latitude</label>
-            <label xml:lang="it">Latitudine S</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal</hasPath>
-            <queryStringParameter>southlat</queryStringParameter>
-          </southLatitude>
-          <northLatitude>
-            <outIndex>4</outIndex>
-            <label xml:lang="en">N latitude</label>
-            <label xml:lang="it">Latitudine N</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal</hasPath>
-            <queryStringParameter>northlat</queryStringParameter>
-          </northLatitude>
-          <isFixed>false</isFixed>
-          <hasDatatype>boundingBox</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-      </produces>
-    </element>
-    <!--Estensione verticale -->
-    <element>
-      <id>est_vert</id>
-      <label xml:lang="en">Vertical extent</label>
-      <label xml:lang="it">Estensione verticale</label>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <label xml:lang="en">Minimum height</label>
-          <label xml:lang="it">Quota minima</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:minimumValue/gco:Real</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>real</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <label xml:lang="en">Maximum height</label>
-          <label xml:lang="it">Quota massima</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue/gco:Real</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>real</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <label xml:lang="en">Vertical reference system</label>
-          <label xml:lang="it">Sistema di riferimento verticale</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>codelist</hasDatatype>
-          <datasource>referenceSystemCodes</datasource>
-          <hasValue>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
-        </item>
-      </produces>
-    </element>
-    <!--Estensione temporale -->
-    <element>
-      <id>est_temp</id>
-      <label xml:lang="en">Temporal extent</label>
-      <label xml:lang="it">Estensione temporale</label>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>true</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <label xml:lang="en">Start date</label>
-          <label xml:lang="it">Data inizio</label>
-          <start>
-            <label xml:lang="en">Start date</label>
-            <label xml:lang="it">Data inizio</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition</hasPath>
-          </start>
-          <end>
-            <label xml:lang="en">End date</label>
-            <label xml:lang="it">Data fine</label>
-            <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition</hasPath>
-          </end>
-          <isFixed>false</isFixed>
-          <hasDatatype>dateRange</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-        <!--<item>
-          <hasIndex>2</hasIndex>
-          <label>prefisso</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gmd:prefisso</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>u</hasValue>
-        </item> -->
-        <item>
-          <hasIndex>3</hasIndex>
-          <label>progressivo</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/@gml:id</hasPath>
-          <hasDatatype>autonumber</hasDatatype>
-          <isFixed>true</isFixed>
-          <hasValue>u</hasValue>
-        </item>
-        <!--<item>
-          <hasIndex>4</hasIndex>
-          <isFixed>true</isFixed>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/@gml:id</hasPath>
-          <hasDatatype>function</hasDatatype>
-          <hasValue>concat(gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gmd:prefisso/text(), gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gmd:progressivo/text())</hasValue>
-        </item> -->
-      </produces>
-    </element>
-    <!--Informazioni supplementari -->
-    <element>
-      <id>info_suppl</id>
-      <label xml:lang="en">Suppplemental information</label>
-      <label xml:lang="it">Informazioni supplementari</label>
-      <help xml:lang="en">Optional field. Free-text describing supplemental information, such as the URL where technical documentation on the resource can be found.</help>
-      <help xml:lang="it">Campo opzionale. Sono informazioni descrittive supplementari sui dati. &#201; un testo libero. Si consiglia di utilizzare questo elemento per inserire l&apos;URL dove reperire il file di qualsiasi documentazione tecnica utile a fornire ulteriori informazioni sulla risorsa (es. capitolato, specifiche tecniche, ecc.). </help>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>text</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-      </produces>
-    </element>
-  </group>
+
 </template>

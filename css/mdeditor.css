@@ -152,6 +152,7 @@
 
 .ref {
     background: #ccccff;
+    display: none;
 }
 
 .no-children {
@@ -215,20 +216,22 @@ element {
     display: none;
 }
 .element-group {
-    border: 1px solid #333;
+    border: 0px solid #333;
 }
 .element {
-    border: 1px solid #ff3300;
+    border: 0px solid #ff3300;
 }
 .hidden {
     display: none;
 }
+/*
 .dependent-input {
     background: rgba(255, 0, 0, 0.1);
 }
 .typeahead {
     background: rgba(0, 0, 255, 0.1);
 }
+*/
 .span8 {
     width: 770px;
     float: left;
