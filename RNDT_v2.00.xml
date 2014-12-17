@@ -1442,10 +1442,10 @@ VALIDAZIONE inspire_sample_15_it/en.xml
       </produces>
     </element>
     <!--E' necessario uno solo tra i seguenti due: -->
-    <alternative>
       <isMandatory>forAll</isMandatory>
       <!--Scala equivalente (denominatore) -->
       <element>
+        <alternativeTo>dist</alternativeTo>
         <id>sca_equ</id>
         <label xml:lang="en">Equivalent scale (denominator)</label>
         <label xml:lang="it">Scala equivalente (denominatore)</label>
@@ -1465,6 +1465,7 @@ VALIDAZIONE inspire_sample_15_it/en.xml
       </element>
       <!--Distanza -->
       <element>
+        <alternativeTo>sca_equ</alternativeTo>
         <id>dist</id>
         <label xml:lang="en">Distance (at ground, in metres)</label>
         <label xml:lang="it">Distanza (al suolo, in metri)</label>
@@ -1489,7 +1490,6 @@ VALIDAZIONE inspire_sample_15_it/en.xml
           </item>
         </produces>
       </element>
-    </alternative>
     <!--Lingua -->
     <element>
       <id>ling</id>

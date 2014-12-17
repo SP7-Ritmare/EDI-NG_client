@@ -419,6 +419,7 @@ var edi = (function() {
         theElement.mandatory = element.isMandatory;
         theElement.root = element.hasRoot;
         theElement.represents_element = element.id;
+        theElement.alternativeTo = element.alternativeTo;
 
         ediml.addElement(theElement);
 
@@ -426,6 +427,7 @@ var edi = (function() {
         div.attr("mandatory", element.isMandatory);
         div.attr("multiple", element.isMultiple);
         div.attr("represents_element", element.id);
+        div.attr("alternativeTo", element.alternativeTo);
         if ( $.isArray(element.label) ) {
             for (var k = 0; k < element.label.length; k++) {
                 div.append("<label class='form-label" + (element.label[k]["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>" + element.label[k]["__text"] + "</label>");
@@ -628,6 +630,15 @@ var edi = (function() {
             });
         });
 
+        $("*[alternativeto]").addClass("alternativeElement");
+        $("*[alternativeto] input").keyup(function() {
+            var item = ediml.findItemById($(this).attr("id"));
+            var element = ediml.getElement(item.elementId);
+            var altElement = ediml.getElement(element.alternativeTo);
+            for ( var i = 0; i < altElement.items.item.length; i++ ) {
+                $("#" + altElement.items.item[i].id).val([]);
+            }
+        });
         DataSourcePool.getInstance().refreshAll();
         $(".date-input, .dateRange-input").datepicker({
             format: "yyyy-mm-dd",
