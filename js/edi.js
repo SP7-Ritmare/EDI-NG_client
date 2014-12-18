@@ -1,3 +1,12 @@
+/**
+ *
+ * Main module for EDI
+ * It is responsible for orchestrating other modules and classes at the presentation level
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ *
+ */
+
 var edi = (function() {
     var callback;
     var settings;
@@ -513,6 +522,13 @@ var edi = (function() {
                 ediml.fillInEdiMl(ediMl);
             });
         }
+        if ( querystring("duplicate") ) {
+            ediml.loadEDIML(querystring("duplicate"), function (data) {
+                ediMl = data;
+                ediml.fillInEdiMl(ediMl);
+                ediml.content.elements.fileId = undefined;
+            });
+        }
     }
 
     function fixOneItemArrays(data) {
@@ -696,6 +712,22 @@ var edi = (function() {
         });
     }
 
+    function loadTemplateFromUrl(url, theCallback) {
+        callback = theCallback;
+        $.ajax({
+            // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
+            url: url,
+            type: "get",
+            dataType: "xml",
+            success: function(data) {
+                var x2j = new X2JS({});
+                data = x2j.xml2json(data);
+                // console.log(data);
+                onTemplateLoaded(template, version, data.template);
+            }
+        });
+    }
+
     // Initialisation code
 
 
@@ -703,6 +735,7 @@ var edi = (function() {
         cloneSuffix: cloneSuffix,
         loadTemplate: loadTemplate,
         loadLocalTemplate: loadLocalTemplate,
+        loadTemplateFromUrl: loadTemplateFromUrl,
         duplicateElement: duplicateElement,
         setLanguage: setLanguage,
         substringMatcher: substringMatcher,
