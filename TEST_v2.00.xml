@@ -14,16 +14,17 @@
     <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresValidation>false</requiresValidation>
-    <baseDocument><![CDATA[
-    <gmd:MD_Metadata
-        xsi:schemaLocation="http://www.isotc211.org/2005/gmd
-        http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
-        xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml"
-        xmlns:xlink="http://www.w3.org/1999/xlink">
-
-    </gmd:MD_Metadata>
-  ]]>
+    <baseDocument>
+      <![CDATA[
+        <gmd:MD_Metadata
+            xsi:schemaLocation="http://www.isotc211.org/2005/gmd
+            http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
+            xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+        </gmd:MD_Metadata>
+      ]]>
     </baseDocument>
     <xsltChain>
       <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/stylesheet_1.xsl?version=1.00</xslt>
@@ -115,19 +116,74 @@
       <singleton>true</singleton>
       <query>
         <![CDATA[
-            PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-            SELECT ?c ?l
+            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+            SELECT ?inst ?home
             FROM <http://ritmare.it/rdfdata/project>
             WHERE {
-              ?c rdf:type foaf:Person.
-              ?c ns:email ?l.
-              ?c ns:org ?o .
-              FILTER( REGEX( STR(?l), "$search_param", "i") )
+              <$search_param> vcard:org ?o.
+              ?o foaf:name ?inst .
+              ?o foaf:homepage ?home .
+              FILTER(LANG(?inst)='it')
             }
-            ORDER BY ASC(?l)
         ]]>
       </query>
-      <!-- <searchItem>resp_md_1</searchItem> -->
+      <triggerItem>resp_md_1_uri</triggerItem>
+      <type>
+        sparql
+      </type>
+    </datasource>
+    <datasource>
+      <id>updateFreq</id>
+      <uri>http://www.rndt.gov.it/codelists/MD_MaintenanceFrequencyCode/items</uri>
+      <type>virtuosoCodelist</type>
+    </datasource>
+    <datasource>
+      <id>inspireTheme</id>
+      <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Themes/items</uri>
+      <type>virtuosoCodelist</type>
+    </datasource>
+    <datasource>
+      <id>keywordFromContrVoc</id>
+      <singleton>false</singleton>
+      <query>
+        <![CDATA[
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        SELECT ?c ?l ?a
+        FROM <http://ritmare.it/rdfdata/reference>
+        WHERE {
+          ?c rdf:type skos:Concept.
+          OPTIONAL {
+            ?c skos:prefLabel ?l.
+            FILTER( LANG(?l) = "en")
+          }
+          OPTIONAL {
+            ?c skos:prefLabel ?a.
+            FILTER( LANG(?a) = "it")
+          }
+          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+        }
+        ORDER BY ASC(?l) ASC(?a)
+        ]]>
+      </query>
+      <type>
+        sparql
+      </type>
+    </datasource>
+    <datasource>
+      <id>contrVocSpecs</id>
+      <singleton>true</singleton>
+      <query>
+        <![CDATA[
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        SELECT ?c ?l
+        FROM <http://ritmare.it/rdfdata/reference>
+        WHERE {
+          <$search_param> skos:inScheme ?c.
+          ?c skos:prefLabel ?l.
+          FILTER( LANG(?l) = "en")
+        }
+        ]]>
+      </query>
       <triggerItem>resp_md_1_uri</triggerItem>
       <type>
         sparql
@@ -392,18 +448,9 @@
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <id>gmd:organisationName</id>
-          <hasDatatype>dependent</hasDatatype>
-          <url>http://sp7.irea.cnr.it:8891/sparql</url>
-          <query><![CDATA[
-            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-            SELECT ?l
-            FROM <http://ritmare.it/rdfdata/project>
-            WHERE {
-              <$1$> vcard:org ?o.
-              ?o foaf:name ?l.
-              FILTER(LANG(?l)='it')
-            }
-          ]]></query>
+          <hasDatatype>select</hasDatatype>
+          <datasource>personS</datasource>
+          <field>inst</field>
         </item>
         <item>
           <hasIndex>3</hasIndex>
@@ -413,17 +460,9 @@
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
           <isFixed>false</isFixed>
           <id>gmd:CI_OnlineResource</id>
-          <hasDatatype>dependent</hasDatatype>
-          <url>http://sp7.irea.cnr.it:8891/sparql</url>
-          <query><![CDATA[
-            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-            SELECT ?l
-            FROM <http://ritmare.it/rdfdata/project>
-            WHERE {
-              <$1$> vcard:org ?i.
-              ?i foaf:homepage ?l.
-            }
-          ]]></query>
+          <hasDatatype>select</hasDatatype>
+          <datasource>personS</datasource>
+          <field>home</field>
         </item>
         <item>
           <hasIndex>4</hasIndex>
@@ -700,10 +739,7 @@ We have original WGS84 UTM32 CRS as follows:
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>
-    
-    
-    
+    </element>   
     <!--Identificatore -->
     <element>
       <id>id</id>
@@ -755,17 +791,7 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:electronicMailAddress</id>
           <hasDatatype>autoCompletion</hasDatatype>
-          <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?c ?l ?a
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE {
-                          ?c rdf:type foaf:Person.
-                          ?c ns:email ?l.
-                          FILTER( REGEX( STR(?l), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
+          <datasource>person</datasource>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -776,13 +802,15 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:organisationName</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <hasValue><![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
                         SELECT ?l
                         FROM <http://ritmare.it/rdfdata/project>
                         WHERE {
                           <$1$> ns:org ?o.
-                          ?o rdfs:label ?l.
+                          ?o foaf:name ?l.
+                          FILTER(LANG(?l)='it')
                         }
                         ]]></hasValue>
         </item>
@@ -795,6 +823,7 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:CI_OnlineResource</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <hasValue><![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
                         SELECT ?l
@@ -891,26 +920,6 @@ We have original WGS84 UTM32 CRS as follows:
         </item>
       </produces>
     </element>
-    <!--Altri dettagli -->
-    <element>
-      <id>altri_dettagli</id>
-      <label xml:lang="en">Other details</label>
-      <label xml:lang="it">Altri dettagli</label>
-      <help xml:lang="en">Additional details on the resource being described.</help>
-      <help xml:lang="it">Dettagli aggiuntivi riguardo la risorsa.</help>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>text</hasDatatype>
-          <hasValue>user-defined</hasValue>
-        </item>
-      </produces>
-    </element>
     <!--Descrizione -->
     <element>
       <id>desc</id>
@@ -929,6 +938,26 @@ We have original WGS84 UTM32 CRS as follows:
           <hasDatatype>text</hasDatatype>
           <hasValue>user-defined</hasValue>
           <queryStringParameter>abstract</queryStringParameter>
+        </item>
+      </produces>
+    </element>
+    <!--Altri dettagli -->
+    <element>
+      <id>altri_dettagli</id>
+      <label xml:lang="en">Other details</label>
+      <label xml:lang="it">Altri dettagli</label>
+      <help xml:lang="en">Additional details on the resource being described.</help>
+      <help xml:lang="it">Dettagli aggiuntivi riguardo la risorsa.</help>
+      <isMandatory>NA</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails/gco:CharacterString</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>text</hasDatatype>
+          <hasValue>user-defined</hasValue>
         </item>
       </produces>
     </element>
@@ -952,17 +981,7 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:electronicMailAddress</id>
           <hasDatatype>autoCompletion</hasDatatype>
-          <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?c ?l ?a
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE {
-                          ?c rdf:type foaf:Person.
-                          ?c ns:email ?l.
-                          FILTER( REGEX( STR(?l), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
+          <datasource>person</datasource>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -973,13 +992,15 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:organisationName</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <hasValue><![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
                         SELECT ?l
                         FROM <http://ritmare.it/rdfdata/project>
                         WHERE {
-                          <$resp_md_1$> ns:org ?o.
-                          ?o rdfs:label ?l.
+                          <$1$> ns:org ?o.
+                          ?o foaf:name ?l.
+                          FILTER(LANG(?l)='it')
                         }
                         ]]></hasValue>
         </item>
@@ -992,6 +1013,7 @@ We have original WGS84 UTM32 CRS as follows:
           <isFixed>false</isFixed>
           <id>gmd:CI_OnlineResource</id>
           <hasDatatype>dependent</hasDatatype>
+          <url>http://sp7.irea.cnr.it:8891/sparql</url>
           <hasValue><![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
                         SELECT ?l
@@ -1043,8 +1065,8 @@ We have original WGS84 UTM32 CRS as follows:
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode</hasPath>
           <isFixed>false</isFixed>
-          <hasDatatype>code</hasDatatype>
-          <hasValue>http://www.rndt.gov.it/codelists/MD_MaintenanceFrequencyCode/items</hasValue>
+          <hasDatatype>codelist</hasDatatype>
+          <datasource>updateFreq</datasource>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1078,7 +1100,8 @@ We have original WGS84 UTM32 CRS as follows:
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
-          <hasDatatype>code</hasDatatype>
+          <hasDatatype>codelist</hasDatatype>
+          <datasource>inspireTheme</datasource>
           <hasValue>http://inspire-registry.jrc.ec.europa.eu/registers/Themes/items</hasValue>
           <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/FCD/items/29</defaultValue>
         </item>
@@ -1137,24 +1160,7 @@ We have original WGS84 UTM32 CRS as follows:
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>autoCompletion</hasDatatype>
-          <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                        SELECT ?c ?l ?a
-                        FROM <http://ritmare.it/rdfdata/reference>
-                        WHERE {
-                          ?c rdf:type skos:Concept.
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?a.
-                            FILTER( LANG(?a) = "it")
-                          }
-                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
+          <datasource>keywordFromContrVoc</datasource>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1163,16 +1169,8 @@ We have original WGS84 UTM32 CRS as follows:
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>dependent</hasDatatype>
-          <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/reference>
-                        WHERE {
-                          <$1$> skos:inScheme ?t.
-                          ?t skos:prefLabel ?l.
-                          FILTER( LANG(?l) = "en")
-                        }
-                        ]]></hasValue>
+          <datasource>contrVocSpecs</datasource>
+          
         </item>
         <item>
           <hasIndex>3</hasIndex>

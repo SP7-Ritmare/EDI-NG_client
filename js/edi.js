@@ -481,11 +481,12 @@ var edi = (function() {
         $("#debug").append("<p>" + element.id + "</p>");
         // console.log(element.id);
     }
+    var groupCounter = 0;
     function compileGroup(group) {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
-        navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "'></a></li>");
-        form.append("<section id='" + group.id + "' class='form-horizontal'>");
+        navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' data-toggle='tab'></a></li>");
+        form.append("<section id='" + group.id + "' class='tab-pane" + ( groupCounter++ == 0 ? " active" : "") + "'>");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
         for ( var j = 0; j < group.label.length; j++ ) {
