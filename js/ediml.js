@@ -1,6 +1,14 @@
-    /**
- * Created by fabio on 19/11/14.
+/**
+ *
+ * This module represents EDIML's lifecycle
+ * The 'content' attribute represents the actual core.
+ * The weird structure of the 'content' object is a trade off needed to allow this structure to exchange data in XML form compatible with both the xml2json.js/json2xml.js conversions and JAXB's server side conversion.
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ *
  */
+
+
 
 var ediml = (function() {
     var metadataEndpoint;
@@ -175,6 +183,11 @@ var ediml = (function() {
             });
         }    }
 
+    /**
+     * Loads EDIML from the metadataEndpoint defined in the template's settings
+     * @param edimlId   the EDIML record to be fetched
+     * @param callback  who to call when done
+     */
     function loadEDIML(edimlId, callback) {
         if ( typeof edimlId === "undefined" || edimlId == "" ) {
             return;
@@ -207,6 +220,11 @@ var ediml = (function() {
         }
     }
 
+    /**
+     * Load EDIML from localStorage (if available)
+     *
+     * @param name  name the EDIML was saved as
+     */
     function load(name) {
         if(typeof(Storage) !== "undefined") {
             console.log(localStorage.edimls);
@@ -220,6 +238,12 @@ var ediml = (function() {
         }
     }
 
+    /**
+     * Saves current EDIML state to localStorage
+     * WARNING: the EDIML is saved as is, with no validation
+     *
+     * @param name  name to be assigned to this instance
+     */
     function saveAs(name) {
         var data = {
             ediml: content,
@@ -236,6 +260,11 @@ var ediml = (function() {
         }
     }
 
+    /**
+     * Fills in the HTML form with contents of the EDIML parameter
+     *
+     * @param ediMl
+     */
     function fillInEdiMl(ediMl) {
         var element;
         var item;
@@ -354,6 +383,12 @@ var ediml = (function() {
         return undefined;
     }
 
+    /**
+     * Duplicates an EDIML element, but not its HTML representation
+     *
+     * @param id
+     * @param newId
+     */
     function duplicateElement(id, newId) {
         var element = getElement(id);
         console.log("duplicating element " + id);
