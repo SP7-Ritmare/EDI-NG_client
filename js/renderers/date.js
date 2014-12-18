@@ -34,15 +34,17 @@ var date = (function() {
             control.attr("defaultValue", item.defaultValue);
             control.attr("id", $(this).attr("id"));
             control.attr("querystringparameter", item.queryStringParameter);
+            if (element.mandatory != "NA") {
+                control.attr("required", "required");
+            }
             if (item.isFixed == "true") {
                 control.val(item.hasValue);
                 control.addClass("fixed");
             }
-            if (element.mandatory != "NA") {
-                control.attr("required", "required");
-            }
             control = $($.parseHTML('<div class="' + defaults.controlGroupCSS + ' date" data-date-format="yyyy-mm-dd">')).append(control);
-            control.append('<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>');
+            if (item.isFixed != "true") {
+                control.append('<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>');
+            }
 
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
             html = $(html);
