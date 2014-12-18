@@ -553,6 +553,7 @@ var edi = (function() {
     }
 
     function onTemplateLoaded(template, version, data) {
+        settings = data.settings;
         $("#template-version").text(template + " v" + version);
         $("#debug").append("<p>template loaded</p>");
 
@@ -567,7 +568,7 @@ var edi = (function() {
                     id: dss[i].id,
                     type: dss[i].type,
                     uri: dss[i].uri,
-                    url: dss[i].url,
+                    url: ( dss[i].url ? dss[i].url : settings.sparqlEndpoint),
                     query: dss[i].query,
                     searchItem: dss[i].searchItem,
                     triggerItem: dss[i].triggerItem,
@@ -590,7 +591,6 @@ var edi = (function() {
         }
 //        form = $("#theForm").append("<form role='form' method='post'>").children("form");
         form = $("#theForm").append("<div>").children("div");
-        settings = data.settings;
         ediml.inheritSettings(settings);
         ediml.content.elements.template = template;
         ediml.content.elements.version = version;
