@@ -44,12 +44,12 @@ var boundingBox = (function() {
                 control.attr("datasource", item.datasource);
                 control.attr("show", item.show);
                 control.attr("id", theItem.id);
-                control.attr("querystringparameter", item.queryStringParameter);
+                control.attr("querystringparameter", subItem.queryStringParameter);
                 if (item.isFixed == "true") {
                     control.val(item.hasValue);
                     control.addClass("fixed");
                 }
-                if (element.mandatory != "NA") {
+                if (element.isMandatory != "NA") {
                     control.attr("required", "required");
                 }
                 control.addClass(components[i]);

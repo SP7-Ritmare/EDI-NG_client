@@ -24,6 +24,7 @@
         <script src="js/sparql.js"></script>
         <script src="js/datasource_adapters.js"></script>
         <script src="js/datasource.js"></script>
+        <script src="js/datasourcepool.js"></script>
         <script src="js/item.js"></script>
         <script src="js/element.js"></script>
         <script src="js/ediml.js"></script>
@@ -54,8 +55,8 @@
             function onTemplateLoaded(data) {
                 console.log("fatto");
             }
-            $(window).load(function() {
-                edi.loadLocalTemplate("TEST", "2.00", onTemplateLoaded);
+            $(document).ready(function() {
+                edi.loadLocalTemplate("RNDT", "3.00", onTemplateLoaded);
 
                 edi.edimlOutput();
                 $("#ediml").hide();

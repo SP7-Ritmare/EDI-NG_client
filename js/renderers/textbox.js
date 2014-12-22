@@ -49,7 +49,7 @@ var textbox = (function() {
                 control.val(item.hasValue);
                 control.addClass("fixed");
             }
-            if (element.mandatory != "NA") {
+            if (element.isMandatory != "NA") {
                 control.attr("required", "required");
             }
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");

@@ -27,7 +27,7 @@ var Item = (function() {
         },
         isMandatory: function() {
             var element = ediml.getElement(elementId);
-            return element.mandatory != "NA";
+            return ( element.mandatory != "NA" );
         }
 
     };

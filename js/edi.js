@@ -15,6 +15,7 @@ var edi = (function() {
     var dataSources = [];
     var cloneSuffix = "_XritX";
     var uiLanguage = "it";
+    var metadataLanguage = "it";
     var tempStructure = {};
     var theTemplate;
 
@@ -439,10 +440,10 @@ var edi = (function() {
         div.attr("alternativeTo", element.alternativeTo);
         if ( $.isArray(element.label) ) {
             for (var k = 0; k < element.label.length; k++) {
-                div.append("<label class='form-label" + (element.label[k]["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>" + element.label[k]["__text"] + "</label>");
+                div.append("<label class='form-label" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>" + element.label[k]["__text"] + "</label>");
             }
         } else if ( element.label ) {
-            div.append("<label class='form-label" + (element.label["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + element.label["_xml:lang"] + "'>" + element.label["__text"] + "</label>");
+            div.append("<label class='form-label" + (element.label["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label["_xml:lang"] + "'>" + element.label["__text"] + "</label>");
         }
         if ( element.help ) {
             for ( var j = 0; j < element.help.length; j++ ) {
@@ -475,10 +476,13 @@ var edi = (function() {
         }
         if ( element.isMultiple == "true" ) {
             for (var k = 0; k < element.label.length; k++) {
-                div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
+                div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
             }
         }
-        $("#debug").append("<p>" + element.id + "</p>");
+        if ( element.isMandatory != "NA" ) {
+            div.addClass("mandatory");
+        }
+        // $("#debug").append("<p>" + element.id + "</p>");
         // console.log(element.id);
     }
     var groupCounter = 0;
@@ -490,8 +494,8 @@ var edi = (function() {
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
         for ( var j = 0; j < group.label.length; j++ ) {
-            div.append("<h3 class='form-label" + (group.label[j]["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</h3>");
-            $("#linkTo_" + group.id).append("<label class='form-label" + (group.label[j]["_xml:lang"] == settings.defaultLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</label>");
+            div.append("<h3 class='form-label" + (group.label[j]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</h3>");
+            $("#linkTo_" + group.id).append("<label class='form-label" + (group.label[j]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</label>");
         }
         div = div.parent().append("<div class='panel-body'>").children("div.panel-body");
         if ( group.help ) {
@@ -606,6 +610,8 @@ var edi = (function() {
         });
 
         setLanguage(uiLanguage);
+        metadataLanguage = settings.defaultLanguage;
+        setMetadataLanguage(metadataLanguage);
         setLanguageSelector();
 
         DataSourcePool.getInstance().addListener("allReady", function(event) {

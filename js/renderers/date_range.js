@@ -46,11 +46,11 @@ var dateRange = (function() {
 
             control.attr("datatype", item.hasDatatype);
             control.attr("id", item.id + "_start");
-            control.attr("querystringparameter", item.queryStringParameter);
+            control.attr("querystringparameter", item.start.queryStringParameter);
 
             control2.attr("datatype", item.hasDatatype);
             control2.attr("id", item.id + "_end");
-            control2.attr("querystringparameter", item.queryStringParameter);
+            control2.attr("querystringparameter", item.end.queryStringParameter);
 
             if (item.isFixed == "true") {
                 control.val(item.hasValue);
@@ -58,7 +58,7 @@ var dateRange = (function() {
                 control2.val(item.hasValue);
                 control2.addClass("fixed");
             }
-            if (element.mandatory != "NA") {
+            if (element.isMandatory != "NA") {
                 control.attr("required", "required");
                 control2.attr("required", "required");
             }
