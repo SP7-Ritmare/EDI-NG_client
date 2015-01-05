@@ -10,6 +10,7 @@
 var edi = (function() {
     var callback;
     var settings;
+    var endpointTypes = [];
     var form;
     var sparql = new SPARQL();
     var dataSources = [];
@@ -55,7 +56,8 @@ var edi = (function() {
 
     function duplicateElement(element_id, newId, updateEdiml) {
         var div = $("div[represents_element='" + element_id + "']:last");
-        // var element_id = div.attr("id");
+        element_id = div.attr("id");
+        newId = div.attr("id") + cloneSuffix;
         var found = false;
 
         // doDebug("duplicating " + element_id);
@@ -66,10 +68,10 @@ var edi = (function() {
 
         newDiv.find('button[removes]').remove();
         // var label = newDiv.find('label[for="' + element_id + cloneSuffix + '"]').first();
-        newDiv.find('a[for="' + element_id + cloneSuffix + '"]').remove();
-        newDiv.attr("id", element_id + cloneSuffix);
+        newDiv.find('a[for="' + newId + '"]').remove();
+        newDiv.attr("id", newId);
 
-        var button = newDiv.prepend("<button removes='" + element_id + cloneSuffix + "' id='" + element_id + cloneSuffix + "_remover' type='button' class='btn btn-mini btn-danger btn-remover'>X</button>").children("button[removes]");
+        var button = newDiv.prepend("<button removes='" + newId + "' id='" + newId + "_remover' type='button' class='btn btn-mini btn-danger btn-remover'>X</button>").children("button[removes]");
 // doDebug(button);
         // For some obscure reason it closes <http:> tag it finds in SPARQL queries
         // quick and dirty fix:
@@ -77,15 +79,42 @@ var edi = (function() {
         newDiv.find("*[query]").each(function() {
             $(this).attr("query", $(this).attr("query").replaceAll("></http:>", "/>"));
         });
-
         // end of quick and dirty fix
         div.after(newDiv);
 
-        // newDiv.find("*").unbind("change");
-        if ( updateEdiml ) {
-            ediml.duplicateElement(element_id, element_id + cloneSuffix);
+
+        var relevantDatasources = DataSourcePool.getInstance().findByTriggeredItemInElement(element_id);
+        if ( $.isArray(relevantDatasources) ) {
+            for ( var i = 0; i < relevantDatasources.length; i++ ) {
+                var datasource = relevantDatasources[i];
+                var id = datasource.getId();
+                var newDsId = datasource.getId() + cloneSuffix;
+                var newTriggerItem = datasource.parameters.triggerItem.replace(element_id, newId);
+                var newSearchItem = datasource.parameters.searchItem.replace(element_id, newId);
+                var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newDsId, newTriggerItem, newSearchItem);
+                newDs.refresh();
+                // DataSourcePool.getInstance().add(newDs);
+                newDiv.find("*[datasource='" + id + "']").attr("datasource",newDsId);
+                newDiv.find("*[datatype='select']", "*[datasource='" + newDsId + "']").each(function(){
+                    var theId = $(this).attr("id");
+                    var field = $(this).attr("field");
+                    var ds = DataSourcePool.getInstance().findById($(this).attr("datasource"));
+                    console.log("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
+                    ds.addEventListener("selectionChanged", function (event) {
+                        console.log(event + " received by " + theId);
+                        var row = ds.getCurrentRow();
+                        $("#" + theId).val(row[field]).trigger("change");
+                    });
+                });
+
+
+            }
         }
 
+        // newDiv.find("*").unbind("change");
+        if ( updateEdiml ) {
+            ediml.duplicateElement(element_id, newId);
+        }
         newDiv.find(".datepicker").datepicker({
             format: "yyyy-mm-dd"
         }).on('changeDate', function(ev) {
@@ -275,7 +304,7 @@ var edi = (function() {
         if ( typeof data !== "undefined" ) {
             for ( var i = 0; i < data.length; i++ ) {
 //                html += "<option value='" + ( data[i].c ? data[i].c.value : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z.value + "'" : "") + ">" + ( data[i].a ? data[i].a.value : data[i].l.value ) + "</option>";
-                html += "<option value='" + ( data[i].c ? data[i].c : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z + "'" : "") + ">" + ( data[i].a ? data[i].a : data[i].l ) + "</option>";
+                html += "<option value='" + ( data[i].c ? data[i].c : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z + "'" : "") + ">" + ( data[i].a ? data[i].a : ( data[i].l ? data[i].l : data[i].z ) ) + "</option>";
             }
         }
         $("select").filter("*[datasource='" + datasource + "']").each(function() {
@@ -565,6 +594,23 @@ var edi = (function() {
         data = fixOneItemArrays(data);
         theTemplate = data;
 
+        endpointTypes = [];
+        console.log("endpoints");
+        if ( data.endpointTypes ) {
+            if ( !$.isArray(data.endpointTypes.endpointType) ) {
+                data.endpointTypes.endpointType = [data.endpointTypes.endpointType];
+            }
+
+            for ( var i = 0; i < data.endpointTypes.endpointType.length; i++ ) {
+                var e = data.endpointTypes.endpointType[i];
+                console.log(e);
+                var endpointType = new EndpointType(e);
+                console.log(endpointType);
+                endpointTypes[e.id] = endpointType;
+            }
+        }
+        console.log("endpoints end");
+
         if ( data.datasources ) {
             var dss = data.datasources.datasource;
             for (var i = 0; i < dss.length; i++) {
@@ -574,6 +620,7 @@ var edi = (function() {
                     type: dss[i].type,
                     uri: dss[i].uri,
                     url: ( dss[i].url ? dss[i].url : settings.sparqlEndpoint),
+                    endpointType: dss[i].endpointType,
                     query: dss[i].query,
                     searchItem: dss[i].searchItem,
                     triggerItem: dss[i].triggerItem,
@@ -747,6 +794,10 @@ var edi = (function() {
         setLanguage: setLanguage,
         substringMatcher: substringMatcher,
         edimlOutput: edimlOutput,
+        endpointTypes: endpointTypes,
+        getEndpointTypes: function(which) {
+            return endpointTypes[which];
+        },
         settings: function() {return settings;},
         getTemplate: function() {return theTemplate},
         uiLanguage: function() {

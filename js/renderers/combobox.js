@@ -39,6 +39,7 @@ var combobox = (function() {
             control.attr("id", $(this).attr("id"));
             control.attr("show", item.show);
             control.attr("defaultValue", item.defaultValue);
+            control.attr("field", item.field);
             control.attr("querystringparameter", item.queryStringParameter);
             if (item.isFixed == "true") {
                 control.val(item.hasValue);

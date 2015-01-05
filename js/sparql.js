@@ -1,5 +1,8 @@
-var SPARQL = (function(url) {
+var SPARQL = (function(url, endpointType) {
     var virtuosoUrl = "http://sp7.irea.cnr.it:8890/sparql";
+    if ( typeof endpointType === "undefined" ) {
+        endpointType = "virtuoso";
+    }
 
     if ( typeof url !== "undefined") {
         virtuosoUrl = url;
@@ -45,14 +48,17 @@ var SPARQL = (function(url) {
         $.ajax({
             url: virtuosoUrl,
             type: "get",
-            dataType: "json",
+            dataType: "jsonp",
             crossDomain: true,
+            /*
             data: {
                 query: newQuery,
                 format: "application/sparql-results+json",
                 save:"display",
                 fname : undefined
             },
+            */
+            data: endpointType.getQueryStringData(newQuery),
             success: function(data) {
                 if ( typeof callback === "function") {
                     callback(data);
@@ -75,13 +81,16 @@ var SPARQL = (function(url) {
         $.ajax({
             url: virtuosoUrl,
             type: "get",
-            dataType: "json",
+            dataType: "jsonp",
+            /*
             data: {
                 query: sparqlQuery,
                 format: "application/sparql-results+json",
                 save:"display",
                 fname : undefined
             },
+            */
+            data: endpointType.getQueryStringData(sparqlQuery),
             success: function(data) {
                 if ( typeof callback === "function") {
                     callback(data);

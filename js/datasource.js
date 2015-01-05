@@ -113,13 +113,13 @@ var DataSource = function(params) {
         currentResult = -1;
         switch (parameters.type) {
             case DataSourceType.virtuosoCodelist:
-                var sparql = new SPARQL(parameters.url);
+                var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
                 // console.log("load data for " + parameters.id);
                 sparql.query(parameters.uri, dataSuccess, dataError, language);
                 break;
             case DataSourceType.sparql:
                 if ( typeof parameters.triggerItem !== "undefined" ) {
-                    console.log(parameters.id + " is a triggered datasource");
+                    console.log(parameters.id + " is a datasource triggered by " + parameters.triggerItem);
                     parameters.searchItem = parameters.triggerItem;
                 }
                 /*
@@ -129,7 +129,7 @@ var DataSource = function(params) {
                     return;
                 }
                 */
-                var sparql = new SPARQL(parameters.url);
+                var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
                 var newQuery = parameters.query.toString();
                 if ( typeof parameters.searchItem !== "undefined" && $("#" + parameters.searchItem).val() != "" ) {
                     newQuery = parameters.query.toString().replace(/\$search_param\$/g, $("#" + parameters.searchItem).val()).replace(/\$search_param/g, $("#" + parameters.searchItem).val());

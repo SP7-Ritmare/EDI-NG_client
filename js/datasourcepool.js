@@ -42,6 +42,35 @@ var DataSourcePool = (function(){
                 }
                 return undefined;
             },
+            findByTriggeredItemInElement: function (element_id) {
+                var results = [];
+                var found;
+                for ( var i = 0; i < datasources.length; i++ ) {
+                    if ( datasources[i].parameters.triggerItem && datasources[i].parameters.triggerItem.indexOf(element_id) == 0 ) {
+                        found = false;
+                        for ( var j = 0; j < results.length; j++ ) {
+                            if ( results[j].parameters.id == datasources[i].parameters.id ) {
+                                found = true;
+                            }
+                        }
+                        if ( !found ) {
+                            results.push(datasources[i]);
+                        }
+                    }
+                }
+                console.log(results);
+                return results;
+            },
+            duplicateDatasource: function duplicate(id, newId, newTriggerItem, newSearchItem) {
+                var ds = DataSourcePool.getInstance().findById(id);
+                var newPars = clone(ds.parameters);
+                newPars.id = newId;
+                newPars.triggerItem = newTriggerItem;
+                newPars.searchItem = newSearchItem;
+                var newDs = new DataSource(newPars);
+                setDatasourceTrigger(newTriggerItem, newDs);
+                return newDs;
+            },
             getListeners: function() {
                 return listeners;
             },

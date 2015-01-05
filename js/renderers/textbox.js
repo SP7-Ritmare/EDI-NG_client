@@ -14,7 +14,7 @@ var textbox = (function() {
             } else {
                 control = $.parseHTML("<input type='text' class='" + defaults.controlCSS + " " + item.hasDatatype + "-input'>");
             }
-            if ( item.show == "hidden") {
+            if ( item.show == "hidden" || item.hasDatatype == "autonumber" ) {
                 $(control).attr("type", "hidden");
             }
             var theElement = ediml.getElement(element.id);
@@ -44,6 +44,7 @@ var textbox = (function() {
             control.attr("show", item.show);
             control.attr("id", $(this).attr("id"));
             control.attr("defaultValue", item.defaultValue);
+            control.attr("field", item.field);
             control.attr("querystringparameter", item.queryStringParameter);
             if (item.isFixed == "true") {
                 control.val(item.hasValue);

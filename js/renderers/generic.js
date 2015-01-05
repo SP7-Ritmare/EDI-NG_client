@@ -42,6 +42,7 @@ var itemRenderer = (function() {
                     case "text":
                     case "dependent":
                     case "ref":
+                    case "autonumber":
                     case "hidden":
                         return "textbox";
                     case "date":
