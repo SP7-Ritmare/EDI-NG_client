@@ -523,7 +523,7 @@ var edi = (function() {
     function compileGroup(group) {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
-        navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' data-toggle='tab'></a></li>");
+        navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' " + /* "data-toggle='tab'" + */"></a></li>");
         form.append("<section id='" + group.id + "' class='" + ( groupCounter++ == 0 ? " active" : "") + "'>");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");

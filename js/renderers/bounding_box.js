@@ -135,6 +135,14 @@ var boundingBox = (function() {
 
                     // map.removeInteraction(boundingBox);
                 })
+            } else {
+                var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
+                html = $(html);
+                var labels = $(this).find("label");
+                $(labels).addClass(defaults.labelCSS);
+                html.append(container);
+                $(this).replaceWith(html);
+
             }
 
             /*
