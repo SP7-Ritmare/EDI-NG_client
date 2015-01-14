@@ -60,12 +60,83 @@ var boundingBox = (function() {
                 $(coordinate).append(control);
                 $(container).append(coordinate);
             }
-            var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
-            html = $(html);
-            var labels = $(this).find("label");
-            $(labels).addClass(defaults.labelCSS);
-            html.append(container);
-            $(this).replaceWith(html);
+
+            if ( item.CRSItem ) {
+                $("#" + item.CRSItem).change(function() {
+
+                });
+
+                $(container).append("<div class='bboxMap map' id='map_" + theItem.id + "'></div>");
+                var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
+                html = $(html);
+                var labels = $(this).find("label");
+                $(labels).addClass(defaults.labelCSS);
+                html.append(container);
+                $(this).replaceWith(html);
+                var view = new ol.View({
+                    center: ol.proj.transform([9.18951, 45.46427], 'EPSG:4326', 'EPSG:3857'),
+                    zoom: 4/* ,
+                     extent: [11.0,43.0,13.0,46.0] */
+                });
+                var source = new ol.source.Vector();
+                var vector = new ol.layer.Vector({
+                    source: source,
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#ffcc33',
+                            width: 2
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 7,
+                            fill: new ol.style.Fill({
+                                color: '#ffcc33'
+                            })
+                        })
+                    })
+                });
+                var map = new ol.Map({
+                    target: 'map_' + theItem.id,
+                    layers: [
+
+                        new ol.layer.Tile({
+                            source: new ol.source.MapQuest({layer: 'sat'})
+                        }),
+                        /*
+                         new ol.layer.Tile({
+                         source: new ol.source.OSM()
+                         }),
+                         */
+                        vector
+                    ],
+                    view: view
+                });
+//Make sure your bounding box interaction variable is global
+                var boundingBox;
+
+//Place this after your map is instantiated
+                boundingBox = new ol.interaction.DragBox({
+                    condition: ol.events.condition.always,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: [255,255,0,1]
+                        })
+                    })
+                });
+
+                map.addInteraction(boundingBox);
+
+                boundingBox.on('boxend', function(e){
+                    var epsg = $("#" + item.CRSItem + " option:selected").text();
+                    var extent = ol.proj.transform(boundingBox.getGeometry().getExtent(), 'EPSG:3857', 'EPSG:' + epsg);
+                    console.log(extent);
+
+                    // map.removeInteraction(boundingBox);
+                })
+            }
+
             /*
             if (item.hasDatatype == "copy") {
                 console.log(item.id);

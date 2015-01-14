@@ -49,6 +49,7 @@
         <script src="js/bootstrap-datepicker.js"></script>
         <script src="js/langs.js"></script>
         <script src="js/spin.js"></script>
+        <script src="http://openlayers.org/en/v3.0.0/build/ol.js"></script>
         <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
         <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
 
@@ -57,7 +58,7 @@
                 console.log("fatto");
             }
             $(document).ready(function() {
-                edi.loadLocalTemplate("RNDT", "3.00", onTemplateLoaded);
+                edi.loadLocalTemplate("INSPIRE", "1.00", onTemplateLoaded);
 
                 edi.edimlOutput();
                 $("#ediml").hide();

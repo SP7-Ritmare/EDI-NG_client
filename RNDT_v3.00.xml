@@ -659,10 +659,11 @@ We have original WGS84 UTM32 CRS as follows:
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>referenceSystemCodes</datasource>
           <hasValue>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</hasValue>
+          <defaultValue>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items/001</defaultValue>
           <queryStringParameter>referencesystem</queryStringParameter>
         </item>
         <item>
@@ -1614,6 +1615,7 @@ We have original WGS84 UTM32 CRS as follows:
       <produces>
         <item>
           <hasIndex>1</hasIndex>
+          <CRSItem>sist_rif_spa_1</CRSItem>
           <westLongitude>
             <outIndex>1</outIndex>
             <label xml:lang="en">W longitude</label>

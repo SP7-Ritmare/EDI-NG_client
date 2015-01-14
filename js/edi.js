@@ -82,7 +82,6 @@ var edi = (function() {
         // end of quick and dirty fix
         div.after(newDiv);
 
-
         var relevantDatasources = DataSourcePool.getInstance().findByTriggeredItemInElement(element_id);
         if ( $.isArray(relevantDatasources) ) {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
@@ -170,6 +169,11 @@ var edi = (function() {
             ediml.removeElement(element_id);
             // doDebug(elements);
         });
+        newDiv.find("*[defaultValue]").each(function() {
+            // console.log(this + " -> " + $(this).attr("defaultValue"));
+            $(this).val($(this).attr("defaultValue"));
+        });
+
 
         // $(this).detach().appendTo(newDiv);
         // find element in array
@@ -519,7 +523,7 @@ var edi = (function() {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
         navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' data-toggle='tab'></a></li>");
-        form.append("<section id='" + group.id + "' class='tab-pane" + ( groupCounter++ == 0 ? " active" : "") + "'>");
+        form.append("<section id='" + group.id + "' class='" + ( groupCounter++ == 0 ? " active" : "") + "'>");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
         for ( var j = 0; j < group.label.length; j++ ) {

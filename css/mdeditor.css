@@ -376,3 +376,9 @@ element {
     border-color: #ddd #ddd #ddd transparent;
     *border-left-color: #ffffff;
 }
+
+.bboxMap {
+    width: 738px;
+    height: 600px;
+    clear: both;
+}
