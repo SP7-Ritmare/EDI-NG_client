@@ -1062,19 +1062,19 @@ $( document ).ready(function() {
 			var urnValue = "";
 			var codeValue = "";
 			var value = "";
-			var languageNeutralValue = "";
+			var languageNeutral = "";
 			
 			if ( type == "code" || type == "query" ) {
 				// doDebug($(this) + " is a select");
 				// doDebug($(this).attr("id") + " option:selected");
 				value = $("#" + $(this).attr("id") + " option:selected").text();
 				codeValue = $(this).val();
-				languageNeutralValue = $("#" + $(this).attr("id") + " option:selected").attr("language_neutral");
+				languageNeutral = $("#" + $(this).attr("id") + " option:selected").attr("language_neutral");
 			} else if ( type == "autoCompletion" ) {
 				value = $(this).val();
 				codeValue = $("#" + $(this).attr("id") + "_uri").val();
 				urnValue = $("#" + $(this).attr("id") + "_urn").val();
-				languageNeutralValue = codeValue;
+				languageNeutral = codeValue;
 				if ( $(this).attr("useCode") == "true" ) {
 					value = codeValue;
 				}
@@ -1084,17 +1084,17 @@ $( document ).ready(function() {
 			} else if ( type == "boolean" ) {
 				value = $(this).is(":checked");
 				codeValue = value;
-				languageNeutralValue = codeValue;
+				languageNeutral = codeValue;
 			} else if ( type == "date" || type == "dateRange" ) {
 				console.log("data: " + $(this).val());
 				value = $(this).val(); 
 			} else {
 				value = $(this).val();
 				codeValue = "";
-				languageNeutralValue = codeValue;
+				languageNeutral = codeValue;
 			}
 			if ( type != "ref" && $(this).attr("isLanguageNeutral") != "undefined" && $(this).attr("isLanguageNeutral") != "" && $(this).attr("language_neutral") != "undefined" && $(this).attr("language_neutral") != "" ) {
-				value = languageNeutralValue;
+				value = languageNeutral;
 			}
 			var item = {
 						id: $(this).attr("id"),
@@ -1108,7 +1108,7 @@ $( document ).ready(function() {
 						value: value,
 						codeValue: codeValue,
 						urnValue: urnValue,
-						languageNeutral: languageNeutralValue,
+						languageNeutral: languageNeutral,
 						isLanguageNeutral :  ( $(this).attr("isLanguageNeutral") != "undefined" ?  $(this).attr("isLanguageNeutral") : "" )
 			};
 			theElement.element.items.item.push(item);

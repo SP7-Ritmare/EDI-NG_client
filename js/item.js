@@ -15,7 +15,7 @@ var Item = (function() {
         value: undefined,
         codeValue: undefined,
         urnValue: undefined,
-        languageNeutralValue: undefined,
+        languageNeutral: undefined,
         listeningFor: undefined,
         isLanguageNeutral: undefined,
         startListening: function() {

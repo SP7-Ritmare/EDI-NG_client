@@ -405,11 +405,19 @@ var ediml = (function() {
                 }
                 // Adjust id
                 newItem.id = item.id.replace(id, newId);
-                // new item starts with no values
-                newItem.value = undefined;
-                newItem.codeValue = undefined;
-                newItem.urnValue = undefined;
-                newItem.languageNeutralValue = undefined;
+                if ( item.fixed == "true" ) {
+                    // fixed item inherits values
+                    newItem.value = item.value;
+                    newItem.codeValue = item.codeValue;
+                    newItem.urnValue = item.urnValue;
+                    newItem.languageNeutral = item.languageNeutral;
+                } else {
+                    // new item starts with no values
+                    newItem.value = undefined;
+                    newItem.codeValue = undefined;
+                    newItem.urnValue = undefined;
+                    newItem.languageNeutral = undefined;
+                }
                 newItem.elementId = newId;
                 newElement.items.item.push(newItem);
                 console.log(newItem);
@@ -461,12 +469,12 @@ var ediml = (function() {
         if ( item.datatype == "code" || item.datatype == "codelist" || item.datatype == "query" ) {
             item.value = $("#" + $(selector).attr("id") + " option:selected").text();
             item.codeValue = $(selector).val();
-            item.languageNeutralValue = $("#" + $(selector).attr("id") + " option:selected").attr("language_neutral");
+            item.languageNeutral = $("#" + $(selector).attr("id") + " option:selected").attr("language_neutral");
         } else if ( item.datatype == "autoCompletion" ) {
             item.value = $(selector).val();
             item.codeValue = $("#" + $(selector).attr("id") + "_uri").val();
             item.urnValue = $("#" + $(selector).attr("id") + "_urn").val();
-            item.languageNeutralValue = item.codeValue;
+            item.languageNeutral = item.codeValue;
             if ( $(selector).attr("useCode") == "true" ) {
                 item.value = item.codeValue;
             }
@@ -476,16 +484,16 @@ var ediml = (function() {
         } else if ( item.datatype == "boolean" ) {
             item.value = $(selector).is(":checked");
             item.codeValue = item.value;
-            item.languageNeutralValue = item.codeValue;
+            item.languageNeutral = item.codeValue;
 
         } else if ( item.datatype == "date" || item.datatype == "dateRange" ) {
             item.value = $(selector).val();
             item.codeValue = "";
-            item.languageNeutralValue = item.codeValue;
+            item.languageNeutral = item.codeValue;
         } else {
             item.value = $(selector).val();
             item.codeValue = "";
-            item.languageNeutralValue = item.codeValue;
+            item.languageNeutral = item.codeValue;
         }
         console.log(item.id + " changed to " + $(selector).val());
         /*
