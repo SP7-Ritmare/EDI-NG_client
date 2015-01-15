@@ -349,7 +349,7 @@ element {
 .tabs-left > .nav-tabs .active > a:hover,
 .tabs-left > .nav-tabs .active > a:focus {
     border-color: #ddd transparent #ddd #ddd;
-    *border-right-color: #ffffff;
+    border-right-color: #ffffff;
 }
 
 .tabs-right > .nav-tabs {
@@ -374,7 +374,7 @@ element {
 .tabs-right > .nav-tabs .active > a:hover,
 .tabs-right > .nav-tabs .active > a:focus {
     border-color: #ddd #ddd #ddd transparent;
-    *border-left-color: #ffffff;
+    border-left-color: #ffffff;
 }
 
 .bboxMap {

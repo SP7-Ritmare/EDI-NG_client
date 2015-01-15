@@ -2,6 +2,69 @@
  * Created by fabio on 28/11/14.
  */
 var boundingBox = (function() {
+    var maps = [];
+
+    function drawBoxOnMap(map, source, extent, epsg) {
+        if ( typeof epsg !== "undefined" ) {
+            extent = ol.proj.transform(extent, 'EPSG:' + epsg, 'EPSG:3857');
+        }
+        console.log("drawBoxOnMap");
+        console.log(map);
+        var features = source.getFeatures();
+        console.log(features);
+        for ( var i = 0; i < features.length; i++ ) {
+            source.removeFeature(features[i]);
+        }
+        var rectangleObject = {
+            "type":"Polygon",
+            "coordinates":[
+                [
+                    // SW
+                    [ extent[0], extent[1] ],
+                    // SE
+                    [ extent[2], extent[1] ],
+                    // NE
+                    [ extent[2], extent[3] ],
+                    // NW
+                    [ extent[0], extent[3] ]
+                ]
+            ]
+        };
+        var rectangleFeature = new ol.Feature({
+            geometry: new ol.geom.Polygon(rectangleObject.coordinates),
+            name: "bounding box"
+        });
+        rectangleFeature.setStyle(new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 151, 0, 0.2)',
+                weight: 10
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255, 151, 0, 0.6)',
+                width: 3
+            }) /*,
+             text: new ol.style.Text({
+             font: '12px Calibri,sans-serif',
+             text: 'Bounding Box',
+             textBaseline: 'middle',
+             textAlign: 'center',
+             fill: new ol.style.Fill({
+             color: '#000'
+             }),
+             stroke: new ol.style.Stroke({
+             color: '#fff',
+             width: 3
+             })
+             })*/
+        }));
+
+        console.log(3);
+
+        source.addFeature(rectangleFeature);
+        map.getView().fitExtent(extent, map.getSize());
+        console.log(4);
+
+    }
     function render() {
         var control;
         $("control_boundingbox").each(function() {
@@ -27,7 +90,7 @@ var boundingBox = (function() {
                 theItem.datasource = item.datasource;
                 theItem.path = subItem.hasPath;
                 theItem.elementId = element.id;
-                theItem.fixed = item.isFixed;
+                theItem.fixed = element.isFixed;
                 theItem.useCode = item.useCode;
                 theItem.useURN = item.useURN;
                 theItem.outIndex = subItem.outIndex;
@@ -45,9 +108,9 @@ var boundingBox = (function() {
                 control.attr("show", item.show);
                 control.attr("id", theItem.id);
                 control.attr("querystringparameter", subItem.queryStringParameter);
-                if (item.isFixed == "true") {
+                if (element.isFixed == "true") {
                     control.val(item.hasValue);
-                    control.addClass("fixed");
+                    $(coordinate).addClass("fixed");
                 }
                 if (element.isMandatory != "NA") {
                     control.attr("required", "required");
@@ -74,8 +137,10 @@ var boundingBox = (function() {
                 html.append(container);
                 $(this).replaceWith(html);
                 var view = new ol.View({
-                    center: ol.proj.transform([9.18951, 45.46427], 'EPSG:4326', 'EPSG:3857'),
-                    zoom: 4/* ,
+                    projection: 'EPSG:3857',
+                    /* center: ol.proj.transform([9.18951, 45.46427], 'EPSG:4326', 'EPSG:3857'), */
+                    center: [0, 0],
+                    zoom: 2 /* ,
                      extent: [11.0,43.0,13.0,46.0] */
                 });
                 var source = new ol.source.Vector();
@@ -104,15 +169,15 @@ var boundingBox = (function() {
                         new ol.layer.Tile({
                             source: new ol.source.MapQuest({layer: 'sat'})
                         }),
-                        /*
                          new ol.layer.Tile({
-                         source: new ol.source.OSM()
+                            source: new ol.source.OSM(),
+                             opacity: 0.5
                          }),
-                         */
                         vector
                     ],
                     view: view
                 });
+                maps.push(map);
 //Make sure your bounding box interaction variable is global
                 var boundingBox;
 
@@ -126,15 +191,74 @@ var boundingBox = (function() {
                     })
                 });
 
-                map.addInteraction(boundingBox);
+                if (element.isFixed == "false") {
+                    map.addInteraction(boundingBox);
+                }
+
+                // map.removeInteraction(boundingBox);
 
                 boundingBox.on('boxend', function(e){
                     var epsg = $("#" + item.CRSItem + " option:selected").text();
-                    var extent = ol.proj.transform(boundingBox.getGeometry().getExtent(), 'EPSG:3857', 'EPSG:' + epsg);
+                    var box = boundingBox.getGeometry().getExtent();
+                    var extent = ol.proj.transform(box, 'EPSG:3857', 'EPSG:' + epsg);
+                    map.getView().fitExtent(box, map.getSize());
+                    console.log(epsg);
                     console.log(extent);
+                    console.log(item.id);
+                    $("#" + item.id + "_westLongitude").val(extent[0]);
+                    $("#" + item.id + "_southLatitude").val(extent[1]);
+                    $("#" + item.id + "_eastLongitude").val(extent[2]);
+                    $("#" + item.id + "_northLatitude").val(extent[3]);
 
+                    drawBoxOnMap(map, source, box);
+/*
+                    var rectangleObject = {
+                        "type":"Polygon",
+                        "coordinates": [
+                            [
+                                // SW
+                                [ extent[0], extent[1] ],
+                                // SE
+                                [ extent[2], extent[1] ],
+                                // NE
+                                [ extent[2], extent[3] ],
+                                // NW
+                                [ extent[0], extent[3] ]
+                            ]
+                        ]
+                    };
+                    source.addFeature(new ol.geom.LineString(rectangleObject.coordinates));
+*/
                     // map.removeInteraction(boundingBox);
                 })
+                function updateBox() {
+                    console.log("updateBox");
+                    var epsg = $("#" + item.CRSItem + " option:selected").text();
+                    var extent = [
+                        parseFloat($("#" + item.id + "_westLongitude").val()),
+                        parseFloat($("#" + item.id + "_southLatitude").val()),
+                        parseFloat($("#" + item.id + "_eastLongitude").val()),
+                        parseFloat($("#" + item.id + "_northLatitude").val())
+                    ];
+                    var allNumbers = true;
+                    for ( var i = 0; i < extent.length; i++ ) {
+                        if ( isNaN(extent[i]) ) {
+                            allNumbers = false;
+                        }
+                    }
+                    console.log(allNumbers);
+                    console.log(epsg);
+                    if ( !epsg ) {
+                        epsg = "4326";
+                    }
+                    if ( allNumbers && epsg ) {
+                        drawBoxOnMap(map, source, extent, epsg);
+                    }
+                }
+                $("#" + item.id + "_westLongitude").change(updateBox).trigger("change");
+                $("#" + item.id + "_southLatitude").change(updateBox).trigger("change");
+                $("#" + item.id + "_eastLongitude").change(updateBox).trigger("change");
+                $("#" + item.id + "_northLatitude").change(updateBox).trigger("change");
             } else {
                 var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
                 html = $(html);
@@ -158,6 +282,7 @@ var boundingBox = (function() {
         });
     }
     return {
+        maps: maps,
         render: render
     };
 

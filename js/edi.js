@@ -206,7 +206,7 @@ var edi = (function() {
     function loadQuerystringDefaults() {
         var pars = decodeURIComponent(querystring("parameters"));
         var par;
-        console.log("parameters");
+        console.log("loading querystring parameters");
         console.log(pars);
         if ( pars && pars != "undefined" && pars != "" ) {
             pars = JSON.parse(pars);
@@ -553,6 +553,7 @@ var edi = (function() {
         $("*[defaultValue]").each(function() {
             // console.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));
+            $(this).trigger("change");
         });
         loadQuerystringDefaults();
         if ( querystring("edit") ) {
@@ -741,6 +742,7 @@ var edi = (function() {
 
     function loadLocalTemplate(template, version, theCallback) {
         callback = theCallback;
+        $.support.cors = true;
         $.ajax({
                    // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
                    url: template + "_v" + version + ".xml?__=" + Math.random(),

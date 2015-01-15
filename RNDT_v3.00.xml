@@ -1611,6 +1611,7 @@ We have original WGS84 UTM32 CRS as follows:
       <help xml:lang="it">Esprime l&apos;estensione della risorsa nello spazio geografico sotto forma di un ipotetico riquadro di delimitazione (Bounding Box), ovvero esprime la massima estensione del dato come si ottiene dalla coordinata pi&#249; occidentale, pi&#249; orientale, pi&#249; meridionale e pi&#249; settentrionale. Le coordinate debbono essere espresse in gradi decimali, con almeno due cifre dopo la virgola, nel sistema WGS84.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
+      <isFixed>true</isFixed>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox</hasRoot>
       <produces>
         <item>
