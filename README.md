@@ -95,3 +95,11 @@ Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as
       edi.loadLocalTemplate("TEST", "1.00", onTemplateLoaded);
   });
 ```
+> # Warning
+> Due to CORS policies, some browsers might not allow loading from local files (i.e. local templates)
+> In this case load templates from http(s) as in:
+>```javascript
+>  $(window).load(function() {
+>      edi.loadTemplate("TEST", "1.00", onTemplateLoaded);
+>  });
+>```
