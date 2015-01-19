@@ -110,9 +110,8 @@ var edi = (function() {
                         }
 
                     });
+                    ds.refresh();
                 });
-
-
             }
         }
 
@@ -217,6 +216,17 @@ var edi = (function() {
         });
     }
 
+    function getParameter(parameter) {
+        var pars = decodeURIComponent(querystring("parameters"));
+        var par;
+        console.log("loading querystring parameters");
+        console.log(pars);
+        if ( pars && pars != "undefined" && pars != "" ) {
+            pars = JSON.parse(pars);
+            return pars[parameter];
+        }
+    }
+
     function loadQuerystringDefaults() {
         var pars = decodeURIComponent(querystring("parameters"));
         var par;
@@ -228,6 +238,7 @@ var edi = (function() {
             // doDebug(pars.uid);
             $("*[querystringparameter]").each(function() {
                 console.log($(this));
+                console.log($(this).text());
                 doDebug("evaluating " + ("pars." + $(this).attr("querystringparameter")));
                 par = eval("pars." + $(this).attr("querystringparameter"));
                 doDebug("input id='" + $(this).attr("id")  + " -> parametro '" + $(this).attr("querystringparameter") + "' = '" + par + "'");
@@ -335,6 +346,12 @@ var edi = (function() {
             if (typeof self.attr("defaultValue") !== "undefined" && self.attr("defaultValue") != "") {
                 self.val(self.attr("defaultValue"));
                 console.log(self.attr("id") + " -> " + self.attr("defaultValue"));
+                // self.trigger("change");
+                toBeRefreshed.push(self.attr("id"));
+            }
+            if (typeof self.attr("querystringparameter") !== "undefined" && self.attr("querystringparameter") != "") {
+                self.val(getParameter(self.attr("querystringparameter")));
+                console.log(self.attr("id") + " -> " + getParameter(self.attr("querystringparameter")));
                 // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }

@@ -81,13 +81,13 @@
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
     </datasource>
+    -->
     <datasource>
       <id>referenceSystemCodes</id>
       <uri>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</uri>
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
     </datasource>
-    -->
     <datasource>
       <id>dateTypes</id>
       <uri>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items</uri>
@@ -126,7 +126,7 @@
           ORDER BY ASC(?l)
         ]]>
       </query>
-      <searchItem>resp_md_1</searchItem>
+      <searchItem>md_resp_1</searchItem>
       <type> sparql </type>
     </datasource>
     <!--    
@@ -150,7 +150,7 @@
           ORDER BY ASC(?l)
         ]]>
       </query>
-      <searchItem>resp_md_1</searchItem>
+      <searchItem>md_resp_1</searchItem>
       <type>
         sparql
       </type>
@@ -174,7 +174,7 @@
           ORDER BY ASC(?l)
         ]]>
       </query>
-      <searchItem>resp_md_1</searchItem>
+      <searchItem>md_resp_1</searchItem>
       <type>
         sparql
       </type>
@@ -197,7 +197,7 @@
           }
         ]]>
       </query>
-      <triggerItem>resp_md_1_uri</triggerItem>
+      <triggerItem>md_resp_1_uri</triggerItem>
       <type> sparql </type>
     </datasource>
     <!--
@@ -219,7 +219,7 @@
           }
         ]]>
       </query>
-      <triggerItem>resp_md_1_uri</triggerItem>
+      <triggerItem>md_resp_1_uri</triggerItem>
       <endpointType>sparqlCNR</endpointType>
       <type>
         sparql
@@ -244,7 +244,7 @@
       </query>
       <endpointType>virtuoso</endpointType>
       <triggerItem>resp_1_uri</triggerItem>
-      <type> sparql </type>
+      <type>sparql</type>
     </datasource>
     <!--
     <datasource>
@@ -426,14 +426,18 @@
       <id>id_md</id>
       <label xml:lang="en">File identifier</label>
       <label xml:lang="it">Identificatore del file</label>
-      <isMandatory>forAll</isMandatory>
+      <help xml:lang="en">This metadata item is not required by INSPIRE but is useful to draw the correspondence between the metadata record and the resource itself.
+        It is therefore suggested that the workflow invoking EDI provides this piece of information as a request parameter.</help>
+      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente. 
+        &#201; quindi consigliato che EDI riceva questa informazione come parametro della richiesta.</help>
+      <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:fileIdentifier</hasRoot>
       <produces>
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
           <queryStringParameter>uid</queryStringParameter>
         </item>
@@ -444,12 +448,8 @@
       <id>ling_md</id>
       <label xml:lang="en">Metadata language</label>
       <label xml:lang="it">Lingua dei metadati</label>
-      <help xml:lang="en">The language the metadata are expressed in, to be chosen among the
-        official 23 languages of the EU.</help>
-      <help xml:lang="it"> Linguaggio in cui sono espressi i metadati, le lingue selezionabili sono
-        le 23 lingue ufficiali della UE, codificate come da men&#249; a tendina. NOTA: Per la
-        conformit&#224; al profilo RNDT (recepimento Italiano INSPIRE) la lingua da preferirsi
-        e&apos; l&apos;Italiano (valore di default).</help>
+      <help xml:lang="en">Language used for documenting metadata.</help>
+      <help xml:lang="it"> La lingua utilizzata nella compilazione dei metadati.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:language</hasRoot>
@@ -458,12 +458,11 @@
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:language/gmd:LanguageCode</hasPath>
           <isFixed>false</isFixed>
-          <!-- <isLanguageNeutral>true</isLanguageNeutral> -->
           <datasource>languages</datasource>
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/5</defaultValue>
+          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -486,6 +485,8 @@
       <id>liv_ger</id>
       <label xml:lang="en">Resource type</label>
       <label xml:lang="it">Tipo di risorsa</label>
+      <help xml:lang="en">Scope to which metadata applies.</help>
+      <help xml:lang="it">Ambito di applicazione dei metadati.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:hierarchyLevel</hasRoot>
@@ -493,8 +494,9 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
+          <show>combobox</show>
           <datasource>scopes</datasource>
           <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</defaultValue>
         </item>
@@ -516,17 +518,11 @@
     </element>
     <!--Responsabile dei metadati -->
     <element>
-      <id>resp_md</id>
+      <id>md_resp</id>
       <label xml:lang="en">Metadata point of contact</label>
       <label xml:lang="it">Punto di contatto dei metadati</label>
-      <help xml:lang="en">The email of the person that is indicated as the contact point for the
-        maintenance of metadata, the organisation she is working by, and the website associated with
-        the latter.</help>
-      <help xml:lang="it">&#200; la persona (punto di contatto) presso l&apos;organizzazione che
-        &#232; responsabile della creazione e manutenzione dei METADATI (ovvero il responsabile del
-        catalogo o registro, non necessariamente dei dati e della loro distribuzione). NOTA: i
-        valori selezionabili sono quelli associati alla persona che si &#232; accreditata per la
-        compilazione. </help>
+      <help xml:lang="en">Party responsible for the metadata information.</help>
+      <help xml:lang="it">Parte responsabile delle informazioni contenute nei metadati.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata</hasRoot>
@@ -554,20 +550,6 @@
           <datasource>personS</datasource>
           <field>inst</field>
         </item>
-        <!--
-        <item>
-          <hasIndex>3</hasIndex>
-          <outIndex>3</outIndex>
-          <label xml:lang="en">Homepage</label>
-          <label xml:lang="it">Homepage</label>
-          <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
-          <isFixed>false</isFixed>
-          <id>gmd:CI_OnlineResource</id>
-          <hasDatatype>select</hasDatatype>
-          <datasource>personS</datasource>
-          <field>home</field>
-        </item>
-        -->
         <item>
           <hasIndex>4</hasIndex>
           <!--<outIndex>4</outIndex>-->
@@ -601,9 +583,8 @@
       <id>data_md</id>
       <label xml:lang="en">Metadata date</label>
       <label xml:lang="it">Data dei metadati</label>
-      <help xml:lang="en">The date metadata were created, in the yyyy-mm-dd format.</help>
-      <help xml:lang="it">Data di compilazione dei metadati, assume come valore di default la data
-        corrente nel formato yyyy-mm-dd.</help>
+      <help xml:lang="en">Date that the metadata was created.</help>
+      <help xml:lang="it">Data di creazione dei metadati.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:dateStamp</hasRoot>
@@ -611,7 +592,7 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:dateStamp/gco:Date</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>date</hasDatatype>
           <queryStringParameter>date</queryStringParameter>
         </item>
@@ -658,6 +639,62 @@
     <id>identification</id>
     <label xml:lang="en">Identification</label>
     <label xml:lang="it">Identificazione</label>
+    <!-- CRS -->
+    <element>
+      <id>sist_rif_spa</id>
+      <label xml:lang="en">Spatial reference system</label>
+      <label xml:lang="it">Sistema di riferimento spaziale</label>
+      <help xml:lang="en">Describes the coordinate reference system that is associated with the resource.</help>
+      <help xml:lang="it">Esprime il sistema di riferimento in cui &#232; inquadrata la risorsa georiferita.</help>
+      <isMandatory>forData</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>codelist</hasDatatype>
+          <show>combobox</show>
+          <datasource>referenceSystemCodes</datasource>
+          <queryStringParameter>referencesystem</queryStringParameter>
+          <useCode>true</useCode>
+        </item>
+        <item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://www.epsg-registry.org/</hasValue>
+        </item>
+      </produces>
+    </element>
+    <!--
+    <element>
+      <id>sist_rif_spa_inspire</id>
+      <label xml:lang="en">Spatial reference system to be included for INSPIRE compliance</label>
+      <label xml:lang="it">Sistema di riferimento spaziale per compliance con INSPIRE</label>
+      <isMandatory>forAll</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>EPSG:32632</hasValue>
+        </item>
+        <item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://www.epsg-registry.org/</hasValue>
+        </item>
+      </produces>
+    </element>    
+    -->
     <!--Titolo -->
     <element>
       <id>tit</id>
@@ -674,11 +711,28 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
           <queryStringParameter>title</queryStringParameter>
         </item>
       </produces>
     </element>
+    <!--Identificatore -->
+    <element>
+      <id>id</id>
+      <label xml:lang="en">Identifier</label>
+      <label xml:lang="it">Identificatore</label>
+      <isMandatory>forAll</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>URN</hasDatatype>
+          <hasValue>auto</hasValue>
+        </item>
+      </produces>
+    </element>    
     <!--Descrizione -->
     <element>
       <id>desc</id>
@@ -711,10 +765,8 @@
       <produces>
         <item>
           <hasIndex>1</hasIndex>
-          <label xml:lang="en">foo</label>
-          <label xml:lang="it">Risorsa online</label>
           <hasPath>/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
           <queryStringParameter>resource</queryStringParameter>
         </item>
@@ -725,13 +777,8 @@
       <id>resp</id>
       <label xml:lang="en">Responsible party</label>
       <label xml:lang="it">Responsabile</label>
-      <help xml:lang="en">The organisation, and the responsible person by the former, that can be
-        contacted to get information on the resource.</help>
-      <help xml:lang="it">Organizzazione, e referente nella stessa, che &#232; possibile contattare
-        per avere informazioni sulla risorsa. NOTA: pu&#242; essere differente dal punto di contatto
-        del metadato e/o dal responsabile della risorsa; a supporto di una compilazione rapida, i
-        valori di default dei campi sono quelli associati alla persona che si accredita per la
-        compilazione, ma possono essere modificati.</help>
+      <help xml:lang="en">Identification of, and means of communication with, person(s) and organization(s) associated with the resource(s).</help>
+      <help xml:lang="it">Identificazione delle persone e organizzazioni associate alla risorsa, e mezzo di comunicazione con esse.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -759,19 +806,6 @@
           <datasource>personS_2</datasource>
           <field>inst</field>
         </item>
-        <!--
-        <item>
-          <hasIndex>3</hasIndex>
-          <label xml:lang="en">Homepage</label>
-          <label xml:lang="it">Homepage</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
-          <isFixed>false</isFixed>
-          <id>gmd:CI_OnlineResource</id>
-          <hasDatatype>select</hasDatatype>
-          <datasource>personS_2</datasource>
-          <field>home</field>
-        </item>
-        -->
         <item>
           <hasIndex>4</hasIndex>
           <!--<outIndex>4</outIndex>-->
@@ -802,14 +836,6 @@
         </item>
       </produces>
     </element>
-    <!--
-  <group>
-    <id>classification</id>
-    <label xml:lang="en">Classification of spatial data and services</label>
-    <label xml:lang="it">Classificazione di dati e servizi spaziali</label>
-    
-  </group>
-  -->
   </group>
   <group>
     <id>keyword</id>
@@ -821,9 +847,8 @@
       <label xml:lang="en">INSPIRE theme</label>
       <label xml:lang="it">Tema di INSPIRE</label>
       <help xml:lang="en">The INSPIRE Theme that is used for describing the resource.</help>
-      <help xml:lang="it">Parola chiave per descrivere la risorsa come da temi (categorie tematiche)
-        INSPIRE.</help>
-      <isMandatory>forAll</isMandatory>
+      <help xml:lang="it">Parola chiave per descrivere la risorsa come da temi (categorie tematiche) INSPIRE.</help>
+      <isMandatory>forData</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
       <produces>
@@ -1230,7 +1255,7 @@
         </item>
       </produces>
     </element>
-    <!-- coord. ref. system -->
+    <!-- coord. ref. system
     <element>
       <id>sist_rif_spa</id>
       <label xml:lang="en">Spatial reference system</label>
@@ -1243,7 +1268,6 @@
       <produces>
         <item>
           <hasIndex>1</hasIndex>
-          <!--<outIndex>1</outIndex>-->
           <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>codelist</hasDatatype>
@@ -1253,14 +1277,13 @@
         </item>
         <item>
           <hasIndex>2</hasIndex>
-          <!--<outIndex>2</outIndex>-->
           <hasPath>/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://www.epsg-registry.org/</hasValue>
         </item>
       </produces>
-    </element>
+    </element> -->
     <element>
       <id>sist_rif_spa_inspire</id>
       <label xml:lang="en">Spatial reference system to be included for INSPIRE compliance</label>
@@ -1526,7 +1549,7 @@
     </element>
     <!--Conformit&#224;: grado -->
     <element>
-      <id>data_quality</id>
+      <id>conf_degree</id>
       <label xml:lang="en">Degree</label>
       <label xml:lang="it">Grado</label>
       <isMandatory>forAll</isMandatory>

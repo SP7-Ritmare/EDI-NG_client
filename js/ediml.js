@@ -232,6 +232,10 @@ var ediml = (function() {
                 edimls = JSON.parse(localStorage.edimls);
                 console.log(edimls[name]);
                 fillInEdiMl(edimls[name].ediml.elements);
+                setTimeout( function() {
+                    DataSourcePool.getInstance().refreshAll();
+                }, 5);
+
             }
         } else {
             // Sorry! No Web Storage support..
