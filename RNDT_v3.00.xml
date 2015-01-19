@@ -4,7 +4,7 @@
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-    <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint>
+    <metadataEndpoint>https://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>true</requiresAuthentication>
     <requiresValidation>false</requiresValidation>
@@ -98,18 +98,19 @@
       <id>person</id>
       <!-- <url>http://sp7.irea.cnr.it:8891/sparql</url> -->
       <singleton>false</singleton>
-      <endpointType>sparqlCNR</endpointType>
-      <url>http://data.cnr.it/sparql-proxy/</url>
+      <endpointType>virtuoso</endpointType>
       <query>
         <![CDATA[
-          PREFIX persone: <http://www.cnr.it/ontology/cnr/persone.owl#>
-         SELECT ?c ?l
-         WHERE {
-           ?c rdf:type persone:Persona .
-           ?c rdfs:label ?l .
-           FILTER( REGEX( STR(?l), "$search_param", "i") AND LANG(?l) = 'it' )
-         }
-         ORDER BY ASC(?l)
+          PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
+          SELECT DISTINCT ?c ?l
+          FROM <http://ritmare.it/rdfdata/project>
+          WHERE {
+            ?c rdf:type foaf:Person .
+            ?c ns:email ?l .
+            ?c ns:org ?o .
+            FILTER( REGEX( STR(?l), "$search_param", "i") )
+          }
+          ORDER BY ASC(?l)
         ]]>
       </query>
       <searchItem>resp_md_1</searchItem>
@@ -369,7 +370,6 @@
           <datasource>languages</datasource>
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
-          <isLanguageNeutral>true</isLanguageNeutral>
           <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/5</defaultValue>
         </item>
         <item>
@@ -1522,7 +1522,6 @@ We have original WGS84 UTM32 CRS as follows:
           <datasource>languages</datasource>
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
-          <isLanguageNeutral>true</isLanguageNeutral>
           <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
         </item>
         <item>

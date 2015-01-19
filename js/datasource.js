@@ -29,6 +29,8 @@ var DataSource = function(params) {
         lazy: true,
         // if true => selected row is the same for all items referring to this datasource and all controls are notified if selection changes
         singleton: false,
+        // if true => this datasource is the product of a cloning operation: NEVER FORCE THIS VALUE
+        cloned: false,
         // Adapts dataset format to plain array
         // see datasource_adapters.js
         adapter: undefined
@@ -72,6 +74,7 @@ var DataSource = function(params) {
         } else {
             console.log(parameters.id + " has " + resultSet.length + " rows");
             console.log(resultSet);
+            trigger("selectionChanged");
         }
 
         // console.log("Data Success " + parameters.id);
@@ -104,6 +107,19 @@ var DataSource = function(params) {
             return;
         }
         isLoading = true;
+        if ( typeof parameters.triggerItem !== "undefined" ) {
+            console.log("datasource " + parameters.id + " depends on trigger " + parameters.triggerItem);
+            console.log("trigger item has " + $("#" + parameters.triggerItem).length + " occurrences");
+            DataSourcePool.getInstance().setDatasourceTrigger(parameters.triggerItem, self);
+            /*
+             $("#" + ds.parameters.triggerItem).change(function() {
+             console.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
+
+             ds.refresh(false);
+             });
+             */
+        }
+
         DataSourcePool.getInstance().queryStart(self);
         if ( justPrepareLoad ) {
             return;
@@ -199,11 +215,15 @@ var DataSource = function(params) {
                     currentRow = i;
                     // console.log("current row is " + i);
                     trigger("selectionChanged");
+                    console.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value found")
                     return;
                 }
             }
             trigger("selectionChanged");
+            console.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value NOT found")
         }
+        trigger("selectionChanged");
+        console.log("selectionChange event triggered with NON singleton datasource " + parameters.id + " ")
     }
 
     self = {
@@ -226,6 +246,9 @@ var DataSource = function(params) {
         },
         addListener: function(callback) {
             callbacks.push(callback);
+        },
+        getListeners: function() {
+            return callbacks;
         },
         setCurrentRow: setCurrentRow,
         getCurrentRow: function() {

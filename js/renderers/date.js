@@ -21,6 +21,7 @@ var date = (function() {
             theItem.fixed = item.isFixed;
             theItem.useCode = item.useCode;
             theItem.useURN = item.useURN;
+            theItem.hasIndex = item.hasIndex;
             theItem.outIndex = item.outIndex;
             theItem.isLanguageNeutral = item.isLanguageNeutral;
             theItem.defaultValue = item.defaultValue;

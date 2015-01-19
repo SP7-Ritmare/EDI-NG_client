@@ -405,13 +405,7 @@ var ediml = (function() {
                 }
                 // Adjust id
                 newItem.id = item.id.replace(id, newId);
-                if ( item.fixed == "true" ) {
-                    // fixed item inherits values
-                    newItem.value = item.value;
-                    newItem.codeValue = item.codeValue;
-                    newItem.urnValue = item.urnValue;
-                    newItem.languageNeutral = item.languageNeutral;
-                } else {
+                if ( item.fixed == "false" ) {
                     // new item starts with no values
                     newItem.value = undefined;
                     newItem.codeValue = undefined;
@@ -494,6 +488,9 @@ var ediml = (function() {
             item.value = $(selector).val();
             item.codeValue = "";
             item.languageNeutral = item.codeValue;
+        }
+        if ( item.isLanguageNeutral && item.isLanguageNeutral == "true" ) {
+            item.value = item.languageNeutral;
         }
         console.log(item.id + " changed to " + $(selector).val());
         /*

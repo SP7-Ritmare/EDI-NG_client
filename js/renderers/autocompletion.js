@@ -24,6 +24,7 @@ var autocompletion = (function() {
             theItem.fixed = item.isFixed;
             theItem.useCode = item.useCode;
             theItem.useURN = item.useURN;
+            theItem.hasIndex = item.hasIndex;
             theItem.outIndex = item.outIndex;
             theItem.field = item.field;
             theItem.isLanguageNeutral = item.isLanguageNeutral;
@@ -72,6 +73,17 @@ var autocompletion = (function() {
                     ediml.updateItemForControl($("#" + id));
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
+                }).blur(function(event) {
+                    console.log("Changed: " + event.target.value);
+                    if ( event.target.value.trim() == "" ) {
+                        $("#" + id + "_uri").val("");
+                        $("#" + id + "_uri").trigger("change");
+                        $("#" + id + "_urn").val();
+                        $("#" + id + "_urn").trigger("change");
+                        ediml.updateItemForControl($("#" + id));
+                        var ds = DataSourcePool.getInstance().findById(item.datasource);
+                        ds.setCurrentRow("c", -1);
+                    }
                 });
 
         });

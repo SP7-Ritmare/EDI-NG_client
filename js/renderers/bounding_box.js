@@ -94,6 +94,7 @@ var boundingBox = (function() {
                 theItem.useCode = item.useCode;
                 theItem.useURN = item.useURN;
                 theItem.outIndex = subItem.outIndex;
+                theItem.hasIndex = item.hasIndex;
                 theItem.itemId = item.itemId;
                 theItem.show = item.show;
                 theItem.field = subItem.field;

@@ -258,14 +258,17 @@ element {
 }
 
 .alternativeElement {
-    background-color: rgba(0, 255, 0, .2);
+    background-color: #fff; /* rgba(0, 255, 0, .2); */
     margin-left: 100px;
 }
 .alternativeElement:nth-child(2n+1):before {
     margin-left: 0;
-    content: " oppure ";
+    content: " oppure\A";
     font-weight: bold;
     color: red;
+    background-color: #fff;
+    white-space: pre;
+    width: 100%;
 }
 
 .mandatory label {

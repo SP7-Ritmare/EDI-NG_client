@@ -8,13 +8,24 @@ var DataSourcePool = (function(){
         var notifyListeners = true;
 
         function setDatasourceTrigger(elementId, datasource) {
+            console.log("setting trigger on " + elementId + " for datasource " + datasource.getId());
             $("#" + elementId).change(function() {
-                console.log(elementId + " fired change towards datasource " + datasource.getId());
+                console.log(elementId + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
 
                 datasource.refresh(false);
             });
         }
+        function generateNewId(baseId) {
+            var count = 0;
+            for ( var i = 0; i < datasources.length; i++ ) {
+                if ( datasources[i].parameters.id.indexOf(baseId) == 0 ) {
+                    count++;
+                }
+            }
+            return baseId + "_Clone_" + count;
+        }
         return {
+            setDatasourceTrigger: setDatasourceTrigger,
             setLanguage: function(lang) {
                 language = lang;
                 for ( var i = 0; i < datasources.length; i++ ) {
@@ -61,12 +72,14 @@ var DataSourcePool = (function(){
                 console.log(results);
                 return results;
             },
-            duplicateDatasource: function duplicate(id, newId, newTriggerItem, newSearchItem) {
+            duplicateDatasource: function duplicate(id, newTriggerItem, newSearchItem) {
+                var newId = generateNewId(id);
                 var ds = DataSourcePool.getInstance().findById(id);
                 var newPars = clone(ds.parameters);
                 newPars.id = newId;
                 newPars.triggerItem = newTriggerItem;
                 newPars.searchItem = newSearchItem;
+                newPars.cloned = true;
                 var newDs = new DataSource(newPars);
                 setDatasourceTrigger(newTriggerItem, newDs);
                 return newDs;

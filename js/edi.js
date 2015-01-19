@@ -87,22 +87,28 @@ var edi = (function() {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
                 var datasource = relevantDatasources[i];
                 var id = datasource.getId();
-                var newDsId = datasource.getId() + cloneSuffix;
                 var newTriggerItem = datasource.parameters.triggerItem.replace(element_id, newId);
                 var newSearchItem = datasource.parameters.searchItem.replace(element_id, newId);
-                var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newDsId, newTriggerItem, newSearchItem);
+                var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
+                var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
-                newDiv.find("*[datasource='" + id + "']").attr("datasource",newDsId);
-                newDiv.find("*[datatype='select']", "*[datasource='" + newDsId + "']").each(function(){
+                newDiv.find("*[datatype='select']", "*[datasource='" + id + "']").each(function(){
+                    $(this).attr("datasource", newDsId);
                     var theId = $(this).attr("id");
                     var field = $(this).attr("field");
-                    var ds = DataSourcePool.getInstance().findById($(this).attr("datasource"));
+                    var ds = DataSourcePool.getInstance().findById(newDsId);
                     console.log("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
                     ds.addEventListener("selectionChanged", function (event) {
+                        var ds = DataSourcePool.getInstance().findById(newDsId);
                         console.log(event + " received by " + theId);
                         var row = ds.getCurrentRow();
-                        $("#" + theId).val(row[field]).trigger("change");
+                        if ( row ) {
+                            $("#" + theId).val(row[field]).trigger("change");
+                        } else {
+                            $("#" + theId).val("").trigger("change");
+                        }
+
                     });
                 });
 
@@ -153,7 +159,6 @@ var edi = (function() {
                     var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
                     ds.setCurrentRow("c", datum.c);
                 });
-
         });
 
         newDiv.find("*[datatype='dependent']").each(function() {
@@ -165,6 +170,15 @@ var edi = (function() {
             // alert('#' + $(this).attr("removes"));
             var element_id = $(this).attr("removes");
             var div = $('#' + $(this).attr("removes"));
+            div.find($("*[datasource]")).each(function() {
+                var dp = DataSourcePool.getInstance();
+                var dsId = $(this).attr("datasource");
+                var ds = dp.findById(dsId);
+                if ( ds && ds.parameters.cloned ) {
+                    console.log("removing datasource " + ds.parameters.id);
+                    dp.remove(ds.parameters.id);
+                }
+            });
             div.remove();
             ediml.removeElement(element_id);
             // doDebug(elements);
@@ -702,7 +716,11 @@ var edi = (function() {
             ds.addEventListener("selectionChanged", function (event) {
                 console.log(event + " received by " + item.id);
                 var row = ds.getCurrentRow();
-                $("#" + item.id).val(row[item.field]).trigger("change");
+                if ( row ) {
+                    $("#" + item.id).val(row[item.field]).trigger("change");
+                } else {
+                    $("#" + item.id).val("").trigger("change");
+                }
             });
         });
 

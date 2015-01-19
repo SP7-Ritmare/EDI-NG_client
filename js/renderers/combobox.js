@@ -25,6 +25,7 @@ var combobox = (function() {
             theItem.fixed = item.isFixed;
             theItem.useCode = item.useCode;
             theItem.useURN = item.useURN;
+            theItem.hasIndex = item.hasIndex;
             theItem.outIndex = item.outIndex;
             theItem.itemId = item.itemId;
             theItem.show = item.show;
