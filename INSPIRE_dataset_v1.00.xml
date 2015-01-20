@@ -1,6 +1,6 @@
 <template>
   <settings>
-    <defaultLanguage>en</defaultLanguage>
+    <defaultLanguage>it</defaultLanguage>
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
@@ -102,6 +102,24 @@
     </datasource>
     <!--
     <datasource>
+      <id>constraints</id>
+      <uri>http://www.rndt.gov.it/codelists/constraints/items</uri>
+      <singleton>false</singleton>
+      <endpointType>virtuoso</endpointType>
+      <query>
+        <![CDATA[
+          SELECT DISTINCT <http://www.rndt.gov.it/codelists/constraints/items/001> AS ?c ?l
+          FROM <http://ritmare.it/rdfdata/inspire>
+          WHERE {
+            <http://www.rndt.gov.it/codelists/constraints/items/001> skos:prefLabel ?l .
+          }
+        ]]>
+      </query>
+      <type>sparql</type>
+    </datasource>
+    -->
+    <!--
+    <datasource>
       <id>presentationForms</id>
       <uri>http://www.rndt.gov.it/codelists/CI_PresentationFormCode/items</uri>
       <endpointType>virtuoso</endpointType>
@@ -127,7 +145,7 @@
         ]]>
       </query>
       <searchItem>md_resp_1</searchItem>
-      <type> sparql </type>
+      <type>sparql</type>
     </datasource>
     <!--    
     <datasource>
@@ -151,9 +169,7 @@
         ]]>
       </query>
       <searchItem>md_resp_1</searchItem>
-      <type>
-        sparql
-      </type>
+      <type>sparql</type>
     </datasource>
     -->
     <!--
@@ -175,9 +191,7 @@
         ]]>
       </query>
       <searchItem>md_resp_1</searchItem>
-      <type>
-        sparql
-      </type>
+      <type>sparql</type>
     </datasource>
     -->
     <datasource>
@@ -198,7 +212,7 @@
         ]]>
       </query>
       <triggerItem>md_resp_1_uri</triggerItem>
-      <type> sparql </type>
+      <type>sparql</type>
     </datasource>
     <!--
     <datasource>
@@ -221,9 +235,7 @@
       </query>
       <triggerItem>md_resp_1_uri</triggerItem>
       <endpointType>sparqlCNR</endpointType>
-      <type>
-        sparql
-      </type>
+      <type>sparql</type>
     </datasource> 
     -->
     <datasource>
@@ -351,7 +363,7 @@
       </query>
       <triggerItem>keyw_voc_contr_1_uri</triggerItem>
       <endpointType>virtuoso</endpointType>
-      <type> sparql </type>
+      <type>sparql</type>
     </datasource>
     <!--
     <datasource>
@@ -397,13 +409,13 @@
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
     </datasource>    
-    -->
     <datasource>
       <id>representationTypeCode</id>
       <uri>http://www.rndt.gov.it/codelists/MD_SpatialRepresentationTypeCode/items</uri>
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
     </datasource>
+    -->
     <datasource>
       <id>topicCategories</id>
       <uri>http://inspire-registry.jrc.ec.europa.eu/registers/TopicCategories/items</uri>
@@ -494,11 +506,10 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <hasDatatype>codelist</hasDatatype>
-          <show>combobox</show>
           <datasource>scopes</datasource>
-          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</defaultValue>
+          <hasValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</hasValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -715,7 +726,7 @@
         </item>
       </produces>
     </element>
-    <!--Identificatore -->
+    <!--Identificatore
     <element>
       <id>id</id>
       <label xml:lang="en">Identifier</label>
@@ -731,8 +742,7 @@
           <hasDatatype>URN</hasDatatype>
           <hasValue>auto</hasValue>
         </item>
-      </produces>
-    </element>    
+      </produces> -->
     <!--Descrizione -->
     <element>
       <id>desc</id>
@@ -749,7 +759,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
           <queryStringParameter>abstract</queryStringParameter>
         </item>
       </produces>
@@ -977,7 +987,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
       </produces>
     </element>
@@ -1001,8 +1011,15 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <defaultValue>No conditions apply</defaultValue>
+          <!--
+          <hasDatatype>select</hasDatatype>
+          <datasource>constraints</datasource>
+          -->
+          <!-- <hasValue>user-defined</hasValue> -->
+          <!-- 
+          <field>l</field>
+          -->
+          <defaultValue>L&apos;accesso e la fruibilit&#224; del dato sono pubblici (access and fruition of data is open)</defaultValue>
         </item>
       </produces>
     </element>
@@ -1068,10 +1085,30 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:equivalentScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>int</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
       </produces>
     </element>
+    
+    <!--Identificatore -->
+    <element>
+      <id>id</id>
+      <label xml:lang="en">Identifier</label>
+      <label xml:lang="it">Identificatore</label>
+      <isMandatory>forAll</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>URN</hasDatatype>
+          <hasValue>auto</hasValue>
+        </item>
+      </produces>
+    </element>    
+    
     <!--Distanza -->
     <element>
       <alternativeTo>sca_equ</alternativeTo>
@@ -1088,7 +1125,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:distance/gco:Distance</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>int</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1251,7 +1288,7 @@
           </northLatitude>
           <isFixed>false</isFixed>
           <hasDatatype>boundingBox</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
       </produces>
     </element>
@@ -1283,7 +1320,7 @@
           <hasValue>http://www.epsg-registry.org/</hasValue>
         </item>
       </produces>
-    </element> -->
+    </element>
     <element>
       <id>sist_rif_spa_inspire</id>
       <label xml:lang="en">Spatial reference system to be included for INSPIRE compliance</label>
@@ -1307,7 +1344,7 @@
           <hasValue>http://www.epsg-registry.org/</hasValue>
         </item>
       </produces>
-    </element>    
+    </element> -->    
     <!--
     <element>
       <id>sist_rif_spa</id>
@@ -1393,7 +1430,7 @@
           </end>
           <isFixed>false</isFixed>
           <hasDatatype>dateRange</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1426,7 +1463,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>date</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1437,6 +1474,7 @@
           <hasDatatype>codelist</hasDatatype>
           <datasource>dateTypes</datasource>
           <defaultValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items/3</defaultValue>
+          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
         <item>
           <hasIndex>3</hasIndex>
@@ -1501,7 +1539,7 @@
       <label xml:lang="it">Specifiche</label>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality</hasRoot>
+      <hasRoot>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult</hasRoot>
       <produces>
         <item>
           <hasIndex>1</hasIndex>
@@ -1539,12 +1577,6 @@
           <hasDatatype>string</hasDatatype>
           <hasValue>publication</hasValue>
         </item>
-        <item>
-          <hasIndex>6</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@pippo</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-        </item>
       </produces>
     </element>
     <!--Conformit&#224;: grado -->
@@ -1554,7 +1586,7 @@
       <label xml:lang="it">Grado</label>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality</hasRoot>
+      <hasRoot>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult</hasRoot>
       <produces>
         <item>
           <hasIndex>1</hasIndex>
@@ -1569,12 +1601,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>true</hasValue>
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean/@pippo</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
         </item>
       </produces>
     </element>
@@ -1599,7 +1625,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
-          <hasValue>user-defined</hasValue>
+          <!-- <hasValue>user-defined</hasValue> -->
         </item>
       </produces>
     </element>

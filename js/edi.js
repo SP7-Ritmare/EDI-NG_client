@@ -19,6 +19,7 @@ var edi = (function() {
     var metadataLanguage = "it";
     var tempStructure = {};
     var theTemplate;
+    var lastAlternativeGroup = 0;
 
     function setLanguage(lang) {
         $("*[language]").addClass("hidden");
@@ -378,6 +379,7 @@ var edi = (function() {
             console.log(item);
             $(toBeRefreshed[i]).change();
         }
+        $(".container").removeClass("loading");
 
     }
 
@@ -741,7 +743,17 @@ var edi = (function() {
             });
         });
 
-        $("*[alternativeto]").addClass("alternativeElement");
+        $("*[alternativeto]").addClass("alternativeElement").each(function() {
+            var element = ediml.getElement($(this).attr("id"));
+            var altElement = ediml.getElement(element.alternativeTo);
+            var first = $("#" + element.id);
+            var second = $("#" + altElement.id);
+            if ( !first.parent().hasClass("alternativeGroup") ) {
+                $("#" + element.id + ", #" + altElement.id).wrapAll("<div id='alt_" + (++lastAlternativeGroup) + "' class='alternativeGroup'/>");
+                first.append("<span class='oppure'>" + localise("OR") + "</span>");
+            }
+        });
+        /*
         $("*[alternativeto] input").keyup(function() {
             var item = ediml.findItemById($(this).attr("id"));
             var element = ediml.getElement(item.elementId);
@@ -750,6 +762,7 @@ var edi = (function() {
                 $("#" + altElement.items.item[i].id).val([]);
             }
         });
+        */
         DataSourcePool.getInstance().refreshAll();
         $(".date-input, .dateRange-input").datepicker({
             format: "yyyy-mm-dd",
@@ -765,6 +778,7 @@ var edi = (function() {
         if ( typeof callback === "function" ) {
             callback(data);
         }
+
     }
 
     function edimlOutput() {
@@ -778,6 +792,7 @@ var edi = (function() {
     function loadLocalTemplate(template, version, theCallback) {
         callback = theCallback;
         $.support.cors = true;
+        $(".container").addClass("loading");
         $.ajax({
                    // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
                    url: template + "_v" + version + ".xml?__=" + Math.random(),
@@ -794,6 +809,7 @@ var edi = (function() {
 
     function loadTemplate(template, version, theCallback) {
         callback = theCallback;
+        $(".container").addClass("loading");
         $.ajax({
             // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
             url: defaults.metadataEndpoint + "rest/admin/templates/" + template + "/" + version,

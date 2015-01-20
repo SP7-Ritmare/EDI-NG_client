@@ -150,6 +150,28 @@
     background: url("../images/carousel-loader.gif") no-repeat scroll center center #f6f6f6 !important;
 }
 
+.container {
+    background: none !important;
+    width: 100%;
+    transition: width .1s;
+}
+.container.loading {
+    background: url("../images/carousel-loader.gif") no-repeat scroll center center #f6f6f6 !important;
+    content: "Loading template...";
+    text-align: center;
+    width: 10%;
+    height: 60px;
+    transition: height .5s;
+    border: solid 5px #ff9900;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px #888888;
+    margin-top: 100px;
+}
+.container.loading * {
+    display: none !important;
+}
+
+
 .ref {
     background: #ccccff;
     display: none;
@@ -261,14 +283,30 @@ element {
     background-color: #fff; /* rgba(0, 255, 0, .2); */
     margin-left: 100px;
 }
-.alternativeElement:nth-child(2n+1):before {
+/*
+.alternativeElement:nth-child(2n):before {
     margin-left: 0;
-    content: " oppure\A";
+    content: " <locale>oppure</locale>\A";
     font-weight: bold;
     color: red;
     background-color: #fff;
     white-space: pre;
     width: 100%;
+}
+*/
+.oppure {
+    margin-left: 0;
+    content: " <locale>oppure</locale>\A";
+    font-weight: bold;
+    color: red;
+    background-color: #fff;
+    white-space: pre;
+    width: 100%;
+    clear: both;
+}
+
+.alternativeGroup {
+    border: 1px solid;
 }
 
 .mandatory label {

@@ -58,7 +58,7 @@
                 console.log("fatto");
             }
             $(document).ready(function() {
-                edi.loadLocalTemplate("INSPIRE", "1.00", onTemplateLoaded);
+                edi.loadLocalTemplate("INSPIRE_dataset", "1.00", onTemplateLoaded);
 
                 edi.edimlOutput();
                 $("#ediml").hide();
@@ -91,7 +91,7 @@
         <div id="ediml">
 
         </div>
-        <div class="container">
+        <div class="container loading">
                 <h1>RITMARE EDI <span id="template-version"></span></h1>
                 <script> var elements = []; </script>
                 <button class="btn btn-primary" id="sendMetadata">send metadata</button>

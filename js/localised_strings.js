@@ -31,6 +31,10 @@ var localised_strings = {
             {
                 code: "NOT_A_DATE",
                 string: "Qui ci va una data"
+            },
+            {
+                code: "OR",
+                string: "oppure"
             }
         ],
         en: [
@@ -61,6 +65,10 @@ var localised_strings = {
             {
                 code: "NOT_A_DATE",
                 string: "This is not a valid date"
+            },
+            {
+                code: "OR",
+                string: "or"
             }
         ]
     };
