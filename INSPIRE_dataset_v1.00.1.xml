@@ -5,10 +5,10 @@
       <byItem>ling_md_1</byItem>
     </languageSelection>
     <!-- <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint> -->
-    <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint>
+    <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
-    <requiresValidation>false</requiresValidation>
+    <requiresValidation>true</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata
@@ -440,7 +440,7 @@
       <label xml:lang="it">Identificatore del file</label>
       <help xml:lang="en">This metadata item is not required by INSPIRE but is useful to draw the correspondence between the metadata record and the resource itself.
         It is therefore suggested that the workflow invoking EDI provides this piece of information as a request parameter.</help>
-      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente.
+      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente. 
         &#201; quindi consigliato che EDI riceva questa informazione come parametro della richiesta.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
@@ -1117,7 +1117,7 @@
           <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/uom/ML_gmxUom.xml#m</hasValue>
         </item>
       </produces>
-    </element>
+    </element>    
     <!--Lingua -->
     <element>
       <id>ling</id>
@@ -1179,7 +1179,7 @@
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>
+    </element>    
   </group>
   <group>
     <id>geographic_location</id>
@@ -1326,7 +1326,7 @@
           <hasValue>http://www.epsg-registry.org/</hasValue>
         </item>
       </produces>
-    </element> -->
+    </element> -->    
     <!--
     <element>
       <id>sist_rif_spa</id>
@@ -1493,8 +1493,8 @@
           <hasValue>auto</hasValue>
         </item>
       </produces>
-    </element>
-
+    </element> 
+    
   </group>
   <group>
     <id>quality</id>

@@ -132,6 +132,7 @@ var ediml = (function() {
     function post() {
         if ( settings.requiresValidation == "true" ) {
             if ( !validator.validate() ) {
+                alert(validator.getErrorCount() + " errors, " + validator.getWarningCount() + " warnings");
                 return;
             }
         }
@@ -466,10 +467,12 @@ var ediml = (function() {
         var selector = "#" + item.id;
         if ( item.datatype == "code" || item.datatype == "codelist" || item.datatype == "query" ) {
             item.value = $("#" + $(selector).attr("id") + " option:selected").text();
+            item.labelValue = $("#" + $(selector).attr("id") + " option:selected").text();
             item.codeValue = $(selector).val();
             item.languageNeutral = $("#" + $(selector).attr("id") + " option:selected").attr("language_neutral");
         } else if ( item.datatype == "autoCompletion" ) {
             item.value = $(selector).val();
+            item.labelValue = $(selector).val();
             item.codeValue = $("#" + $(selector).attr("id") + "_uri").val();
             item.urnValue = $("#" + $(selector).attr("id") + "_urn").val();
             item.languageNeutral = item.codeValue;

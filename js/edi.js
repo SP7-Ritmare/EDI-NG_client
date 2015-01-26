@@ -792,7 +792,7 @@ var edi = (function() {
     function loadLocalTemplate(template, version, theCallback) {
         callback = theCallback;
         $.support.cors = true;
-        $(".container").addClass("loading");
+        // $(".container").addClass("loading");
         $.ajax({
                    // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
                    url: template + "_v" + version + ".xml?__=" + Math.random(),
@@ -809,7 +809,7 @@ var edi = (function() {
 
     function loadTemplate(template, version, theCallback) {
         callback = theCallback;
-        $(".container").addClass("loading");
+        // $(".container").addClass("loading");
         $.ajax({
             // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
             url: defaults.metadataEndpoint + "rest/admin/templates/" + template + "/" + version,

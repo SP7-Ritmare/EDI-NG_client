@@ -234,7 +234,8 @@ var boundingBox = (function() {
                 })
                 function updateBox() {
                     console.log("updateBox");
-                    var epsg = $("#" + item.CRSItem + " option:selected").text();
+                    var epsg = basename($("#" + item.CRSItem + " option:selected").val());
+                    console.log(epsg);
                     var extent = [
                         parseFloat($("#" + item.id + "_westLongitude").val()),
                         parseFloat($("#" + item.id + "_southLatitude").val()),
@@ -253,7 +254,11 @@ var boundingBox = (function() {
                         epsg = "4326";
                     }
                     if ( allNumbers && epsg ) {
-                        drawBoxOnMap(map, source, extent, epsg);
+                        try {
+                            drawBoxOnMap(map, source, extent, epsg);
+                        } catch (e) {
+
+                        }
                     }
                 }
                 $("#" + item.id + "_westLongitude").change(updateBox).trigger("change");

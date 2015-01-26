@@ -13,6 +13,7 @@ var Item = (function() {
         useURN: undefined,
         outIndex: undefined,
         value: undefined,
+        labelValue: undefined,
         codeValue: undefined,
         urnValue: undefined,
         languageNeutral: undefined,
@@ -28,8 +29,20 @@ var Item = (function() {
         isMandatory: function() {
             var element = ediml.getElement(elementId);
             return ( element.mandatory != "NA" );
+        },
+        getAlternativeElement: function() {
+            var item = this;
+            if ( typeof item.elementId === "undefined" ) {
+                console.error("item " + item.id + " has no associated element");
+                console.log(item);
+                return;
+            }
+            var element = ediml.getElement(item.elementId);
+            if ( element.alternativeTo ) {
+                return ediml.getElement(element.alternativeTo);
+            }
+            return undefined;
         }
-
     };
 
     return item;

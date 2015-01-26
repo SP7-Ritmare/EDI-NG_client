@@ -13,7 +13,7 @@
     <requiresAuthentication>true</requiresAuthentication>
     <metadataEndpoint>https://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
-    <requiresValidation>false</requiresValidation>
+    <requiresValidation>true</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata

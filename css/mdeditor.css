@@ -168,7 +168,7 @@
     margin-top: 100px;
 }
 .container.loading * {
-    display: none !important;
+    /* display: none !important; */
 }
 
 
@@ -197,6 +197,17 @@
     border: 1px dashed red;
     border-radius: 4px;
     background-color: rgba(255, 0, 0, .2);
+    font-weight: bold;
+    padding: 8px;
+    top: 20px;
+}
+.warning {
+    border: 3px solid #ff9900 !important;
+}
+.warning-message {
+    border: 1px dashed #ff9900;
+    border-radius: 4px;
+    background-color: rgba(255, 153, 0, .2);
     font-weight: bold;
     padding: 8px;
     top: 20px;

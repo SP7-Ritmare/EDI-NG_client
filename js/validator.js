@@ -11,30 +11,87 @@ var validator = (function() {
         validateURN,
         validateDate,
         validateDateRange,
-        validateBoundingBox
+        validateBoundingBox,
+        validateAlternativeFields
     ];
 
+    var warnings = 0;
+    var errors = 0;
+
     function error(control, message) {
+        errors++;
         control.addClass("invalid");
         control.after("<div class='error-message'>" + localise(message) + " - " + control.val() + "</div>");
+    }
+
+    function warning(control, message) {
+        warnings++;
+        control.addClass("warning");
+        control.after("<div class='warning-message'>" + localise(message) + " - " + control.val() + "</div>");
     }
 
     function validateRequiredFields() {
         var result = true;
         $("*[required='required']").each(function() {
             if ( $(this).val() == null || $(this).val().trim() == "" ) {
-                error($(this), "REQUIRED_FIELD");
-                result = false;
+                var item = ediml.findItemById($(this).attr("id"));
+                var alternativeElement = item.getAlternativeElement();
+                if ( alternativeElement ) {
+                    var self = $(this);
+                    $("*[required='required']", $("#" + alternativeElement.id)).each(function() {
+                        if ( $(this).val() == null || $(this).val().trim() == "" ) {
+                            error(self, "ALTERNATIVE_REQUIRED_FIELD");
+                            error($(this), "ALTERNATIVE_REQUIRED_FIELD");
+                            result = false;
+                        }
+                    });
+                } else {
+                    error($(this), "REQUIRED_FIELD");
+                    result = false;
+                }
             }
         });
         return result;
     }
 
+    function validateAlternativeFields() {
+        var result = true;
+        console.log("validateAlternativeFields");
+        $(".alternativeGroup").each(function() {
+            console.log("alternative group " + $(this).attr("id"));
+            var group = "#" + $(this).attr("id");
+            $(".element", $("#" + $(this).attr("id"))).first().each(function() {
+                var thisOne = "#" + $(this).attr("id");
+                var theOtherOne = "#" + $(this).attr("alternativeto");
+                var countThese = 0;
+                var countTheOtherOnes = 0;
+                $(".form-control", thisOne).each(function() {
+                    if ( !$(this).hasClass("fixed") && $(this).val() != "" ) {
+                        countThese++;
+                    }
+                })
+                $(".form-control", theOtherOne).each(function() {
+                    if ( !$(this).hasClass("fixed") && $(this).val() != "" ) {
+                        countTheOtherOnes++;
+                    }
+                })
+                if ( countThese > 0 && countTheOtherOnes > 0 ) {
+                    warning($(group), "DOUBLE_VALUE_ON_ALTERNATIVE");
+                }
+                console.log("found " + countThese + " local and " + countTheOtherOnes + " alternative items with value");
+            });
+        });
+        return result;
+    }
+
     function isInt(value) {
-        return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+        return value == "" || (!isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value)))
     }
 
     function isFloat(value) {
+        if ( value == "" ) {
+            return true;
+        }
         value = parseFloat(value);
         if(isNaN(value)) {
             return false;
@@ -116,6 +173,7 @@ var validator = (function() {
             }
 
         });
+        return result;
     }
 
     function validateBoundingBox() {
@@ -138,6 +196,7 @@ var validator = (function() {
             }
 
         });
+        return result;
     }
 
     function validateDate() {
@@ -164,6 +223,12 @@ var validator = (function() {
         return result;
     }
     return {
-        validate: validate
+        validate: validate,
+        getWarningCount: function() {
+            return warnings;
+        },
+        getErrorCount: function() {
+            return errors;
+        }
     }
 })();
