@@ -32,7 +32,7 @@ var validator = (function() {
 
     function validateRequiredFields() {
         var result = true;
-        $("*[required='required']").each(function() {
+        $("*:not(.fixed)[required='required']").each(function() {
             if ( $(this).val() == null || $(this).val().trim() == "" ) {
                 var item = ediml.findItemById($(this).attr("id"));
                 var alternativeElement = item.getAlternativeElement();
@@ -108,7 +108,7 @@ var validator = (function() {
 
     function validateIntFields() {
         var result = true;
-        $("*[datatype='int'], *[datatype='integer']").each(function() {
+        $("*:not(.fixed)[datatype='int'], *:not(.fixed)[datatype='integer']").each(function() {
             var value = $(this).val();
             if ( !isInt(value) ) {
                 error($(this), "NOT_AN_INT");
@@ -120,7 +120,7 @@ var validator = (function() {
     }
     function validateFloatFields() {
         var result = true;
-        $("*[datatype='real'], *[datatype='float'], *[datatype='double']").each(function() {
+        $("*:not(.fixed)[datatype='real'], *:not(.fixed)[datatype='float'], *:not(.fixed)[datatype='double']").each(function() {
             var value = $(this).val();
             if ( !isFloat(value) ) {
                 error($(this), "NOT_A_FLOAT");
@@ -139,7 +139,7 @@ var validator = (function() {
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-        $("*[datatype='URI'], *[datatype='URL']").each(function() {
+        $("*:not(.fixed)[datatype='URI'], *:not(.fixed)[datatype='URL']").each(function() {
             var value = $(this).val().toString();
             if ( !pattern.test(value) ) {
                 error($(this), "NOT_A_URI");
@@ -152,7 +152,7 @@ var validator = (function() {
     function validateURN() {
         var result = true;
         var pattern = new RegExp('^urn:[a-z0-9]{0,31}:[a-z0-9()+,\-.:=@;$_!*\'%/?#]+$','i'); // fragment locator
-        $("*[datatype='URN']").each(function() {
+        $("*:not(.fixed)[datatype='URN']").each(function() {
             var value = $(this).val().toString();
             if ( !pattern.test(value) ) {
                 error($(this), "NOT_A_URN");
@@ -164,7 +164,7 @@ var validator = (function() {
 
     function validateDateRange() {
         var result = true;
-        $("*[datatype='dateRange'][id$='_start']").each(function () {
+        $("*:not(.fixed)[datatype='dateRange'][id$='_start']").each(function () {
             var baseId = $(this).attr("id").replace("_start", "");
             console.log("dateRange " + baseId);
             if ( $(this).val() > $("#" + baseId + "_end").val() ) {
@@ -178,7 +178,7 @@ var validator = (function() {
 
     function validateBoundingBox() {
         var result = true;
-        $("*[datatype='boundingBox'][id$='_northLatitude']").each(function () {
+        $("*:not(.fixed)[datatype='boundingBox'][id$='_northLatitude']").each(function () {
             var baseId = $(this).attr("id").replace("_northLatitude", "");
             console.log("dateRange " + baseId);
             if ( $(this).val() < $("#" + baseId + "_southLatitude").val() ) {
@@ -187,7 +187,7 @@ var validator = (function() {
             }
 
         });
-        $("*[datatype='boundingBox'][id$='_eastLongitude']").each(function () {
+        $("*:not(.fixed)[datatype='boundingBox'][id$='_eastLongitude']").each(function () {
             var baseId = $(this).attr("id").replace("_eastLongitude", "");
             console.log("dateRange " + baseId);
             if ( $(this).val() < $("#" + baseId + "_westLongitude").val() ) {
@@ -201,7 +201,7 @@ var validator = (function() {
 
     function validateDate() {
         var result = true;
-        $("*[datatype='date'], *[datatype='dateRange']").find("input[type='text']").each(function() {
+        $("*:not(.fixed)[datatype='date'], *:not(.fixed)[datatype='dateRange']").find("input[type='text']").each(function() {
             var value = $(this).val().toString();
             if ( !isValidDate(value) ) {
                 error($(this), "NOT_A_DATE");
@@ -213,6 +213,8 @@ var validator = (function() {
 
     function validate() {
         var result = true;
+        errors = 0;
+        warnings = 0;
         $(".invalid").removeClass("invalid");
         $(".error-message").remove();
         for ( var i = 0; i < validations.length; i++ ) {
