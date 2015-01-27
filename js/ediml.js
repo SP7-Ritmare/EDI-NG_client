@@ -61,6 +61,7 @@ var ediml = (function() {
         // doDebug("Ricevuto: " + xmlToString(msg));
         console.log(msg);
         if ( msg.responseCode == 200 ) {
+            edi.setGeneratedXml(msg.generatedXml);
             var xmlString = msg.generatedXml;
             if ( false && xmlString.indexOf("sml:SensorML") >= 0 ) {
                 xmlString = formatXml(xmlString);
@@ -135,8 +136,14 @@ var ediml = (function() {
                 alert(validator.getErrorCount() + " errors, " + validator.getWarningCount() + " warnings");
                 return;
             }
+            if ( validator.getWarningCount() > 0 && !$("#ignoreWarnings").prop("checked") ) {
+                alert(validator.getWarningCount() + " warnings");
+                return;
+            }
         }
         var postMetadata = function(data) {
+            edi.setGeneratedXml(undefined);
+
             content.elements.fileId = data.id;
             content.elements.fileUri = metadataEndpoint + "rest/ediml/" + data.uri;
             xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
@@ -506,7 +513,7 @@ var ediml = (function() {
          }
          */
         console.log(item);
-        edi.edimlOutput();
+        // edi.edimlOutput();
 
     }
 

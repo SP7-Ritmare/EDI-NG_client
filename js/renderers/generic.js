@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 19/11/14.
  */
-var itemRenderer = (function() {
+var ItemRenderer = (function() {
     function loadScript(script) {
             $('<script>')
                 .attr('type', 'text/javascript')
@@ -16,7 +16,7 @@ var itemRenderer = (function() {
         loadScript("date");
         loadScript("date_range");
         loadScript("label");
-        loadScript("textbox");
+        loadScript("Textbox");
         */
     }
 
@@ -44,7 +44,7 @@ var itemRenderer = (function() {
                     case "ref":
                     case "autonumber":
                     case "hidden":
-                        return "textbox";
+                        return "Textbox";
                     case "date":
                         return "date";
                     case "dateRange":
@@ -58,19 +58,43 @@ var itemRenderer = (function() {
     }
 
     function render() {
-        textbox.render();
-        combobox.render();
-        autocompletion.render();
-        date.render();
-        dateRange.render();
-        label.render();
-        boundingBox.render();
+        Textbox.render();
+        Combobox.render();
+        Autocompletion.render();
+        Dates.render();
+        DateRange.render();
+        Label.render();
+        BoundingBox.render();
+    }
+
+    function copyAttributesFrom(element, item, theItem) {
+        theItem.datatype = item.hasDatatype;
+        theItem.datasource = item.datasource;
+        theItem.path = item.hasPath;
+        theItem.elementId = element.id;
+        theItem.fixed = item.isFixed;
+        theItem.useCode = item.useCode;
+        theItem.useURN = item.useURN;
+        theItem.hasIndex = item.hasIndex;
+        theItem.outIndex = item.outIndex;
+        theItem.field = item.field;
+        theItem.isLanguageNeutral = item.isLanguageNeutral;
+
+        theItem.itemId = item.itemId;
+        theItem.show = item.show;
+
+        theItem.defaultValue = item.defaultValue;
+
+        theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
+
+        theItem.value = item.hasValue;
     }
 
     init();
 
     return {
         getRenderer: getRenderer,
+        copyAttributesFrom: copyAttributesFrom,
         render: render
     }
 })();

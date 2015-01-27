@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 28/11/14.
  */
-var boundingBox = (function() {
+var BoundingBox = (function() {
     var maps = [];
 
     function drawBoxOnMap(map, source, extent, epsg) {
@@ -86,20 +86,12 @@ var boundingBox = (function() {
 
                 theItem = new Item();
                 theItem.id = item.id + "_" + components[i];
-                theItem.datatype = item.hasDatatype;
-                theItem.datasource = item.datasource;
+
+                ItemRenderer.copyAttributesFrom(element, item, theItem);
+
                 theItem.path = subItem.hasPath;
-                theItem.elementId = element.id;
-                theItem.fixed = element.isFixed;
-                theItem.useCode = item.useCode;
-                theItem.useURN = item.useURN;
                 theItem.outIndex = subItem.outIndex;
-                theItem.hasIndex = item.hasIndex;
-                theItem.itemId = item.itemId;
-                theItem.show = item.show;
                 theItem.field = subItem.field;
-                theItem.isLanguageNeutral = item.isLanguageNeutral;
-                theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
                 theElement.addItem(theItem);
 
                 control = $(control);

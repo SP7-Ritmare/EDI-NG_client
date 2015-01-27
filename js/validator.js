@@ -180,8 +180,8 @@ var validator = (function() {
         var result = true;
         $("*:not(.fixed)[datatype='boundingBox'][id$='_northLatitude']").each(function () {
             var baseId = $(this).attr("id").replace("_northLatitude", "");
-            console.log("dateRange " + baseId);
-            if ( $(this).val() < $("#" + baseId + "_southLatitude").val() ) {
+            console.log("boundingBox " + baseId);
+            if ( parseFloat($(this).val()) < parseFloat($("#" + baseId + "_southLatitude").val()) ) {
                 error($(this), "NORTH_BELOW_SOUTH");
                 result = false;
             }
@@ -189,8 +189,8 @@ var validator = (function() {
         });
         $("*:not(.fixed)[datatype='boundingBox'][id$='_eastLongitude']").each(function () {
             var baseId = $(this).attr("id").replace("_eastLongitude", "");
-            console.log("dateRange " + baseId);
-            if ( $(this).val() < $("#" + baseId + "_westLongitude").val() ) {
+            console.log("boundingBox " + baseId);
+            if ( parseFloat($(this).val()) < parseFloat($("#" + baseId + "_westLongitude").val()) ) {
                 error($(this), "EAST_WEST_OF_WEST");
                 result = false;
             }

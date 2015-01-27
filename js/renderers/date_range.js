@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 28/11/14.
  */
-var dateRange = (function() {
+var DateRange = (function() {
     function render() {
         var control, control2;
         $("control_daterange").each(function() {
@@ -14,33 +14,16 @@ var dateRange = (function() {
 
             var theElement = ediml.getElement(element.id);
             var theItem = new Item();
+            ItemRenderer.copyAttributesFrom(element, item, theItem);
+
             theItem.id = item.id + "_start";
-            theItem.datatype = item.hasDatatype;
-            theItem.datasource = item.datasource;
             theItem.path = item.start.hasPath;
-            theItem.elementId = element.id;
-            theItem.fixed = item.isFixed;
-            theItem.useCode = item.useCode;
-            theItem.useURN = item.useURN;
-            theItem.hasIndex = item.hasIndex;
-            theItem.outIndex = item.outIndex;
-            theItem.isLanguageNeutral = item.isLanguageNeutral;
-            theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
             theElement.addItem(theItem);
 
             theItem = new Item();
+            ItemRenderer.copyAttributesFrom(element, item, theItem);
             theItem.id = item.id + "_end";
-            theItem.datatype = item.hasDatatype;
-            theItem.datasource = item.datasource;
             theItem.path = item.end.hasPath;
-            theItem.elementId = element.id;
-            theItem.fixed = item.isFixed;
-            theItem.useCode = item.useCode;
-            theItem.useURN = item.useURN;
-            theItem.hasIndex = item.hasIndex;
-            theItem.outIndex = item.outIndex;
-            theItem.isLanguageNeutral = item.isLanguageNeutral;
-            theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
             theElement.addItem(theItem);
 
             control = $(control);

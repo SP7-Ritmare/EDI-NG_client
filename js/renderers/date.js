@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 28/11/14.
  */
-var date = (function() {
+var Dates = (function() {
     function render() {
         var control;
         $("control_date").each(function() {
@@ -14,19 +14,8 @@ var date = (function() {
             var theElement = ediml.getElement(element.id);
             var theItem = new Item();
             theItem.id = item.id;
-            theItem.datatype = item.hasDatatype;
-            theItem.datasource = item.datasource;
-            theItem.path = item.hasPath;
-            theItem.elementId = element.id;
-            theItem.fixed = item.isFixed;
-            theItem.useCode = item.useCode;
-            theItem.useURN = item.useURN;
-            theItem.hasIndex = item.hasIndex;
-            theItem.outIndex = item.outIndex;
-            theItem.isLanguageNeutral = item.isLanguageNeutral;
-            theItem.defaultValue = item.defaultValue;
-            theItem.field = item.field;
-            theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
+            ItemRenderer.copyAttributesFrom(element, item, theItem);
+
             theElement.addItem(theItem);
 
             control = $(control);

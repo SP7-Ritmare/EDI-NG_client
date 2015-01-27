@@ -417,8 +417,8 @@ function setAutocompletions() {
 		textbox.bind("change blur", checkUri);
 
 		// doDebug('setto l\'evento'); 
-		// textbox.keyup(autoCompletionKeyUp);
-		// textbox.change(autoCompletionKeyUp);
+		// Textbox.keyup(autoCompletionKeyUp);
+		// Textbox.change(autoCompletionKeyUp);
 		if ( textbox.val() == "" ) {
 		    $( '#' + id + '_uri' ).val( "" );
 		    $( '#' + id + '_urn' ).val( "" ); 
@@ -864,7 +864,7 @@ $( document ).ready(function() {
     $(".datepicker").datepicker({
 					format: "yyyy-mm-dd"
 				}).on('changeDate', function(ev) {
-					// $("#" + $(this).attr("textbox")).val(ev.date.valueOf());
+					// $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
 					// doDebug("data: " + ev.date.valueOf());
 					$(this).datepicker('hide');
 				});
@@ -916,7 +916,7 @@ $( document ).ready(function() {
 	newDiv.find(".datepicker").datepicker({
 					format: "yyyy-mm-dd"
 				}).on('changeDate', function(ev) {
-					// $("#" + $(this).attr("textbox")).val(ev.date.valueOf());
+					// $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
 					// doDebug("data: " + ev.date.valueOf());
 					$(this).datepicker('hide');
 				});

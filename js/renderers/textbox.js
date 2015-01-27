@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 28/11/14.
  */
-var textbox = (function() {
+var Textbox = (function() {
     function render() {
         var control;
         $("control_textbox").each(function() {
@@ -20,22 +20,9 @@ var textbox = (function() {
             var theElement = ediml.getElement(element.id);
             var theItem = new Item();
             theItem.id = item.id;
-            theItem.datatype = item.hasDatatype;
-            theItem.datasource = item.datasource;
-            theItem.path = item.hasPath;
-            theItem.elementId = element.id;
-            theItem.fixed = item.isFixed;
-            theItem.useCode = item.useCode;
-            theItem.useURN = item.useURN;
-            theItem.hasIndex = item.hasIndex;
-            theItem.outIndex = item.outIndex;
-            theItem.itemId = item.itemId;
-            theItem.show = item.show;
-            theItem.value = item.hasValue;
-            theItem.defaultValue = item.defaultValue;
-            theItem.field = item.field;
-            theItem.isLanguageNeutral = item.isLanguageNeutral;
-            theItem.query = ( item.query ? item.query.toString() : item.hasValue );
+
+            ItemRenderer.copyAttributesFrom(element, item, theItem);
+
             theElement.addItem(theItem);
 
             control = $(control);

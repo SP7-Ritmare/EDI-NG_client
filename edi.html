@@ -58,9 +58,8 @@
                 console.log("fatto");
             }
             $(document).ready(function() {
-                edi.loadLocalTemplate("RNDT", "3.00", onTemplateLoaded);
+                edi.loadLocalTemplate("INSPIRE_dataset", "1.00", onTemplateLoaded);
 
-                edi.edimlOutput();
                 $("#ediml").hide();
                 $("#sendMetadata").click(ediml.post);
 
@@ -78,13 +77,24 @@
                 var data = ev.dataTransfer.getData("text");
                 ev.target.appendChild(document.getElementById(data));
             }
+
+            function toggleEDIML(which) {
+                $('#ediml').toggle();
+                if ( $("#ediml").is(":visible") ) {
+                    $(which).text("hide EDIML");
+                    edi.edimlOutput();
+                } else {
+                    $(which).text("show EDIML");
+
+                }
+            }
         </script>
     </head>
     <body>
     <div class="content-wrap">
         <button class="btn btn-primary" onclick="edi.setLanguage('it');">it</button>
         <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
-        <button class="btn btn-danger" onclick="$('#ediml').toggle();">EDIML</button>
+        <button class="btn btn-danger" onclick="toggleEDIML(this);">show EDIML</button>
         <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
         <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
         <div id="mdcontent"></div>
@@ -95,6 +105,7 @@
                 <h1>RITMARE EDI <span id="template-version"></span></h1>
                 <script> var elements = []; </script>
                 <button class="btn btn-primary" id="sendMetadata">send metadata</button>
+                <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
                 <div class="row">
                     <!--
                         <div class="span3 bs-docs-sidebar">

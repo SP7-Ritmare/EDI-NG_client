@@ -20,6 +20,7 @@ var edi = (function() {
     var tempStructure = {};
     var theTemplate;
     var lastAlternativeGroup = 0;
+    var generatedXml = undefined;
 
     function setLanguage(lang) {
         $("*[language]").addClass("hidden");
@@ -123,7 +124,7 @@ var edi = (function() {
         newDiv.find(".datepicker").datepicker({
             format: "yyyy-mm-dd"
         }).on('changeDate', function(ev) {
-            // $("#" + $(this).attr("textbox")).val(ev.date.valueOf());
+            // $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
             // doDebug("data: " + ev.date.valueOf());
             $(this).datepicker('hide');
         });
@@ -452,7 +453,7 @@ var edi = (function() {
 
     function compileItem(div, item, element) {
         var id = div.attr("id") + "_" + item.hasIndex;
-        var showType = itemRenderer.getRenderer(item);
+        var showType = ItemRenderer.getRenderer(item);
 
         var html = "<control_" + showType + " id=\"" + id + "\" ";
 /*
@@ -689,7 +690,7 @@ var edi = (function() {
             compileGroup(groups[i]);
         }
 
-        itemRenderer.render();
+        ItemRenderer.render();
 
         $(".codelist:not([datasource]), .typeahead[id]:not([datasource])").addClass("no-datasource").each(function() {
             $(this).after("<label class='no-datasource'>missing datasource</label>");
@@ -782,8 +783,7 @@ var edi = (function() {
     }
 
     function edimlOutput() {
-        return;
-        // console.log(JSON.stringify(ediml.content, undefined, 4));
+        console.log(JSON.stringify(ediml.content, undefined, 4));
         $("#ediml").html('<pre class="prettyprint lang-json" draggable="true">' + JSON.stringify(ediml.content, undefined, 4) + '</pre>');
         prettyPrint();
         // console.log(new Date());
@@ -863,6 +863,12 @@ var edi = (function() {
         },
         getTempStructure: function() {
             return tempStructure;
+        },
+        setGeneratedXml: function(xml) {
+            generatedXml = xml;
+        },
+        getGeneratedXml: function() {
+            return generatedXml;
         }
     };
 })();
