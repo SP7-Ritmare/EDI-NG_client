@@ -543,7 +543,7 @@ var edi = (function() {
             div.addClass("no-children");
         }
         if ( element.isMultiple == "true" ) {
-            for (var k = 0; k < element.label.length; k++) {
+            for (var k = 0; element.label && k < element.label.length; k++) {
                 div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
             }
         }
