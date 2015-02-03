@@ -31,6 +31,10 @@ var DataSource = function(params) {
         singleton: false,
         // if true => this datasource is the product of a cloning operation: NEVER FORCE THIS VALUE
         cloned: false,
+        isFreshlyCreated: true,
+        hasResultSet: false,
+        hasErrors: false,
+        errors: undefined,
         // Adapts dataset format to plain array
         // see datasource_adapters.js
         adapter: undefined
@@ -59,6 +63,10 @@ var DataSource = function(params) {
     var self;
     function dataSuccess(data) {
         resultSet = data;
+        parameters.isFreshlyCreated = false;
+        parameters.hasResultSet = true;
+        parameters.hasErrors = false;
+
         if ( typeof parameters.adapter !== "undefined" ) {
             resultSet = parameters.adapter(data);
         }
@@ -92,6 +100,11 @@ var DataSource = function(params) {
     }
 
     function dataError(arguments) {
+        parameters.isFreshlyCreated = false;
+        parameters.hasResultSet = false;
+        parameters.hasErrors = true;
+        parameters.errors = arguments;
+
         // console.log("Data Error");
         // console.log(arguments);
         isLoading = false;

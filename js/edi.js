@@ -159,6 +159,17 @@ var edi = (function() {
                     $("#" + id + "_urn").val(datum.urn);
                     var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
                     ds.setCurrentRow("c", datum.c);
+                }).blur(function(event) {
+                    console.log("Changed: " + event.target.value);
+                    if ( event.target.value.trim() == "" ) {
+                        $("#" + id + "_uri").val("");
+                        $("#" + id + "_uri").trigger("change");
+                        $("#" + id + "_urn").val();
+                        $("#" + id + "_urn").trigger("change");
+                        ediml.updateItemForControl($("#" + id));
+                        var ds = DataSourcePool.getInstance().findById(item.datasource);
+                        ds.setCurrentRow("c", -1);
+                    }
                 });
         });
 
@@ -543,7 +554,7 @@ var edi = (function() {
             div.addClass("no-children");
         }
         if ( element.isMultiple == "true" ) {
-            for (var k = 0; k < element.label.length; k++) {
+            for (var k = 0; element.label && k < element.label.length; k++) {
                 div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
             }
         }

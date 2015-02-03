@@ -100,6 +100,9 @@ var validator = (function() {
     }
 
     function isValidDate(input) {
+        if ( input == "" ) {
+            return true;
+        }
         var bits = input.split('-');
         var d = new Date(bits[0], bits[1] - 1, bits[2]);
         return d.getFullYear() == bits[0] && (d.getMonth() + 1) == bits[1] && d.getDate() == Number(bits[2]);
@@ -141,7 +144,7 @@ var validator = (function() {
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
         $("*:not(.fixed)[datatype='URI'], *:not(.fixed)[datatype='URL']").each(function() {
             var value = $(this).val().toString();
-            if ( !pattern.test(value) ) {
+            if ( value != "" && !pattern.test(value) ) {
                 error($(this), "NOT_A_URI");
                 result = false;
             }
@@ -154,7 +157,7 @@ var validator = (function() {
         var pattern = new RegExp('^urn:[a-z0-9]{0,31}:[a-z0-9()+,\-.:=@;$_!*\'%/?#]+$','i'); // fragment locator
         $("*:not(.fixed)[datatype='URN']").each(function() {
             var value = $(this).val().toString();
-            if ( !pattern.test(value) ) {
+            if ( value != "" && !pattern.test(value) ) {
                 error($(this), "NOT_A_URN");
                 result = false;
             }
@@ -167,6 +170,10 @@ var validator = (function() {
         $("*:not(.fixed)[datatype='dateRange'][id$='_start']").each(function () {
             var baseId = $(this).attr("id").replace("_start", "");
             console.log("dateRange " + baseId);
+            // either both with value or both without and syntax check
+            if ( $(this).val() == "" && $("#" + baseId + "_end").val() == "" ) {
+
+            }
             if ( $(this).val() > $("#" + baseId + "_end").val() ) {
                 error($(this), "START_AFTER_END");
                 result = false;
@@ -203,7 +210,7 @@ var validator = (function() {
         var result = true;
         $("*:not(.fixed)[datatype='date'], *:not(.fixed)[datatype='dateRange']").find("input[type='text']").each(function() {
             var value = $(this).val().toString();
-            if ( !isValidDate(value) ) {
+            if ( value != "" && !isValidDate(value) ) {
                 error($(this), "NOT_A_DATE");
                 result = false;
             }
