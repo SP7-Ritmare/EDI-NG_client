@@ -8,7 +8,7 @@
     <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
-    <requiresValidation>true</requiresValidation>
+    <requiresValidation>false</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata
@@ -460,7 +460,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
@@ -609,7 +608,7 @@
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
           <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
+          <hasDatatype>URI</hasDatatype>
           <queryStringParameter>resource</queryStringParameter>
         </item>
       </produces>
@@ -672,7 +671,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
@@ -848,26 +846,25 @@
           <!-- 
           <field>l</field>
           -->
-          <defaultValue>L&apos;accesso e la fruibilit&#224; del dato sono pubblici (access and fruition of data is open)</defaultValue>
+          <defaultValue>Nessuna condizione applicabile (no applicable condition)</defaultValue>
         </item>
       </produces>
     </element>
     <!--Vincoli di accesso -->
     <element>
       <id>vinc_acc</id>
-      <label xml:lang="en">Limitations on public access</label>
-      <label xml:lang="it">Limitazioni all'accesso pubblico</label>
       <help xml:lang="en">Access constraints applied to assure the protection of privacy or
         intellectual property, and any special restrictions or limitations on obtaining the
         resource</help>
-      <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o
-        propriet&#224;,</help>
+      <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o propriet&#224;,</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
       <produces>
         <item>
           <hasIndex>1</hasIndex>
+          <label xml:lang="en">Limitations on public access</label>
+          <label xml:lang="it">Limitazioni all'accesso pubblico</label>          
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode</hasPath>
           <isLanguageNeutral>true</isLanguageNeutral>
           <isFixed>false</isFixed>
@@ -888,10 +885,19 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
+        </item>
+        <item>
+          <hasIndex>4</hasIndex>
+          <label xml:lang="en">Other constraints</label>
+          <label xml:lang="it">Altri vincoli</label>          
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>text</hasDatatype>
+          <defaultValue>L&apos;accesso e la fruibilit&#224; del dato sono pubblici (access and fruition of data is open)</defaultValue>
         </item>
       </produces>
     </element>
+    
   </group>
   <group>
     <id>ling_d</id>
@@ -984,7 +990,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
@@ -1155,7 +1160,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
@@ -1213,7 +1217,6 @@
           <isFixed>true</isFixed>
           <hasDatatype>ref</hasDatatype>
           <hasValue>/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level/gmd:MD_ScopeCode</hasValue>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
