@@ -101,7 +101,7 @@ var BoundingBox = (function() {
                 control.attr("show", item.show);
                 control.attr("id", theItem.id);
                 control.attr("querystringparameter", subItem.queryStringParameter);
-                if (element.isFixed == "true") {
+                if (theItem.isFixed == "true") {
                     control.val(item.hasValue);
                     $(coordinate).addClass("fixed");
                 }
@@ -185,7 +185,7 @@ var BoundingBox = (function() {
                     })
                 });
 
-                if (element.isFixed == "false") {
+                if (item.isFixed == "false") {
                     map.addInteraction(boundingBox);
                 }
 
