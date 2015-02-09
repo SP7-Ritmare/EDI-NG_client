@@ -44,6 +44,8 @@
         <script src="js/renderers/label.js"></script>
         <script src="js/renderers/textbox.js"></script>
         <script src="js/renderers/bounding_box.js"></script>
+        <script src="js/jquery-dateFormat.min.js"></script>
+
         <script type="text/javascript" src="js/jquery.string.1.1.0-min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
@@ -87,6 +89,8 @@
                     $(which).text("show EDIML");
                 }
             }
+            // $('body').scrollspy();
+            // setTimeout(function () { $('.bs-docs-sidenav').affix({ offset: { top: 10, bottom: 270 } }) }, 100);
         </script>
     </head>
     <body>
@@ -96,6 +100,7 @@
         <button class="btn btn-danger" onclick="toggleEDIML(this);">show EDIML</button>
         <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
         <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
+        <button class="btn btn-danger" style="display: none;" id="MDDownload" onclick="ediml.downloadMetadata();">download generated XML</button>
         <div id="mdcontent"></div>
         <div id="ediml">
 
@@ -103,13 +108,13 @@
         <div class="container">
                 <h1>RITMARE EDI <span id="template-version"></span></h1>
                 <script> var elements = []; </script>
-                <button class="btn btn-primary" id="sendMetadata">send metadata</button>
-                <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
                 <div class="row">
                     <div class="tabbable tabs-left">
                         <ul id="myTab" class="nav nav-tabs">
+                            <button class="btn btn-primary" id="sendMetadata">send metadata</button>
+                            <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
                         </ul>
-                        <article class="span8" id="mdcontent">
+                        <article class="span8" id="mdcontent" data-offset="0" data-target="#myTab" data-spy="scroll">
                             <div id="theForm">
                                 <div class="tab-content">
 

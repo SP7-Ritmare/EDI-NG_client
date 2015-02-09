@@ -128,9 +128,12 @@ var ediml = (function() {
             $("#mdcontent").prepend("<pre class='prettyprint lang-json'>" + JSON.stringify(msg, undefined, 2) + "</pre>");
             prettyPrint();
         }
+        $("#MDDownload").show();
     };
 
     function post() {
+        $("#MDDownload").hide();
+
         if ( settings.requiresValidation == "true" ) {
             if ( !validator.validate() ) {
                 alert(validator.getErrorCount() + " errors, " + validator.getWarningCount() + " warnings");
@@ -272,6 +275,9 @@ var ediml = (function() {
         }
     }
 
+    function downloadMetadata() {
+        var newWindow1 = window.open("data:text/xml," + encodeURIComponent(edi.getGeneratedXml()),"_blank");
+    }
     /**
      * Fills in the HTML form with contents of the EDIML parameter
      *
@@ -567,6 +573,7 @@ var ediml = (function() {
         updateItemForControl: updateItemForControl,
         load: load,
         saveAs: saveAs,
-        edimls: edimls
+        edimls: edimls,
+        downloadMetadata: downloadMetadata
     };
 })();

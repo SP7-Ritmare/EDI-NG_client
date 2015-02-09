@@ -117,11 +117,12 @@ var BoundingBox = (function() {
                 $(container).append(coordinate);
             }
 
-            if ( item.CRSItem ) {
+            if ( true ||  item.CRSItem ) {
+/*
                 $("#" + item.CRSItem).change(function() {
 
                 });
-
+*/
                 $(container).append("<div class='bboxMap map' id='map_" + theItem.id + "'></div>");
                 var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
                 html = $(html);
@@ -191,7 +192,7 @@ var BoundingBox = (function() {
                 // map.removeInteraction(boundingBox);
 
                 boundingBox.on('boxend', function(e){
-                    var epsg = $("#" + item.CRSItem + " option:selected").text();
+                    var epsg = "4326"; // $("#" + item.CRSItem + " option:selected").text();
                     var box = boundingBox.getGeometry().getExtent();
                     var extent = ol.proj.transform(box, 'EPSG:3857', 'EPSG:' + epsg);
                     map.getView().fitExtent(box, map.getSize());

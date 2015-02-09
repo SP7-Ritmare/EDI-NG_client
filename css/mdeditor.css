@@ -434,3 +434,12 @@ element {
     height: 600px;
     clear: both;
 }
+
+#myTab {
+    position: fixed;
+    overflow: auto;
+}
+
+#mdcontent {
+    margin-left: 300px;
+}
