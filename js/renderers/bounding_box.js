@@ -3,10 +3,13 @@
  */
 var BoundingBox = (function() {
     var maps = [];
+//Make sure your bounding box interaction variable is global
+    var boundingBox;
+
 
     function drawBoxOnMap(map, source, extent, epsg) {
         if ( typeof epsg !== "undefined" ) {
-            extent = ol.proj.transform(extent, 'EPSG:' + epsg, 'EPSG:3857');
+            extent = ol.proj.transformExtent(extent, 'EPSG:' + epsg, 'EPSG:3857');
         }
         console.log("drawBoxOnMap");
         console.log(map);
@@ -101,7 +104,7 @@ var BoundingBox = (function() {
                 control.attr("show", item.show);
                 control.attr("id", theItem.id);
                 control.attr("querystringparameter", subItem.queryStringParameter);
-                if (element.isFixed == "true") {
+                if (theItem.isFixed == "true") {
                     control.val(item.hasValue);
                     $(coordinate).addClass("fixed");
                 }
@@ -117,10 +120,52 @@ var BoundingBox = (function() {
                 $(container).append(coordinate);
             }
 
-            if ( item.CRSItem ) {
+            if ( true ||  item.CRSItem ) {
+/*
                 $("#" + item.CRSItem).change(function() {
 
                 });
+*/
+                PanDragControl = function(opt_options) {
+
+                    var options = opt_options || {};
+
+                    var anchor = document.createElement('a');
+                    anchor.href = '#pan-draw';
+                    anchor.innerHTML = 'Panning';
+
+                    var this_ = this;
+                    var handleRotateNorth = function(e) {
+                        // prevent #rotate-north anchor from getting appended to the url
+                        e.preventDefault();
+                        var button = $(".pan-draw");
+                        if ( button.hasClass("mode-draw") ) {
+                            this_.getMap().removeInteraction(boundingBox);
+                            button.find("a").html("Panning");
+                            button.addClass("mode-pan");
+                            button.removeClass("mode-draw");
+                        } else {
+                            this_.getMap().addInteraction(boundingBox);
+                            button.addClass("mode-draw");
+                            button.removeClass("mode-pan");
+                            button.find("a").html("Drawing");
+                        }
+                    };
+
+                    anchor.addEventListener('click', handleRotateNorth, false);
+                    anchor.addEventListener('touchstart', handleRotateNorth, false);
+
+                    var element = document.createElement('div');
+                    element.className = 'pan-draw ol-unselectable mode-pan';
+                    element.appendChild(anchor);
+
+                    ol.control.Control.call(this, {
+                        element: element,
+                        target: options.target
+                    });
+
+                };
+                ol.inherits(PanDragControl, ol.control.Control);
 
                 $(container).append("<div class='bboxMap map' id='map_" + theItem.id + "'></div>");
                 var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
@@ -155,12 +200,29 @@ var BoundingBox = (function() {
                         })
                     })
                 });
+
                 var map = new ol.Map({
                     target: 'map_' + theItem.id,
+                    controls: ol.control.defaults({
+                        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+                            collapsible: false
+                        })
+                    }).extend([
+                        new PanDragControl()
+                    ]),
                     layers: [
 
                         new ol.layer.Tile({
-                            source: new ol.source.MapQuest({layer: 'sat'})
+                            source: new ol.source.MapQuest({layer: 'sat'}),
+                        }),
+                        new ol.layer.Tile({
+                             source: new ol.source.BingMaps({
+                             key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
+                             imagerySet: 'AerialWithLabels'
+                             // use maxZoom 19 to see stretched tiles instead of the BingMaps
+                             // "no photos at this zoom level" tiles
+                             // maxZoom: 19
+                             })
                         }),
                          new ol.layer.Tile({
                             source: new ol.source.OSM(),
@@ -171,9 +233,6 @@ var BoundingBox = (function() {
                     view: view
                 });
                 maps.push(map);
-//Make sure your bounding box interaction variable is global
-                var boundingBox;
-
 //Place this after your map is instantiated
                 boundingBox = new ol.interaction.DragBox({
                     condition: ol.events.condition.always,
@@ -184,24 +243,26 @@ var BoundingBox = (function() {
                     })
                 });
 
-                if (element.isFixed == "false") {
-                    map.addInteraction(boundingBox);
+                if (item.isFixed == "false") {
+                    $("#" + 'map_' + theItem.id).prepend("<span class='oppure'>" + localise("OR") + "</span>");
+                    // map.addInteraction(boundingBox);
                 }
 
                 // map.removeInteraction(boundingBox);
 
                 boundingBox.on('boxend', function(e){
-                    var epsg = $("#" + item.CRSItem + " option:selected").text();
+                    var epsg = "4326"; // $("#" + item.CRSItem + " option:selected").text();
                     var box = boundingBox.getGeometry().getExtent();
-                    var extent = ol.proj.transform(box, 'EPSG:3857', 'EPSG:' + epsg);
+                    var extent = ol.proj.transformExtent(box, 'EPSG:3857', 'EPSG:' + epsg);
                     map.getView().fitExtent(box, map.getSize());
                     console.log(epsg);
+                    console.log(box);
                     console.log(extent);
                     console.log(item.id);
-                    $("#" + item.id + "_westLongitude").val(extent[0]);
-                    $("#" + item.id + "_southLatitude").val(extent[1]);
-                    $("#" + item.id + "_eastLongitude").val(extent[2]);
-                    $("#" + item.id + "_northLatitude").val(extent[3]);
+                    $("#" + item.id + "_westLongitude").val(extent[0]).trigger("change");
+                    $("#" + item.id + "_southLatitude").val(extent[1]).trigger("change");
+                    $("#" + item.id + "_eastLongitude").val(extent[2]).trigger("change");
+                    $("#" + item.id + "_northLatitude").val(extent[3]).trigger("change");
 
                     drawBoxOnMap(map, source, box);
 /*
@@ -226,7 +287,7 @@ var BoundingBox = (function() {
                 })
                 function updateBox() {
                     console.log("updateBox");
-                    var epsg = basename($("#" + item.CRSItem + " option:selected").val());
+                    var epsg = "4326"; // $("#" + item.CRSItem + " option:selected").text();
                     console.log(epsg);
                     var extent = [
                         parseFloat($("#" + item.id + "_westLongitude").val()),

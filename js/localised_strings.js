@@ -34,7 +34,7 @@ var localised_strings = {
             },
             {
                 code: "OR",
-                string: "oppure"
+                string: "OR"
             }
         ],
         en: [
@@ -68,20 +68,26 @@ var localised_strings = {
             },
             {
                 code: "OR",
-                string: "or"
+                string: "OR"
             }
         ]
     };
 
 function localise(string) {
+    /*
     var lang = edi.uiLanguage();
     if ( typeof lang === "undefined" ) {
         lang = "it";
     }
-    for ( var i = 0; i < localised_strings[lang].length; i++ ) {
-        if ( localised_strings[lang][i].code == string ) {
-            return localised_strings[lang][i].string;
+    */
+    var retVal = "";
+    for ( var j = 0; j < Object.keys(localised_strings).length; j++ ) {
+        var lang = Object.keys(localised_strings)[j];
+        for ( var i = 0; i < localised_strings[lang].length; i++ ) {
+            if ( localised_strings[lang][i].code == string ) {
+                retVal += "<span language='" + lang + "'>" + localised_strings[lang][i].string + "</span>";
+            }
         }
     }
-    return string;
+    return retVal;
 }

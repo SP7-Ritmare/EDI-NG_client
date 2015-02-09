@@ -62,6 +62,7 @@ var ediml = (function() {
         console.log(msg);
         if ( msg.responseCode == 200 ) {
             edi.setGeneratedXml(msg.generatedXml);
+            alert("your XML has been correctly generated");
             var xmlString = msg.generatedXml;
             if ( false && xmlString.indexOf("sml:SensorML") >= 0 ) {
                 xmlString = formatXml(xmlString);
@@ -125,12 +126,16 @@ var ediml = (function() {
              newWindow.document.close();
              */
         } else {
+
             $("#mdcontent").prepend("<pre class='prettyprint lang-json'>" + JSON.stringify(msg, undefined, 2) + "</pre>");
             prettyPrint();
         }
+        $("#MDDownload").show();
     };
 
     function post() {
+        $("#MDDownload").hide();
+
         if ( settings.requiresValidation == "true" ) {
             if ( !validator.validate() ) {
                 alert(validator.getErrorCount() + " errors, " + validator.getWarningCount() + " warnings");
@@ -272,6 +277,9 @@ var ediml = (function() {
         }
     }
 
+    function downloadMetadata() {
+        var newWindow1 = window.open("data:text/xml," + encodeURIComponent(edi.getGeneratedXml()),"_blank");
+    }
     /**
      * Fills in the HTML form with contents of the EDIML parameter
      *
@@ -313,13 +321,13 @@ var ediml = (function() {
                         item.datatype = item.dataType;
                     }
                     if ( item.datatype == "codelist" || item.datatype == "query" ) {
-                        $("#" + item.id).val(item.codeValue);
+                        $("#" + item.id).val(item.codeValue).trigger("change");
                     } else if ( item.datatype == "autoCompletion" ) {
-                        $("#" + item.id).val(item.value);
+                        $("#" + item.id).val(item.value).trigger("change");
                         $("#" + item.id + "_uri").val(item.codeValue);
                         $("#" + item.id + "_urn").val(item.urnValue);
                     } else {
-                        $("#" + item.id).val(item.value);
+                        $("#" + item.id).val(item.value).trigger("change");
                     }
                 }
             } else {
@@ -567,6 +575,7 @@ var ediml = (function() {
         updateItemForControl: updateItemForControl,
         load: load,
         saveAs: saveAs,
-        edimls: edimls
+        edimls: edimls,
+        downloadMetadata: downloadMetadata
     };
 })();

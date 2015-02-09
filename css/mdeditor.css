@@ -434,3 +434,35 @@ element {
     height: 600px;
     clear: both;
 }
+
+#myTab {
+    position: fixed;
+    overflow: auto;
+}
+
+#mdcontent {
+    margin-left: 300px;
+}
+
+#mdcontent pre {
+    display: none;
+}
+
+.pan-draw {
+    position: absolute;
+    top: 65px;
+    left: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.mode-pan {
+    content: "Draw";
+    background: rgba(0,255,0,0.4);
+}
+
+.mode-draw {
+    content: "Pan";
+    background: rgba(255,0,0,0.4);
+}

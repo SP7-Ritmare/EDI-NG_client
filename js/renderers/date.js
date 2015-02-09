@@ -16,6 +16,9 @@ var Dates = (function() {
             theItem.id = item.id;
             ItemRenderer.copyAttributesFrom(element, item, theItem);
 
+            if ( item.defaultValue == "$TODAY$" ) {
+                item.defaultValue = $.format.date(new Date(), 'yyyy-MM-dd');
+            }
             theElement.addItem(theItem);
 
             control = $(control);
@@ -44,6 +47,9 @@ var Dates = (function() {
             html.append(labels);
             html.append(control);
             $(this).replaceWith(html);
+            if ( item.defaultValue ) {
+                $(control).datepicker("update", item.defaultValue);
+            }
             /*
             if (item.hasDatatype == "select") {
                 var ds = DataSourcePool.getInstance().findById(item.datasource);

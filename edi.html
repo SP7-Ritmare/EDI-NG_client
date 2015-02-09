@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/mdeditor.css">
         <link rel="stylesheet" href="css/datepicker3.css">
         <link rel="stylesheet" href="css/typeahead.css">
+        <link rel="stylesheet" href="http://openlayers.org/en/v3.2.0/css/ol.css" type="text/css">
 
         <script src="js/defaults.js"></script>
         <script src="js/localised_strings.js"></script>
@@ -44,12 +45,15 @@
         <script src="js/renderers/label.js"></script>
         <script src="js/renderers/textbox.js"></script>
         <script src="js/renderers/bounding_box.js"></script>
+        <script src="js/jquery-dateFormat.min.js"></script>
+
         <script type="text/javascript" src="js/jquery.string.1.1.0-min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script src="js/langs.js"></script>
         <script src="js/spin.js"></script>
-        <script src="http://openlayers.org/en/v3.0.0/build/ol.js"></script>
+        <script src="http://openlayers.org/en/v3.2.0/build/ol.js" type="text/javascript"></script>
+
         <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
         <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
 
@@ -91,11 +95,6 @@
     </head>
     <body>
     <div class="content-wrap">
-        <button class="btn btn-primary" onclick="edi.setLanguage('it');">it</button>
-        <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
-        <button class="btn btn-danger" onclick="toggleEDIML(this);">show EDIML</button>
-        <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
-        <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
         <div id="mdcontent"></div>
         <div id="ediml">
 
@@ -103,11 +102,22 @@
         <div class="container">
                 <h1>RITMARE EDI <span id="template-version"></span></h1>
                 <script> var elements = []; </script>
-                <button class="btn btn-primary" id="sendMetadata">send metadata</button>
-                <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
                 <div class="row">
                     <div class="tabbable tabs-left">
                         <ul id="myTab" class="nav nav-tabs">
+                            <button class="btn btn-primary" onclick="edi.setLanguage('it');">it</button>
+                            <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
+                            <br>
+                            <button class="btn btn-danger" onclick="toggleEDIML(this);">show EDIML</button>
+                            <br>
+                            <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
+                            <br>
+                            <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
+                            <br>
+                            <button class="btn btn-danger" style="display: none;" id="MDDownload" onclick="ediml.downloadMetadata();">download generated XML</button>
+                            <br>
+                            <button class="btn btn-primary" id="sendMetadata">send metadata</button>
+                            <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
                         </ul>
                         <article class="span8" id="mdcontent">
                             <div id="theForm">
