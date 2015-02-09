@@ -443,3 +443,7 @@ element {
 #mdcontent {
     margin-left: 300px;
 }
+
+#mdcontent pre {
+    display: none;
+}
