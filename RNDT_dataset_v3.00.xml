@@ -833,7 +833,7 @@
           <label xml:lang="it">Data</label>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date</hasPath>
           <isFixed>false</isFixed>
-          <defaultValue>$TODAY$</defaultValue>
+          <hasValue>$TODAY$</hasValue>
           <hasDatatype>date</hasDatatype>
         </item>
         <item>

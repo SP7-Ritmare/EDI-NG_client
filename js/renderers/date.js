@@ -51,22 +51,22 @@ var Dates = (function() {
                 $(control).datepicker("update", item.defaultValue);
             }
             /*
-            if (item.hasDatatype == "select") {
-                var ds = DataSourcePool.getInstance().findById(item.datasource);
-                ds.addEventListener("selectionChanged", function (event) {
-                    console.log(event + " received");
-                    var row = ds.getCurrentRow();
-                    $("#" + item.id).val(row[item.field]);
-                });
-            }
-            if (item.hasDatatype == "copy") {
-                console.log(item.id);
-                $("#" + item.item).change(function (event) {
-                    console.log(event + " received");
-                    $("#" + item.id).val($(this).val());
-                });
-            }
-            */
+             if (item.hasDatatype == "select") {
+             var ds = DataSourcePool.getInstance().findById(item.datasource);
+             ds.addEventListener("selectionChanged", function (event) {
+             console.log(event + " received");
+             var row = ds.getCurrentRow();
+             $("#" + item.id).val(row[item.field]);
+             });
+             }
+             if (item.hasDatatype == "copy") {
+             console.log(item.id);
+             $("#" + item.item).change(function (event) {
+             console.log(event + " received");
+             $("#" + item.id).val($(this).val());
+             });
+             }
+             */
         });
     }
 
