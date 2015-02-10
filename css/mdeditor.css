@@ -458,14 +458,27 @@ element {
 }
 
 .mode-pan {
+    background-color: rgba(0, 60, 136, 0.5);
+    margin: 1px;
+}
+
+.mode-pan a {
+    text-decoration: none;
 }
 
 .mode-draw {
+    background-color: rgba(0, 60, 136, 0.5);
+    margin: 1px;
+}
+
+.mode-draw a {
+    text-decoration: none;
 }
 
 .active-mode {
+    color: white;
 }
 
 .inactive-mode {
-    color: rgba(3, 3, 3, .2);
+    color: rgba(0, 60, 136, 0.4);
 }
