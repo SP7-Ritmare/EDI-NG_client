@@ -132,7 +132,7 @@ var BoundingBox = (function() {
 
                     var anchor = document.createElement('a');
                     anchor.href = '#pan-draw';
-                    anchor.innerHTML = 'Panning';
+                    anchor.innerHTML = "<span class='active-mode'>Pan</span>/<span class='inactive-mode'>Draw</span>";
 
                     var this_ = this;
                     var handleRotateNorth = function(e) {
@@ -141,14 +141,14 @@ var BoundingBox = (function() {
                         var button = $(".pan-draw");
                         if ( button.hasClass("mode-draw") ) {
                             this_.getMap().removeInteraction(boundingBox);
-                            button.find("a").html("Panning");
+                            button.find("a").html("<span class='active-mode'>Pan</span>/<span class='inactive-mode'>Draw</span>");
                             button.addClass("mode-pan");
                             button.removeClass("mode-draw");
                         } else {
                             this_.getMap().addInteraction(boundingBox);
+                            button.find("a").html("<span class='inactive-mode'>Pan</span>/<span class='active-mode'>Draw</span>");
                             button.addClass("mode-draw");
                             button.removeClass("mode-pan");
-                            button.find("a").html("Drawing");
                         }
                     };
 
@@ -212,6 +212,7 @@ var BoundingBox = (function() {
                     ]),
                     layers: [
 
+                        /*
                         new ol.layer.Tile({
                             source: new ol.source.MapQuest({layer: 'sat'}),
                         }),
@@ -224,9 +225,10 @@ var BoundingBox = (function() {
                              // maxZoom: 19
                              })
                         }),
+                        */
                          new ol.layer.Tile({
                             source: new ol.source.OSM(),
-                             opacity: 0.5
+                             opacity: 1.0
                          }),
                         vector
                     ],

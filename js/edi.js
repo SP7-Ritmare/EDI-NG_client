@@ -378,11 +378,13 @@ var edi = (function() {
             }
 
             console.log(self.attr("id") + " = " + self.val());
+            /*
             if ( self.attr("required") && self.val() == null ) {
                 self.val($("#" + self.attr("id") + " option:first-child").val());
                 console.log(self.attr("id") + " -> first item in combo");
                 toBeRefreshed.push(self.attr("id"));
             }
+            */
         });
         for ( var i = 0; i < toBeRefreshed.length; i++ ) {
             // console.log(toBeRefreshed);

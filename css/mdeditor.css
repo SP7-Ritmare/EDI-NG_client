@@ -253,6 +253,7 @@ element {
 }
 .element {
     border: 0px solid #ff3300;
+    margin-top: 15px;
 }
 .hidden {
     display: none;
@@ -437,7 +438,7 @@ element {
 
 #myTab {
     position: fixed;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #mdcontent {
@@ -458,11 +459,14 @@ element {
 }
 
 .mode-pan {
-    content: "Draw";
-    background: rgba(0,255,0,0.4);
 }
 
 .mode-draw {
-    content: "Pan";
-    background: rgba(255,0,0,0.4);
-}   
+}
+
+.active-mode {
+}
+
+.inactive-mode {
+    color: rgba(3, 3, 3, .2);
+}
