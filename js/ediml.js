@@ -186,8 +186,7 @@ var ediml = (function() {
             $.ajax({
                 type     : "GET",
                 url      : metadataEndpoint + "rest/ediml/requestId",
-                contentType: "application/json",
-                processData: true,
+                dataType : "json",
                 success  : postMetadata,
                 error    : function() {
                     alert("error on " + metadataEndpoint + "rest/ediml/requestId");

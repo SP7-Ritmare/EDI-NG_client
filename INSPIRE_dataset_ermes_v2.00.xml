@@ -5,7 +5,7 @@
       <byItem>ling_md_1</byItem>
     </languageSelection>
     <!-- <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint> -->
-    <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
+    <metadataEndpoint>http://localhost:8081/EDI-T/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
     <requiresValidation>true</requiresValidation>
@@ -427,7 +427,7 @@
           <isFixed>true</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>scopes</datasource>
-          <hasValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</hasValue>
+          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</defaultValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -623,7 +623,6 @@
           <datasource>ERMESproducts</datasource>
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
-          <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
     </element>
