@@ -34,7 +34,7 @@ var localised_strings = {
             },
             {
                 code: "OR",
-                string: "OR"
+                string: "oppure"
             }
         ],
         en: [

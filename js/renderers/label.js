@@ -29,9 +29,9 @@ var Label = (function() {
             control.attr("id", $(this).attr("id"));
             control.attr("querystringparameter", item.queryStringParameter);
             if (item.isFixed == "true") {
-                control.val(item.hasValue);
                 control.addClass("fixed");
             }
+            control.text(item.hasValue);
             if (element.isMandatory != "NA") {
                 control.attr("required", "required");
             }

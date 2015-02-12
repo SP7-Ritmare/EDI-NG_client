@@ -131,6 +131,7 @@ var ediml = (function() {
             prettyPrint();
         }
         $("#MDDownload").show();
+        $("#EDIMLDownload").show();
     };
 
     function post() {
@@ -151,7 +152,6 @@ var ediml = (function() {
 
             content.elements.fileId = data.id;
             content.elements.fileUri = metadataEndpoint + "rest/ediml/" + data.uri;
-            xml = '<?xml version="1.0" encoding="UTF-8"?>' + xml;
             if ( typeof successCallback == 'undefined' ) {
                 successCallback = defaultPostSuccessCallback;
             }
@@ -251,6 +251,7 @@ var ediml = (function() {
             }
         } else {
             // Sorry! No Web Storage support..
+            alert("No local storage");
         }
     }
 
@@ -273,12 +274,34 @@ var ediml = (function() {
             console.log(edimls);
         } else {
             // Sorry! No Web Storage support..
+            alert("No local storage");
+        }
+    }
+
+    function saveFileAs(uri, filename) {
+        var link = document.createElement('a');
+        if (typeof link.download === 'string') {
+            document.body.appendChild(link); //Firefox requires the link to be in the body
+            link.download = filename;
+            link.href = uri;
+            link.click();
+            document.body.removeChild(link); //remove the link when done
+        } else {
+            location.replace(uri);
         }
     }
 
     function downloadMetadata() {
-        var newWindow1 = window.open("data:text/xml," + encodeURIComponent(edi.getGeneratedXml()),"_blank");
+        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(edi.getGeneratedXml()), "generated_" + content.elements.fileId + ".xml");
     }
+
+    function downloadEDIML() {
+        var x2js = new X2JS();
+        var xml = /* '<?xml version="1.0" encoding="UTF-8"?>' + */ (x2js.json2xml_str(content));
+
+        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(xml),"ediml_" + content.elements.fileId + ".xml");
+    }
+
     /**
      * Fills in the HTML form with contents of the EDIML parameter
      *
@@ -322,7 +345,7 @@ var ediml = (function() {
                     if ( item.datatype == "codelist" || item.datatype == "query" ) {
                         $("#" + item.id).val(item.codeValue).trigger("change");
                     } else if ( item.datatype == "autoCompletion" ) {
-                        $("#" + item.id).val(item.value).trigger("change");
+                        $("#" + item.id).val(item.value);
                         $("#" + item.id + "_uri").val(item.codeValue);
                         $("#" + item.id + "_urn").val(item.urnValue);
                     } else {
@@ -575,6 +598,7 @@ var ediml = (function() {
         load: load,
         saveAs: saveAs,
         edimls: edimls,
-        downloadMetadata: downloadMetadata
+        downloadMetadata: downloadMetadata,
+        downloadEDIML: downloadEDIML
     };
 })();
