@@ -219,6 +219,14 @@
           <hasDatatype>URN</hasDatatype>
           <hasValue>auto</hasValue>
         </item>
+        <item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:Pippo</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <show>label</show>
+          <hasValue>ERMES</hasValue>
+        </item>
 
       </produces>
     </element>

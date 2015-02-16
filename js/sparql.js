@@ -45,9 +45,11 @@ var SPARQL = (function(url, endpointType) {
             language = "it";
         }
         var newQuery = query.toString().replace(/\$lang\$/g, language);
+        console.log(endpointType);
         $.ajax({
             url: virtuosoUrl,
-            type: "get",
+            type: endpointType.parameters.method,
+            accepts: endpointType.parameters.contentType.json,
             dataType: "jsonp",
             crossDomain: true,
             /*
@@ -67,7 +69,7 @@ var SPARQL = (function(url, endpointType) {
             error: function() {
                 console.log(arguments);
                 if ( typeof errorCallback === "function") {
-                    errorCallback(data);
+                    errorCallback(arguments);
                 }
             }
         });
@@ -80,7 +82,8 @@ var SPARQL = (function(url, endpointType) {
         var sparqlQuery = getSparqlQuery(uri, language);
         $.ajax({
             url: virtuosoUrl,
-            type: "get",
+            type: endpointType.parameters.method,
+            contentType: endpointType.parameters.contentType.json,
             dataType: "jsonp",
             /*
             data: {

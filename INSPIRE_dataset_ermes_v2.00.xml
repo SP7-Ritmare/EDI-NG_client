@@ -4,8 +4,8 @@
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-    <!-- <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint> -->
-    <metadataEndpoint>http://localhost:8081/EDI-T/</metadataEndpoint>
+    <!-- <metadataEndpoint>https://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint> -->
+    <metadataEndpoint>http://10.0.1.254:8081/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
     <requiresValidation>true</requiresValidation>

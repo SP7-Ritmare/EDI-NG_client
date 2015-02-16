@@ -157,7 +157,9 @@ var edi = (function() {
                 }).bind('typeahead:selected', function(obj, datum, name) {
                     $("#" + id + "_uri").val(datum.c).trigger("change");
                     $("#" + id + "_urn").val(datum.urn);
-                    var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
+                    var item = ediml.findItemById(id);
+//                    var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
+                    var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
                 }).blur(function(event) {
                     console.log("Changed: " + event.target.value);
@@ -166,6 +168,7 @@ var edi = (function() {
                         $("#" + id + "_uri").trigger("change");
                         $("#" + id + "_urn").val();
                         $("#" + id + "_urn").trigger("change");
+                        var item = ediml.findItemById(id);
                         ediml.updateItemForControl($("#" + id));
                         var ds = DataSourcePool.getInstance().findById(item.datasource);
                         ds.setCurrentRow("c", -1);
