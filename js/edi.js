@@ -397,6 +397,7 @@ var edi = (function() {
             $(toBeRefreshed[i]).change();
         }
         $(".container").removeClass("loading");
+        ediml.setDirty(false);
 
     }
 
@@ -646,6 +647,7 @@ var edi = (function() {
     function onTemplateLoaded(template, version, data) {
         settings = data.settings;
         $("#template-version").text(template + " v" + version);
+        $("title", "head").text(template + " v" + version)
         $("#debug").append("<p>template loaded</p>");
 
         data = fixOneItemArrays(data);
@@ -814,7 +816,7 @@ var edi = (function() {
         // $(".container").addClass("loading");
         $.ajax({
                    // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
-                   url: template + "_v" + version + ".xml?__=" + Math.random(),
+                   url: "templates/" + template + "_v" + version + ".xml?__=" + Math.random(),
                    type: "get",
                    dataType: "xml",
                    success: function(data) {
@@ -859,8 +861,64 @@ var edi = (function() {
         });
     }
 
-    // Initialisation code
+    function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
 
+        var confirmModal =
+            $('<div class="modal hide fade">' +
+            '<div class="modal-header">' +
+            '<a class="close" data-dismiss="modal" >&times;</a>' +
+            '<h3>' + heading +'</h3>' +
+            '</div>' +
+
+            '<div class="modal-body">' +
+            '<p>' + question + '</p>' +
+            '</div>' +
+
+            '<div class="modal-footer">' +
+            '<a href="#" class="btn" data-dismiss="modal">' +
+            cancelButtonTxt +
+            '</a>' +
+            '<a href="#" id="okButton" class="btn btn-primary">' +
+            okButtonTxt +
+            '</a>' +
+            '</div>' +
+            '</div>');
+
+        confirmModal.find('#okButton').click(function(event) {
+            callback();
+            confirmModal.modal('hide');
+        });
+
+        confirmModal.modal('show');
+    };
+
+    // Initialisation code
+    if ( querystring("debug") == "on" ) {
+        $(document).ready(function() {
+            $(".debug").removeClass("debug");
+        });
+    }
+    $(window).bind("beforeunload", function(e) {
+        console.error("unload " + ediml.isDirty());
+        if ( ediml.isDirty() ) {
+            console.error("is dirty");
+            /*
+            // e.preventDefault();
+            var heading = 'Leaving unsaved page';
+            var question = 'Please confirm that you wish to leave this page without posting it.';
+            var cancelButtonTxt = 'Cancel';
+            var okButtonTxt = 'Confirm';
+
+            var callback = function() {
+                alert('Ok, see you later');
+                return "later";
+            };
+
+            confirm(heading, question, cancelButtonTxt, okButtonTxt, callback);
+            */
+            return "hey";
+        }
+    });
 
     return {
         cloneSuffix: cloneSuffix,

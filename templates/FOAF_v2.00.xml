@@ -35,6 +35,7 @@
         <fname>undefined</fname>
       </parameters>
     </endpointType>
+
     <endpointType>
       <id>pubs_endpoint</id>
       <method>GET</method>
@@ -44,6 +45,7 @@
         <output>json</output>
       </parameters>
     </endpointType>
+
   </endpointTypes>
   <datasources>
     <datasource>
@@ -214,8 +216,29 @@
     <datasource>
       <id>networks</id>
       <uri>http://ritmare.it/rdfdata/thesauri/accountServices</uri>
+      
+      <singleton>false</singleton>
+      <endpointType>virtuoso</endpointType>
+      <query>
+        <![CDATA[
+            SELECT DISTINCT ?c ?l
+            WHERE {
+                ?t skos:inScheme <http://ritmare.it/rdfdata/thesauri/accountServices> .
+                ?t foaf:accountServiceHomepage ?c .
+                ?t skos:prefLabel ?l .
+                FILTER( LANG(?l) = 'en' ) 
+            }
+            LIMIT 10
+        ]]>
+      </query>
+      <!-- <triggerItem>webid_1</triggerItem> -->
+      <type>
+        sparql
+      </type>
+      <!--
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
+      -->
     </datasource>
     <datasource>
       <id>knows</id>
@@ -270,7 +293,8 @@
       </query>
       -->
       <query>
-        <![CDATA[PREFIX d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#>
+        <![CDATA[
+          PREFIX d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#>
           PREFIX swrc: <http://swrc.ontoware.org/ontology#>
           PREFIX dcterms: <http://purl.org/dc/terms/>
           PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -343,7 +367,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>code</hasDatatype>
           <datasource>networks</datasource>
-	  <useUri>true</useUri>
+	        <useCode>true</useCode>
           <show>combobox</show>
         </item>
       </produces>
@@ -444,7 +468,8 @@
           <isFixed>false</isFixed>
           <show>combobox</show>
           <datasource>institutes</datasource>
-          <hasDatatype>copy</hasDatatype>
+          <hasDatatype>select</hasDatatype>
+          <defaultValue>http://sp7.irea.cnr.it/rdfdata/project/IREA</defaultValue>
           <!-- <itemId>dati_personali_7</itemId> -->
         </item>
       </produces>
@@ -504,13 +529,13 @@
           <label xml:lang="it">Nazione</label>
           <label xml:lang="en">Country</label>
           <hasIndex>4</hasIndex>
-          <hasPath>/foaf:Person/vcard:hasAddress/vcard:country</hasPath>
+          <hasPath>/rdf:RDF/foaf:Person/vcard:hasAddress/vcard:country/@rdf:resource</hasPath>
           <isFixed>false</isFixed>
           <show>combobox</show>
           <datasource>countries</datasource>
           <hasDatatype>select</hasDatatype>
-          <isLanguageNeutral>true</isLanguageNeutral>
-          <!-- <itemId>address_4</itemId> -->
+          <!-- <useCode>true</useCode> -->
+          <defaultValue>http://eulersharp.sourceforge.net/2003/03swap/countries#it</defaultValue>
         </item>      
       </produces>
     </element>
@@ -519,7 +544,7 @@
     <id>ambiti</id>
     <label xml:lang="it">Ambiti di ricerca</label>
     <label xml:lang="en">Research areas</label>
-<!--
+    <!--
     <element>
       <id>ambito</id>
       <label xml:lang="it">Ambito</label>
@@ -539,7 +564,7 @@
         </item>
       </produces>
     </element>
--->
+    -->
     <element>
       <id>keyword</id>
       <label xml:lang="it">Parola chiave</label>

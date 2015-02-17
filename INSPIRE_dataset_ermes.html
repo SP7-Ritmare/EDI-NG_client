@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
-    <title>RITMARE EDI RNDT v2.00</title>
+    <title>RITMARE EDI</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <!--
@@ -62,7 +62,7 @@
             console.log("fatto");
         }
         $(document).ready(function() {
-            edi.loadLocalTemplate("FOAF", "2.00", onTemplateLoaded);
+            edi.loadLocalTemplate("INSPIRE_dataset_ermes", "2.00", onTemplateLoaded);
 
             $("#ediml").hide();
             $("#sendMetadata").click(ediml.post);
