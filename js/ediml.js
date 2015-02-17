@@ -14,6 +14,7 @@ var ediml = (function() {
     var metadataEndpoint;
     var settings;
     var edimls = {};
+    var isDirty = false;
 
     var content = {
         elements: {
@@ -61,6 +62,7 @@ var ediml = (function() {
         // doDebug("Ricevuto: " + xmlToString(msg));
         console.log(msg);
         if ( msg.responseCode == 200 ) {
+            isDirty = false;
             edi.setGeneratedXml(msg.generatedXml);
             alert("your XML has been correctly generated");
             var xmlString = msg.generatedXml;
@@ -501,6 +503,7 @@ var ediml = (function() {
 
     function update(item) {
         // item = this;
+        isDirty = true;
         var selector = "#" + item.id;
         if ( item.datatype == "code" || item.datatype == "codelist" || item.datatype == "query" ) {
             item.value = $("#" + $(selector).attr("id") + " option:selected").text();
@@ -582,6 +585,12 @@ var ediml = (function() {
 
     return {
         content: content,
+        isDirty: function() {
+            return isDirty;
+        },
+        setDirty: function(value) {
+            isDirty = value;
+        },
         addElement: addElement,
         removeElement: removeElement,
         getElement: getElement,
