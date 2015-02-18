@@ -198,6 +198,11 @@ var edi = (function() {
             ediml.removeElement(element_id);
             // doDebug(elements);
         });
+
+        newDiv.find("select:not(.fixed)").each(function () {
+            $(this).val("");
+        });
+
         newDiv.find("*[defaultValue]").each(function() {
             // console.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));

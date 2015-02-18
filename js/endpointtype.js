@@ -8,7 +8,7 @@ var EndpointType = function(params) {
         method: "GET",
         queryParameter: "query",
         contentType: {
-            json: "application/sparql-results+json; charset=utf-8, application/json; charset=utf-8",
+            json: "application/sparql-results+json;charset=utf-8,application/json;charset=utf-8",
             jsonp: "application/sparql-results+json; charset=utf-8, application/json; charset=utf-8"
         },
         parameters: {}
