@@ -72,6 +72,16 @@ var DataSourcePool = (function(){
                 console.log(results);
                 return results;
             },
+            findByElementId: function(element_id) {
+                var results = [];
+                var element = ediml.getElement(element_id);
+                for ( var i = 0; i < element.items.item.length; i++ ) {
+                    if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
+                        results.push(this.findById(element.items.item[i].datasource));
+                    }
+                }
+                return results;
+            },
             duplicateDatasource: function duplicate(id, newTriggerItem, newSearchItem) {
                 var newId = generateNewId(id);
                 var ds = DataSourcePool.getInstance().findById(id);

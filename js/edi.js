@@ -84,7 +84,7 @@ var edi = (function() {
         // end of quick and dirty fix
         div.after(newDiv);
 
-        var relevantDatasources = DataSourcePool.getInstance().findByTriggeredItemInElement(element_id);
+        var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
         if ( $.isArray(relevantDatasources) ) {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
                 var datasource = relevantDatasources[i];
@@ -95,7 +95,7 @@ var edi = (function() {
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
-                newDiv.find("*[datatype='select']", "*[datasource='" + id + "']").each(function(){
+                newDiv.find("*[datatype='select']", "*[datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
                     var theId = $(this).attr("id");
                     var field = $(this).attr("field");
@@ -105,7 +105,7 @@ var edi = (function() {
                         var ds = DataSourcePool.getInstance().findById(newDsId);
                         console.log(event + " received by " + theId);
                         var row = ds.getCurrentRow();
-                        if ( row ) {
+                        if (row) {
                             $("#" + theId).val(row[field]).trigger("change");
                         } else {
                             $("#" + theId).val("").trigger("change");
@@ -114,6 +114,9 @@ var edi = (function() {
                     });
                     ds.refresh();
                 });
+                newDiv.find("*[datatype='autoCompletion']", "*[datasource='" + id + "']").each(function () {
+                    $(this).attr("datasource", newDsId);
+                });
             }
         }
 
@@ -121,7 +124,14 @@ var edi = (function() {
         if ( updateEdiml ) {
             ediml.duplicateElement(element_id, newId);
         }
-        newDiv.find(".datepicker").datepicker({
+        newDiv.find("*[datatype='autoCompletion']", "*[datasource]").each(function () {
+            var item = ediml.findItemById($(this).attr("id"));
+            if ( item ) {
+                item.datasource = $(this).attr("datasource");
+            }
+        });
+
+            newDiv.find(".datepicker").datepicker({
             format: "yyyy-mm-dd"
         }).on('changeDate', function(ev) {
             // $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
@@ -158,6 +168,7 @@ var edi = (function() {
                     $("#" + id + "_uri").val(datum.c).trigger("change");
                     $("#" + id + "_urn").val(datum.urn);
                     var item = ediml.findItemById(id);
+                    item.datasource = self.attr("datasource");
 //                    var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
@@ -580,7 +591,7 @@ var edi = (function() {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
         navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' " + /* "data-toggle='tab'" + */"></a></li>");
-        form.append("<div id='" + group.id + "' " /* + "class='" + ( groupCounter++ == 0 ? " active" : "") */ + "'>");
+        form.append("<div id='" + group.id + "' " /* + "class='" + ( groupCounter++ == 0 ? " active" : "") */ + ">");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
         for ( var j = 0; j < group.label.length; j++ ) {
