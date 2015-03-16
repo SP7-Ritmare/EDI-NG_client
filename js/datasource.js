@@ -266,7 +266,17 @@ var DataSource = function(params) {
         setCurrentRow: setCurrentRow,
         getCurrentRow: function() {
             // console.log("current row is " + currentRow);
-            return resultSet[currentRow];
+            var temp;
+            if ( resultSet && currentRow != -1 ) {
+                temp = resultSet[currentRow];
+            } else {
+                console.error("ds: " + parameters.id);
+                console.error(this);
+                console.error("resultSet: ");
+                console.error(resultSet );
+                console.error("currentRow: " + currentRow );
+            }
+            return temp;
         },
         setSearchItem: function(value) {
             parameters.searchItem = value;

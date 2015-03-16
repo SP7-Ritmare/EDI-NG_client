@@ -59,13 +59,17 @@ var edi = (function() {
     function duplicateElement(element_id, newId, updateEdiml) {
         var div = $("div[represents_element='" + element_id + "']:last");
         element_id = div.attr("id");
-        newId = div.attr("id") + cloneSuffix;
+        var theNewId = div.attr("id") + cloneSuffix;
         var found = false;
 
         // doDebug("duplicating " + element_id);
         var newDiv = div.clone();
-        var newDivString = String(newDiv.html());
-        newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
+        // Fix all id names
+        newDiv.find("*[id^='" + element_id + "']").each(function() {
+            $(this).attr("id", $(this).attr("id").replaceAll(element_id, theNewId));
+        });
+        // var newDivString = String(newDiv.html());
+        // newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
         newDiv.find('.duplicator').remove();
 
         newDiv.find('button[removes]').remove();
@@ -85,24 +89,29 @@ var edi = (function() {
         div.after(newDiv);
 
         var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
+        console.log(relevantDatasources);
         if ( $.isArray(relevantDatasources) ) {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
                 var datasource = relevantDatasources[i];
                 var id = datasource.getId();
-                var newTriggerItem = datasource.parameters.triggerItem.replace(element_id, newId);
-                var newSearchItem = datasource.parameters.searchItem.replace(element_id, newId);
+                var newTriggerItem = ( datasource.parameters.triggerItem ? datasource.parameters.triggerItem.replace(element_id, newId) : undefined );
+                var newSearchItem = ( datasource.parameters.searchItem ? datasource.parameters.searchItem.replace(element_id, newId) : undefined );
                 var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
-                newDiv.find("*[datatype='select']", "*[datasource='" + id + "']").each(function () {
+                newDiv.find("*[datatype='select'][datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
                     var theId = $(this).attr("id");
                     var field = $(this).attr("field");
+                    var theDsId = newDsId;
                     var ds = DataSourcePool.getInstance().findById(newDsId);
-                    console.log("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
+
+                    console.error("turning datasource for " + theId + " from " + id + " to " + newDsId);
+
+                    console.error("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
                     ds.addEventListener("selectionChanged", function (event) {
-                        var ds = DataSourcePool.getInstance().findById(newDsId);
+                        var ds = DataSourcePool.getInstance().findById(theDsId);
                         console.log(event + " received by " + theId);
                         var row = ds.getCurrentRow();
                         if (row) {
@@ -112,9 +121,10 @@ var edi = (function() {
                         }
 
                     });
+                    console.error("refreshing ds " + ds.parameters.id);
                     ds.refresh();
                 });
-                newDiv.find("*[datatype='autoCompletion']", "*[datasource='" + id + "']").each(function () {
+                newDiv.find("*[datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
                 });
             }
@@ -124,7 +134,7 @@ var edi = (function() {
         if ( updateEdiml ) {
             ediml.duplicateElement(element_id, newId);
         }
-        newDiv.find("*[datatype='autoCompletion']", "*[datasource]").each(function () {
+        newDiv.find("*[datatype='autoCompletion'][datasource]").each(function () {
             var item = ediml.findItemById($(this).attr("id"));
             if ( item ) {
                 item.datasource = $(this).attr("datasource");

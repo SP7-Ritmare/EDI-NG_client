@@ -7,10 +7,10 @@ var DataSourcePool = (function(){
         var language = "it";
         var notifyListeners = true;
 
-        function setDatasourceTrigger(elementId, datasource) {
-            console.log("setting trigger on " + elementId + " for datasource " + datasource.getId());
-            $("#" + elementId).change(function() {
-                console.log(elementId + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
+        function setDatasourceTrigger(item, datasource) {
+            console.log("setting trigger on element " + item + " for datasource " + datasource.getId());
+            $("#" + item).change(function() {
+                console.log(item + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
 
                 datasource.refresh(false);
             });
@@ -77,6 +77,7 @@ var DataSourcePool = (function(){
                 var element = ediml.getElement(element_id);
                 for ( var i = 0; i < element.items.item.length; i++ ) {
                     if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
+                        var ds = this.findById(element.items.item[i].datasource);
                         results.push(this.findById(element.items.item[i].datasource));
                     }
                 }
@@ -90,8 +91,11 @@ var DataSourcePool = (function(){
                 newPars.triggerItem = newTriggerItem;
                 newPars.searchItem = newSearchItem;
                 newPars.cloned = true;
+                console.error("duplicating ds " + id + " as " + newId);
                 var newDs = new DataSource(newPars);
-                setDatasourceTrigger(newTriggerItem, newDs);
+                if ( newTriggerItem ) {
+                    setDatasourceTrigger(newTriggerItem, newDs);
+                }
                 return newDs;
             },
             getListeners: function() {
