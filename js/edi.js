@@ -223,6 +223,9 @@ var edi = (function() {
         newDiv.find("select:not(.fixed)").each(function () {
             $(this).val("");
         });
+        newDiv.find("input:not(.fixed)").each(function () {
+            $(this).val("");
+        });
 
         newDiv.find("*[defaultValue]").each(function() {
             // console.log(this + " -> " + $(this).attr("defaultValue"));
