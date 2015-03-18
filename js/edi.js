@@ -87,6 +87,13 @@ var edi = (function() {
         });
         // end of quick and dirty fix
         div.after(newDiv);
+        newDiv.find("select:not(.fixed)").each(function () {
+            $(this).val("");
+        });
+        newDiv.find("input:not(.fixed)").each(function () {
+            $(this).val("");
+        });
+
 
         var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
         console.log(relevantDatasources);
@@ -218,13 +225,6 @@ var edi = (function() {
             div.remove();
             ediml.removeElement(element_id);
             // doDebug(elements);
-        });
-
-        newDiv.find("select:not(.fixed)").each(function () {
-            $(this).val("");
-        });
-        newDiv.find("input:not(.fixed)").each(function () {
-            $(this).val("");
         });
 
         newDiv.find("*[defaultValue]").each(function() {
