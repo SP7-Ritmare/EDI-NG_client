@@ -691,27 +691,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
-                        SELECT ?c ?l ?a ?urn                       
-                        FROM <http://ritmare.it/rdfdata/parameters>
-                        WHERE { 
-                          ?c rdf:type skos:Concept.
-                          OPTIONAL {
-                            ?c skos:notation ?urn. 
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = 'en') 
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?a.
-                            FILTER( LANG(?a) = 'it') 
-                          }
-                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
+                    <datasource>intended_applications</datasource>
                     <label xml:lang="it">Parola chiave dell&apos;applicazione</label>
                     <label xml:lang="en">Key words of the intended application</label>
                 </item>
@@ -773,27 +753,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-                        SELECT ?c ?l ?a ?urn
-                        WHERE { 
-                          ?c rdf:type skos:Concept.
-                          ?c skos:inScheme <http://vocab.nerc.ac.uk/collection/L05/current/>.
-                          OPTIONAL {
-                            ?c skos:notation ?urn.
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?a.
-                            FILTER( LANG(?a) = "it")
-                          }
-                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
+                    <datasource>type_of_systems</datasource>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
