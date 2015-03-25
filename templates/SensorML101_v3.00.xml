@@ -66,7 +66,7 @@
             <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=1.00</xslt>
         </xsltChain>
     </settings>
-    
+
     <!-- ENDPOINT TYPES -->
     <endpointTypes>
         <endpointType>
@@ -80,7 +80,7 @@
             </parameters>
         </endpointType>
     </endpointTypes>
-    
+
     <!-- DATA SOURCES -->
     <datasources>
         <datasource>
@@ -132,7 +132,7 @@
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
                         }
                         ORDER BY ASC(?l)                        
-                        ]]> 
+                        ]]>
             </query>
             <searchItem>...</searchItem>
             <type> sparql </type>
@@ -309,7 +309,7 @@
             <type>virtuosoCodelist</type>
         </datasource>
     </datasources>
-    
+
     <!-- GROUP -->
     <!-- =========== -->
     <!-- Description -->
@@ -317,11 +317,11 @@
     <group>
         <id>desc</id>
         <label xml:lang="it">Descrizione del sistema/piattaforma/singolo sensori</label>
-        <help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema, denominandolo
-            e descrivendone genericamente le caratteristiche</help>
+        <help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema,
+            denominandolo e descrivendone genericamente le caratteristiche</help>
         <label xml:lang="en">Description of system/platform/single sensor</label>
-        <help xml:lang="en">Means of providing a description of system, a name and describing general
-            characteristics</help>
+        <help xml:lang="en">Means of providing a description of system, a name and describing
+            general characteristics</help>
         <!-- gml:id -->
         <element>
             <id>sensor_id</id>
@@ -349,24 +349,24 @@
             <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
             <label xml:lang="it">Descrizione del sistema</label>
             <help xml:lang="it">&#200; il nome e la descrizione con cui chi metadata identifica il
-                sensore. Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome
-                con cui il costruttore identifica il sensore (es. Sensirion STH15, SBE 37-IM, MicroCAT, CTP
-                Recorder, ecc.).</help>
+                sensore. Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
+                il nome con cui il costruttore identifica il sensore (es. Sensirion STH15, SBE
+                37-IM, MicroCAT, CTP Recorder, ecc.).</help>
             <label xml:lang="en">System name and description</label>
-            <help xml:lang="en">Name and description assigned by the authority that manages the system and
-                that identifies</help>
+            <help xml:lang="en">Name and description assigned by the authority that manages the
+                system and that identifies</help>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>2</outIndex>
                     <label xml:lang="it">Nome del sistema</label>
-                    <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore. Deve essere
-                        breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome con cui il
-                        costruttore identifica il sensore (es. Sensirion STH15, SBE 37-IM, MicroCAT, CTP
-                        Recorder, ecc.).</help>
+                    <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore.
+                        Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
+                        il nome con cui il costruttore identifica il sensore (es. Sensirion STH15,
+                        SBE 37-IM, MicroCAT, CTP Recorder, ecc.).</help>
                     <label xml:lang="en">System name</label>
-                    <help xml:lang="en">Name assigned by the authority that manages the system and that
-                        identifies</help>
+                    <help xml:lang="en">Name assigned by the authority that manages the system and
+                        that identifies</help>
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
@@ -376,11 +376,11 @@
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
                     <label xml:lang="it">Descrizione sistema</label>
-                    <help xml:lang="it">Contiene una semplice descrizione testuale del sistema, della
-                        piattaforma o del sensore.</help>
+                    <help xml:lang="it">Contiene una semplice descrizione testuale del sistema,
+                        della piattaforma o del sensore.</help>
                     <label xml:lang="en">Description</label>
-                    <help xml:lang="en">Contains a simple text description of the object, of the platform or
-                        of the sensor.</help>
+                    <help xml:lang="en">Contains a simple text description of the object, of the
+                        platform or of the sensor.</help>
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
@@ -390,15 +390,15 @@
         </element>
     </group>
     <!--END Description group -->
-    
+
     <!--======== -->
     <!--Keywords -->
     <!--======== -->
     <group>
         <id>keyword</id>
         <label xml:lang="it">Parole chiave</label>
-        <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento della
-            risorsa.</help>
+        <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+            della risorsa.</help>
         <label xml:lang="en">Keywords</label>
         <help xml:lang="en">Describe system by keywords allow the discovery</help>
         <element>
@@ -419,8 +419,8 @@
         <element>
             <id>keyword</id>
             <label xml:lang="it">Parole chiave</label>
-            <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento della
-                risorsa.</help>
+            <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+                della risorsa.</help>
             <label xml:lang="en">Keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>NA</isMandatory>
@@ -438,16 +438,16 @@
         </element>
     </group>
     <!--END Keyword Group -->
-    
+
     <!--============== -->
     <!--Identification -->
     <!--============== -->
     <group>
         <id>system_ids</id>
         <label xml:lang="it">Identificazione</label>
-        <help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con tipi
-            come &quot;nome breve del sesnore&quot; (alias), &quot;nome per esteso&quot;, &quot;numero del
-            modello&quot;, &quot;numero seriale&quot;, ecc.</help>
+        <help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con
+            tipi come &quot;nome breve del sesnore&quot; (alias), &quot;nome per esteso&quot;,
+            &quot;numero del modello&quot;, &quot;numero seriale&quot;, ecc.</help>
         <label xml:lang="en">Identification of the system</label>
         <help xml:lang="en">Means of providing various identity and alias values, with types such as
             &quot;longName&quot;, &quot;abbreviation&quot;, &quot;modelNumber&quot;,
@@ -652,6 +652,241 @@
         </element>
     </group>
     <!-- END Identification group -->
-    
-    
+
+    <!--================== -->
+    <!--System Classifiers -->
+    <!--================== -->
+    <group>
+        <id>sys_class</id>
+        <label xml:lang="it">Classificazione del sistema</label>
+        <help xml:lang="it">Definizione dei valori di classificazione con tipi come &quot;Tipo di
+            sensori&quot;, &quot;Applicazione&quot;, etc., i cui termini possono essere definiti da
+            dei vocabolari</help>
+        <label xml:lang="en">System Classifiers</label>
+        <help xml:lang="en">Means of specifying classification values with types such as
+            &quot;sensorType&quot;, &quot;intendedApplication&quot;, etc., whose terms can be
+            defined in a dictionary</help>
+        <!--Intended application element -->
+        <element>
+            <id>int_app</id>
+            <label xml:lang="it">Applicazione</label>
+            <help xml:lang="it">Applicazione pensata per il sistema</help>
+            <label xml:lang="en">Intended application</label>
+            <help xml:lang="en">Intended application of the sistem</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Intended application</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
+                        SELECT ?c ?l ?a ?urn                       
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:notation ?urn. 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = 'en') 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = 'it') 
+                          }
+                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                    <label xml:lang="it">Parola chiave dell&apos;applicazione</label>
+                    <label xml:lang="en">Key words of the intended application</label>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useURN>true</useURN>
+                    <!--<isLanguageNeutral>true</isLanguageNeutral>-->
+                    <!--<useCode>true</useCode>-->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+        <!--Sensor type element -->
+        <element>
+            <id>sensor_type</id>
+            <label xml:lang="it">Tipologia sistema</label>
+            <help xml:lang="it">Parola chiave che indica la tiplogia del sistema</help>
+            <label xml:lang="en">Sensor type</label>
+            <help xml:lang="en">Key words mean the typology of the system</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Sensor type</hasValue>
+                </item>
+                <!--<item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>code</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/L05/current/</hasValue>
+          <label xml:lang="it">Parola chiave della tipologia</label>
+          <label xml:lang="en">Key words of the typology of the system</label>
+        </item> -->
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <label xml:lang="it">Parola chiave della tipologia</label>
+                    <label xml:lang="en">Key words of the typology of the system</label>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?a ?urn
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          ?c skos:inScheme <http://vocab.nerc.ac.uk/collection/L05/current/>.
+                          OPTIONAL {
+                            ?c skos:notation ?urn.
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "it")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+        <!--Deployment Role element -->
+        <element>
+            <id>deployment_role</id>
+            <label xml:lang="it">Ruolo del sistema</label>
+            <help xml:lang="it">Parola chiave che indica il ruolo del sistema</help>
+            <label xml:lang="en">Deployment Role</label>
+            <help xml:lang="en">Key words mean the deployment role</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Deployment role</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>code</hasDatatype>
+                    <hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>
+                    <label xml:lang="it">Parola chiave della ruolo</label>
+                    <label xml:lang="en">Key words of the deployment role</label>
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <label xml:lang="it">Parola chiave della ruolo</label>
+          <label xml:lang="en">Key words of the deployment role</label>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>autoCompletion</hasDatatype>
+          <hasValue><![CDATA[
+                        SELECT ?c ?l
+			                 FROM <http://ritmare.it/rdfdata/sensors>
+			 WHERE {
+			    ?c rdf:type skos:Concept.
+			    ?c skos:inScheme <http://vocab.nerc.ac.uk/collection/L19/current/>.
+			    OPTIONAL {
+			      ?c skos:prefLabel ?l.
+			      FILTER( LANG(?l) = 'en')
+			    }
+			    FILTER( REGEX( STR(?l), '$search_param', 'i') )
+			  }
+			  ORDER BY ASC(?l)
+                        ]]></hasValue>
+        </item>-->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Classifiers Group -->
+
 </template>
