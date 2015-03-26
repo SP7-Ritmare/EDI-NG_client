@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: renderers/generic.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: renderers/generic.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This is the main renderer&lt;br>
+ * It manages calls to the specific renderers&lt;br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
+ */
+var ItemRenderer = (function() {
+    /**
+     * Picks the correct specific renderers
+     *
+     * @memberOf ItemRenderer
+     * @param item
+     * @returns {*}
+     */
+    function getRenderer(item) {
+        switch(item.show) {
+            case "textbox":
+            case "combobox":
+            case "label":
+                return item.show;
+            default:
+                switch(item.hasDatatype) {
+                    case "code":
+                    case "codelist":
+                        return "combobox";
+                    case "select":
+                    case "copy":
+                    case "string":
+                    case "URN":
+                    case "URI":
+                    case "int":
+                    case "real":
+                    case "double":
+                    case "text":
+                    case "dependent":
+                    case "ref":
+                    case "autonumber":
+                    case "hidden":
+                        return "Textbox";
+                    case "date":
+                        return "date";
+                    case "dateRange":
+                        return "dateRange";
+                    case "boundingBox":
+                        return "boundingBox";
+                    default:
+                        return item.hasDatatype;
+                }
+        }
+    }
+
+    /**
+     * Renders all specific renterers in turns
+     *
+     * @memberOf ItemRenderer
+     */
+    function render() {
+        Textbox.render();
+        Combobox.render();
+        Autocompletion.render();
+        Dates.render();
+        DateRange.render();
+        Label.render();
+        BoundingBox.render();
+    }
+
+    /**
+     * Copies attribute values from an input template form &lt;element, item> to an internal &lt;i>item&lt;/i> structure, meant to create the UI items
+     *
+     * @memberOf ItemRenderer
+     * @param element
+     * @param item
+     * @param theItem
+     */
+    function copyAttributesFrom(element, item, theItem) {
+        theItem.datatype = item.hasDatatype;
+        theItem.datasource = item.datasource;
+        theItem.path = item.hasPath;
+        theItem.elementId = element.id;
+        theItem.fixed = item.isFixed;
+        theItem.useCode = item.useCode;
+        theItem.useURN = item.useURN;
+        theItem.hasIndex = item.hasIndex;
+        theItem.outIndex = item.outIndex;
+        theItem.field = item.field;
+        theItem.isLanguageNeutral = item.isLanguageNeutral;
+
+        theItem.itemId = item.itemId;
+        theItem.show = item.show;
+
+        theItem.defaultValue = item.defaultValue;
+
+        theItem.query = ( item.hasValue ? item.hasValue.toString() : undefined );
+
+        theItem.value = item.hasValue;
+    }
+
+    init();
+
+    return {
+        getRenderer: getRenderer,
+        copyAttributesFrom: copyAttributesFrom,
+        render: render
+    }
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DataSource.html">DataSource</a></li><li><a href="DataSourcePool.html">DataSourcePool</a></li><li><a href="Element.html">Element</a></li><li><a href="EndpointType.html">EndpointType</a></li><li><a href="Item.html">Item</a></li><li><a href="SPARQL.html">SPARQL</a></li></ul><h3>Namespaces</h3><ul><li><a href="adapters.html">adapters</a></li><li><a href="Autocompletion.html">Autocompletion</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="Combobox.html">Combobox</a></li><li><a href="DateRange.html">DateRange</a></li><li><a href="Dates.html">Dates</a></li><li><a href="edi.html">edi</a></li><li><a href="ediml.html">ediml</a></li><li><a href="ItemRenderer.html">ItemRenderer</a></li><li><a href="Label.html">Label</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="validator.html">validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DataSourceType">DataSourceType</a></li><li><a href="global.html#defaults">defaults</a></li><li><a href="global.html#localise">localise</a></li><li><a href="global.html#localised_strings">localised_strings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Mar 26 2015 20:26:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: renderers/date.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: renderers/date.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Date renderer&lt;br>
+ * It compiles all &lt;control_date> tags that have been inserted into HTML, and turns them into Bootstrap datepickers&lt;br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
+ */
+var Dates = (function() {
+    /**
+     *
+     * @memberOf Dates
+     */
+    function render() {
+        var control;
+        $("control_date").each(function() {
+            var temp = edi.getTempStructure()[$(this).attr("id")];
+            var element = temp.element;
+            var item = temp.item;
+
+            control = $.parseHTML("&lt;input type='text' class='" + defaults.controlCSS + "'>");
+
+            var theElement = ediml.getElement(element.id);
+            var theItem = new Item();
+            theItem.id = item.id;
+            ItemRenderer.copyAttributesFrom(element, item, theItem);
+
+            if ( item.defaultValue == "$TODAY$" ) {
+                item.defaultValue = $.format.date(new Date(), 'yyyy-MM-dd');
+            }
+            theElement.addItem(theItem);
+
+            control = $(control);
+
+            control.attr("datatype", item.hasDatatype);
+            control.attr("defaultValue", item.defaultValue);
+            control.attr("id", $(this).attr("id"));
+            control.attr("querystringparameter", item.queryStringParameter);
+            if (element.isMandatory != "NA") {
+                control.attr("required", "required");
+            }
+            if (item.isFixed == "true") {
+                control.val(item.hasValue);
+                control.addClass("fixed");
+            } else {
+                control.addClass(item.hasDatatype + "-input");
+                control = $($.parseHTML('&lt;div class="' + defaults.controlGroupCSS + ' date" data-date-format="yyyy-mm-dd">')).append(control);
+                control.append('&lt;span class="input-group-addon">&lt;i class="glyphicon glyphicon-th">&lt;/i>&lt;/span>');
+            }
+
+            var html = $.parseHTML("&lt;div class='" + defaults.controlGroupCSS + " col-md-12" + ( (item.hasDatatype == "date" &amp;&amp; item.isFixed != "true" ) ? " date" : "" ) + "'>");
+            html = $(html);
+            var labels = $(this).find("label");
+            $(labels).addClass(defaults.labelCSS);
+            console.log(labels);
+            html.append(labels);
+            html.append(control);
+            $(this).replaceWith(html);
+            if ( item.defaultValue ) {
+                $(control).datepicker("update", item.defaultValue);
+            }
+            /*
+             if (item.hasDatatype == "select") {
+             var ds = DataSourcePool.getInstance().findById(item.datasource);
+             ds.addEventListener("selectionChanged", function (event) {
+             console.log(event + " received");
+             var row = ds.getCurrentRow();
+             $("#" + item.id).val(row[item.field]);
+             });
+             }
+             if (item.hasDatatype == "copy") {
+             console.log(item.id);
+             $("#" + item.item).change(function (event) {
+             console.log(event + " received");
+             $("#" + item.id).val($(this).val());
+             });
+             }
+             */
+        });
+    }
+
+    return {
+        render: render
+    };
+
+})();</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DataSource.html">DataSource</a></li><li><a href="DataSourcePool.html">DataSourcePool</a></li><li><a href="Element.html">Element</a></li><li><a href="EndpointType.html">EndpointType</a></li><li><a href="Item.html">Item</a></li><li><a href="SPARQL.html">SPARQL</a></li></ul><h3>Namespaces</h3><ul><li><a href="adapters.html">adapters</a></li><li><a href="Autocompletion.html">Autocompletion</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="Combobox.html">Combobox</a></li><li><a href="DateRange.html">DateRange</a></li><li><a href="Dates.html">Dates</a></li><li><a href="edi.html">edi</a></li><li><a href="ediml.html">ediml</a></li><li><a href="ItemRenderer.html">ItemRenderer</a></li><li><a href="Label.html">Label</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="validator.html">validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DataSourceType">DataSourceType</a></li><li><a href="global.html#defaults">defaults</a></li><li><a href="global.html#localise">localise</a></li><li><a href="global.html#localised_strings">localised_strings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Mar 26 2015 20:26:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

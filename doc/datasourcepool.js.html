@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: datasourcepool.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: datasourcepool.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *
+ *  DataSourcePool is a Singleton hosting the pool of all application datasources
+ *
+ *  @author Fabio Pavesi (fabio@adamassoft.it)
+ *  @class
+ *
+ */
+var DataSourcePool = (function(){
+    var instance;
+
+    function init() {
+        var listeners = [];
+        var runningDatasources = [];
+        var datasources = [];
+        var language = "it";
+        var notifyListeners = true;
+
+        /**
+         *
+         * @method
+         * @memberOf DataSourcePool
+         * @param item
+         * @param datasource
+         */
+        function setDatasourceTrigger(item, datasource) {
+            console.log("setting trigger on element " + item + " for datasource " + datasource.getId());
+            $("#" + item).change(function() {
+                console.log(item + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
+
+                datasource.refresh(false);
+            });
+        }
+
+        /**
+         * @method
+         * @memberOf DataSourcePool
+         * @param baseId
+         * @returns {string}
+         */
+        function generateNewId(baseId) {
+            var count = 0;
+            for ( var i = 0; i &lt; datasources.length; i++ ) {
+                if ( datasources[i].parameters.id.indexOf(baseId) == 0 ) {
+                    count++;
+                }
+            }
+            return baseId + "_Clone_" + count;
+        }
+        return {
+            setDatasourceTrigger: setDatasourceTrigger,
+            /**
+             * @method
+             * @memberOf DataSourcePool
+             * @param lang
+             */
+            setLanguage: function(lang) {
+                language = lang;
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    datasources[i].setLanguage(lang);
+                }
+            },
+            /**
+             * Adds a DataSource to pool
+             * @memberOf DataSourcePool
+             * @param ds
+             */
+            add: function(ds) {
+                // console.log("adding datasource");
+                // console.log(ds);
+                ds.setLanguage(language);
+                datasources.push(ds);
+            },
+            /**
+             * Remove DataSource by id
+             *
+             * @memberOf DataSourcePool
+             * @param id
+             */
+            remove: function(id) {
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    if ( datasources[i].getId() == id ) {
+                        datasources.splice(i, 1);
+                    }
+                }
+            },
+            /**
+             *
+             * @param id
+             * @memberOf DataSourcePool
+             * @returns {DataSource}
+             */
+            findById: function(id) {
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    if ( datasources[i].getId() == id ) {
+                        return datasources[i];
+                    }
+                }
+                return undefined;
+            },
+            /**
+             * Find all datasources that are triggered by some Item belonging to an Element
+             * Element is identified by its id
+             *
+             * @memberOf DataSourcePool
+             * @param {int} element_id - element's id
+             * @returns {DataSource[]}
+             */
+            findByTriggeredItemInElement: function (element_id) {
+                var results = [];
+                var found;
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    if ( datasources[i].parameters.triggerItem &amp;&amp; datasources[i].parameters.triggerItem.indexOf(element_id) == 0 ) {
+                        found = false;
+                        for ( var j = 0; j &lt; results.length; j++ ) {
+                            if ( results[j].parameters.id == datasources[i].parameters.id ) {
+                                found = true;
+                            }
+                        }
+                        if ( !found ) {
+                            results.push(datasources[i]);
+                        }
+                    }
+                }
+                console.log(results);
+                return results;
+            },
+            /**
+             * Finds all DataSource referred to by Items in a specific Element
+             *
+             * @memberOf DataSourcePool
+             * @param element_id
+             * @returns {Array}
+             */
+            findByElementId: function(element_id) {
+                var results = [];
+                var element = ediml.getElement(element_id);
+                for ( var i = 0; i &lt; element.items.item.length; i++ ) {
+                    if ( typeof element.items.item[i].datasource !== "undefined" &amp;&amp; element.items.item[i].datasource != "" ) {
+                        var ds = this.findById(element.items.item[i].datasource);
+                        results.push(this.findById(element.items.item[i].datasource));
+                    }
+                }
+                return results;
+            },
+            /**
+             * Duplicates a DataSource
+             *
+             * @method
+             * @memberOf DataSourcePool
+             * @param id
+             * @param newTriggerItem - name of the trigger item in the new data source
+             * @param newSearchItem - name of the search item in the new data source
+             * @returns {DataSource}
+             */
+            duplicateDatasource: function duplicate(id, newTriggerItem, newSearchItem) {
+                var newId = generateNewId(id);
+                var ds = DataSourcePool.getInstance().findById(id);
+                var newPars = clone(ds.parameters);
+                newPars.id = newId;
+                newPars.triggerItem = newTriggerItem;
+                newPars.searchItem = newSearchItem;
+                newPars.cloned = true;
+                console.error("duplicating ds " + id + " as " + newId);
+                var newDs = new DataSource(newPars);
+                if ( newTriggerItem ) {
+                    setDatasourceTrigger(newTriggerItem, newDs);
+                }
+                return newDs;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @returns {Array}
+             */
+            getListeners: function() {
+                return listeners;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param event
+             * @param callback
+             */
+            addListener: function(event, callback) {
+                for ( var i = 0; i &lt; listeners.length; i++ ) {
+                    if ( listeners[i].event == event ) {
+                        listeners[i].callbacks.push(callback);
+                        return;
+                    }
+                }
+                listeners.push({
+                    event: event,
+                    callbacks: [callback]
+                });
+                // console.log(listeners);
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param event
+             */
+            trigger: function (event) {
+                if ( ! notifyListeners ) {
+                    return;
+                }
+                // console.log("triggering event " + event);
+                for ( var i = 0; i &lt; listeners.length; i++ ) {
+                    if ( listeners[i].event == event ) {
+                        // console.log(listeners[i].event);
+                        if ( listeners[i].callbacks ) {
+                            // console.log(listeners[i].callbacks);
+                            for (var j = 0; j &lt; listeners[i].callbacks.length; j++) {
+                                if ( typeof listeners[i].callbacks[j] === "function") {
+                                    // console.log(listeners[i].callbacks[j]);
+                                    listeners[i].callbacks[j](event);
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             */
+            stopNotifying: function() {
+                notifyListeners = false;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param ds
+             */
+            queryStart: function(ds) {
+                runningDatasources.push(ds);
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param ds
+             */
+            queryEnd: function(ds) {
+                // console.log("removing datasource " + ds.getId());
+                for ( var i = 0; i &lt; runningDatasources.length; i++ ) {
+                    if ( runningDatasources[i] == ds ) {
+                        runningDatasources.splice(i, 1);
+                        if ( runningDatasources.length == 0 ) {
+                            console.log("allReady");
+                            instance.trigger("allReady");
+                        }
+                        return;
+                    }
+                }
+            },
+            /**
+             * Returns all datasources
+             *
+             * @memberOf DataSourcePool
+             * @deprecated
+             * @see getDataSources
+             * @returns {DataSource[]}
+             */
+            datasources: function() {
+                return datasources;
+            },
+            /**
+             * Returns all datasources
+             * @method getDataSources
+             * @memberOf DataSourcePool
+             * @returns {DataSource[]}
+             */
+            getDataSources: function() {
+                return datasources;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             */
+            refreshAll: function() {
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    var ds = datasources[i];
+                    if ( typeof ds.parameters.triggerItem !== "undefined" ) {
+                        console.log("datasource " + ds.parameters.id + " depends on trigger " + ds.parameters.triggerItem);
+                        console.log("trigger item has " + $("#" + ds.parameters.triggerItem).length + " occurrences");
+                        setDatasourceTrigger(ds.parameters.triggerItem, ds);
+                        /*
+                         $("#" + ds.parameters.triggerItem).change(function() {
+                         console.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
+
+                         ds.refresh(false);
+                         });
+                         */
+                    }
+
+
+                    ds.refresh(true);
+                }
+                for ( var i = 0; i &lt; datasources.length; i++ ) {
+                    var ds = datasources[i];
+                    ds.refresh(false);
+                }
+            }
+        };
+    }
+    return {
+        /**
+         *
+         * @memberOf DataSourcePool
+         * @returns {*}
+         */
+        getInstance: function () {
+            if ( !instance ) {
+                instance = init();
+            }
+
+            return instance;
+        }
+    }
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DataSource.html">DataSource</a></li><li><a href="DataSourcePool.html">DataSourcePool</a></li><li><a href="Element.html">Element</a></li><li><a href="EndpointType.html">EndpointType</a></li><li><a href="Item.html">Item</a></li><li><a href="SPARQL.html">SPARQL</a></li></ul><h3>Namespaces</h3><ul><li><a href="adapters.html">adapters</a></li><li><a href="Autocompletion.html">Autocompletion</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="Combobox.html">Combobox</a></li><li><a href="DateRange.html">DateRange</a></li><li><a href="Dates.html">Dates</a></li><li><a href="edi.html">edi</a></li><li><a href="ediml.html">ediml</a></li><li><a href="ItemRenderer.html">ItemRenderer</a></li><li><a href="Label.html">Label</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="validator.html">validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DataSourceType">DataSourceType</a></li><li><a href="global.html#defaults">defaults</a></li><li><a href="global.html#localise">localise</a></li><li><a href="global.html#localised_strings">localised_strings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Mar 26 2015 20:26:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
