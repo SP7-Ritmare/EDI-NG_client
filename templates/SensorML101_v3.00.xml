@@ -775,7 +775,7 @@
                 </item>
             </produces>
         </element>
-        <!--Deployment Role element -->
+        <!-- Deployment Role element -->
         <element>
             <id>deployment_role</id>
             <label xml:lang="it">Ruolo del sistema</label>
