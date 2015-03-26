@@ -1,7 +1,10 @@
 /**
- * Created by fabio on 18/11/14.
+ * Adapters adapts dataset format to plain array
+ * see datasource_adapters.js
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
-
 var adapters = (function() {
     function sparqlAdapter(dataset) {
         var data = dataset.results.bindings;
@@ -17,6 +20,11 @@ var adapters = (function() {
         return results;
     }
     return {
+        /**
+         * Adapter for the SPARQL JSON format
+         *
+         * @memberOf adapters
+         */
         sparql: sparqlAdapter
     }
 })();

@@ -1,10 +1,17 @@
 /**
- * Created by fabio on 28/11/14.
- */
-/**
- * Created by fabio on 28/11/14.
+ * Combobox renderer<br>
+ * It compiles all <control_combobox> tags that have been inserted into HTML, and turns them into HTML <select>s<br>
+ *
+ * If the template item was connected to a datasource, the <select> will also be.
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Combobox = (function() {
+    /**
+     *
+     * @memberOf Combobox
+     */
     function render() {
         var control;
         $("control_combobox").each(function() {

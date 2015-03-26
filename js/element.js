@@ -1,5 +1,12 @@
 /**
- * Created by fabio on 19/11/14.
+ * @class
+ * @author Fabio Pavesi (fabio@adamassoft.it)
+ *
+ * @property {String} id - ID of the element
+ * @property {String} root - append point for the element in destination XML
+ * @property {String} mandatory - can be "true" or "false"
+ * @property {String} represents_element - if element is a clone, the base element it was cloned from, otherwise the ID
+ * @property {Item[]} items - array of items inside this element
  */
 var Element = (function() {
     function baseSortItems() {
@@ -50,6 +57,12 @@ var Element = (function() {
         items: {
             item: []
         },
+        /**
+         *
+         * @method
+         * @memberOf Element
+         * @param item
+         */
         addItem: function(item) {
             element.items.item.push(item);
             baseSortItems();

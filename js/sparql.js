@@ -1,3 +1,10 @@
+/**
+ * SPARQL query manager
+ *
+ * @class
+ * @author Fabio Pavesi (fabio@adamassoft.it)
+ *
+ */
 var SPARQL = (function(url, endpointType) {
     var virtuosoUrl = "http://sp7.irea.cnr.it:8890/sparql";
     if ( typeof endpointType === "undefined" ) {
@@ -75,6 +82,7 @@ var SPARQL = (function(url, endpointType) {
         });
 
     }
+
     function query(uri, callback, errorCallback, language) {
         if ( typeof language === "undefined" ) {
             language = "it";
@@ -108,8 +116,34 @@ var SPARQL = (function(url, endpointType) {
         });
     }
     return {
+        /**
+         * Returns a SPARQL query for a codelist's URI
+         *
+         * @memberOf SPARQL
+         * @param uri
+         * @param currentMetadataLanguage
+         * @returns {string}
+         */
         getSparqlQuery: getSparqlQuery,
+        /**
+         * Performs a URI based SPARQL query
+         *
+         * @memberOf SPARQL
+         * @param uri
+         * @param callback
+         * @param errorCallback
+         * @param language
+         */
         query: query,
+        /**
+         * Runs a specific SPARQL query
+         *
+         * @memberOf SPARQL
+         * @param query
+         * @param callback
+         * @param errorCallback
+         * @param language
+         */
         specificQuery: specificQuery
     };
 });

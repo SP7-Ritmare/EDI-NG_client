@@ -1,25 +1,18 @@
 /**
- * Created by fabio on 19/11/14.
+ * This is the main renderer<br>
+ * It manages calls to the specific renderers<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var ItemRenderer = (function() {
-    function loadScript(script) {
-            $('<script>')
-                .attr('type', 'text/javascript')
-                .attr('src', 'js/renderers/' + script + ".js")
-                .appendTo('head');
-    }
-
-    function init() {
-        /*
-        loadScript("autocompletion");
-        loadScript("combobox");
-        loadScript("date");
-        loadScript("date_range");
-        loadScript("label");
-        loadScript("Textbox");
-        */
-    }
-
+    /**
+     * Picks the correct specific renderers
+     *
+     * @memberOf ItemRenderer
+     * @param item
+     * @returns {*}
+     */
     function getRenderer(item) {
         switch(item.show) {
             case "textbox":
@@ -57,6 +50,11 @@ var ItemRenderer = (function() {
         }
     }
 
+    /**
+     * Renders all specific renterers in turns
+     *
+     * @memberOf ItemRenderer
+     */
     function render() {
         Textbox.render();
         Combobox.render();
@@ -67,6 +65,14 @@ var ItemRenderer = (function() {
         BoundingBox.render();
     }
 
+    /**
+     * Copies attribute values from an input template form <element, item> to an internal <i>item</i> structure, meant to create the UI items
+     *
+     * @memberOf ItemRenderer
+     * @param element
+     * @param item
+     * @param theItem
+     */
     function copyAttributesFrom(element, item, theItem) {
         theItem.datatype = item.hasDatatype;
         theItem.datasource = item.datasource;

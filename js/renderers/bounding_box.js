@@ -1,5 +1,11 @@
 /**
- * Created by fabio on 28/11/14.
+ * BoundingBox renderer<br>
+ * It compiles all <control_boundingbox> tags that have been inserted into HTML, and turns them into 4-ples of text boxes for the coordinates, plus an OpenLayers map<br>
+ * The map only shows the bounding box on map if <isFixed> is true<br>
+ * On the other hand, if <isFixed> is false, the map can be used to draw the bounding box
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var BoundingBox = (function() {
     var maps = [];
@@ -68,6 +74,11 @@ var BoundingBox = (function() {
         console.log(4);
 
     }
+
+    /**
+     *
+     * @memberOf BoundingBox
+     */
     function render() {
         var control;
         $("control_boundingbox").each(function() {

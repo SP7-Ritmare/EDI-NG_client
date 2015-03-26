@@ -1,5 +1,14 @@
+/**
+ *
+ *  DataSourcePool is a Singleton hosting the pool of all application datasources
+ *
+ *  @author Fabio Pavesi (fabio@adamassoft.it)
+ *  @class
+ *
+ */
 var DataSourcePool = (function(){
     var instance;
+
     function init() {
         var listeners = [];
         var runningDatasources = [];
@@ -7,6 +16,13 @@ var DataSourcePool = (function(){
         var language = "it";
         var notifyListeners = true;
 
+        /**
+         *
+         * @method
+         * @memberOf DataSourcePool
+         * @param item
+         * @param datasource
+         */
         function setDatasourceTrigger(item, datasource) {
             console.log("setting trigger on element " + item + " for datasource " + datasource.getId());
             $("#" + item).change(function() {
@@ -15,6 +31,13 @@ var DataSourcePool = (function(){
                 datasource.refresh(false);
             });
         }
+
+        /**
+         * @method
+         * @memberOf DataSourcePool
+         * @param baseId
+         * @returns {string}
+         */
         function generateNewId(baseId) {
             var count = 0;
             for ( var i = 0; i < datasources.length; i++ ) {
@@ -26,18 +49,34 @@ var DataSourcePool = (function(){
         }
         return {
             setDatasourceTrigger: setDatasourceTrigger,
+            /**
+             * @method
+             * @memberOf DataSourcePool
+             * @param lang
+             */
             setLanguage: function(lang) {
                 language = lang;
                 for ( var i = 0; i < datasources.length; i++ ) {
                     datasources[i].setLanguage(lang);
                 }
             },
+            /**
+             * Adds a DataSource to pool
+             * @memberOf DataSourcePool
+             * @param ds
+             */
             add: function(ds) {
                 // console.log("adding datasource");
                 // console.log(ds);
                 ds.setLanguage(language);
                 datasources.push(ds);
             },
+            /**
+             * Remove DataSource by id
+             *
+             * @memberOf DataSourcePool
+             * @param id
+             */
             remove: function(id) {
                 for ( var i = 0; i < datasources.length; i++ ) {
                     if ( datasources[i].getId() == id ) {
@@ -45,6 +84,12 @@ var DataSourcePool = (function(){
                     }
                 }
             },
+            /**
+             *
+             * @param id
+             * @memberOf DataSourcePool
+             * @returns {DataSource}
+             */
             findById: function(id) {
                 for ( var i = 0; i < datasources.length; i++ ) {
                     if ( datasources[i].getId() == id ) {
@@ -53,6 +98,14 @@ var DataSourcePool = (function(){
                 }
                 return undefined;
             },
+            /**
+             * Find all datasources that are triggered by some Item belonging to an Element
+             * Element is identified by its id
+             *
+             * @memberOf DataSourcePool
+             * @param {int} element_id - element's id
+             * @returns {DataSource[]}
+             */
             findByTriggeredItemInElement: function (element_id) {
                 var results = [];
                 var found;
@@ -72,6 +125,13 @@ var DataSourcePool = (function(){
                 console.log(results);
                 return results;
             },
+            /**
+             * Finds all DataSource referred to by Items in a specific Element
+             *
+             * @memberOf DataSourcePool
+             * @param element_id
+             * @returns {Array}
+             */
             findByElementId: function(element_id) {
                 var results = [];
                 var element = ediml.getElement(element_id);
@@ -83,6 +143,16 @@ var DataSourcePool = (function(){
                 }
                 return results;
             },
+            /**
+             * Duplicates a DataSource
+             *
+             * @method
+             * @memberOf DataSourcePool
+             * @param id
+             * @param newTriggerItem - name of the trigger item in the new data source
+             * @param newSearchItem - name of the search item in the new data source
+             * @returns {DataSource}
+             */
             duplicateDatasource: function duplicate(id, newTriggerItem, newSearchItem) {
                 var newId = generateNewId(id);
                 var ds = DataSourcePool.getInstance().findById(id);
@@ -98,9 +168,20 @@ var DataSourcePool = (function(){
                 }
                 return newDs;
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @returns {Array}
+             */
             getListeners: function() {
                 return listeners;
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param event
+             * @param callback
+             */
             addListener: function(event, callback) {
                 for ( var i = 0; i < listeners.length; i++ ) {
                     if ( listeners[i].event == event ) {
@@ -114,6 +195,11 @@ var DataSourcePool = (function(){
                 });
                 // console.log(listeners);
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param event
+             */
             trigger: function (event) {
                 if ( ! notifyListeners ) {
                     return;
@@ -134,12 +220,26 @@ var DataSourcePool = (function(){
                     }
                 }
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             */
             stopNotifying: function() {
                 notifyListeners = false;
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param ds
+             */
             queryStart: function(ds) {
                 runningDatasources.push(ds);
             },
+            /**
+             *
+             * @memberOf DataSourcePool
+             * @param ds
+             */
             queryEnd: function(ds) {
                 // console.log("removing datasource " + ds.getId());
                 for ( var i = 0; i < runningDatasources.length; i++ ) {
@@ -153,9 +253,30 @@ var DataSourcePool = (function(){
                     }
                 }
             },
+            /**
+             * Returns all datasources
+             *
+             * @memberOf DataSourcePool
+             * @deprecated
+             * @see getDataSources
+             * @returns {DataSource[]}
+             */
             datasources: function() {
                 return datasources;
             },
+            /**
+             * Returns all datasources
+             * @method getDataSources
+             * @memberOf DataSourcePool
+             * @returns {DataSource[]}
+             */
+            getDataSources: function() {
+                return datasources;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
+             */
             refreshAll: function() {
                 for ( var i = 0; i < datasources.length; i++ ) {
                     var ds = datasources[i];
@@ -183,6 +304,11 @@ var DataSourcePool = (function(){
         };
     }
     return {
+        /**
+         *
+         * @memberOf DataSourcePool
+         * @returns {*}
+         */
         getInstance: function () {
             if ( !instance ) {
                 instance = init();

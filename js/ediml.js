@@ -1,14 +1,13 @@
 /**
  *
- * This module represents EDIML's lifecycle
- * The 'content' attribute represents the actual core.
- * The weird structure of the 'content' object is a trade off needed to allow this structure to exchange data in XML form compatible with both the xml2json.js/json2xml.js conversions and JAXB's server side conversion.
+ * This module represents EDIML's lifecycle<br>
+ * The 'content' attribute represents the actual core.<br>
+ * The weird structure of the <i>content</i> object is a trade off needed to allow this structure to exchange data in XML form compatible with both the xml2json.js/json2xml.js conversions and JAXB's server side conversion.<br>
  *
  * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  *
  */
-
-
 
 var ediml = (function() {
     var metadataEndpoint;
@@ -199,6 +198,8 @@ var ediml = (function() {
 
     /**
      * Loads EDIML from the metadataEndpoint defined in the template's settings
+     *
+     * @memberOf ediml
      * @param edimlId   the EDIML record to be fetched
      * @param callback  who to call when done
      */
@@ -261,6 +262,7 @@ var ediml = (function() {
      * Saves current EDIML state to localStorage
      * WARNING: the EDIML is saved as is, with no validation
      *
+     * @memberOf ediml
      * @param name  name to be assigned to this instance
      */
     function saveAs(name) {
@@ -307,6 +309,7 @@ var ediml = (function() {
     /**
      * Fills in the HTML form with contents of the EDIML parameter
      *
+     * @memberOf ediml
      * @param ediMl
      */
     function fillInEdiMl(ediMl) {
@@ -430,6 +433,7 @@ var ediml = (function() {
     /**
      * Duplicates an EDIML element, but not its HTML representation
      *
+     * @memberOf ediml
      * @param id
      * @param newId
      */

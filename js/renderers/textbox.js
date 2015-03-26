@@ -1,7 +1,15 @@
 /**
- * Created by fabio on 28/11/14.
+ * Textbox renderer<br>
+ * It compiles all <control_date> tags that have been inserted into HTML, and turns them into <input type="text">s<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Textbox = (function() {
+    /**
+     *
+     * @memberOf Textbox
+     */
     function render() {
         var control;
         $("control_textbox").each(function() {

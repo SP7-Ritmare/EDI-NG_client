@@ -1,9 +1,10 @@
 /**
  *
- * Main module for EDI
+ * Main module for EDI<br>
  * It is responsible for orchestrating other modules and classes at the presentation level
  *
  * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  *
  */
 
@@ -754,7 +755,7 @@ var edi = (function() {
             runQueries();
         });
 
-        var datasources = DataSourcePool.getInstance().datasources();
+        var datasources = DataSourcePool.getInstance().getDataSources();
         for ( var i = 0; i < datasources.length; i++ ) {
             var ds = datasources[i];
             ds.addListener(fillInCombos);
