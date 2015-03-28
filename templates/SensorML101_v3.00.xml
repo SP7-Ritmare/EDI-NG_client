@@ -347,26 +347,26 @@
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
-            <label xml:lang="it">Descrizione del sistema</label>
+            <!--<label xml:lang="it">Descrizione del sistema</label>
             <help xml:lang="it">&#200; il nome e la descrizione con cui chi metadata identifica il
                 sensore. Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
                 il nome con cui il costruttore identifica il sensore (es. Sensirion STH15, SBE
                 37-IM, MicroCAT, CTP Recorder, ecc.).</help>
             <label xml:lang="en">System name and description</label>
             <help xml:lang="en">Name and description assigned by the authority that manages the
-                system and that identifies</help>
+                system and that identifies</help>-->
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>2</outIndex>
                     <label xml:lang="it">Nome del sistema</label>
-                    <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore.
+                    <!--<help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore.
                         Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
                         il nome con cui il costruttore identifica il sensore (es. Sensirion STH15,
-                        SBE 37-IM, MicroCAT, CTP Recorder, ecc.).</help>
+                        SBE 37-IM, MicroCAT, CTP Recorder, ecc.).</help>-->
                     <label xml:lang="en">System name</label>
-                    <help xml:lang="en">Name assigned by the authority that manages the system and
-                        that identifies</help>
+                    <!--<help xml:lang="en">Name assigned by the authority that manages the system and
+                        that identifies</help>-->
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
@@ -376,11 +376,11 @@
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
                     <label xml:lang="it">Descrizione sistema</label>
-                    <help xml:lang="it">Contiene una semplice descrizione testuale del sistema,
-                        della piattaforma o del sensore.</help>
+                    <!--<help xml:lang="it">Contiene una semplice descrizione testuale del sistema,
+                        della piattaforma o del sensore.</help>-->
                     <label xml:lang="en">Description</label>
-                    <help xml:lang="en">Contains a simple text description of the object, of the
-                        platform or of the sensor.</help>
+                    <!--<help xml:lang="en">Contains a simple text description of the object, of the
+                        platform or of the sensor.</help>-->
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
