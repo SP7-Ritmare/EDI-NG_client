@@ -8,6 +8,7 @@
 <!-- TO DO: in datasources completare searchItem -->
 <!-- TO DO: con SensorML101.xsl aggiungere observableProperty -->
 <!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
+<!-- TO DO: aggiunta di un elemento non è funzionante -->
 <template>
     <!-- SETTINGS -->
     <settings>
@@ -114,7 +115,7 @@
                         ORDER BY ASC(?l) ASC(?a) 
                         ]]>
             </query>
-            <searchItem>...</searchItem>
+            <searchItem>keyword_p01</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -315,17 +316,17 @@
     <!-- Description -->
     <!-- =========== -->
     <group>
-        <id>desc</id>
+        <id>name_desc</id>
         <label xml:lang="it">Descrizione del sistema</label>
-        <help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema,
-            denominandolo e descrivendone genericamente le caratteristiche</help>
+        <!--<help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema,
+            denominandolo e descrivendone genericamente le caratteristiche</help>-->
         <label xml:lang="en">Description of system</label>
-        <help xml:lang="en">Means of providing a description of system, a name and describing
-            general characteristics</help>
+        <!--<help xml:lang="en">Means of providing a description of system, a name and describing
+            general characteristics</help>-->
         <!-- gml:id -->
         <element>
             <id>sensor_id</id>
-            <label>system ID</label>
+            <!--<label>system ID</label>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member</hasRoot>
@@ -341,46 +342,47 @@
                 </item>
             </produces>
         </element>
-        <!-- system name and description -->
+        <!-- system name -->
         <element>
             <id>system_name</id>
+            <label xml:lang="it">Nome del sistema</label>
+            <label xml:lang="en">System name</label>
+            <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore. Deve
+                essere breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome con
+                cui il costruttore identifica il sensore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
+                CTP Recorder, ecc.).</help>
+            <help xml:lang="en">Name assigned by the authority that manages the system and that
+                identifies</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
-            <!--<label xml:lang="it">Descrizione del sistema</label>
-            <help xml:lang="it">&#200; il nome e la descrizione con cui chi metadata identifica il
-                sensore. Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
-                il nome con cui il costruttore identifica il sensore (es. Sensirion STH15, SBE
-                37-IM, MicroCAT, CTP Recorder, ecc.).</help>
-            <label xml:lang="en">System name and description</label>
-            <help xml:lang="en">Name and description assigned by the authority that manages the
-                system and that identifies</help>-->
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>2</outIndex>
-                    <label xml:lang="it">Nome del sistema</label>
-                    <!--<help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore.
-                        Deve essere breve, non &#232; la descrizione, e pu&#242; essere esattamente
-                        il nome con cui il costruttore identifica il sensore (es. Sensirion STH15,
-                        SBE 37-IM, MicroCAT, CTP Recorder, ecc.).</help>-->
-                    <label xml:lang="en">System name</label>
-                    <!--<help xml:lang="en">Name assigned by the authority that manages the system and
-                        that identifies</help>-->
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                 </item>
+            </produces>
+        </element>
+        <!-- system description -->
+        <element>
+            <id>system_name</id>
+            <label xml:lang="it">Descrizione sistema</label>
+            <help xml:lang="it">Contiene una semplice descrizione testuale del sistema, della
+                piattaforma o del sensore.</help>
+            <label xml:lang="en">Description</label>
+            <help xml:lang="en">Contains a simple text description of the object, of the platform or
+                of the sensor.</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
-                    <label xml:lang="it">Descrizione sistema</label>
-                    <!--<help xml:lang="it">Contiene una semplice descrizione testuale del sistema,
-                        della piattaforma o del sensore.</help>-->
-                    <label xml:lang="en">Description</label>
-                    <!--<help xml:lang="en">Contains a simple text description of the object, of the
-                        platform or of the sensor.</help>-->
                     <hasPath>/sml:SensorML/sml:member/sml:System/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
@@ -397,10 +399,11 @@
     <group>
         <id>keyword</id>
         <label xml:lang="it">Parole chiave</label>
-        <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
-            della risorsa.</help>
+        <!--<help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+            della risorsa.</help>-->
         <label xml:lang="en">Keywords</label>
-        <help xml:lang="en">Describe system by keywords allow the discovery</help>
+        <!--<help xml:lang="en">Describe system by keywords allow the discovery</help>-->
+        <!-- code space -->
         <element>
             <id>codespace_keywords</id>
             <isMandatory>NA</isMandatory>
@@ -416,8 +419,9 @@
                 </item>
             </produces>
         </element>
+        <!-- keywords -->
         <element>
-            <id>keyword</id>
+            <id>keywords</id>
             <label xml:lang="it">Parole chiave</label>
             <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
                 della risorsa.</help>
@@ -445,13 +449,13 @@
     <group>
         <id>system_ids</id>
         <label xml:lang="it">Identificazione</label>
-        <help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con
+        <!--<help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con
             tipi come &quot;nome breve del sesnore&quot; (alias), &quot;nome per esteso&quot;,
-            &quot;numero del modello&quot;, &quot;numero seriale&quot;, ecc.</help>
+            &quot;numero del modello&quot;, &quot;numero seriale&quot;, ecc.</help>-->
         <label xml:lang="en">Identification of the system</label>
-        <help xml:lang="en">Means of providing various identity and alias values, with types such as
+        <!--<help xml:lang="en">Means of providing various identity and alias values, with types such as
             &quot;longName&quot;, &quot;abbreviation&quot;, &quot;modelNumber&quot;,
-            &quot;serialNumber&quot;, whose terms can be defined in a dictionary.</help>
+            &quot;serialNumber&quot;, whose terms can be defined in a dictionary.</help>-->
         <element>
             <id>unique_id</id>
             <label xml:lang="en">Unique ID</label>
@@ -483,10 +487,10 @@
         <!-- Short Name -->
         <element>
             <id>short_name</id>
-            <label xml:lang="it">Nome breve del sistema</label>
+            <!--<label xml:lang="it">Nome breve del sistema</label>
             <help xml:lang="it">Provvede a fornire un nome breve al sistema</help>
             <label xml:lang="en">Short Name</label>
-            <help xml:lang="en">Provide a short name for the system</help>
+            <help xml:lang="en">Provide a short name for the system</help>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -509,8 +513,9 @@
                     <hasIndex>3</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <!--<hasValue>user-defined</hasValue>-->
+                    <hasDatatype>function</hasDatatype>
+                    <!-- TO DO: controllare se va bene la funzione replace -->
+                    <hasValue>translate(/sml:SensorML/sml:member/sml:System/gml:name, '_', ' ')</hasValue>
                 </item>
             </produces>
         </element>
@@ -522,7 +527,7 @@
             <label xml:lang="en">Long Name</label>
             <help xml:lang="en">Long Name of the system</help>
             <isMandatory>NA</isMandatory>
-            <isMultiple>true</isMultiple>
+            <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
             <produces>
                 <item>
@@ -543,8 +548,8 @@
                     <hasIndex>3</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <!--<hasValue>user-defined</hasValue>-->
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/gml:name</hasValue>
                 </item>
             </produces>
         </element>
