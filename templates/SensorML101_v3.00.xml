@@ -226,7 +226,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <searchItem>...</searchItem>
+            <searchItem>unit_of_measure</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -335,8 +335,7 @@
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/@gml:id</hasPath>
                     <isFixed>true</isFixed>
-                    <hasDatatype>ref</hasDatatype>
-                    <hasValue>...</hasValue>
+                    <hasValue>u</hasValue>
                     <!-- TO DO: è un ref a ShortName chiedere se è necessario che questo elemento 
                         vada messo dopo l'elemento di riferimento -->
                 </item>
@@ -860,10 +859,10 @@
     <!--================= -->
     <group>
         <id>temp_val</id>
-        <label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
+        <label xml:lang="it">Validit&#224; descrizione del sistema</label>
         <!--<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
             sistema</help>-->
-        <label xml:lang="en">Temporal Validity of this description</label>
+        <label xml:lang="en">Temporal validity of description</label>
         <!--<help xml:lang="en">Means of providing time validity constraint of description</help>-->
         <element>
             <id>valid_time</id>
@@ -878,6 +877,14 @@
                 <item>
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>DOC_TIME</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <label xml:lang="en">Foo</label>
+                    <label xml:lang="it">Data</label>
                     <start>
                         <label xml:lang="en">Begin date</label>
                         <label xml:lang="it">Data inizio</label>
@@ -891,33 +898,6 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>dateRange</hasDatatype>
                 </item>
-                <!--<item>
-                    <!-\-TO DO verificare con Fabio item non valorizzato, non viene assolutamente prodotto -\->
-                    <hasIndex>2</hasIndex>
-                    <label xml:lang="en">foo</label>
-                    <label xml:lang="it">Data</label>
-                    <start>
-                        <label xml:lang="it">Data di inizio</label>
-                        <help/>
-                        <label xml:lang="en">Begin date</label>
-                        <help/>
-                        <hasPath>
-                            /sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition
-                        </hasPath>
-                    </start>
-                    <end>
-                        <label xml:lang="it">Data di fine</label>
-                        <help/>
-                        <label xml:lang="en">End date</label>
-                        <help/>
-                        <hasPath>
-                            /sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition
-                        </hasPath>
-                    </end>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>dateRange</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                </item>-->
                 <!--<item>
           <hasIndex>2</hasIndex>
           <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
@@ -950,7 +930,6 @@
     <!--=================== -->
     <!--Security Constraint -->
     <!--=================== -->
-
     <!--<group>
     <id>sec_cons</id>
     <label xml:lang="it">Vincoli di sicurezza</label>
@@ -961,13 +940,11 @@
       
     </element>
   </group> -->
-
     <!--END Security Constraint Group -->
 
     <!--================ -->
     <!--Legal Constraint -->
     <!--================ -->
-
     <!--<group>
     <id>leg_cons</id>
     <label xml:lang="it">Vincoli legali</label>
@@ -978,7 +955,6 @@
       
     </element>
   </group> -->
-
     <!--END Legal Constraint Group -->
 
     <!--=================== -->
@@ -987,9 +963,9 @@
     <group>
         <id>capab</id>
         <label xml:lang="it">Funzionalit&#224;</label>
-        <help xml:lang="it">Lista delle fuzionalit&#224; per permettere una ricerca accurata</help>
+        <!--<help xml:lang="it">Lista delle fuzionalit&#224; per permettere una ricerca accurata</help>-->
         <label xml:lang="en">Capabilities</label>
-        <help xml:lang="en">Capabilities list for quick discovery</help>
+        <!--<help xml:lang="en">Capabilities list for quick discovery</help>-->
         <!--Physical property -->
         <element>
             <id>physical</id>
@@ -1003,11 +979,13 @@
                 Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]</hasRoot>
             <produces>
                 <item>
+                    <!-- TO DO: sistemare -->
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
                         Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/@name</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>code</hasDatatype>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>physical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/phys_props/items</hasValue>
                     <label xml:lang="it">Grandezza fisica</label>
                     <label xml:lang="en">Physical classifier</label>
@@ -1028,30 +1006,9 @@
                         Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
                     <label xml:lang="en">Unit of measurement</label>
-                    <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-                        SELECT ?c ?l ?urn
-                        FROM <http://ritmare.it/rdfdata/units>
-                        WHERE { 
-                          ?c rdf:type skos:Concept.
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?a.
-                            FILTER( LANG(?a) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:altLabel ?urn.
-                            FILTER( LANG(?urn) = "en")
-                          }
-                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
@@ -1155,11 +1112,13 @@
                 Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]</hasRoot>
             <produces>
                 <item>
+                    <!-- TO DO: sistemare -->
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
                         Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>code</hasDatatype>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>electrical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/electr_reqs/items</hasValue>
                     <label xml:lang="it">Grandezza elettrica</label>
                     <label xml:lang="en">Electrical classifier</label>
@@ -1176,34 +1135,13 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
-                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
                     <label xml:lang="en">Unit of measurement</label>
-                    <hasValue><![CDATA[
-                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-                        SELECT ?c ?l ?urn
-                        FROM <http://ritmare.it/rdfdata/units>
-                        WHERE { 
-                          ?c rdf:type skos:Concept.
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:prefLabel ?a.
-                            FILTER( LANG(?a) = "en")
-                          }
-                          OPTIONAL {
-                            ?c skos:altLabel ?urn.
-                            FILTER( LANG(?urn) = "en")
-                          }
-                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l) ASC(?a)
-                        ]]></hasValue>
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
