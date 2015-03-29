@@ -135,7 +135,7 @@
                         ORDER BY ASC(?l)                        
                         ]]>
             </query>
-            <searchItem>...</searchItem>
+            <searchItem>manufacturers_codelist</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -165,7 +165,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <searchItem>...</searchItem>
+            <searchItem>intended_applications_codelist</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -195,7 +195,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <searchItem>...</searchItem>
+            <searchItem>type_of_systems_keywords</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -523,9 +523,9 @@
         <element>
             <id>long_name</id>
             <label xml:lang="it">Nome per esteso del sistema</label>
-            <help xml:lang="it">Indicare un nome esteso del sistema</help>
+            <help xml:lang="it">Indicare un nome esteso del sistema. Modificarlo nel caso non sia uguale a quello indicato in precedenza.</help>
             <label xml:lang="en">Long Name</label>
-            <help xml:lang="en">Long Name of the system</help>
+            <help xml:lang="en">Long Name of the system. Change it if is not the same as indicated above.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -664,20 +664,20 @@
     <group>
         <id>sys_class</id>
         <label xml:lang="it">Classificazione del sistema</label>
-        <help xml:lang="it">Definizione dei valori di classificazione con tipi come &quot;Tipo di
+        <!--<help xml:lang="it">Definizione dei valori di classificazione con tipi come &quot;Tipo di
             sensori&quot;, &quot;Applicazione&quot;, etc., i cui termini possono essere definiti da
-            dei vocabolari</help>
+            dei vocabolari</help>-->
         <label xml:lang="en">System Classifiers</label>
-        <help xml:lang="en">Means of specifying classification values with types such as
+        <!--<help xml:lang="en">Means of specifying classification values with types such as
             &quot;sensorType&quot;, &quot;intendedApplication&quot;, etc., whose terms can be
-            defined in a dictionary</help>
+            defined in a dictionary</help>-->
         <!--Intended application element -->
         <element>
             <id>int_app</id>
-            <label xml:lang="it">Applicazione</label>
+            <!--<label xml:lang="it">Applicazione</label>
             <help xml:lang="it">Applicazione pensata per il sistema</help>
             <label xml:lang="en">Intended application</label>
-            <help xml:lang="en">Intended application of the sistem</help>
+            <help xml:lang="en">Intended application of the sistem</help>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
@@ -725,10 +725,10 @@
         <!--Sensor type element -->
         <element>
             <id>sensor_type</id>
-            <label xml:lang="it">Tipologia sistema</label>
+            <!--<label xml:lang="it">Tipologia sistema</label>
             <help xml:lang="it">Parola chiave che indica la tiplogia del sistema</help>
             <label xml:lang="en">Sensor type</label>
-            <help xml:lang="en">Key words mean the typology of the system</help>
+            <help xml:lang="en">Key words mean the typology of the system</help>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
@@ -783,9 +783,9 @@
         <!-- Deployment Role element -->
         <element>
             <id>deployment_role</id>
-            <label xml:lang="it">Ruolo del sistema</label>
+            <label xml:lang="it">Parola chiave del ruolo</label>
             <help xml:lang="it">Parola chiave che indica il ruolo del sistema</help>
-            <label xml:lang="en">Deployment Role</label>
+            <label xml:lang="en">Key words of the deployment role</label>
             <help xml:lang="en">Key words mean the deployment role</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
@@ -800,14 +800,15 @@
                     <hasValue>Deployment role</hasValue>
                 </item>
                 <item>
+                    <!-- TO DO: da sistemare -->
                     <hasIndex>2</hasIndex>
                     <outIndex>4</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>code</hasDatatype>
-                    <hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>
-                    <label xml:lang="it">Parola chiave della ruolo</label>
-                    <label xml:lang="en">Key words of the deployment role</label>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>deployment_role</datasource>
+                    <!--<hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>-->
+                    <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <!--<item>
           <hasIndex>3</hasIndex>
@@ -859,17 +860,17 @@
     <!--================= -->
     <group>
         <id>temp_val</id>
-        <label xml:lang="it">Validit&#224; temporale documentazione</label>
-        <help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
-            sistema</help>
-        <label xml:lang="en">Temporal Validity</label>
-        <help xml:lang="en">Means of providing time validity constraint of description</help>
+        <label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
+        <!--<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
+            sistema</help>-->
+        <label xml:lang="en">Temporal Validity of this description</label>
+        <!--<help xml:lang="en">Means of providing time validity constraint of description</help>-->
         <element>
             <id>valid_time</id>
-            <label xml:lang="it">Validit&#224; temporale di questo documento</label>
+            <!--<label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
             <help/>
             <label xml:lang="en">Temporal Validity of this description</label>
-            <help/>
+            <help/>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:validTime</hasRoot>
@@ -877,12 +878,21 @@
                 <item>
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/@gml:id</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>DOC_TIME</hasValue>
+                    <start>
+                        <label xml:lang="en">Begin date</label>
+                        <label xml:lang="it">Data inizio</label>
+                        <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
+                    </start>
+                    <end>
+                        <label xml:lang="en">End date</label>
+                        <label xml:lang="it">Data fine</label>
+                        <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition</hasPath>
+                    </end>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dateRange</hasDatatype>
                 </item>
-                <item>
-                    <!--TO DO verificare con Fabio item non valorizzato, non viene assolutamente prodotto -->
+                <!--<item>
+                    <!-\-TO DO verificare con Fabio item non valorizzato, non viene assolutamente prodotto -\->
                     <hasIndex>2</hasIndex>
                     <label xml:lang="en">foo</label>
                     <label xml:lang="it">Data</label>
@@ -907,7 +917,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>dateRange</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                </item>
+                </item>-->
                 <!--<item>
           <hasIndex>2</hasIndex>
           <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
@@ -1343,6 +1353,9 @@
         <!--Relevant Contacts: Manufacturer -->
         <!--=============================== -->
         <element>
+            <!-- To DO: verificare se indicato adeguatamente il riferimento al campo
+            /sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value
+            -->
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul costruttore</label>
             <help/>
@@ -1366,12 +1379,17 @@
           <!-\-es SENSIRION AG -\->
         </item>-->
                 <item>
+                    <label xml:lang="it">Nome costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer name</label>
+                    <help/>
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>manName</id>
-                    <hasDatatype>autoCompletion</hasDatatype>
-                    <hasValue><![CDATA[
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasValue>
+                    <!--<hasValue><![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
                         SELECT ?c ?l
                         FROM <http://ritmare.it/rdfdata/manufacturers>
@@ -1381,11 +1399,7 @@
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
                         }
                         ORDER BY ASC(?l)                        
-                        ]]></hasValue>
-                    <label xml:lang="it">Nome costruttore</label>
-                    <help/>
-                    <label xml:lang="en">Manufacturer name</label>
-                    <help/>
+                        ]]></hasValue>-->
                     <!--es SENSIRION AG -->
                 </item>
                 <item>
