@@ -1177,6 +1177,7 @@
             </produces>
         </element>
         <!--status -->
+        <!-- TO DO: inserire casella di spunta -->
         <element>
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
@@ -1201,6 +1202,7 @@
             </produces>
         </element>
         <!--mobility -->
+        <!-- TO DO: inserire casella di spunta -->
         <element>
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
