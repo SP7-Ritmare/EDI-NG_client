@@ -962,15 +962,15 @@
     <!--=================== -->
     <group>
         <id>capab</id>
-        <label xml:lang="it">Funzionalit&#224;</label>
-        <!--<help xml:lang="it">Lista delle fuzionalit&#224; per permettere una ricerca accurata</help>-->
+        <label xml:lang="it">Caratteristiche</label>
+        <!--<help xml:lang="it">Lista delle caratteristiche fisiche, elettriche, ecc del sistema</help>-->
         <label xml:lang="en">Capabilities</label>
         <!--<help xml:lang="en">Capabilities list for quick discovery</help>-->
         <!--Physical property -->
         <element>
             <id>physical</id>
-            <label xml:lang="it">Funzionalit&#224; fisiche</label>
-            <help xml:lang="it">Lista delle fuzionalit&#224; fisiche</help>
+            <label xml:lang="it">Caratteristiche fisiche</label>
+            <help xml:lang="it">Lista delle caratteristiche fisiche</help>
             <label xml:lang="en">Physical Capabilities</label>
             <help xml:lang="en">Physical capabilities list for quick discovery</help>
             <isMandatory>NA</isMandatory>
@@ -1102,8 +1102,8 @@
         <!--Electrical property -->
         <element>
             <id>Electrical</id>
-            <label xml:lang="it">Funzionalit&#224; elettriche</label>
-            <help xml:lang="it">Lista delle fuzionalit&#224; elettriche</help>
+            <label xml:lang="it">Caratteristiche elettriche</label>
+            <help xml:lang="it">Lista delle caratteritiche elettriche</help>
             <label xml:lang="en">Electrical Capabilities</label>
             <help xml:lang="en">Electrical capabilities list for quick discovery</help>
             <isMandatory>NA</isMandatory>
