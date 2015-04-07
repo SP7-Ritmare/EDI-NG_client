@@ -1,0 +1,3015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template [
+    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+    <!ENTITY dct "http://purl.org/dc/terms/">
+    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+]>
+<!-- TO DO: in datasources completare searchItem -->
+<!-- TO DO: con SensorML101.xsl aggiungere observableProperty -->
+<!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
+<!-- TO DO: aggiunta di un elemento non è funzionante -->
+<template>
+    <!-- SETTINGS -->
+    <settings>
+        <defaultLanguage>it</defaultLanguage>
+        <languageSelection>
+            <byItem>ling_md_1</byItem>
+        </languageSelection>
+        <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
+        <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
+        <requiresAuthentication>false</requiresAuthentication>
+        <requiresValidation>false</requiresValidation>
+
+        <baseDocument>
+            <!-- Base Document SensorML version 1.0.1 -->
+            <![CDATA[
+            <swes:InsertSensor xmlns:sos="http://www.opengis.net/sos/2.0"
+    xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
+    xmlns:swe="http://www.opengis.net/swe/1.0.1"
+    xmlns:tns="http://www.w3.org/2005/08/addressing"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:gco="http://www.isotc211.org/2005/gco"
+    xmlns:gss="http://www.isotc211.org/2005/gss"
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:swes="http://www.opengis.net/swes/2.0"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:ows="http://www.opengis.net/ows/1.1"
+    xmlns:wstop="http://docs.oasis-open.org/wsn/t-1"
+    xmlns:gsr="http://www.isotc211.org/2005/gsr"
+    xmlns:gts="http://www.isotc211.org/2005/gts"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0/ http://schemas.opengis.net/sos/2.0/sosInsertSensor.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd" version="2.0.0" service="SOS">
+    <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+    <swes:procedureDescription>
+        <!-- Licence CC By SA 3.0  http://creativecommon.org/licences/by-SA/3.0 -->
+    
+    </swes:procedureDescription>
+	<swes:observableProperty>...</swes:observableProperty>
+	<swes:metadata>
+		<sos:SosInsertionMetadata>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</sos:observationType>
+			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</sos:observationType>
+			<sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+		</sos:SosInsertionMetadata>
+	</swes:metadata>
+</swes:InsertSensor>
+        ]]>
+        </baseDocument>
+
+        <xsltChain>
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=1.00</xslt>
+        </xsltChain>
+    </settings>
+
+    <!-- ENDPOINT TYPES -->
+    <endpointTypes>
+        <endpointType>
+            <id>virtuoso</id>
+            <method>GET</method>
+            <queryParameter>query</queryParameter>
+            <parameters>
+                <format>application/sparql-results+json</format>
+                <save>display</save>
+                <fname>undefined</fname>
+            </parameters>
+        </endpointType>
+    </endpointTypes>
+
+    <!-- DATA SOURCES -->
+    <datasources>
+        <datasource>
+            <id>languages</id>
+            <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+            <url>http://sp7.irea.cnr.it:8891/sparql</url>
+        </datasource>
+        <datasource>
+            <id>keywords</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "it")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a) 
+                        ]]>
+            </query>
+            <searchItem>keyword_p01</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>manufacturers</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
+                        SELECT ?c ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          ?c rdf:type foaf:Organization.
+                          ?c foaf:name ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)                        
+                        ]]>
+            </query>
+            <searchItem>manufacturers_codelist</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>intended_applications</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
+                        SELECT ?c ?l ?a ?urn                       
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:notation ?urn. 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = 'en') 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = 'it') 
+                          }
+                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]>
+            </query>
+            <searchItem>intended_applications_codelist</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>type_of_systems</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?a ?urn
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          ?c skos:inScheme <http://vocab.nerc.ac.uk/collection/L05/current/>.
+                          OPTIONAL {
+                            ?c skos:notation ?urn.
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "it")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]>
+            </query>
+            <searchItem>type_of_systems_keywords</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>uom</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?urn
+                        FROM <http://ritmare.it/rdfdata/units>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:altLabel ?urn.
+                            FILTER( LANG(?urn) = "en")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]>
+            </query>
+            <searchItem>unit_of_measure</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>owners</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          ?c rdf:type foaf:Person.
+                          ?c ns:email ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a) 
+                        ]]>
+            </query>
+            <searchItem>owners_codeList</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>parameters</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
+                        SELECT ?c ?l ?a ?urn                       
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:notation ?urn. 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = 'en') 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = 'it') 
+                          }
+                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]>
+            </query>
+            <searchItem>parameters_codeList</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>items</id>
+            <uri>http://ritmare.it/codelists/SensorML/mime/items</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
+        <datasource>
+            <id>EPSG</id>
+            <uri>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
+        <datasource>
+            <id>deployment_role</id>
+            <uri>http://vocab.nerc.ac.uk/collection/L19/current/</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
+        <datasource>
+            <id>physical_quantity</id>
+            <uri>http://sp7.irea.cnr.it/rdfdata/sensors/phys_props/items</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
+        <datasource>
+            <id>electrical_quantity</id>
+            <uri>http://sp7.irea.cnr.it/rdfdata/sensors/electr_reqs/items</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
+    </datasources>
+
+    <!-- GROUP -->
+    <!-- =========== -->
+    <!-- Description -->
+    <!-- =========== -->
+    <group>
+        <id>name_desc</id>
+        <label xml:lang="it">Descrizione del sistema</label>
+        <!--<help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema,
+            denominandolo e descrivendone genericamente le caratteristiche</help>-->
+        <label xml:lang="en">Description of system</label>
+        <!--<help xml:lang="en">Means of providing a description of system, a name and describing
+            general characteristics</help>-->
+        <!-- gml:id -->
+        <element>
+            <id>sensor_id</id>
+            <!--<label>system ID</label>-->
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasValue>u</hasValue>
+                    <!-- TO DO: è un ref a ShortName chiedere se è necessario che questo elemento 
+                        vada messo dopo l'elemento di riferimento -->
+                </item>
+            </produces>
+        </element>
+        <!-- system name -->
+        <element>
+            <id>system_name</id>
+            <label xml:lang="it">Nome del sistema</label>
+            <label xml:lang="en">System name</label>
+            <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore. Deve
+                essere breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome con
+                cui il costruttore identifica il sensore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
+                CTP Recorder, ecc.).</help>
+            <help xml:lang="en">Name assigned by the authority that manages the system and that
+                identifies</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/gml:name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                </item>
+            </produces>
+        </element>
+        <!-- system description -->
+        <element>
+            <id>system_name</id>
+            <label xml:lang="it">Descrizione sistema</label>
+            <help xml:lang="it">Contiene una semplice descrizione testuale del sistema, della
+                piattaforma o del sensore.</help>
+            <label xml:lang="en">Description</label>
+            <help xml:lang="en">Contains a simple text description of the object, of the platform or
+                of the sensor.</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Description group -->
+
+    <!--======== -->
+    <!--Keywords -->
+    <!--======== -->
+    <group>
+        <id>keyword</id>
+        <label xml:lang="it">Parole chiave</label>
+        <!--<help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+            della risorsa.</help>-->
+        <label xml:lang="en">Keywords</label>
+        <!--<help xml:lang="en">Describe system by keywords allow the discovery</help>-->
+        <!-- code space -->
+        <element>
+            <id>codespace_keywords</id>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/@codeSpace</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>http://ritmare.it/sensorml/keywords</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!-- keywords -->
+        <element>
+            <id>keywords</id>
+            <label xml:lang="it">Parole chiave</label>
+            <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+                della risorsa.</help>
+            <label xml:lang="en">Keyword</label>
+            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/sml:keyword</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>keywords</datasource>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Keyword Group -->
+
+    <!--============== -->
+    <!--Identification -->
+    <!--============== -->
+    <group>
+        <id>system_ids</id>
+        <label xml:lang="it">Identificazione</label>
+        <!--<help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con
+            tipi come &quot;nome breve del sesnore&quot; (alias), &quot;nome per esteso&quot;,
+            &quot;numero del modello&quot;, &quot;numero seriale&quot;, ecc.</help>-->
+        <label xml:lang="en">Identification of the system</label>
+        <!--<help xml:lang="en">Means of providing various identity and alias values, with types such as
+            &quot;longName&quot;, &quot;abbreviation&quot;, &quot;modelNumber&quot;,
+            &quot;serialNumber&quot;, whose terms can be defined in a dictionary.</help>-->
+        <element>
+            <id>unique_id</id>
+            <label xml:lang="en">Unique ID</label>
+            <help xml:lang="it">Provvede a fornire un identificatore unico</help>
+            <label xml:lang="it">ID unico</label>
+            <help xml:lang="en">Means of providing unique identifier</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>uniqueID</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>sensorID</hasDatatype>
+                    <hasValue>...</hasValue>
+                    <!-- TO DO: come poter inserire valore casuale di Sensor ID composto come segue:
+                    http://sp7.irea.cnr.it/sensors/geosk.ve.ismar.cnr.it/procedure/DavisInstruments/VantagePro/noSerialNumberDeclared/Adige_20141217115413720_11525 -->
+                </item>
+            </produces>
+        </element>
+        <!-- Short Name -->
+        <element>
+            <id>short_name</id>
+            <!--<label xml:lang="it">Nome breve del sistema</label>
+            <help xml:lang="it">Provvede a fornire un nome breve al sistema</help>
+            <label xml:lang="en">Short Name</label>
+            <help xml:lang="en">Provide a short name for the system</help>-->
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Short Name</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:identifier:OGC:shortName</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>function</hasDatatype>
+                    <!-- TO DO: controllare se va bene la funzione replace -->
+                    <hasValue>translate(/sml:SensorML/sml:member/sml:System/gml:name, '_', ' ')</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!-- Long Name -->
+        <element>
+            <id>long_name</id>
+            <label xml:lang="it">Nome per esteso del sistema</label>
+            <help xml:lang="it">Indicare un nome esteso del sistema. Modificarlo nel caso non sia uguale a quello indicato in precedenza.</help>
+            <label xml:lang="en">Long Name</label>
+            <help xml:lang="en">Long Name of the system. Change it if is not the same as indicated above.</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Long Name</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:identifier:OGC:longName</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/gml:name</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!-- Sensor something -->
+        <element>
+            <id>manuf_name</id>
+            <label xml:lang="it">Denominazione del Produttore</label>
+            <help/>
+            <label xml:lang="en">Manufacturer name</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Manufacturer Name</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:identifier:OGC:manufacturerName</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                </item>
+            </produces>
+        </element>
+        <!-- Model Number -->
+        <element>
+            <id>mod_number</id>
+            <label xml:lang="it">Numero del modello</label>
+            <help/>
+            <label xml:lang="en">Model Number</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Model Number</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:identifier:SBE:modelNumber</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                </item>
+            </produces>
+        </element>
+        <!-- Serial Number -->
+        <element>
+            <id>serial_num</id>
+            <label xml:lang="it">Numero seriale</label>
+            <help/>
+            <label xml:lang="en">Serial Number</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Serial Number</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:identifier:OGC:serialNumber</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!-- END Identification group -->
+
+    <!--================== -->
+    <!--System Classifiers -->
+    <!--================== -->
+    <group>
+        <id>sys_class</id>
+        <label xml:lang="it">Classificazione del sistema</label>
+        <!--<help xml:lang="it">Definizione dei valori di classificazione con tipi come &quot;Tipo di
+            sensori&quot;, &quot;Applicazione&quot;, etc., i cui termini possono essere definiti da
+            dei vocabolari</help>-->
+        <label xml:lang="en">System Classifiers</label>
+        <!--<help xml:lang="en">Means of specifying classification values with types such as
+            &quot;sensorType&quot;, &quot;intendedApplication&quot;, etc., whose terms can be
+            defined in a dictionary</help>-->
+        <!--Intended application element -->
+        <element>
+            <id>int_app</id>
+            <!--<label xml:lang="it">Applicazione</label>
+            <help xml:lang="it">Applicazione pensata per il sistema</help>
+            <label xml:lang="en">Intended application</label>
+            <help xml:lang="en">Intended application of the sistem</help>-->
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Intended application</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>intended_applications</datasource>
+                    <label xml:lang="it">Parola chiave dell&apos;applicazione</label>
+                    <label xml:lang="en">Key words of the intended application</label>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useURN>true</useURN>
+                    <!--<isLanguageNeutral>true</isLanguageNeutral>-->
+                    <!--<useCode>true</useCode>-->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+        <!--Sensor type element -->
+        <element>
+            <id>sensor_type</id>
+            <!--<label xml:lang="it">Tipologia sistema</label>
+            <help xml:lang="it">Parola chiave che indica la tiplogia del sistema</help>
+            <label xml:lang="en">Sensor type</label>
+            <help xml:lang="en">Key words mean the typology of the system</help>-->
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Sensor type</hasValue>
+                </item>
+                <!--<item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>code</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/L05/current/</hasValue>
+          <label xml:lang="it">Parola chiave della tipologia</label>
+          <label xml:lang="en">Key words of the typology of the system</label>
+        </item> -->
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <label xml:lang="it">Parola chiave della tipologia</label>
+                    <label xml:lang="en">Key words of the typology of the system</label>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>type_of_systems</datasource>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+        <!-- Deployment Role element -->
+        <element>
+            <id>deployment_role</id>
+            <label xml:lang="it">Parola chiave del ruolo</label>
+            <help xml:lang="it">Parola chiave che indica il ruolo del sistema</help>
+            <label xml:lang="en">Key words of the deployment role</label>
+            <help xml:lang="en">Key words mean the deployment role</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Deployment role</hasValue>
+                </item>
+                <item>
+                    <!-- TO DO: da sistemare -->
+                    <hasIndex>2</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>deployment_role</datasource>
+                    <!--<hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>-->
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <label xml:lang="it">Parola chiave della ruolo</label>
+          <label xml:lang="en">Key words of the deployment role</label>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>autoCompletion</hasDatatype>
+          <hasValue><![CDATA[
+                        SELECT ?c ?l
+			                 FROM <http://ritmare.it/rdfdata/sensors>
+			 WHERE {
+			    ?c rdf:type skos:Concept.
+			    ?c skos:inScheme <http://vocab.nerc.ac.uk/collection/L19/current/>.
+			    OPTIONAL {
+			      ?c skos:prefLabel ?l.
+			      FILTER( LANG(?l) = 'en')
+			    }
+			    FILTER( REGEX( STR(?l), '$search_param', 'i') )
+			  }
+			  ORDER BY ASC(?l)
+                        ]]></hasValue>
+        </item>-->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:codeSpace/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Classifiers Group -->
+
+    <!--================= -->
+    <!--Temporal Validity -->
+    <!--================= -->
+    <group>
+        <id>temp_val</id>
+        <label xml:lang="it">Validit&#224; descrizione del sistema</label>
+        <!--<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
+            sistema</help>-->
+        <label xml:lang="en">Temporal validity of description</label>
+        <!--<help xml:lang="en">Means of providing time validity constraint of description</help>-->
+        <element>
+            <id>valid_time</id>
+            <!--<label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
+            <help/>
+            <label xml:lang="en">Temporal Validity of this description</label>
+            <help/>-->
+            <isMandatory>NA</isMandatory>
+            <isMultiple>NA</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:validTime</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>DOC_TIME</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <label xml:lang="en">Foo</label>
+                    <label xml:lang="it">Data</label>
+                    <start>
+                        <label xml:lang="en">Begin date</label>
+                        <label xml:lang="it">Data inizio</label>
+                        <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
+                    </start>
+                    <end>
+                        <label xml:lang="en">End date</label>
+                        <label xml:lang="it">Data fine</label>
+                        <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition</hasPath>
+                    </end>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dateRange</hasDatatype>
+                </item>
+                <!--<item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>dateRange</hasDatatype>
+          <!-\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\->
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Data di inizio</label>
+          <help/>
+          <label xml:lang="en">Begin date</label>
+          <help/>
+        </item>
+        <item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>dateRange</hasDatatype>
+          <!-\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\->
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Data di fine</label>
+          <help/>
+          <label xml:lang="en">End date</label>
+          <help/>
+        </item> -->
+            </produces>
+        </element>
+    </group>
+    <!--END Temporal Validity Group -->
+
+    <!--=================== -->
+    <!--Security Constraint -->
+    <!--=================== -->
+    <!--<group>
+    <id>sec_cons</id>
+    <label xml:lang="it">Vincoli di sicurezza</label>
+    <help/>
+    <label xml:lang="en">Security Constraint</label>
+    <help xml:lang="en">Means of providing security constraints of description</help>
+    <element>
+      
+    </element>
+  </group> -->
+    <!--END Security Constraint Group -->
+
+    <!--================ -->
+    <!--Legal Constraint -->
+    <!--================ -->
+    <!--<group>
+    <id>leg_cons</id>
+    <label xml:lang="it">Vincoli legali</label>
+    <help/>
+    <label xml:lang="en">Legal Constraint</label>
+    <help xml:lang="en">Means of providing legal constraints of description</help>
+    <element>
+      
+    </element>
+  </group> -->
+    <!--END Legal Constraint Group -->
+
+    <!--=================== -->
+    <!--System Capabilities -->
+    <!--=================== -->
+    <group>
+        <id>capab</id>
+        <label xml:lang="it">Caratteristiche</label>
+        <!--<help xml:lang="it">Lista delle caratteristiche fisiche, elettriche, ecc del sistema</help>-->
+        <label xml:lang="en">Capabilities</label>
+        <!--<help xml:lang="en">Capabilities list for quick discovery</help>-->
+        <!--Physical property -->
+        <element>
+            <id>physical</id>
+            <label xml:lang="it">Caratteristiche fisiche</label>
+            <help xml:lang="it">Lista delle caratteristiche fisiche</help>
+            <label xml:lang="en">Physical Capabilities</label>
+            <help xml:lang="en">Physical capabilities list for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <!-- TO DO: sistemare -->
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>physical_quantity</datasource>
+                    <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/phys_props/items</hasValue>
+                    <label xml:lang="it">Grandezza fisica</label>
+                    <label xml:lang="en">Physical classifier</label>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/@name</hasValue>
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
+                    <label xml:lang="it">Unit&#224; di misura</label>
+                    <label xml:lang="en">Unit of measurement</label>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>autoCompletion</hasDatatype>
+          <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?urn
+                        FROM <http://ritmare.it/rdfdata/units>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:altLabel ?urn.
+                            FILTER( LANG(?urn) = "en")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+          <useURN>true</useURN>
+        </item>
+        <item>
+          <hasIndex>4</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasValue>
+          <useCode>true</useCode>
+        </item>-->
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--es. 13 -->
+                    <label xml:lang="it">Valore grandezza fisica</label>
+                    <label xml:lang="en">Value</label>
+                </item>
+            </produces>
+        </element>
+        <!--material -->
+        <element>
+            <id>material</id>
+            <label xml:lang="it">Materiale</label>
+            <help xml:lang="it">Materiale di cui &#232; composto il sistema</help>
+            <label xml:lang="en">Material</label>
+            <help xml:lang="en">Material which is composed the system</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]/swe:Category[@definition=&apos;urn:ogc:dictionary:OGC:material&apos;]/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--Electrical property -->
+        <element>
+            <id>Electrical</id>
+            <label xml:lang="it">Caratteristiche elettriche</label>
+            <help xml:lang="it">Lista delle caratteritiche elettriche</help>
+            <label xml:lang="en">Electrical Capabilities</label>
+            <help xml:lang="en">Electrical capabilities list for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <!-- TO DO: sistemare -->
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>electrical_quantity</datasource>
+                    <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/electr_reqs/items</hasValue>
+                    <label xml:lang="it">Grandezza elettrica</label>
+                    <label xml:lang="en">Electrical classifier</label>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasValue>
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical
+                        Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
+                    <label xml:lang="it">Unit&#224; di misura</label>
+                    <label xml:lang="en">Unit of measurement</label>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <!--es. http://vocab.nerc.ac.uk/collection/P06/current/UXMM/ -->
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical
+                        Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--es. 13 -->
+                    <label xml:lang="it">Valore grandezza elettrica</label>
+                    <label xml:lang="en">Value</label>
+                </item>
+            </produces>
+        </element>
+        <!--status -->
+        <!-- TO DO: inserire casella di spunta -->
+        <element>
+            <id>status_capab</id>
+            <label xml:lang="it">Stato del sistema</label>
+            <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato.
+                Selezionare casella nel caso di sistema attivo</help>
+            <label xml:lang="en">Status</label>
+            <help xml:lang="en">Means if system is on or off. Selected tick if the status of system
+                is on</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                        Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]/swe:Boolean/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>boolean</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--mobility -->
+        <!-- TO DO: inserire casella di spunta -->
+        <element>
+            <id>mobility_capab</id>
+            <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
+            <help xml:lang="it">Viene indicato se il sistema &#232; mobile o fisso. Selezionare
+                casella nel caso si tratti di sistema mobile</help>
+            <label xml:lang="en">Mobility Capabilities</label>
+            <help xml:lang="en">Means if the system is mobile or fixed. Selected tick if the system
+                is mobile</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                        Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]/swe:Boolean/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>boolean</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--storage -->
+        <element>
+            <id>storage_type</id>
+            <label xml:lang="it">Tipo di memoria</label>
+            <help xml:lang="it">Indicare il tipo di memoria che viene usato per archiviare le
+                osservazioni raccolte dal sistema o dal sensore (es. dataLogger)</help>
+            <label xml:lang="en">Storage Type</label>
+            <help xml:lang="en">Storage Type (ex. dataLogger)</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                Capabilities&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                        Capabilities&apos;]/swe:DataRecord/swe:field/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>Storage Type</hasValue>
+                    <!--es. dataLogger -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                        Capabilities&apos;]/swe:DataRecord/swe:field/@xlink:role</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:property:dataStorage</hasValue>
+                    <!--es. dataLogger -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                        Capabilities&apos;]/swe:DataRecord/swe:field/swe:Category/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>urn:ogc:def:classifier:SBE:storageType</hasValue>
+                    <!--es. dataLogger -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                        Capabilities&apos;]/swe:DataRecord/swe:field/swe:Category/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <!--es. dataLogger -->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Capabilities Group -->
+
+    <!--================= -->
+    <!--Relevant Contacts -->
+    <!--================= -->
+    <group>
+        <id>rel_contacts</id>
+        <label xml:lang="it">Punti di contatto</label>
+        <help xml:lang="it">Punti di contatto per il systema</help>
+        <label xml:lang="en">Relevant Contacts</label>
+        <help xml:lang="en">Relevant contacts for that system</help>
+        <!--=============================== -->
+        <!--Relevant Contacts: Manufacturer -->
+        <!--=============================== -->
+        <element>
+            <!-- To DO: verificare se indicato adeguatamente il riferimento al campo
+            /sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value
+            -->
+            <id>manufacturer</id>
+            <label xml:lang="it">Informazioni sul costruttore</label>
+            <help/>
+            <label xml:lang="en">Manufacturer</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
+            <produces>
+                <!--<item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+          <isFixed>true</isFixed>
+          <id>manName</id>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasValue>
+          <label xml:lang="it">Nome costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer name</label>
+          <help/>
+          <!-\-es SENSIRION AG -\->
+        </item>-->
+                <item>
+                    <label xml:lang="it">Nome costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer name</label>
+                    <help/>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>manName</id>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasValue>
+                    <!--<hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
+                        SELECT ?c ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          ?c rdf:type foaf:Organization.
+                          ?c foaf:name ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)                        
+                        ]]></hasValue>-->
+                    <!--es SENSIRION AG -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:voice</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <label xml:lang="it">Telefono costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer phone number</label>
+                    <help/>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> foaf:phone ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <!--es 0041 44 306 40 00 -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:deliveryPoint</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT fn:concat(?l1, ', ', ?l2) AS ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:address ?b1.
+                            ?b1 addr:deliveryPoint ?b2.
+                            ?b2 addr:location ?b3.
+                            ?b3 addr:thoroughfareName ?l1.
+                            ?b3 addr:streetNr ?l2.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Indirizzo costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer address</label>
+                    <help/>
+                    <!--es Laubisruetistr. 50 -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:city</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE {
+                          OPTIONAL {
+                            <$1$> addr:address ?b1.
+                            ?b1 addr:deliveryPoint ?b2.
+                            ?b2 addr:location ?b3.
+                            ?b3 addr:town ?l.
+                          }
+                        }
+                    ]]></hasValue>
+                    <label xml:lang="it">Citt&#224; costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer city</label>
+                    <help/>
+                    <!--es Staefa -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:administrativeArea</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE {
+                          OPTIONAL {
+                            <$1$> addr:address ?b1.
+                            ?b1 addr:deliveryPoint ?b2.
+                            ?b2 addr:location ?b3.
+                            ?b3 addr:region ?l.
+                          }
+                        }
+                    ]]></hasValue>
+                    <label xml:lang="it">Area amministrativa costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer administrative area</label>
+                    <help/>
+                    <!--es ZH -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:postalCode</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE {
+                          OPTIONAL {
+                            <$1$> addr:address ?b1.
+                            ?b1 addr:deliveryPoint ?b2.
+                            ?b2 addr:location ?b3.
+                            ?b3 addr:postcode ?l.
+                          }
+                        }
+                    ]]></hasValue>
+                    <label xml:lang="it">CAP costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer Postal code</label>
+                    <help/>
+                    <!--es CH-8712 -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:country</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE {
+                          OPTIONAL {
+                            <$1$> addr:address ?b1.
+                            ?b1 addr:deliveryPoint ?b2.
+                            ?b2 addr:location ?b3.
+                            ?b3 addr:country ?l.
+                          }
+                        }
+                    ]]></hasValue>
+                    <label xml:lang="it">Nazione costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer country</label>
+                    <help/>
+                    <!--es Switzerland -->
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:electronicMailAddress</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> ns:email ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">E-mail costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer e-mail address</label>
+                    <help/>
+                    <!--es info@sensirion.com -->
+                </item>
+                <item>
+                    <hasIndex>9</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:onlineResource</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> foaf:homepage ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Sito web costruttore</label>
+                    <help/>
+                    <label xml:lang="en">Manufacturer web site</label>
+                    <help/>
+                    <!--es http://www.sensirion.com -->
+                </item>
+
+                <!--<item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Nome costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer name</label>
+          <help/>
+          <!-\-es SENSIRION AG -\->
+        </item>
+        <item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Telefono costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer phone number</label>
+          <help/>
+          <!-\-es 0041 44 306 40 00 -\->
+        </item>
+        <item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Indirizzo costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer address</label>
+          <help/>
+          <!-\-es Laubisruetistr. 50 -\->
+        </item>
+        <item>
+          <hasIndex>4</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Citt&#224; costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer city</label>
+          <help/>
+          <!-\-es Staefa -\->
+        </item>
+        <item>
+          <hasIndex>5</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Area amministrativa costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer administrative area</label>
+          <help/>
+          <!-\-es ZH -\->
+        </item>
+        <item>
+          <hasIndex>6</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">CAP costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer Postal code</label>
+          <help/>
+          <!-\-es CH-8712 -\->
+        </item>
+        <item>
+          <hasIndex>7</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Nazione costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer country</label>
+          <help/>
+          <!-\-es Switzerland -\->
+        </item>
+        <item>
+          <hasIndex>8</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">E-mail costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer e-mail address</label>
+          <help/>
+          <!-\-es info@sensirion.com -\->
+        </item>
+        <item>
+          <hasIndex>9</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>URI</hasDatatype>
+          <hasValue>user-defined</hasValue>
+          <label xml:lang="it">Sito web costruttore</label>
+          <help/>
+          <label xml:lang="en">Manufacturer web site</label>
+          <help/>
+          <!-\-es http://www.sensirion.com -\->
+        </item>-->
+            </produces>
+        </element>
+        <!--======================== -->
+        <!--Relevant Contacts: Owner -->
+        <!--======================== -->
+        <element>
+            <id>owner</id>
+            <label xml:lang="it">Informazioni sul proprietario</label>
+            <help/>
+            <label xml:lang="en">Owner</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>8</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>electronicMailAddress</id>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          ?c rdf:type foaf:Person.
+                          ?c ns:email ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a) 
+                        ]]></hasValue>
+                    <label xml:lang="it">e-mail proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner e-mail address</label>
+                    <help/>
+                    <!--es mauro.bastianini@ismar.cnr.it -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:organisationName</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <label xml:lang="it">Organizzazione proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner organization</label>
+                    <help/>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          <$1$> ns:org ?o.
+                          ?o rdfs:label ?l.
+                        }
+                        ]]></hasValue>
+                    <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> foaf:phone ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Telefono proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner phone number</label>
+                    <help/>
+                    <!--es 0039 041 240 7982 -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:thoroughfareName ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Indirizzo proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner address</label>
+                    <help/>
+                    <!--es Castello 2737/F Tesa 104 -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:town ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Citt&#224; proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner city</label>
+                    <help/>
+                    <!--es Venezia -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <outIndex>5</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Area amministrativa proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner administrative area</label>
+                    <help/>
+                    <!--es VE -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <outIndex>6</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:postcode ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">CAP proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner Postal code</label>
+                    <help/>
+                    <!--es IT-30122 -->
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <outIndex>7</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:country ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Nazione proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner country</label>
+                    <help/>
+                    <!--es Italy -->
+                </item>
+                <item>
+                    <hasIndex>9</hasIndex>
+                    <outIndex>9</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          <$1$> ns:org ?o.
+                          ?o foaf:homepage ?l.
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Sito web proprietario</label>
+                    <help/>
+                    <label xml:lang="en">Owner web site</label>
+                    <help/>
+                    <!--es http://www.sensirion.com -->
+                </item>
+            </produces>
+        </element>
+        <!--=========================== -->
+        <!--Relevant Contacts: Operator -->
+        <!--=========================== -->
+        <element>
+            <id>operator</id>
+            <label xml:lang="it">Informazioni sul operatore</label>
+            <help/>
+            <label xml:lang="en">Operator</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <outIndex>8</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>electronicMailAddress</id>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          ?c rdf:type foaf:Person.
+                          ?c ns:email ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a) 
+                        ]]></hasValue>
+                    <label xml:lang="it">e-mail operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator e-mail address</label>
+                    <help/>
+                    <!--es mauro.bastianini@ismar.cnr.it -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <isFixed>false</isFixed>
+                    <id>sml:organisationName</id>
+                    <hasDatatype>dependent</hasDatatype>
+                    <label xml:lang="it">Nome operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator name</label>
+                    <help/>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          <$1$> ns:org ?o.
+                          ?o rdfs:label ?l.
+                        }
+                        ]]></hasValue>
+                    <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>2</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> foaf:phone ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Telefono operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator phone number</label>
+                    <help/>
+                    <!--es 0039 041 240 7982 -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>3</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:thoroughfareName ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Indirizzo operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator address</label>
+                    <help/>
+                    <!--es Castello 2737/F Tesa 104 -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <outIndex>4</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:town ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Citt&#224; operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator city</label>
+                    <help/>
+                    <!--es Venezia -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <outIndex>5</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Area amministrativa operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator administrative area</label>
+                    <help/>
+                    <!--es VE -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <outIndex>6</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:postcode ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">CAP operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator Postal code</label>
+                    <help/>
+                    <!--es IT-30122 -->
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <outIndex>7</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          OPTIONAL {
+                            <$1$> addr:country ?l.
+                          }
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Nazione operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator country</label>
+                    <help/>
+                    <!--es Italy -->
+                </item>
+                <item>
+                    <hasIndex>9</hasIndex>
+                    <outIndex>9</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>dependent</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          <$1$> ns:org ?o.
+                          ?o foaf:homepage ?l.
+                        }
+                        ]]></hasValue>
+                    <label xml:lang="it">Sito web operatore</label>
+                    <help/>
+                    <label xml:lang="en">Operator web site</label>
+                    <help/>
+                    <!--es http://www.sensirion.com -->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Relevant Contacts Group -->
+
+    <!--==================== -->
+    <!--System Documentation -->
+    <!--==================== -->
+    <group>
+        <id>system_documentation</id>
+        <label xml:lang="it">Scheda tecnica del sistema</label>
+        <help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
+            anche puntare ad una risorsa online.</help>
+        <label xml:lang="en">System Documentation</label>
+        <help xml:lang="en">Documentation for that object with date/time, version, author, etc.
+            pointing to an online resource related to the enclosing object</help>
+        <element>
+            <id>documentation</id>
+            <label xml:lang="it">Documentazione</label>
+            <help/>
+            <label xml:lang="en">Documentation</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>NA</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:documentation/@xlink:arcrole</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:classifiers:OGC:documentType:datasheet</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:date</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>date</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Data di emissione della scheda tecnica</label>
+                    <help/>
+                    <label xml:lang="en">Description date</label>
+                    <help/>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:format</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>code</hasDatatype>
+                    <hasValue>http://ritmare.it/codelists/SensorML/mime/items</hasValue>
+                    <!--<hasDatatype>string</hasDatatype>
+          <hasValue>user-defined</hasValue>-->
+                    <label xml:lang="it">Formato elettronico di distribuzione della scheda
+                        tecnica</label>
+                    <help/>
+                    <label xml:lang="en">Description format (e.g. pdf, doc, etc.)</label>
+                    <help/>
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URI</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Link alla scheda tecnica</label>
+                    <help/>
+                    <label xml:lang="en">Documentation link</label>
+                    <help/>
+                    <!--http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END System Documentation Group -->
+
+    <!--======= -->
+    <!--History -->
+    <!--======= -->
+    <group>
+        <id>history</id>
+        <label xml:lang="it">Storia del sistema</label>
+        <help xml:lang="it">Storia del sistema rispetto a modifiche, ricalibrazione, ecc.</help>
+        <label xml:lang="en">History</label>
+        <help xml:lang="en">History of the object described (Recalibration, adjustments,
+            etc.)</help>
+        <!--============== -->
+        <!--History Update -->
+        <!--============== -->
+        <element>
+            <id>history_update</id>
+            <label xml:lang="it">Aggiornamenti</label>
+            <help/>
+            <label xml:lang="en">History Update</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]</hasRoot>
+            <produces>
+
+                <!--<item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <!-\-SML20130715 -\->
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>SMLYYYYMMDD</hasValue>
+                    <!-\-TO DO: inserire il valore SML seguito da annomesegiorno. Potrebbe anche essere ripreso dal item 3 qui sotto preceduto da SML -\->
+                </item>-->
+                <!--<item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member/sml:Event/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <!-\-SML20130715 -\->
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>SMLYYYYMMDD</hasValue>
+                    <!-\-TO DO: inserire il valore SML seguito da annomesegiorno. Potrebbe anche essere ripreso dal item 3 qui sotto preceduto da SML -\->
+                </item>-->
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/sml:date</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>date</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Data aggiornamento sistema</label>
+                    <help/>
+                    <label xml:lang="en">Update date</label>
+                    <help/>
+                    <!--2013-07-15 -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione tipologia di aggiornamento</label>
+                    <help/>
+                    <label xml:lang="en">Update description</label>
+                    <help/>
+                    <!--update sensorML metadata -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <!--SML20130715 -->
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>concat('SML',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <!--SML20130715 -->
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>concat('SMLUpdate',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--================== -->
+        <!--History Operations -->
+        <!--================== -->
+        <element>
+            <id>history_ops</id>
+            <label xml:lang="it">Storia delle operazioni</label>
+            <help/>
+            <label xml:lang="en">History Operations</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>date</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Data modifica sistema</label>
+                    <help/>
+                    <label xml:lang="en">Operation date</label>
+                    <help/>
+                    <!--es 2013-07-15 -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione modifiche sistema</label>
+                    <help/>
+                    <label xml:lang="en">Operation description</label>
+                    <help/>
+                    <!--es Instrument Data Begins -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>operator</hasValue>
+                    <label xml:lang="it">Ruolo addetto alla modifica</label>
+                    <help/>
+                    <label xml:lang="en">Operation role</label>
+                    <help/>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>#operator</hasValue>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione documentazione modifiche sistema</label>
+                    <help/>
+                    <label xml:lang="en">Decription of operational documentation</label>
+                    <help/>
+                    <!--es deployment report -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Link a documentazione modifiche sistema</label>
+                    <help/>
+                    <label xml:lang="en">Operation doc link</label>
+                    <help/>
+                    <!--es http://... -->
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <!--SML20130715 -->
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>concat('SMLOperation',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--=================== -->
+        <!--History Calibration -->
+        <!--=================== -->
+        <element>
+            <id>history_calib</id>
+            <label xml:lang="it">Storia delle calibrazioni</label>
+            <help/>
+            <label xml:lang="en">Calibration history</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>date</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Data calibrazione</label>
+                    <help/>
+                    <label xml:lang="en">Calibration date</label>
+                    <help/>
+                    <!--es 2013-07-15 -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione calibrazione</label>
+                    <help/>
+                    <label xml:lang="en">Calibration description</label>
+                    <help/>
+                    <!--es calibration event -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>operator</hasValue>
+                    <label xml:lang="it">Ruolo addetto alla calibrazione</label>
+                    <help/>
+                    <label xml:lang="en">Calibration role</label>
+                    <help/>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>#operator</hasValue>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione documentazione modifiche sistema</label>
+                    <help/>
+                    <label xml:lang="en">Decription of operational documentation</label>
+                    <help/>
+                    <!--es deployment report -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URI</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Link a documentazione calibrazione</label>
+                    <help/>
+                    <label xml:lang="en">Calibration doc link</label>
+                    <help/>
+                    <!--es http://... -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <!--SML20130715 -->
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>concat('SMLCalibration',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--=========== -->
+        <!--Other Event -->
+        <!--=========== -->
+        <element>
+            <id>history_other</id>
+            <label xml:lang="it">Altri eventi</label>
+            <help/>
+            <label xml:lang="en">Other event history</label>
+            <help/>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>date</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Data altri eventi</label>
+                    <help/>
+                    <label xml:lang="en">Other event date</label>
+                    <help/>
+                    <!--es 2013-07-15 -->
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione altri eventi</label>
+                    <help/>
+                    <label xml:lang="en">Other event description</label>
+                    <help/>
+                    <!--es calibration event -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>operator</hasValue>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>#operator</hasValue>
+                    <!--es operator -->
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione documentazione modifiche sistema</label>
+                    <help/>
+                    <label xml:lang="en">Decription of operational documentation</label>
+                    <help/>
+                    <!--es deployment report -->
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URI</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Link a documentazione</label>
+                    <help/>
+                    <label xml:lang="en">Other event doc link</label>
+                    <help/>
+                    <!--es http://... -->
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <!--SML20130715 -->
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>concat('SMLOtherEvent',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Hystory Group -->
+
+    <!--=================== -->
+    <!--Position Properties -->
+    <!--=================== -->
+    <group>
+        <id>position_prop</id>
+        <label xml:lang="it">Posizione geografica</label>
+        <help/>
+        <label xml:lang="en">Position Properties</label>
+        <help/>
+        <!--Reference system -->
+        <element>
+            <id>ref_sys</id>
+            <label xml:lang="en">Reference system</label>
+            <help xml:lang="en">Reference system of the position property</help>
+            <label xml:lang="it">Sistema di riferimento</label>
+            <help xml:lang="it">Sistema di riferimento della posizione geografica</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>sensorPosition</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>SYSTEM_LOCATION</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <label xml:lang="it">Sistema di riferimento</label>
+                    <label xml:lang="en">Reference system</label>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/@referenceFrame</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>code</hasDatatype>
+                    <hasValue>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</hasValue>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>STATION_LOCATION</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--easting -->
+        <element>
+            <id>easting</id>
+            <label xml:lang="it">Est</label>
+            <help xml:lang="it">Valore in gradi decimali Est</help>
+            <label xml:lang="en">East</label>
+            <help xml:lang="en">East value in decimal degree</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>easting</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>degree</hasValue>
+                    <!--<defaultValue>degree</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Valore in decimi di grado (es. 12.337)</label>
+                    <label xml:lang="it">Esprime i valori delle coordinate Est in gradi, nel sistema
+                        di riferimento scelto dell&apos;ultima posizione assunta dal sensore o della
+                        posizione usuale dove viene mantenuto il sensore quando non &#232; in
+                        funzione (es. pu&#242; essere la posizione del proprietario del sensore).
+                        Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                        sensore.</label>
+                    <label xml:lang="en">Decimal degree value (ex. 12.337)</label>
+                    <label xml:lang="en">Expresses the values of the coordinates in degrees East, in
+                        the chosen reference system the last position assumed by the sensor or the
+                        usual position where it is held when the sensor is not in operation (eg, may
+                        be the location of the owner of the sensor). In the case of fixed sensors
+                        will indicate the actual position of the sensor.</label>
+                </item>
+            </produces>
+        </element>
+        <!--northing -->
+        <element>
+            <id>northing</id>
+            <label xml:lang="it">Nord</label>
+            <help xml:lang="it">Valore in gradi decimali Nord</help>
+            <label xml:lang="en">North</label>
+            <help xml:lang="en">North value in decimal degree</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>northing</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>degree</hasValue>
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Valore in decimi di grado (es. 45.430)</label>
+                    <label xml:lang="it">Esprime i valori delle coordinate Nord in gradi, nel
+                        sistema di riferimento scelto dell&apos;ultima posizione assunta dal sensore
+                        o della posizione usuale dove viene mantenuto il sensore quando non &#232;
+                        in funzione (es. pu&#242; essere la posizione del proprietario del sensore).
+                        Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                        sensore.</label>
+                    <label xml:lang="en">Decimal degree value (ex. 45.430)</label>
+                    <label xml:lang="en">Expresses the values of the coordinates in degrees North,
+                        in the chosen reference system the last position assumed by the sensor or
+                        the usual position where it is held when the sensor is not in operation
+                        (eg., may be the location of the owner of the sensor). In the case of fixed
+                        sensors will indicate the actual position of the sensor.</label>
+                </item>
+            </produces>
+        </element>
+        <!--Altitude -->
+        <element>
+            <id>altitude</id>
+            <label xml:lang="it">Altitudine</label>
+            <help xml:lang="it">In questo caso occorre inserire il valori in metri dell&apos;altezza
+                sopra il livello del mare del sensore. Nel caso di sistemi mobili si pu&#242;
+                indicare l&apos;altezza altimetrica del proprietario del sensore. Nel caso di
+                sensori fissi sar&#224; indicata l&apos;altezza reale del sensore.</help>
+            <label xml:lang="en">Altitude (es. 210.13 m)</label>
+            <help xml:lang="en">Altitud value in meter above see level</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>m</hasValue>
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <!--<label>Altitudine (Altitude)</label> -->
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Position Properties Group -->
+
+    <!--===== -->
+    <!--Input -->
+    <!--===== -->
+    <group>
+        <id>input</id>
+        <label xml:lang="it">In entrata</label>
+        <help xml:lang="it">Lista dei segnali in entrata</help>
+        <label xml:lang="en">Input</label>
+        <help xml:lang="en">List of input signals</help>
+        <element>
+            <id>input_param</id>
+            <label xml:lang="it">Segnali in entrata</label>
+            <help/>
+            <label xml:lang="en">Input signals</label>
+            <help/>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList</hasRoot>
+            <produces>
+                <!--TO DO Alessandro controllare che si faccia riferimento a P01 -->
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
+                        SELECT ?c ?l ?a ?urn                       
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:notation ?urn. 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = 'en') 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = 'it') 
+                          }
+                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                    <label xml:lang="it">Segnale in input al sistema</label>
+                    <help/>
+                    <!--es CPIn -->
+                    <label xml:lang="en">Input sensor signal</label>
+                    <help/>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/@name</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/swe:ObservableProperty/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/@name</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:inputs/sml:InputList/sml:input/swe:ObservableProperty/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione del segnale in entrata</label>
+                    <help xml:lang="it"/>
+                    <label xml:lang="en">Description of input signal</label>
+                    <help xml:lang="en"/>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Input Group -->
+
+    <!--====== -->
+    <!--Output -->
+    <!--====== -->
+    <group>
+        <id>output</id>
+        <label xml:lang="it">Parametri misurati</label>
+        <help xml:lang="it">Lista dei parametri misurati</help>
+        <label xml:lang="en">Output signals</label>
+        <help xml:lang="en">List of output signals</help>
+        <element>
+            <id>output_datatime</id>
+            <label xml:lang="it">Data e ora dei fenomeni misurati</label>
+            <help xml:lang="it">Indicare se i dati contengono anche data e ora</help>
+            <label xml:lang="en">Date and time of phenomena</label>
+            <help xml:lang="en">Indicate whether the observation also contain the date and
+                time</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/GgimmiOFenomeno</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>boolean</hasDatatype>
+                    <hasValue/>
+                    <defaultValue>true</defaultValue>
+                </item>
+            </produces>
+        </element>
+        <element>
+            <id>output_param</id>
+            <label xml:lang="it">Segnali in output</label>
+            <help xml:lang="it">Elencare i parametri misurati dal sistema/sensore</help>
+            <label xml:lang="en">Output signals</label>
+            <help xml:lang="en">List the parameters measured by the system/sensor</help>
+            <isMandatory>forAll</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <!--TO DO: pu&#242; essere inserita automaticamente da /sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/gml:metaDataProperty/offering/id -->
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>        
+                        SELECT ?c ?l ?a ?urn                       
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:notation ?urn. 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = 'en') 
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = 'it') 
+                          }
+                          FILTER( REGEX( STR(?l), '$search_param', 'i') || REGEX( STR(?a), '$search_param', 'i') ) 
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                    <label xml:lang="it">Nome parametro in output sistema</label>
+                    <help/>
+                    <!--es CP -->
+                    <label xml:lang="en">Output sensor</label>
+                    <help/>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione del segnale in uscita</label>
+                    <help xml:lang="it"/>
+                    <label xml:lang="en">Description of output signal</label>
+                    <help xml:lang="en"/>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <label xml:lang="it">Unit&#224; di misura</label>
+                    <help/>
+                    <label xml:lang="en">Unit of measurement</label>
+                    <help/>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?urn
+                        FROM <http://ritmare.it/rdfdata/units>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:altLabel ?urn.
+                            FILTER( LANG(?urn) = "en")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:constraint/swe:AllowedValues/swe:interval</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Ampiezza valori ammissibili (es. -5 +35)</label>
+                    <help xml:lang="it"/>
+                    <label xml:lang="en">Allowed values (ex. -5 +35)</label>
+                    <help xml:lang="en"/>
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/@xlink:role</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:phenomenon:OGC:accuracy</hasValue>
+                </item>
+                <item>
+                    <hasIndex>9</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:sensor:OGC:absoluteAccuracy</hasValue>
+                </item>
+                <item>
+                    <hasIndex>10</hasIndex>
+                    <outIndex>13</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Accuratezza del sistema (es. 1)</label>
+                    <help xml:lang="it"/>
+                    <label xml:lang="en">Accuracy of system (ex. 1)</label>
+                    <help xml:lang="en"/>
+                </item>
+                <item>
+                    <hasIndex>11</hasIndex>
+                    <outIndex>10</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <label xml:lang="it">Unit&#224; di misura dell'accuratezza</label>
+                    <help/>
+                    <label xml:lang="en">Unit of measurement of accuracy</label>
+                    <help/>
+                    <hasValue><![CDATA[
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?urn
+                        FROM <http://ritmare.it/rdfdata/units>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:altLabel ?urn.
+                            FILTER( LANG(?urn) = "en")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l) ASC(?a)
+                        ]]></hasValue>
+                </item>
+                <item>
+                    <hasIndex>12</hasIndex>
+                    <outIndex>11</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>13</hasIndex>
+                    <outIndex>12</outIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Output Group -->
+
+</template>

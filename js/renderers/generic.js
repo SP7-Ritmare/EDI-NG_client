@@ -18,6 +18,7 @@ var ItemRenderer = (function() {
             case "textbox":
             case "combobox":
             case "label":
+            case "boolean":
                 return item.show;
             default:
                 switch(item.hasDatatype) {
@@ -57,6 +58,7 @@ var ItemRenderer = (function() {
      */
     function render() {
         Textbox.render();
+        Boolean.render();
         Combobox.render();
         Autocompletion.render();
         Dates.render();
@@ -96,7 +98,7 @@ var ItemRenderer = (function() {
         theItem.value = item.hasValue;
     }
 
-    init();
+    // init();
 
     return {
         getRenderer: getRenderer,
