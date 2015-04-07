@@ -8,7 +8,6 @@
 <!-- TO DO: in datasources completare searchItem -->
 <!-- TO DO: con SensorML101.xsl aggiungere observableProperty -->
 <!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
-<!-- TO DO: aggiunta di un elemento non è funzionante -->
 <template>
     <!-- SETTINGS -->
     <settings>
@@ -331,13 +330,13 @@
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member</hasRoot>
             <produces>
+                <!-- TO DO: è un ref a ShortName chiedere se è necessario che questo elemento 
+                        vada messo dopo l'elemento di riferimento -->
                 <item>
                     <hasIndex>1</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasValue>u</hasValue>
-                    <!-- TO DO: è un ref a ShortName chiedere se è necessario che questo elemento 
-                        vada messo dopo l'elemento di riferimento -->
                 </item>
             </produces>
         </element>
@@ -477,9 +476,6 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>sensorID</hasDatatype>
-                    <hasValue>...</hasValue>
-                    <!-- TO DO: come poter inserire valore casuale di Sensor ID composto come segue:
-                    http://sp7.irea.cnr.it/sensors/geosk.ve.ismar.cnr.it/procedure/DavisInstruments/VantagePro/noSerialNumberDeclared/Adige_20141217115413720_11525 -->
                 </item>
             </produces>
         </element>
@@ -1298,9 +1294,9 @@
             -->
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul costruttore</label>
-            <help/>
+            <help xml:lang="it">Indicare il nome del costruttore</help>
             <label xml:lang="en">Manufacturer</label>
-            <help/>
+            <help xml:lang="en">Write the name of manufacturer</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
@@ -1319,6 +1315,7 @@
           <!-\-es SENSIRION AG -\->
         </item>-->
                 <item>
+                    <!-- TO DO: è un item di tipo ref, non dovrebbe comparire -->
                     <label xml:lang="it">Nome costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
@@ -1343,6 +1340,7 @@
                     <!--es SENSIRION AG -->
                 </item>
                 <item>
+                    <!-- TO DO: deve autocompilarsi con il nome del costruttore indicato in /sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name  -->
                     <hasIndex>2</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
