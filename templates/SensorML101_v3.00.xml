@@ -119,12 +119,12 @@
         </datasource>
         <datasource>
             <id>manufacturers</id>
-            <singleton>false</singleton>
+            <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
-                        SELECT ?c ?l
+                        SELECT ?c ?l 
                         FROM <http://ritmare.it/rdfdata/manufacturers>
                         WHERE { 
                           ?c rdf:type foaf:Organization.
@@ -135,6 +135,24 @@
                         ]]>
             </query>
             <searchItem>manufacturers_codelist</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>manufacturers_1</id>
+            <singleton>true</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        SELECT ?phone
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone.
+                          }
+                        }
+                        ]]>
+            </query>
+            <triggerItem>manName_3_uri</triggerItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -1173,7 +1191,6 @@
             </produces>
         </element>
         <!--status -->
-        <!-- TO DO: inserire casella di spunta -->
         <element>
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
@@ -1198,7 +1215,6 @@
             </produces>
         </element>
         <!--mobility -->
-        <!-- TO DO: inserire casella di spunta -->
         <element>
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
@@ -1301,21 +1317,7 @@
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
             <produces>
-                <!--<item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
-          <isFixed>true</isFixed>
-          <id>manName</id>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasValue>
-          <label xml:lang="it">Nome costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer name</label>
-          <help/>
-          <!-\-es SENSIRION AG -\->
-        </item>-->
                 <item>
-                    <!-- TO DO: è un item di tipo ref, non dovrebbe comparire -->
                     <label xml:lang="it">Nome costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
@@ -1324,23 +1326,12 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>manName</id>
-                    <hasDatatype>ref</hasDatatype>
-                    <hasValue>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasValue>
-                    <!--<hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
-                        SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE { 
-                          ?c rdf:type foaf:Organization.
-                          ?c foaf:name ?l.
-                          FILTER( REGEX( STR(?l), "$search_param", "i") )
-                        }
-                        ORDER BY ASC(?l)                        
-                        ]]></hasValue>-->
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>l</field>
                     <!--es SENSIRION AG -->
                 </item>
                 <item>
-                    <!-- TO DO: deve autocompilarsi con il nome del costruttore indicato in /sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/@name  -->
                     <hasIndex>2</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
@@ -1350,16 +1341,9 @@
                     <help/>
                     <label xml:lang="en">Manufacturer phone number</label>
                     <help/>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> foaf:phone ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers_1</datasource>
+                    <field>base</field>
                     <!--es 0041 44 306 40 00 -->
                 </item>
                 <item>
@@ -1367,21 +1351,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:deliveryPoint</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT fn:concat(?l1, ', ', ?l2) AS ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:address ?b1.
-                            ?b1 addr:deliveryPoint ?b2.
-                            ?b2 addr:location ?b3.
-                            ?b3 addr:thoroughfareName ?l1.
-                            ?b3 addr:streetNr ?l2.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>address</field>
                     <label xml:lang="it">Indirizzo costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer address</label>
@@ -1393,20 +1365,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:city</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE {
-                          OPTIONAL {
-                            <$1$> addr:address ?b1.
-                            ?b1 addr:deliveryPoint ?b2.
-                            ?b2 addr:location ?b3.
-                            ?b3 addr:town ?l.
-                          }
-                        }
-                    ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>city</field>
                     <label xml:lang="it">Citt&#224; costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer city</label>
@@ -1418,20 +1379,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:administrativeArea</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE {
-                          OPTIONAL {
-                            <$1$> addr:address ?b1.
-                            ?b1 addr:deliveryPoint ?b2.
-                            ?b2 addr:location ?b3.
-                            ?b3 addr:region ?l.
-                          }
-                        }
-                    ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>administrativeArea</field>
                     <label xml:lang="it">Area amministrativa costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer administrative area</label>
@@ -1443,20 +1393,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:postalCode</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE {
-                          OPTIONAL {
-                            <$1$> addr:address ?b1.
-                            ?b1 addr:deliveryPoint ?b2.
-                            ?b2 addr:location ?b3.
-                            ?b3 addr:postcode ?l.
-                          }
-                        }
-                    ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>cap</field>
                     <label xml:lang="it">CAP costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer Postal code</label>
@@ -1468,20 +1407,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:country</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE {
-                          OPTIONAL {
-                            <$1$> addr:address ?b1.
-                            ?b1 addr:deliveryPoint ?b2.
-                            ?b2 addr:location ?b3.
-                            ?b3 addr:country ?l.
-                          }
-                        }
-                    ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>country</field>
                     <label xml:lang="it">Nazione costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer country</label>
@@ -1493,17 +1421,9 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:electronicMailAddress</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> ns:email ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>email</field>
                     <label xml:lang="it">E-mail costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer e-mail address</label>
@@ -1515,132 +1435,15 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:onlineResource</id>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/manufacturers>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> foaf:homepage ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>manufacturers</datasource>
+                    <field>web site</field>
                     <label xml:lang="it">Sito web costruttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer web site</label>
                     <help/>
                     <!--es http://www.sensirion.com -->
                 </item>
-
-                <!--<item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Nome costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer name</label>
-          <help/>
-          <!-\-es SENSIRION AG -\->
-        </item>
-        <item>
-          <hasIndex>2</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Telefono costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer phone number</label>
-          <help/>
-          <!-\-es 0041 44 306 40 00 -\->
-        </item>
-        <item>
-          <hasIndex>3</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Indirizzo costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer address</label>
-          <help/>
-          <!-\-es Laubisruetistr. 50 -\->
-        </item>
-        <item>
-          <hasIndex>4</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Citt&#224; costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer city</label>
-          <help/>
-          <!-\-es Staefa -\->
-        </item>
-        <item>
-          <hasIndex>5</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Area amministrativa costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer administrative area</label>
-          <help/>
-          <!-\-es ZH -\->
-        </item>
-        <item>
-          <hasIndex>6</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">CAP costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer Postal code</label>
-          <help/>
-          <!-\-es CH-8712 -\->
-        </item>
-        <item>
-          <hasIndex>7</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Nazione costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer country</label>
-          <help/>
-          <!-\-es Switzerland -\->
-        </item>
-        <item>
-          <hasIndex>8</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">E-mail costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer e-mail address</label>
-          <help/>
-          <!-\-es info@sensirion.com -\->
-        </item>
-        <item>
-          <hasIndex>9</hasIndex>
-          <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>URI</hasDatatype>
-          <hasValue>user-defined</hasValue>
-          <label xml:lang="it">Sito web costruttore</label>
-          <help/>
-          <label xml:lang="en">Manufacturer web site</label>
-          <help/>
-          <!-\-es http://www.sensirion.com -\->
-        </item>-->
             </produces>
         </element>
         <!--======================== -->
