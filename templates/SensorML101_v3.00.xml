@@ -306,6 +306,52 @@
             <type> sparql </type>
         </datasource>
         <datasource>
+            <id>info_owners</id>
+            <singleton>true</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <$search_param> foaf:fullName ?fullname .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:email ?email.
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:hasAddress ?b1.
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3.
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:street-address ?addr .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:locality ?town .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:postal-code ?postcode .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          }
+                          FILTER(lang(?l)='it')
+                        }
+                        ]]>
+            </query>
+            <triggerItem>owner_1_uri</triggerItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
             <id>parameters</id>
             <singleton>false</singleton>
             <endpointType>virtuoso</endpointType>
@@ -1513,7 +1559,6 @@
                     <datasource>owners</datasource>
                     <!--es mauro.bastianini@ismar.cnr.it -->
                 </item>
-                <!-- TO DO: verificare il richiamo con campo precedente -->
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
@@ -1521,19 +1566,12 @@
                     <isFixed>false</isFixed>
                     <id>sml:organisationName</id>
                     <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>l</field>
                     <label xml:lang="it">Organizzazione proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner organization</label>
                     <help/>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          <$1$> ns:org ?o.
-                          ?o rdfs:label ?l.
-                        }
-                        ]]></hasValue>
                     <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
                 </item>
                 <item>
@@ -1541,17 +1579,9 @@
                     <outIndex>2</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> foaf:phone ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>phone</field>
                     <label xml:lang="it">Telefono proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner phone number</label>
@@ -1563,17 +1593,9 @@
                     <outIndex>3</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:thoroughfareName ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>addr</field>
                     <label xml:lang="it">Indirizzo proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner address</label>
@@ -1585,52 +1607,36 @@
                     <outIndex>4</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:town ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>town</field>
                     <label xml:lang="it">Citt&#224; proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner city</label>
                     <help/>
                     <!--es Venezia -->
                 </item>
-                <item>
+                <!--<item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>user-defined</hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>region</field>
                     <label xml:lang="it">Area amministrativa proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner administrative area</label>
                     <help/>
-                    <!--es VE -->
-                </item>
+                </item>-->
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>6</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:postcode ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>postcode</field>
                     <label xml:lang="it">CAP proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner Postal code</label>
@@ -1642,17 +1648,9 @@
                     <outIndex>7</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:country ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>country</field>
                     <label xml:lang="it">Nazione proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner country</label>
@@ -1664,16 +1662,9 @@
                     <outIndex>9</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          <$1$> ns:org ?o.
-                          ?o foaf:homepage ?l.
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>homepage</field>
                     <label xml:lang="it">Sito web proprietario</label>
                     <help/>
                     <label xml:lang="en">Owner web site</label>
@@ -1709,7 +1700,6 @@
                     <help/>
                     <!--es mauro.bastianini@ismar.cnr.it -->
                 </item>
-                <!-- TO DO: verificare il richiamo con campo precedente -->
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
