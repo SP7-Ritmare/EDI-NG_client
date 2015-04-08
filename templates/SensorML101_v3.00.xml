@@ -5,13 +5,12 @@
     <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
-<!-- TO DO: con SensorML101.xsl aggiungere observableProperty -->
+<!-- TO DO: con SensorML101.xsl aggiungere observableProperty swes:observableProperty, head and footer come da base document -->
 <!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
 <!-- TO DO: vedere come usare searchItem -->
 <!-- TO DO: verificare validazione -->
-<!-- TO DO: manufacture, owner -->
-<!-- TO DO: i bottoni in alto a destra non funzionano -->
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
+
 <template>
     <!-- SETTINGS -->
     <settings>
@@ -67,7 +66,7 @@
         </baseDocument>
 
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=1.00</xslt>
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=2.00</xslt>
         </xsltChain>
     </settings>
 
@@ -306,7 +305,7 @@
             <type> sparql </type>
         </datasource>
         <datasource>
-            <id>info_owners</id>
+            <id>info_owner</id>
             <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
@@ -452,12 +451,12 @@
         <!-- system name -->
         <element>
             <id>system_name</id>
-            <label xml:lang="it">Nome del sistema</label>
+            <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
             <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore. Deve
                 essere breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome con
-                cui il produttore identifica il sensore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
-                CTP Recorder, ecc.).</help>
+                cui il produttore identifica il sensore stesso (es. Sensirion STH15, SBE 37-IM, MicroCAT,
+                CTP Recorder, ecc.), il sistema di sensori, la piattaforma nel suo complesso, ecc.</help>
             <help xml:lang="en">Name assigned by the authority that manages the system and that
                 identifies</help>
             <isMandatory>forAll</isMandatory>
@@ -478,8 +477,7 @@
         <element>
             <id>system_name</id>
             <label xml:lang="it">Descrizione sistema</label>
-            <help xml:lang="it">Contiene una semplice descrizione testuale del sistema, della
-                piattaforma o del sensore.</help>
+            <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema di sensori o della piattaforma nel suo complesso.</help>
             <label xml:lang="en">Description</label>
             <help xml:lang="en">Contains a simple text description of the object, of the platform or
                 of the sensor.</help>
@@ -530,8 +528,7 @@
         <element>
             <id>keywords</id>
             <label xml:lang="it">Parole chiave</label>
-            <help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
-                della risorsa.</help>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Queste parole chiave possono essere scelte tra quelle presenti in un vocabolario controllato creato in ambito SeaDataNet</help>
             <label xml:lang="en">Keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>NA</isMandatory>
@@ -627,7 +624,7 @@
         <element>
             <id>long_name</id>
             <label xml:lang="it">Nome per esteso del sistema</label>
-            <help xml:lang="it">Indicare un nome esteso del sistema. Modificarlo nel caso non sia uguale a quello indicato in precedenza.</help>
+            <help xml:lang="it">Indicare un nome esteso del sensore, del sistema di sensori o della piattaforma. Il nome indicato qui può essere simile a quello indicato in precedenza, nel campo Nome del sistema, ma con le sigle indicate per esteso.</help>
             <label xml:lang="en">Long Name</label>
             <help xml:lang="en">Long Name of the system. Change it if is not the same as indicated above.</help>
             <isMandatory>NA</isMandatory>
@@ -661,9 +658,9 @@
         <element>
             <id>manufName</id>
             <label xml:lang="it">Denominazione del produttore</label>
-            <help/>
+            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma, scegliendoli tra quelli in elenco.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help/>
+            <help xml:lang="en"></help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -695,9 +692,9 @@
         <element>
             <id>mod_number</id>
             <label xml:lang="it">Numero del modello</label>
-            <help/>
+            <help xml:lang="it">Indicare il numero del modello, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Model Number</label>
-            <help/>
+            <help xml:lang="en"></help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -729,7 +726,7 @@
         <element>
             <id>serial_num</id>
             <label xml:lang="it">Numero seriale</label>
-            <help/>
+            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -1397,7 +1394,7 @@
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
-            <help xml:lang="it">Indicare il nome del produttore</help>
+            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un produttore, tra quelli presenti nell'anagrafica, nel campo Denominazione del produttore più in alto nella sezione Identificazione</help>
             <label xml:lang="en">Manufacturer</label>
             <help xml:lang="en">Write the name of manufacturer</help>
             <isMandatory>NA</isMandatory>
@@ -1706,20 +1703,13 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:organisationName</id>
-                    <hasDatatype>dependent</hasDatatype>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>l</field>
                     <label xml:lang="it">Nome operatore</label>
                     <help/>
                     <label xml:lang="en">Operator name</label>
                     <help/>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          <$1$> ns:org ?o.
-                          ?o rdfs:label ?l.
-                        }
-                        ]]></hasValue>
                     <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
                 </item>
                 <item>
@@ -1727,17 +1717,9 @@
                     <outIndex>2</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> foaf:phone ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>phone</field>
                     <label xml:lang="it">Telefono operatore</label>
                     <help/>
                     <label xml:lang="en">Operator phone number</label>
@@ -1749,17 +1731,9 @@
                     <outIndex>3</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:thoroughfareName ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>addr</field>
                     <label xml:lang="it">Indirizzo operatore</label>
                     <help/>
                     <label xml:lang="en">Operator address</label>
@@ -1771,24 +1745,16 @@
                     <outIndex>4</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:town ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>town</field>
                     <label xml:lang="it">Citt&#224; operatore</label>
                     <help/>
                     <label xml:lang="en">Operator city</label>
                     <help/>
                     <!--es Venezia -->
                 </item>
-                <item>
+                <!--<item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
@@ -1799,24 +1765,15 @@
                     <help/>
                     <label xml:lang="en">Operator administrative area</label>
                     <help/>
-                    <!--es VE -->
-                </item>
+                </item>-->
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>6</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:postcode ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>postcode</field>
                     <label xml:lang="it">CAP operatore</label>
                     <help/>
                     <label xml:lang="en">Operator Postal code</label>
@@ -1828,17 +1785,9 @@
                     <outIndex>7</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          OPTIONAL {
-                            <$1$> addr:country ?l.
-                          }
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>country</field>
                     <label xml:lang="it">Nazione operatore</label>
                     <help/>
                     <label xml:lang="en">Operator country</label>
@@ -1850,16 +1799,9 @@
                     <outIndex>9</outIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>dependent</hasDatatype>
-                    <hasValue><![CDATA[
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?l
-                        FROM <http://ritmare.it/rdfdata/project>
-                        WHERE { 
-                          <$1$> ns:org ?o.
-                          ?o foaf:homepage ?l.
-                        }
-                        ]]></hasValue>
+                    <hasDatatype>select</hasDatatype>
+                    <datasource>info_owner</datasource>
+                    <field>homepage</field>
                     <label xml:lang="it">Sito web operatore</label>
                     <help/>
                     <label xml:lang="en">Operator web site</label>
@@ -2509,8 +2451,8 @@
     <!--===== -->
     <!--Input -->
     <!--===== -->
-    <!-- TO DO: il gruppo Input deve fare riferimento alla parte di Output per ora commentato -->
-<!--    <group>
+    <!-- TO DO: vedere come autocompilare i parametri in input attraverso la compilazione dell'utente dei parametri di output -->
+    <!--<group>
         <id>input</id>
         <label xml:lang="it">In entrata</label>
         <help xml:lang="it">Lista dei segnali in entrata</help>
@@ -2587,8 +2529,8 @@
                 </item>
             </produces>
         </element>
-    </group>
-    --><!--END Input Group -->
+    </group>-->
+    <!--END Input Group -->
 
     <!--====== -->
     <!--Output -->
@@ -2632,7 +2574,6 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <!--TO DO: pu&#242; essere inserita automaticamente da /sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/gml:metaDataProperty/offering/id -->
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasPath>
                     <isFixed>false</isFixed>                    
                     <hasDatatype>autoCompletion</hasDatatype>
