@@ -11,6 +11,7 @@
 <!-- TO DO: verificare validazione -->
 <!-- TO DO: manufacture, owner -->
 <!-- TO DO: i bottoni in alto a destra non funzionano -->
+<!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 <template>
     <!-- SETTINGS -->
     <settings>
@@ -1371,7 +1372,6 @@
                     <field>l</field>
                     <!--es SENSIRION AG -->
                 </item>
-                <!-- TO DO: sistemare con richiamo a item 1 -->
                 <item>
                     <label xml:lang="it">Telefono produttore</label>
                     <help/>
