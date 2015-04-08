@@ -153,16 +153,16 @@
                         FROM <http://ritmare.it/rdfdata/manufacturers>
                         WHERE { 
                           OPTIONAL {
-                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> foaf:phone ?phone .
+                            <$search_param> foaf:phone ?phone .
                           }
                           OPTIONAL {
-                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> vcard:email ?email.
+                            <$search_param> vcard:email ?email.
                           }
                           OPTIONAL {
-                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> foaf:homepage ?homepage.
+                            <$search_param> foaf:homepage ?homepage.
                           }
                           OPTIONAL {
-                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> addr:address ?b1.
+                            <$search_param> addr:address ?b1.
                           }
                           OPTIONAL {
                             ?b1 addr:deliveryPoint ?b2.
