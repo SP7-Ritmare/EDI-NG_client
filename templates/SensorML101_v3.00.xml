@@ -8,7 +8,9 @@
 <!-- TO DO: con SensorML101.xsl aggiungere observableProperty swes:observableProperty, head and footer come da base document -->
 <!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
 <!-- TO DO: vedere come usare searchItem -->
+<!-- TO DO: verificare se possibile indicare definire l'obbligatorietà degli item -->
 <!-- TO DO: verificare validazione -->
+<!-- TO DO: le voci del menù a sinistra non si possono scorrere, non si vedono le voci del menù sottostanti -->
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 
 <template>
@@ -351,6 +353,72 @@
             <type> sparql </type>
         </datasource>
         <datasource>
+            <id>operators</id>
+            <singleton>false</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
+                        SELECT ?c ?l
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          ?c rdf:type foaf:Person .
+                          ?c ns:email ?l.
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                        ]]>
+            </query>
+            <searchItem>operators_codeList</searchItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
+            <id>info_operator</id>
+            <singleton>true</singleton>
+            <endpointType>virtuoso</endpointType>
+            <query>
+                <![CDATA[
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <$search_param> foaf:fullName ?fullname .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:email ?email.
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:hasAddress ?b1.
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3.
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:street-address ?addr .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:locality ?town .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:postal-code ?postcode .
+                          }
+                          OPTIONAL {
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          }
+                          FILTER(lang(?l)='it')
+                        }
+                        ]]>
+            </query>
+            <triggerItem>operator_1_uri</triggerItem>
+            <type> sparql </type>
+        </datasource>
+        <datasource>
             <id>parameters</id>
             <singleton>false</singleton>
             <endpointType>virtuoso</endpointType>
@@ -476,7 +544,7 @@
         <!-- system description -->
         <element>
             <id>system_name</id>
-            <label xml:lang="it">Descrizione sistema</label>
+            <label xml:lang="it">Descrizione sistema/sensore/piattaforma</label>
             <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema di sensori o della piattaforma nel suo complesso.</help>
             <label xml:lang="en">Description</label>
             <help xml:lang="en">Contains a simple text description of the object, of the platform or
@@ -501,14 +569,14 @@
     <!--======== -->
     <!--Keywords -->
     <!--======== -->
-    <group>
+    <!--<group>
         <id>keyword</id>
         <label xml:lang="it">Parole chiave</label>
-        <!--<help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
-            della risorsa.</help>-->
+        <!-\-<help xml:lang="it">Parole chiave che descrivono il sistema e permettono il reperimento
+            della risorsa.</help>-\->
         <label xml:lang="en">Keywords</label>
-        <!--<help xml:lang="en">Describe system by keywords allow the discovery</help>-->
-        <!-- code space -->
+        <!-\-<help xml:lang="en">Describe system by keywords allow the discovery</help>-\->
+        <!-\- code space -\->
         <element>
             <id>codespace_keywords</id>
             <isMandatory>NA</isMandatory>
@@ -524,7 +592,7 @@
                 </item>
             </produces>
         </element>
-        <!-- keywords -->
+        <!-\- keywords -\->
         <element>
             <id>keywords</id>
             <label xml:lang="it">Parole chiave</label>
@@ -544,7 +612,26 @@
                 </item>
             </produces>
         </element>
-    </group>
+        <!-\- keywords a campo libero-\->
+        <element>
+            <id>free_keywords</id>
+            <label xml:lang="it">Parole chiave a campo libero</label>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
+            <label xml:lang="en">Free keyword</label>
+            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/sml:keyword</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                </item>
+            </produces>
+        </element>
+    </group>-->
     <!--END Keyword Group -->
 
     <!--============== -->
@@ -623,7 +710,7 @@
         <!-- Long Name -->
         <element>
             <id>long_name</id>
-            <label xml:lang="it">Nome per esteso del sistema</label>
+            <label xml:lang="it">Nome per esteso del sistema/sensore/piattaforma</label>
             <help xml:lang="it">Indicare un nome esteso del sensore, del sistema di sensori o della piattaforma. Il nome indicato qui può essere simile a quello indicato in precedenza, nel campo Nome del sistema, ma con le sigle indicate per esteso.</help>
             <label xml:lang="en">Long Name</label>
             <help xml:lang="en">Long Name of the system. Change it if is not the same as indicated above.</help>
@@ -773,12 +860,12 @@
             &quot;sensorType&quot;, &quot;intendedApplication&quot;, etc., whose terms can be
             defined in a dictionary</help>-->
         <!--Intended application element -->
-        <element>
+        <!--<element>
             <id>int_app</id>
-            <!--<label xml:lang="it">Applicazione</label>
+            <!-\-<label xml:lang="it">Applicazione</label>
             <help xml:lang="it">Applicazione pensata per il sistema</help>
             <label xml:lang="en">Intended application</label>
-            <help xml:lang="en">Intended application of the sistem</help>-->
+            <help xml:lang="en">Intended application of the sistem</help>-\->
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
@@ -809,8 +896,8 @@
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
                     <useURN>true</useURN>
-                    <!--<isLanguageNeutral>true</isLanguageNeutral>-->
-                    <!--<useCode>true</useCode>-->
+                    <!-\-<isLanguageNeutral>true</isLanguageNeutral>-\->
+                    <!-\-<useCode>true</useCode>-\->
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
@@ -820,6 +907,61 @@
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasValue>
                     <useCode>true</useCode>
+                </item>
+            </produces>
+        </element>-->
+        <!-- code space -->
+        <element>
+            <id>codespace_keywords</id>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/@codeSpace</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>http://ritmare.it/sensorml/keywords</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!-- keywords -->
+        <element>
+            <id>keywords</id>
+            <label xml:lang="it">Parole chiave</label>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Queste parole chiave possono essere scelte tra quelle presenti in un vocabolario controllato creato in ambito SeaDataNet</help>
+            <label xml:lang="en">Keyword</label>
+            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/sml:keyword</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>keywords</datasource>
+                </item>
+            </produces>
+        </element>
+        <!-- keywords a campo libero-->
+        <element>
+            <id>free_keywords</id>
+            <label xml:lang="it">Parole chiave a campo libero</label>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
+            <label xml:lang="en">Free keyword</label>
+            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList/sml:keyword</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
                 </item>
             </produces>
         </element>
@@ -1385,9 +1527,9 @@
     <group>
         <id>rel_contacts</id>
         <label xml:lang="it">Punti di contatto</label>
-        <help xml:lang="it">Punti di contatto per il systema</help>
+        <!--<help xml:lang="it">Punti di contatto per il systema</help>-->
         <label xml:lang="en">Relevant Contacts</label>
-        <help xml:lang="en">Relevant contacts for that system</help>
+        <!--<help xml:lang="en">Relevant contacts for that system</help>-->
         <!--=============================== -->
         <!--Relevant Contacts: Manufacturer -->
         <!--=============================== -->
@@ -1535,7 +1677,7 @@
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
-            <help/>
+            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un una persona tra quelli presenti nell'anagrafica del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -1676,7 +1818,7 @@
         <element>
             <id>operator</id>
             <label xml:lang="it">Informazioni sul operatore</label>
-            <help/>
+            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un una persona tra quelli presenti nell'anagrafica del progetto RITMARE</help>
             <label xml:lang="en">Operator</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -1690,7 +1832,7 @@
                     <isFixed>false</isFixed>
                     <id>electronicMailAddress</id>
                     <hasDatatype>autoCompletion</hasDatatype>
-                    <datasource>owners</datasource>
+                    <datasource>operators</datasource>
                     <label xml:lang="it">e-mail operatore</label>
                     <help/>
                     <label xml:lang="en">Operator e-mail address</label>
@@ -1704,7 +1846,7 @@
                     <isFixed>false</isFixed>
                     <id>sml:organisationName</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>l</field>
                     <label xml:lang="it">Nome operatore</label>
                     <help/>
@@ -1718,7 +1860,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>phone</field>
                     <label xml:lang="it">Telefono operatore</label>
                     <help/>
@@ -1732,7 +1874,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>addr</field>
                     <label xml:lang="it">Indirizzo operatore</label>
                     <help/>
@@ -1746,7 +1888,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>town</field>
                     <label xml:lang="it">Citt&#224; operatore</label>
                     <help/>
@@ -1772,7 +1914,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>postcode</field>
                     <label xml:lang="it">CAP operatore</label>
                     <help/>
@@ -1786,7 +1928,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>country</field>
                     <label xml:lang="it">Nazione operatore</label>
                     <help/>
@@ -1800,7 +1942,7 @@
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>info_owner</datasource>
+                    <datasource>info_operator</datasource>
                     <field>homepage</field>
                     <label xml:lang="it">Sito web operatore</label>
                     <help/>
@@ -1819,11 +1961,11 @@
     <group>
         <id>system_documentation</id>
         <label xml:lang="it">Scheda tecnica del sistema</label>
-        <help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
-            anche puntare ad una risorsa online.</help>
+        <!--<help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
+            anche puntare ad una risorsa online.</help>-->
         <label xml:lang="en">System Documentation</label>
-        <help xml:lang="en">Documentation for that object with date/time, version, author, etc.
-            pointing to an online resource related to the enclosing object</help>
+        <!--<help xml:lang="en">Documentation for that object with date/time, version, author, etc.
+            pointing to an online resource related to the enclosing object</help>-->
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
@@ -1894,24 +2036,22 @@
     <group>
         <id>history</id>
         <label xml:lang="it">Storia del sistema</label>
-        <help xml:lang="it">Storia del sistema rispetto a modifiche, ricalibrazione, ecc.</help>
+        <!--<help xml:lang="it">Storia del sistema rispetto a modifiche, ricalibrazione, ecc.</help>-->
         <label xml:lang="en">History</label>
-        <help xml:lang="en">History of the object described (Recalibration, adjustments,
-            etc.)</help>
+        <!--<help xml:lang="en">History of the object described (Recalibration, adjustments, etc.)</help>-->
         <!--============== -->
         <!--History Update -->
         <!--============== -->
         <element>
             <id>history_update</id>
-            <label xml:lang="it">Aggiornamenti</label>
-            <help/>
+            <label xml:lang="it">Aggiornamenti del sistema</label>
+            <help xml:lang="it">Inserire le informazioni di aggiornamento del sensore, del sistema di sensori o della piattaforma come ad esempio aggiornamento nel software, ecc.</help>
             <label xml:lang="en">History Update</label>
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]</hasRoot>
             <produces>
-
                 <!--<item>
                     <hasIndex>2</hasIndex>
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member/@name</hasPath>
@@ -1978,7 +2118,7 @@
         <element>
             <id>history_ops</id>
             <label xml:lang="it">Storia delle operazioni</label>
-            <help/>
+            <help xml:lang="it">Inserire le informazioni di operazioni effettuate sul sensore, sul sistema di sensori o sulla piattaforma come ad esempio modifiche meccaniche, ecc.</help>
             <label xml:lang="en">History Operations</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -2069,7 +2209,7 @@
         <element>
             <id>history_calib</id>
             <label xml:lang="it">Storia delle calibrazioni</label>
-            <help/>
+            <help xml:lang="it">Inserire le informazioni di calibrazione del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Calibration history</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -2160,7 +2300,7 @@
         <element>
             <id>history_other</id>
             <label xml:lang="it">Altri eventi</label>
-            <help/>
+            <help xml:lang="it">Inserire le informazioni di altri eventi effettuati sul sensore, sul sistema di sensori o sulla piattaforma come ad esempio aggiornamento nel software, ecc.</help>
             <label xml:lang="en">Other event history</label>
             <help/>
             <isMandatory>NA</isMandatory>
@@ -2280,8 +2420,8 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <label xml:lang="it">Sistema di riferimento</label>
-                    <label xml:lang="en">Reference system</label>
+                    <!--<label xml:lang="it">Sistema di riferimento</label>-->
+                    <!--<label xml:lang="en">Reference system</label>-->
                     <hasPath>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/@referenceFrame</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
@@ -2538,13 +2678,13 @@
     <group>
         <id>output</id>
         <label xml:lang="it">Parametri misurati</label>
-        <help xml:lang="it">Lista dei parametri misurati</help>
+        <!--<help xml:lang="it">Lista dei parametri misurati</help>-->
         <label xml:lang="en">Output signals</label>
-        <help xml:lang="en">List of output signals</help>
+        <!--<help xml:lang="en">List of output signals</help>-->
         <element>
             <id>output_datatime</id>
-            <label xml:lang="it">Data e ora dei fenomeni misurati</label>
-            <help xml:lang="it">Indicare se i dati contengono anche data e ora</help>
+            <label xml:lang="it">Data e ora dei parametri misurati</label>
+            <help xml:lang="it">Indicare se insieme al parametro/i misurato/i vengono anche raccolte data e ora</help>
             <label xml:lang="en">Date and time of phenomena</label>
             <help xml:lang="en">Indicate whether the observation also contain the date and
                 time</help>
@@ -2564,8 +2704,8 @@
         </element>
         <element>
             <id>output_param</id>
-            <label xml:lang="it">Segnali in output</label>
-            <help xml:lang="it">Elencare i parametri misurati dal sistema/sensore</help>
+            <label xml:lang="it">Parametro misurato</label>
+            <help xml:lang="it">Elencare il parametro o i parametri misurati dal sensore, dal sistema di sensori o dalla piattaforma. Viene anche richiesto di indicare ampiezza dei valori ammissibili, l'accuratezza del sensore, del sistema di sensori o della piattaforma e la l'unità di misura con cui viene visurata l'accuratezza.</help>
             <label xml:lang="en">Output signals</label>
             <help xml:lang="en">List the parameters measured by the system/sensor</help>
             <isMandatory>forAll</isMandatory>
@@ -2578,7 +2718,7 @@
                     <isFixed>false</isFixed>                    
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
-                    <label xml:lang="it">Nome parametro in output sistema</label>
+                    <label xml:lang="it">Nome parametro misurato</label>
                     <help/>
                     <!--es CP -->
                     <label xml:lang="en">Output sensor</label>
@@ -2598,7 +2738,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Descrizione del segnale in uscita</label>
+                    <label xml:lang="it">Descrizione del parametro misurato</label>
                     <help xml:lang="it"/>
                     <label xml:lang="en">Description of output signal</label>
                     <help xml:lang="en"/>
@@ -2609,7 +2749,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
-                    <label xml:lang="it">Unit&#224; di misura</label>
+                    <label xml:lang="it">Unit&#224; di misura del parametro misurato</label>
                     <help/>
                     <label xml:lang="en">Unit of measurement</label>
                     <help/>
@@ -2636,7 +2776,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Ampiezza valori ammissibili (es. -5 +35)</label>
+                    <label xml:lang="it">Ampiezza valori ammissibili (es. -5 +35) del parametro misurato</label>
                     <help xml:lang="it"/>
                     <label xml:lang="en">Allowed values (ex. -5 +35)</label>
                     <help xml:lang="en"/>
@@ -2662,7 +2802,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Accuratezza del sistema (es. 1)</label>
+                    <label xml:lang="it">Accuratezza dei valori misurati (es. 1)</label>
                     <help xml:lang="it"/>
                     <label xml:lang="en">Accuracy of system (ex. 1)</label>
                     <help xml:lang="en"/>
