@@ -5,12 +5,12 @@
     <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
-<!-- TO DO: in datasources completare searchItem -->
 <!-- TO DO: con SensorML101.xsl aggiungere observableProperty -->
 <!-- TO DO: chiedere se occorre inserire Lingua dei metadati per mettere in evidenza il selettore della lingua -->
 <!-- TO DO: vedere come usare searchItem -->
 <!-- TO DO: verificare validazione -->
 <!-- TO DO: manufacture, owner -->
+<!-- TO DO: i bottoni in alto a destra non funzionano -->
 <template>
     <!-- SETTINGS -->
     <settings>
@@ -141,22 +141,56 @@
             <type> sparql </type>
         </datasource>
         <datasource>
-            <id>manufacturers_1</id>
+            <id>info_manufacturers</id>
             <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
-                        #PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
-                        SELECT ?phone
+                        PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT ?phone fn:concat(?l1, ', ', ?l2) AS ?addr ?town ?region ?postcode ?country ?email ?homepage
                         FROM <http://ritmare.it/rdfdata/manufacturers>
                         WHERE { 
                           OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
+                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> vcard:email ?email.
+                          }
+                          OPTIONAL {
+                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> foaf:homepage ?homepage.
+                          }
+                          OPTIONAL {
+                            <http://sp7.irea.cnr.it/rdfdata/sensors/manufacturer/55> addr:address ?b1.
+                          }
+                          OPTIONAL {
+                            ?b1 addr:deliveryPoint ?b2.
+                          }
+                          OPTIONAL {
+                            ?b2 addr:location ?b3.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:thoroughfareName ?l1.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:streetNr ?l2.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:town ?town.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:region ?region.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:postcode ?postcode.
+                          }
+                          OPTIONAL {
+                            ?b3 addr:country ?country.
                           }
                         }
                         ]]>
             </query>
-            <triggerItem>manName_3_uri</triggerItem>
+            <triggerItem>manufName_3_uri</triggerItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -578,7 +612,7 @@
         </element>
         <!-- Sensor something -->
         <element>
-            <id>manuf_name</id>
+            <id>manufName</id>
             <label xml:lang="it">Denominazione del produttore</label>
             <help/>
             <label xml:lang="en">Manufacturer name</label>
@@ -1348,7 +1382,7 @@
                     <isFixed>false</isFixed>
                     <id>sml:voice</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers_1</datasource>
+                    <datasource>info_manufacturers</datasource>
                     <field>phone</field>
                     <!--es 0041 44 306 40 00 -->
                 </item>
@@ -1358,8 +1392,8 @@
                     <isFixed>false</isFixed>
                     <id>sml:deliveryPoint</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
-                    <field>address</field>
+                    <datasource>info_manufacturers</datasource>
+                    <field>addr</field>
                     <label xml:lang="it">Indirizzo produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer address</label>
@@ -1372,8 +1406,8 @@
                     <isFixed>false</isFixed>
                     <id>sml:city</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
-                    <field>city</field>
+                    <datasource>info_manufacturers</datasource>
+                    <field>town</field>
                     <label xml:lang="it">Citt&#224; produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer city</label>
@@ -1386,8 +1420,8 @@
                     <isFixed>false</isFixed>
                     <id>sml:administrativeArea</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
-                    <field>administrativeArea</field>
+                    <datasource>info_manufacturers</datasource>
+                    <field>region</field>
                     <label xml:lang="it">Area amministrativa produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer administrative area</label>
@@ -1400,8 +1434,8 @@
                     <isFixed>false</isFixed>
                     <id>sml:postalCode</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
-                    <field>cap</field>
+                    <datasource>info_manufacturers</datasource>
+                    <field>postcode</field>
                     <label xml:lang="it">CAP produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer Postal code</label>
@@ -1414,7 +1448,7 @@
                     <isFixed>false</isFixed>
                     <id>sml:country</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
+                    <datasource>info_manufacturers</datasource>
                     <field>country</field>
                     <label xml:lang="it">Nazione produttore</label>
                     <help/>
@@ -1428,7 +1462,7 @@
                     <isFixed>false</isFixed>
                     <id>sml:electronicMailAddress</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
+                    <datasource>info_manufacturers</datasource>
                     <field>email</field>
                     <label xml:lang="it">E-mail produttore</label>
                     <help/>
@@ -1442,8 +1476,8 @@
                     <isFixed>false</isFixed>
                     <id>sml:onlineResource</id>
                     <hasDatatype>select</hasDatatype>
-                    <datasource>manufacturers</datasource>
-                    <field>web site</field>
+                    <datasource>info_manufacturers</datasource>
+                    <field>homepage</field>
                     <label xml:lang="it">Sito web produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer web site</label>
