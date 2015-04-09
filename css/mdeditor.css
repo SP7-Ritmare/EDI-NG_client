@@ -437,7 +437,8 @@ element {
 
 #myTab {
     position: fixed;
-    overflow: hidden;
+    overflow: auto;
+    max-height: 100%;
 }
 
 #mdcontent {
