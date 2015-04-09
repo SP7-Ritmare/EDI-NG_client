@@ -292,7 +292,7 @@
         </datasource>
         <datasource>
             <id>owners</id>
-            <singleton>false</singleton>
+            <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
@@ -515,7 +515,7 @@
                 identifies</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -525,11 +525,18 @@
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                 </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>translate(sml:System/gml:name/text(), ' ', '_')</hasValue>
+                </item>
             </produces>
         </element>
         <!-- system description -->
         <element>
-            <id>system_name</id>
+            <id>system_description</id>
             <label xml:lang="it">Descrizione sistema/sensore/piattaforma</label>
             <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema di sensori o della piattaforma nel suo complesso.</help>
             <label xml:lang="en">Description</label>
@@ -550,24 +557,6 @@
             </produces>
         </element>
         <!-- gml:id -->
-        <element>
-            <id>sensor_id</id>
-            <!--<label>system ID</label>-->
-            <isMandatory>NA</isMandatory>
-            <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
-            <produces>
-                <!-- TO DO: è un ref a ShortName chiedere se è necessario che questo elemento 
-                        vada messo dopo l'elemento di riferimento -->
-                <item>
-                    <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/@gml:id</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>translate(/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/gml:name, '_', ' ')</hasValue>
-                </item>
-            </produces>
-        </element>
     </group>
     <!--END Description group -->
 
