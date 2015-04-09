@@ -60,14 +60,16 @@ var edi = (function() {
     function duplicateElement(element_id, newId, updateEdiml) {
         var div = $("div[represents_element='" + element_id + "']:last");
         element_id = div.attr("id");
-        var theNewId = div.attr("id") + cloneSuffix;
+        var newId = div.attr("id") + cloneSuffix;
         var found = false;
 
-        // doDebug("duplicating " + element_id);
+        console.error("duplicating " + element_id + " as " + newId);
         var newDiv = div.clone();
+        newDiv.attr("id", newId);
         // Fix all id names
         newDiv.find("*[id^='" + element_id + "']").each(function() {
-            $(this).attr("id", $(this).attr("id").replaceAll(element_id, theNewId));
+            console.error($(this));
+            $(this).attr("id", $(this).attr("id").replaceAll(element_id, newId));
         });
         // var newDivString = String(newDiv.html());
         // newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
