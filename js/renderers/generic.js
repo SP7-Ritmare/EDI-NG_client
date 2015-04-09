@@ -65,6 +65,7 @@ var ItemRenderer = (function() {
         DateRange.render();
         Label.render();
         BoundingBox.render();
+        FunctionType.render();
     }
 
     /**
