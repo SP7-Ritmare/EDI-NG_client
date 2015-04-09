@@ -326,31 +326,33 @@
                             <$search_param> foaf:fullName ?fullname .
                           }
                           OPTIONAL {
-                            <$search_param> vcard:email ?email.
+                            <$search_param> vcard:email ?email .
                           }
                           OPTIONAL {
-                            <$search_param> vcard:hasAddress ?b1.
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3.
+                            <$search_param> vcard:org ?b3 .
                             ?b3 foaf:homepage ?homepage .
                             ?b3 foaf:name ?l .
                           }
-                          OPTIONAL {
+
+                          {
+                            <$search_param> vcard:hasAddress ?b1 .
                             ?b1 vcard:street-address ?addr .
-                          }
-                          OPTIONAL {
                             ?b1 vcard:locality ?town .
-                          }
-                          OPTIONAL {
                             ?b1 vcard:postal-code ?postcode .
-                          }
-                          OPTIONAL {
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          } UNION {
+                            ?b3 vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
                             ?b1 vcard:country-name ?b2 .
                             ?b2 foaf:name ?country .
                           }
+
                           FILTER(lang(?l)='it')
                         }
+                        LIMIT 1
                         ]]>
             </query>
             <triggerItem>owner_1_uri</triggerItem>
@@ -392,31 +394,33 @@
                             <$search_param> foaf:fullName ?fullname .
                           }
                           OPTIONAL {
-                            <$search_param> vcard:email ?email.
+                            <$search_param> vcard:email ?email .
                           }
                           OPTIONAL {
-                            <$search_param> vcard:hasAddress ?b1.
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3.
+                            <$search_param> vcard:org ?b3 .
                             ?b3 foaf:homepage ?homepage .
                             ?b3 foaf:name ?l .
                           }
-                          OPTIONAL {
+
+                          {
+                            <$search_param> vcard:hasAddress ?b1 .
                             ?b1 vcard:street-address ?addr .
-                          }
-                          OPTIONAL {
                             ?b1 vcard:locality ?town .
-                          }
-                          OPTIONAL {
                             ?b1 vcard:postal-code ?postcode .
-                          }
-                          OPTIONAL {
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          } UNION {
+                            ?b3 vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
                             ?b1 vcard:country-name ?b2 .
                             ?b2 foaf:name ?country .
                           }
+
                           FILTER(lang(?l)='it')
                         }
+                        LIMIT 1
                         ]]>
             </query>
             <triggerItem>operator_1_uri</triggerItem>
@@ -699,7 +703,7 @@
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>translate(/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/gml:name, '_', ' ')</hasValue>
+                    <hasValue>translate(/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/gml:name, ' ', '_')</hasValue>
                 </item>
             </produces>
         </element>
@@ -774,9 +778,9 @@
         <!-- Model Number -->
         <element>
             <id>mod_number</id>
-            <label xml:lang="it">Numero del modello</label>
-            <help xml:lang="it">Indicare il numero del modello, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
-            <label xml:lang="en">Model Number</label>
+            <label xml:lang="it">Modello</label>
+            <help xml:lang="it">Indicare il modello, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
+            <label xml:lang="en">Model</label>
             <help xml:lang="en"></help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -1921,8 +1925,8 @@
                 </item>
             </produces>
         </element>
-    </group>
-    --><!--END Relevant Contacts Group -->
+    </group>-->
+    <!--END Relevant Contacts Group -->
 
     <!--==================== -->
     <!--System Documentation -->
