@@ -61,7 +61,12 @@
         function onTemplateLoaded(data) {
             console.log("fatto");
         }
+        function pippo(data) {
+            alert("eccomi");
+            console.log(data);
+        }
         $(document).ready(function() {
+            ediml.setPostCallbackError(pippo);
             edi.loadLocalTemplate("SensorML101", "3.00", onTemplateLoaded);
 
             $("#ediml").hide();
