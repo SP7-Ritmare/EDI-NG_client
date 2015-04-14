@@ -520,6 +520,9 @@ var edi = (function() {
         html += ">";
         var labels = "<labels>";
         if ( item.label ) {
+            if ( !$.isArray(item.label) ) {
+                item.label = [item.label];
+            }
             for (var k = 0; k < item.label.length; k++) {
                 labels += "<label for='" + id + "' language='" + item.label[k]["_xml:lang"] + "";
                 labels += "'>" + item.label[k]["__text"] + "</label>";
@@ -527,14 +530,21 @@ var edi = (function() {
         }
         var helps = "<helps>";
         if ( item.help ) {
+            if ( !$.isArray(item.help) ) {
+                item.help = [item.help];
+            }
+            console.error(item.help);
             for (var k = 0; k < item.help.length; k++) {
-                helps += "<help for='" + id + "' language='" + item.help[k]["_xml:lang"] + "";
-                helps += "'>" + item.help[k]["__text"] + "</label>";
+                helps += '<span class="help-inline" language="' + item.help[k]["_xml:lang"] + '">';
+                helps += '<a data-content="' + item.help[k]["__text"] + '" data-original-title="' + item.help[k]["__text"] + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
+                helps += '&nbsp;<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>';
+                helps += '</a>';
+                helps += '</span>';
             }
         }
         helps += "</helps>";
-        html += labels + "</control_" + showType + ">";
-
+        html += labels + helps + "</control_" + showType + ">";
+        console.log(html);
         div.append(html);
     }
 
