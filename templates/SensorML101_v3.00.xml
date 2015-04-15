@@ -509,12 +509,13 @@
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-            <help xml:lang="it">&#200; il nome con cui chi metadata identifica il sensore. Deve
-                essere breve, non &#232; la descrizione, e pu&#242; essere esattamente il nome con
-                cui il produttore identifica il sensore stesso (es. Sensirion STH15, SBE 37-IM, MicroCAT,
-                CTP Recorder, ecc.), il sistema di sensori, la piattaforma nel suo complesso, ecc.</help>
-            <help xml:lang="en">Name assigned by the authority that manages the system and that
-                identifies</help>
+           <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
+                dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
+                CTP Recorder, ecc.).</help>
+            <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
+                not its description; it could coincide with the name given by the manufacturer (e.g. 
+		Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
@@ -542,8 +543,7 @@
             <label xml:lang="it">Descrizione sistema/sensore/piattaforma</label>
             <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema di sensori o della piattaforma nel suo complesso.</help>
             <label xml:lang="en">Description</label>
-            <help xml:lang="en">Contains a simple text description of the object, of the platform or
-                of the sensor.</help>
+            <help xml:lang="en">Brief description of the sensor, of the system or of the platform as a whole.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -709,9 +709,9 @@
         <element>
             <id>long_name</id>
             <label xml:lang="it">Nome per esteso del sistema/sensore/piattaforma</label>
-            <help xml:lang="it">Indicare un nome esteso del sensore, del sistema di sensori o della piattaforma. Il nome indicato qui può essere simile a quello indicato in precedenza, nel campo Nome del sistema, ma con le sigle indicate per esteso.</help>
+            <help xml:lang="it">Indicare un nome esteso del sensore, del sistema di sensori o della piattaforma. Il nome per esteso può essere simile a quello indicato in precedenza, nel campo &#8216;Nome del sistema&#8217;, ricordando che se si sono utilizzate siglie vanno qui riportate per esteso.</help>
             <label xml:lang="en">Long Name</label>
-            <help xml:lang="en">Long Name of the system. Change it if is not the same as indicated above.</help>
+            <help xml:lang="en">Long Name of the sensor, system or platform. It could be the same as indicated above for &#8216;System name&#8217; but for the abbreviations that should be expanded .</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -743,9 +743,10 @@
         <element>
             <id>manufName</id>
             <label xml:lang="it">Denominazione del produttore</label>
-            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma, scegliendoli tra quelli in elenco.</help>
+            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en"></help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
+		to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -777,9 +778,9 @@
         <element>
             <id>mod_number</id>
             <label xml:lang="it">Modello</label>
-            <help xml:lang="it">Indicare il modello, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Model</label>
-            <help xml:lang="en"></help>
+            <help xml:lang="en">Model, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -813,7 +814,7 @@
             <label xml:lang="it">Numero seriale</label>
             <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-            <help/>
+	    <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -927,10 +928,11 @@
         <!-- keywords -->
         <element>
             <id>keywords</id>
-            <label xml:lang="it">Parole chiave</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Queste parole chiave possono essere scelte tra quelle presenti in un vocabolario controllato creato in ambito SeaDataNet</help>
-            <label xml:lang="en">Keyword</label>
-            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <label xml:lang="it">Parole chiave da vocabolari controllati</label>
+            <help xml:lang="it">Indicare una o pi&#249; parole chiave da associare al sensore, al sistema di sensori o alla piattaforma, per permetterne il reperimento in fase di ricerca. Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato, creato in ambito SeaDataNet.</help>
+            <label xml:lang="en">Keyword from controlled vocabularies</label>
+            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. Start typing the first three letters 
+		to obtain suggested autocompletion from controlled vocabularies, belonging to the SeaDataNet framework.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
@@ -947,10 +949,10 @@
         <!-- keywords a campo libero-->
         <element>
             <id>free_keywords</id>
-            <label xml:lang="it">Parole chiave a campo libero</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
-            <label xml:lang="en">Free keyword</label>
-            <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
+            <label xml:lang="it">Parole chiave a testo libero</label>
+            <help xml:lang="it">Indicare una o pi&#249; parole chiave da associare al sensore, al sistema di sensori o alla piattaforma, per permetterne il reperimento in fase di ricerca. Questo campo a differenza del precedente &#232; dedicato al parole chiave a testo libero, ovvero non riferite ad alcun vocabolario controllato.</help>
+            <label xml:lang="en">Free text keyword</label>
+            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. This field is different from the previous while keywords are not supposed to belong to controlled vocabularies.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
@@ -995,7 +997,11 @@
                     <hasIndex>2</hasIndex>
                     <outIndex>4</outIndex>
                     <label xml:lang="it">Parola chiave della tipologia</label>
-                    <label xml:lang="en">Key words of the typology of the system</label>
+	            <help xml:lang="it"> Parola chiave che indica il tipo di sensore o sistema (es. sensore di temperatura dell&#8217;acqua, sensore di salinit&#224;, radiometro, ecc.).
+			Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato </help>
+                    <label xml:lang="en">Keyword of the sensor type</label>
+                    <help xml:lang="en">Keyword indicating the typology of the sensor or system (e.g. water temperature sensor, salinity sensor, radiometer, etc.). Start typing
+			to obtain suggested autocompletion from controlled vocabularies</help>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList/sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1025,9 +1031,9 @@
         <element>
             <id>deployment_role</id>
             <label xml:lang="it">Parola chiave del ruolo</label>
-            <help xml:lang="it">Parola chiave che indica il ruolo del sistema</help>
-            <label xml:lang="en">Key words of the deployment role</label>
-            <help xml:lang="en">Key words mean the deployment role</help>
+            <help xml:lang="it">Una o pi&#249; parole chiave che indichino il ruolo di distribuzione del sistema, da selezionare dalla lista proposta.</help>
+            <label xml:lang="en">Keyword of the deployment role</label>
+            <help xml:lang="en">One or more keywords indicating the deployment role of the system, to be selected from the list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
@@ -1212,9 +1218,9 @@
         <element>
             <id>physical</id>
             <label xml:lang="it">Caratteristiche fisiche</label>
-            <help xml:lang="it">Lista delle caratteristiche fisiche</help>
+            <help xml:lang="it">Lista delle caratteristiche fisiche del sistema.</help>
             <label xml:lang="en">Physical Capabilities</label>
-            <help xml:lang="en">Physical capabilities list for quick discovery</help>
+            <help xml:lang="en">List of the physical capabilities of the system.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]</hasRoot>
@@ -1227,7 +1233,10 @@
                     <datasource>physical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/phys_props/items</hasValue>
                     <label xml:lang="it">Grandezza fisica</label>
+                    <help xml:lang="it">Scegliere il tipo di grandezza fisica dalla lista</help>
                     <label xml:lang="en">Physical classifier</label>
+                    <help xml:lang="en">Choose the type of physical quantity from the list</help>
+
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1244,7 +1253,10 @@
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
+		    <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
+		    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
+
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
@@ -1306,7 +1318,9 @@
                     <hasDatatype>string</hasDatatype>
                     <!--es. 13 -->
                     <label xml:lang="it">Valore grandezza fisica</label>
-                    <label xml:lang="en">Value</label>
+		    <help xml:lang="it">Indicare il valore della grandezza fisica nell&#8217;unit&#224; di misura specificata.</help>
+		    <label xml:lang="en">Value</label>
+		    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
@@ -1314,9 +1328,9 @@
         <element>
             <id>material</id>
             <label xml:lang="it">Materiale</label>
-            <help xml:lang="it">Materiale di cui &#232; composto il sistema</help>
+            <help xml:lang="it">Materiale di cui &#232; composto il sistema.</help>
             <label xml:lang="en">Material</label>
-            <help xml:lang="en">Material which is composed the system</help>
+            <help xml:lang="en">Material by which the system is composed.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]</hasRoot>
@@ -1336,7 +1350,7 @@
             <label xml:lang="it">Caratteristiche elettriche</label>
             <help xml:lang="it">Lista delle caratteritiche elettriche</help>
             <label xml:lang="en">Electrical Capabilities</label>
-            <help xml:lang="en">Electrical capabilities list for quick discovery</help>
+            <help xml:lang="en">Electrical capabilities list</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]</hasRoot>
@@ -1349,7 +1363,9 @@
                     <datasource>electrical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/electr_reqs/items</hasValue>
                     <label xml:lang="it">Grandezza elettrica</label>
+                    <help xml:lang="it">Scegliere il tipo di grandezza elettrica dalla lista.</help>
                     <label xml:lang="en">Electrical classifier</label>
+                    <help xml:lang="en">Choose the type of electrical quantity from the list.</help>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1366,7 +1382,9 @@
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
+                    <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
+		    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
@@ -1392,7 +1410,9 @@
                     <hasDatatype>string</hasDatatype>
                     <!--es. 13 -->
                     <label xml:lang="it">Valore grandezza elettrica</label>
-                    <label xml:lang="en">Value</label>
+                    <help xml:lang="it">Indicare il valore della grandezza elettrica nell&#8217;unit&#224; di misura specificata.</help>
+		    <label xml:lang="en">Value</label>
+		    <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
@@ -1401,10 +1421,9 @@
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
             <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato.
-                Selezionare casella nel caso di sistema attivo</help>
+                Spuntare la casella nel caso di sistema attivo</help>
             <label xml:lang="en">Status</label>
-            <help xml:lang="en">Means if system is on or off. Selected tick if the status of system
-                is on</help>
+            <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
@@ -1423,11 +1442,10 @@
         <element>
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
-            <help xml:lang="it">Viene indicato se il sistema &#232; mobile o fisso. Selezionare
+            <help xml:lang="it">Viene indicato se il sistema &#232; mobile o fisso. Spuntare la
                 casella nel caso si tratti di sistema mobile</help>
             <label xml:lang="en">Mobility Capabilities</label>
-            <help xml:lang="en">Means if the system is mobile or fixed. Selected tick if the system
-                is mobile</help>
+            <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
@@ -1446,10 +1464,10 @@
         <element>
             <id>storage_type</id>
             <label xml:lang="it">Tipo di memoria</label>
-            <help xml:lang="it">Indicare il tipo di memoria che viene usato per archiviare le
-                osservazioni raccolte dal sistema o dal sensore (es. dataLogger)</help>
+            <help xml:lang="it">Indicare il tipo di memoria che viene utilizzato per archiviare le
+                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data logger)</help>
             <label xml:lang="en">Storage Type</label>
-            <help xml:lang="en">Storage Type (ex. dataLogger)</help>
+            <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational

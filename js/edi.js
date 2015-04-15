@@ -500,6 +500,14 @@ var edi = (function() {
         };
     };
 
+    function findLabelForLang(labels, lang) {
+        for ( var i = 0; i < labels.length; i++ ) {
+            if ( labels[i]["_xml:lang"] == lang ) {
+                return labels[i]["__text"];
+            }
+        }
+        return undefined;
+    }
     function compileItem(div, item, element) {
         var id = div.attr("id") + "_" + item.hasIndex;
         var showType = ItemRenderer.getRenderer(item);
@@ -519,6 +527,7 @@ var edi = (function() {
 
         html += ">";
         var labels = "<labels>";
+        var helps = "<helps>";
         if ( item.label ) {
             if ( !$.isArray(item.label) ) {
                 item.label = [item.label];
@@ -527,22 +536,21 @@ var edi = (function() {
                 labels += "<label for='" + id + "' language='" + item.label[k]["_xml:lang"] + "";
                 labels += "'>" + item.label[k]["__text"] + "</label>";
             }
-        }
-        var helps = "<helps>";
-        if ( item.help ) {
-            if ( !$.isArray(item.help) ) {
-                item.help = [item.help];
+            if ( item.help ) {
+                if ( !$.isArray(item.help) ) {
+                    item.help = [item.help];
+                }
+                console.error(item.help);
+                for (var k = 0; k < item.help.length; k++) {
+                    helps += '<span class="help-inline" language="' + item.help[k]["_xml:lang"] + '">';
+                    helps += '<a data-content="' + item.help[k]["__text"] + '" data-original-title="' + findLabelForLang(item.label, item.help[k]["_xml:lang"]) + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
+                    helps += '&nbsp;<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>';
+                    helps += '</a>';
+                    helps += '</span>';
+                }
             }
-            console.error(item.help);
-            for (var k = 0; k < item.help.length; k++) {
-                helps += '<span class="help-inline" language="' + item.help[k]["_xml:lang"] + '">';
-                helps += '<a data-content="' + item.help[k]["__text"] + '" data-original-title="' + item.help[k]["__text"] + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
-                helps += '&nbsp;<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>';
-                helps += '</a>';
-                helps += '</span>';
-            }
+            helps += "</helps>";
         }
-        helps += "</helps>";
         html += labels + helps + "</control_" + showType + ">";
         console.log(html);
         div.append(html);
