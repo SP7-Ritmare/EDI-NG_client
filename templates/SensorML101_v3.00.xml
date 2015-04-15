@@ -1527,7 +1527,7 @@
             <label xml:lang="it">Informazioni sul produttore</label>
             <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un produttore, tra quelli presenti nell'anagrafica, nel campo Denominazione del produttore più in alto nella sezione Identificazione</help>
             <label xml:lang="en">Manufacturer</label>
-            <help xml:lang="en">Write the name of manufacturer</help>
+            <help xml:lang="en">Information regarding the manufacturer</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
