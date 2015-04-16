@@ -1218,9 +1218,9 @@
         <element>
             <id>physical</id>
             <label xml:lang="it">Caratteristiche fisiche</label>
-            <help xml:lang="it">Lista delle caratteristiche fisiche del sistema.</help>
+            <help xml:lang="it">Lista delle caratteristiche fisiche del sistema relative alle componenti del sistema, e che non ne qualificano direttamente l&apos;output (ad esempio le dimensioni, il peso o i requisiti elettrici).</help>
             <label xml:lang="en">Physical Capabilities</label>
-            <help xml:lang="en">List of the physical capabilities of the system.</help>
+            <help xml:lang="en">List of the physical capabilities of the system that may not directly qualify the output (e.g. dimensions and weight, power demands).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]</hasRoot>
@@ -1232,7 +1232,7 @@
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>physical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/phys_props/items</hasValue>
-                    <label xml:lang="it">Grandezza fisica</label>
+                    <label xml:lang="it">Caratteristica fisica</label>
                     <help xml:lang="it">Scegliere il tipo di grandezza fisica dalla lista</help>
                     <label xml:lang="en">Physical classifier</label>
                     <help xml:lang="en">Choose the type of physical quantity from the list</help>
@@ -1317,8 +1317,8 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <!--es. 13 -->
-                    <label xml:lang="it">Valore grandezza fisica</label>
-		    <help xml:lang="it">Indicare il valore della grandezza fisica nell&#8217;unit&#224; di misura specificata.</help>
+                    <label xml:lang="it">Valore caratteristica fisica</label>
+		    <help xml:lang="it">Indicare il valore della caratteristica fisica nell&#8217;unit&#224; di misura specificata.</help>
 		    <label xml:lang="en">Value</label>
 		    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
                 </item>
@@ -1330,7 +1330,7 @@
             <label xml:lang="it">Materiale</label>
             <help xml:lang="it">Materiale di cui &#232; composto il sistema.</help>
             <label xml:lang="en">Material</label>
-            <help xml:lang="en">Material by which the system is composed.</help>
+            <help xml:lang="en">Material the system is constructed by.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]</hasRoot>
@@ -1362,8 +1362,8 @@
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>electrical_quantity</datasource>
                     <hasValue>http://sp7.irea.cnr.it/rdfdata/sensors/electr_reqs/items</hasValue>
-                    <label xml:lang="it">Grandezza elettrica</label>
-                    <help xml:lang="it">Scegliere il tipo di grandezza elettrica dalla lista.</help>
+                    <label xml:lang="it">Caratteristica elettrica</label>
+                    <help xml:lang="it">Scegliere il tipo di caratteristica elettrica dalla lista.</help>
                     <label xml:lang="en">Electrical classifier</label>
                     <help xml:lang="en">Choose the type of electrical quantity from the list.</help>
                 </item>
@@ -1409,8 +1409,8 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <!--es. 13 -->
-                    <label xml:lang="it">Valore grandezza elettrica</label>
-                    <help xml:lang="it">Indicare il valore della grandezza elettrica nell&#8217;unit&#224; di misura specificata.</help>
+                    <label xml:lang="it">Valore caratteristica elettrica</label>
+                    <help xml:lang="it">Indicare il valore della caratteristica elettrica nell&#8217;unit&#224; di misura specificata.</help>
 		    <label xml:lang="en">Value</label>
 		    <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
                 </item>
@@ -1525,9 +1525,9 @@
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
-            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un produttore, tra quelli presenti nell'anagrafica, nel campo Denominazione del produttore più in alto nella sezione Identificazione</help>
+            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del sistema/sensore/piattaforma, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
             <label xml:lang="en">Manufacturer</label>
-            <help xml:lang="en">Information regarding the manufacturer</help>
+            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the system (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
@@ -1666,8 +1666,10 @@
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
-            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un una persona tra quelli presenti nell'anagrafica del progetto RITMARE</help>
+            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
+             del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
+            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -1806,10 +1808,10 @@
         <!--=========================== -->
         <element>
             <id>operator</id>
-            <label xml:lang="it">Informazioni sul operatore</label>
-            <help xml:lang="it">Queste informazioni sono autocompilate nel momento in cui venga scelto un una persona tra quelli presenti nell'anagrafica del progetto RITMARE</help>
+            <label xml:lang="it">Informazioni sull&apos;operatore</label>
+            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nelle liste anagrafiche del progetto RITMARE.</help>
             <label xml:lang="en">Operator</label>
-            <help/>
+            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the RITMARE project contacts&#8217; repository.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty</hasRoot>
@@ -1949,7 +1951,7 @@
     <!--==================== -->
     <group>
         <id>system_documentation</id>
-        <label xml:lang="it">Scheda tecnica del sistema</label>
+        <label xml:lang="it">Documentazione tecnica del sistema</label>
         <!--<help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
             anche puntare ad una risorsa online.</help>-->
         <label xml:lang="en">System Documentation</label>
@@ -1958,9 +1960,11 @@
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
-            <help/>
+            <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
+                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
-            <help/>
+            <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
+		 peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -1985,7 +1989,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Data di emissione della scheda tecnica</label>
+                    <label xml:lang="it">Data di emissione della documentazione</label>
                     <help/>
                     <label xml:lang="en">Description date</label>
                     <help/>
@@ -1996,8 +2000,8 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>format</datasource>
-                    <label xml:lang="it">Formato elettronico di distribuzione della scheda/swes:InsertSensor/swes:procedureDescription/sml:SensorML tecnica</label>
-                    <help/>
+                    <label xml:lang="it">Formato elettronico della documentazione</label>
+                    <help xml:lang="it">Selezionare dalla lista il formato elettronico on cui viene distribuita la documentazione</help>
                     <label xml:lang="en">Description format (e.g. pdf, doc, etc.)</label>
                     <help/>
                 </item>
