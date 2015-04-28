@@ -6,7 +6,7 @@
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
 <!-- TO DO: vedere come usare searchItem -->
-<!-- TO DO: terminare validazione -->
+<!-- TO DO: verificare validazione -->
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 <!-- TO DO: inserire possibilità di uplodare immagine -->
 <!-- TO DO: gruppo position con mappa -->
@@ -613,7 +613,7 @@
         <element>
             <id>free_keywords</id>
             <label xml:lang="it">Parole chiave a campo libero</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistema di sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
             <label xml:lang="en">Free keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>NA</isMandatory>
@@ -2042,7 +2042,7 @@
             <help xml:lang="en">Update events of the system, sensor or platform, (e.g. changes to an algorithm within a process, data management software updates, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Updates&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]</hasRoot>
             <produces>
                 <!--<item>
                     <hasIndex>2</hasIndex>
@@ -2064,7 +2064,7 @@
                 </item>-->
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Updates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/sml:date</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/sml:date</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2076,7 +2076,7 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Updates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/gml:description</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2088,7 +2088,7 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Updates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/@name</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/@name</hasPath>
                     <isFixed>true</isFixed>
                     <!--SML20130715 -->
                     <hasDatatype>function</hasDatatype>
@@ -2096,7 +2096,7 @@
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Updates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/@gml:id</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;smlUpdates&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:smlUpdates&apos;]/sml:Event/@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <!--SML20130715 -->
                     <hasDatatype>function</hasDatatype>
@@ -2115,11 +2115,11 @@
             <help xml:lang="en">Operation events such as mechanical changes.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2129,27 +2129,21 @@
                     <help/>
                     <!--es 2013-07-15 -->
                 </item>
-                <!--<item>
+                <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/gml:description</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Descrizione modifiche sistema</label>
                     <help xml:lang="it">Breve descrizione delle operazioni di modifica del sistema</help>
                     <label xml:lang="en">Operation description</label>
-<<<<<<< HEAD
                     <help xml:lang="en">Brief description of the changes applied to the system</help>
                     <!--es Instrument Data Begins -->
                 </item>
-=======
-                    <help/>
-                    <!-\-es Instrument Data Begins -\->
-                </item>-->
->>>>>>> origin/development
                 <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>operator</hasValue>
@@ -2160,16 +2154,16 @@
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>#operator</hasValue>
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/gml:description</hasPath>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2180,8 +2174,8 @@
                     <!--es deployment report -->
                 </item>
                 <item>
-                    <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;deploymentNotes&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2192,18 +2186,10 @@
                     <!--es http://... -->
                 </item>
                 <item>
-                    <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/@name</hasPath>
+                    <hasIndex>8</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;operations&apos;]/sml:EventList[@gml:id=&apos;operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/@name</hasPath>
                     <isFixed>true</isFixed>
                     <!--SML20130715 -->
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SML',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
-                </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlOperations&apos;]/sml:EventList[@gml:id=&apos;Operations&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/@gml:id</hasPath>
-                    <isFixed>true</isFixed>
-                    <!--SMLOperation20150419 -->
                     <hasDatatype>function</hasDatatype>
                     <hasValue>concat('SMLOperation',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:deployment&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
                 </item>
@@ -2220,115 +2206,11 @@
             <help xml:lang="en">History of calibration events of the system, sensor or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>date</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Data test</label>
-                    <help/>
-                    <label xml:lang="en">Test date</label>
-                    <help/>
-                    <!--es 2013-07-15 -->
-                </item>
-                <!--<item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/gml:description</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>text</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Descrizione calibrazione</label>
-                    <help xml:lang="it">Breve descrizione dell&apos;evento di calibrazione</help>
-                    <label xml:lang="en">Calibration description</label>
-<<<<<<< HEAD
-                    <help xml:lang="en">Brief description of the calibration event</help>
-                    <!--es calibration event -->
-=======
-                    <help/>
-                    <!-\-es calibration event -\->
-                </item>-->
-                <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>urn:ogc:def:classifiers:OGC:contactType:operator</hasValue>
-                    <!--<label xml:lang="it">Ruolo addetto alla calibrazione</label>-->
-                    <help/>
-                    <!--<label xml:lang="en">Calibration role</label>-->
-                    <help/>
-                    <!--es operator -->
->>>>>>> origin/development
-                </item>
-                <item>
-                    <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>#operator</hasValue>
-                    <!--es operator -->
-                </item>
-                <item>
-                    <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/gml:description</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>text</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Descrizione documentazione modifiche sistema</label>
-                    <help/>
-                    <label xml:lang="en">Decription of operational documentation</label>
-                    <help/>
-                    <!--es deployment report -->
-                </item>
-                <item>
-                    <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>URI</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                    <label xml:lang="it">Link a documentazione calibrazione</label>
-                    <help/>
-                    <label xml:lang="en">Calibration doc link</label>
-                    <help/>
-                    <!--es http://... -->
-                </item>
-                <item>
-                    <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/@name</hasPath>
-                    <isFixed>true</isFixed>
-                    <!--SML20130715 -->
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SML',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
-                </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlCalibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/@gml:id</hasPath>
-                    <isFixed>true</isFixed>
-                    <!--SMLCalibration20130715 -->
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SMLCalibration',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
-                </item>
-            </produces>
-        </element>
-        <!--============ -->
-        <!--History Test -->
-        <!--============ -->
-        <element>
-            <id>history_test</id>
-            <label xml:lang="it">Storia dei test</label>
-            <help xml:lang="it">Inserire le informazioni di test del sensore, del sistema di sensori o della piattaforma.</help>
-            <label xml:lang="en">Test history</label>
-            <help/>
-            <isMandatory>NA</isMandatory>
-            <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]</hasRoot>
-            <produces>
-                <item>
-                    <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:date</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2338,21 +2220,21 @@
                     <help/>
                     <!--es 2013-07-15 -->
                 </item>
-                <!--<item>
+                <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/gml:description</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Descrizione calibrazione</label>
-                    <help/>
+                    <help xml:lang="it">Breve descrizione dell&apos;evento di calibrazione</help>
                     <label xml:lang="en">Calibration description</label>
-                    <help/>
-                    <!-\-es calibration event -\->
-                </item>-->
+                    <help xml:lang="en">Brief description of the calibration event</help>
+                    <!--es calibration event -->
+                </item>
                 <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>operator</hasValue>
@@ -2363,16 +2245,16 @@
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>#operator</hasValue>
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;tetsReport&apos;]/sml:Document/gml:description</hasPath>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2383,8 +2265,8 @@
                     <!--es deployment report -->
                 </item>
                 <item>
-                    <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;testReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;calibrationReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URI</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2395,20 +2277,12 @@
                     <!--es http://... -->
                 </item>
                 <item>
-                    <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/@name</hasPath>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;calibration&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/@name</hasPath>
                     <isFixed>true</isFixed>
                     <!--SML20130715 -->
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SML',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
-                </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlTest&apos;]/sml:EventList[@gml:id=&apos;Test&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/@gml:id</hasPath>
-                    <isFixed>true</isFixed>
-                    <!--SMLTest20130715 -->
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SMLTest',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:test&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
+                    <hasValue>concat('SMLCalibration',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:calibration&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
                 </item>
             </produces>
         </element>
@@ -2423,11 +2297,11 @@
             <help xml:lang="en">History of events of the system, sensor or platform, other from the ones listed above.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;slmotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2437,43 +2311,37 @@
                     <help/>
                     <!--es 2013-07-15 -->
                 </item>
-                <!--<item>
+                <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/gml:description</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Descrizione altri eventi</label>
                     <help xml:lang="it">Breve descrizione dell&apos;evento altro.</help>
                     <label xml:lang="en">Other event description</label>
-<<<<<<< HEAD
                     <help xml:lang="en">Brief description of the other event.</help>
                     <!--es calibration event -->
                 </item>
-=======
-                    <help/>
-                    <!-\-es calibration event -\->
-                </item>-->
->>>>>>> origin/development
                 <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>operator</hasValue>
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>#operator</hasValue>
                     <!--es operator -->
                 </item>
                 <item>
-                    <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/gml:description</hasPath>
+                    <hasIndex>5</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2484,8 +2352,8 @@
                     <!--es deployment report -->
                 </item>
                 <item>
-                    <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasIndex>6</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:documentation[@xlink:arcrole=&apos;eventReport&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URI</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2496,18 +2364,10 @@
                     <!--es http://... -->
                 </item>
                 <item>
-                    <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/@name</hasPath>
+                    <hasIndex>7</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/@name</hasPath>
                     <isFixed>true</isFixed>
                     <!--SML20130715 -->
-                    <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('SML',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
-                </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlotherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/smlEvent/@gml:id</hasPath>
-                    <isFixed>true</isFixed>
-                    <!--SMLOtherEvent20130715 -->
                     <hasDatatype>function</hasDatatype>
                     <hasValue>concat('SMLOtherEvent',replace(sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:date/text(),'-',''))</hasValue>
                 </item>
@@ -2977,3 +2837,4 @@
     <!--END Output Group -->
 
 </template>
+
