@@ -8,7 +8,6 @@
 <!-- TO DO: vedere come usare searchItem -->
 <!-- TO DO: verificare validazione -->
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
-<!-- TO DO: inserire possibilità di uplodare immagine -->
 <!-- TO DO: gruppo position con mappa -->
 <!-- TO DO: obsevableProperty da gestire con xslt -->
 <!-- TO DO: aggiungere produzione di QR code alla fine della creazione di SensorML -->
@@ -1957,6 +1956,7 @@
         <label xml:lang="en">System Documentation</label>
         <!--<help xml:lang="en">Documentation for that object with date/time, version, author, etc.
             pointing to an online resource related to the enclosing object</help>-->
+        <!-- Documentation -->
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
@@ -2017,6 +2017,58 @@
                     <help xml:lang="en">Link to reach on-line the documentation (URI or URL)</help>
                     <!--http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -->
                 </item>
+            </produces>
+        </element>
+        <!-- Image -->
+        <element>
+            <id>image</id>
+            <label xml:lang="it">Immagine</label>
+            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di sensori o alla piattaforma</help>
+            <label xml:lang="en">Image</label>
+            <help xml:lang="en">...</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>NA</isMultiple>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/@xlink:arcrole</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:object:OGC:1.0:image</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:format</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>format</datasource>
+                    <label xml:lang="it">Formato elettronico della documentazione</label>
+                    <help xml:lang="it">Selezionare dalla lista il formato elettronico con cui viene distribuita l'immagine</help>
+                    <label xml:lang="en">Description format</label>
+                    <help xml:lang="en">Select from the list of image format</help>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URL</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <type>image</type><!-- TO DO: è così che si deve chiamare? -->
+                    <label xml:lang="it">Link alla immagine</label>
+                    <help xml:lang="it">Collegamento alla immagine on-line sotto forma di URI (o URL). </help>
+                    <label xml:lang="en">Image link</label>
+                    <help xml:lang="en">Link to reach on-line the image (URI or URL)</help>
+                    <!--http://www.radiometer-analytical.com/images/product/ion450.jpg -->
+                </item>
+                <!-- TO DO: aggiungere un link -->
             </produces>
         </element>
     </group>
@@ -2321,8 +2373,13 @@
                     <help xml:lang="it">Breve descrizione dell&apos;evento altro.</help>
                     <label xml:lang="en">Other event description</label>
                     <help xml:lang="en">Brief description of the other event.</help>
+<<<<<<< Updated upstream
                     <!--es calibration event -->
                 </item>
+=======
+                    <!-\-es calibration event -\->
+                </item>-->
+>>>>>>> Stashed changes
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
