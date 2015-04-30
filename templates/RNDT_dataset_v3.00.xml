@@ -2174,7 +2174,7 @@
       <id>gene</id>
       <label xml:lang="en">Lineage</label>
       <label xml:lang="it">Genealogia</label>
-      <help xml:lang="en">foo</help>
+      <help xml:lang="en">It is a free text description reporting tha data source, process history and/or overall quality of the spatial data set. Where appropriate it may include a statement whether the data set has been validated or quality assured, whether it is the official version (if multiple versions exist), and whether it has legal validity.</help>
       <help xml:lang="it">(Traduzione di Lineage) esprime attraverso un testo libero la provenienza e il processo di produzione dei dati (o risorse), in modo da dare informazioni relativamente al ciclo di vita e alla qualit&#224;. E&apos; consigliabile inserire in tale campo dichiarazioni relative al fatto che la risorsa sia stata convalidata o sottoposta a controllo di qualit&#224;, secondo quali standard o metodologie, se queste abbiano validit&#224; legale (ad es. collaudi) e se sia la versione ufficiale. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
