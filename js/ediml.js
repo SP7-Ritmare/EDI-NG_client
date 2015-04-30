@@ -605,6 +605,12 @@ var ediml = (function() {
         findItemById: findItemById,
         inheritSettings: inheritSettings,
         changeHandler: changeHandler,
+        setPostCallbackSuccess: function(cb) {
+            successCallback = cb;
+        },
+        setPostCallbackError: function(cb) {
+            errorCallback = cb;
+        },
         post: post,
         update: update,
         updateItemForControl: updateItemForControl,
