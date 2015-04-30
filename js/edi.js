@@ -106,6 +106,11 @@ var edi = (function() {
                 var id = datasource.getId();
                 var newTriggerItem = ( datasource.parameters.triggerItem ? datasource.parameters.triggerItem.replace(element_id, newId) : undefined );
                 var newSearchItem = ( datasource.parameters.searchItem ? datasource.parameters.searchItem.replace(element_id, newId) : undefined );
+                console.log("Qui");
+                console.log(element_id);
+                console.log(newId);
+                console.log(datasource.parameters.triggerItem);
+                console.log(newTriggerItem);
                 var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
@@ -144,7 +149,7 @@ var edi = (function() {
         if ( updateEdiml ) {
             ediml.duplicateElement(element_id, newId);
         }
-        newDiv.find("*[datatype='autoCompletion'][datasource]").each(function () {
+        newDiv.find("*[datasource]").each(function () {
             var item = ediml.findItemById($(this).attr("id"));
             if ( item ) {
                 item.datasource = $(this).attr("datasource");

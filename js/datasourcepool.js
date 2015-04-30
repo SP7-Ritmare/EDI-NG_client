@@ -125,6 +125,14 @@ var DataSourcePool = (function(){
                 console.log(results);
                 return results;
             },
+            isDatasourceIn: function(ds_id, array) {
+                for ( var i = 0; i < array.length; i++ ) {
+                    if ( array[i].parameters.id == ds_id ) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             /**
              * Finds all DataSource referred to by Items in a specific Element
              *
@@ -138,7 +146,9 @@ var DataSourcePool = (function(){
                 for ( var i = 0; i < element.items.item.length; i++ ) {
                     if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
                         var ds = this.findById(element.items.item[i].datasource);
-                        results.push(this.findById(element.items.item[i].datasource));
+                        if ( ! this.isDatasourceIn(ds.parameters.id, results) ) {
+                            results.push(ds);
+                        }
                     }
                 }
                 return results;
@@ -162,6 +172,8 @@ var DataSourcePool = (function(){
                 newPars.searchItem = newSearchItem;
                 newPars.cloned = true;
                 console.error("duplicating ds " + id + " as " + newId);
+                console.error("triggerItem: " + newTriggerItem);
+                console.error("searchItem: " + newSearchItem);
                 var newDs = new DataSource(newPars);
                 if ( newTriggerItem ) {
                     setDatasourceTrigger(newTriggerItem, newDs);
