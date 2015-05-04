@@ -2373,13 +2373,7 @@
                     <help xml:lang="it">Breve descrizione dell&apos;evento altro.</help>
                     <label xml:lang="en">Other event description</label>
                     <help xml:lang="en">Brief description of the other event.</help>
-<<<<<<< Updated upstream
-                    <!--es calibration event -->
                 </item>
-=======
-                    <!-\-es calibration event -\->
-                </item>-->
->>>>>>> Stashed changes
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvents&apos;]/sml:member[@xlink:arcrole=&apos;urn:ogc:def:property:OGC:otherEvent&apos;]/sml:Event/sml:contact/@xlink:arcrole</hasPath>
