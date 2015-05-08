@@ -7,6 +7,7 @@ returned fields MUST be:
 * ?l (in-language label),
 * ?a (alternative language label)
 * ?z (language-neutral label)
+
 ## select
 Item value depends on field from shared datasource.
 Whenever datasource is refreshed, item will be updated with the corresponding field value.
