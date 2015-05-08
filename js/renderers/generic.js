@@ -1,30 +1,26 @@
 /**
- * Created by fabio on 19/11/14.
+ * This is the main renderer<br>
+ * It manages calls to the specific renderers<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var ItemRenderer = (function() {
-    function loadScript(script) {
-            $('<script>')
-                .attr('type', 'text/javascript')
-                .attr('src', 'js/renderers/' + script + ".js")
-                .appendTo('head');
-    }
-
-    function init() {
-        /*
-        loadScript("autocompletion");
-        loadScript("combobox");
-        loadScript("date");
-        loadScript("date_range");
-        loadScript("label");
-        loadScript("Textbox");
-        */
-    }
-
+    /**
+     * Picks the correct specific renderers
+     *
+     * @memberOf ItemRenderer
+     * @param item
+     * @returns {*}
+     */
     function getRenderer(item) {
         switch(item.show) {
             case "textbox":
             case "combobox":
             case "label":
+            case "boolean":
+            case "image":
+            case "qrcode":
                 return item.show;
             default:
                 switch(item.hasDatatype) {
@@ -36,6 +32,7 @@ var ItemRenderer = (function() {
                     case "string":
                     case "URN":
                     case "URI":
+                    case "URL":
                     case "int":
                     case "real":
                     case "double":
@@ -57,16 +54,55 @@ var ItemRenderer = (function() {
         }
     }
 
+    /**
+     * Renders all specific renterers in turns
+     *
+     * @memberOf ItemRenderer
+     */
     function render() {
-        Textbox.render();
-        Combobox.render();
-        Autocompletion.render();
-        Dates.render();
-        DateRange.render();
-        Label.render();
-        BoundingBox.render();
+        if ( typeof Textbox !== "undefined" ) {
+            Textbox.render();
+        }
+        if ( typeof Boolean !== "undefined" ) {
+            Boolean.render();
+        }
+        if ( typeof Combobox !== "undefined" ) {
+            Combobox.render();
+        }
+        if ( typeof Autocompletion !== "undefined" ) {
+            Autocompletion.render();
+        }
+        if ( typeof Dates !== "undefined" ) {
+            Dates.render();
+        }
+        if ( typeof DateRange !== "undefined" ) {
+            DateRange.render();
+        }
+        if ( typeof Label !== "undefined" ) {
+            Label.render();
+        }
+        if ( typeof BoundingBox !== "undefined" ) {
+            BoundingBox.render();
+        }
+        if ( typeof FunctionType !== "undefined" ) {
+            FunctionType.render();
+        }
+        if ( typeof ImageType !== "undefined" ) {
+            ImageType.render();
+        }
+        if ( typeof QRCode !== "undefined" ) {
+            QRCode.render();
+        }
     }
 
+    /**
+     * Copies attribute values from an input template form <element, item> to an internal <i>item</i> structure, meant to create the UI items
+     *
+     * @memberOf ItemRenderer
+     * @param element
+     * @param item
+     * @param theItem
+     */
     function copyAttributesFrom(element, item, theItem) {
         theItem.datatype = item.hasDatatype;
         theItem.datasource = item.datasource;
@@ -90,7 +126,7 @@ var ItemRenderer = (function() {
         theItem.value = item.hasValue;
     }
 
-    init();
+    // init();
 
     return {
         getRenderer: getRenderer,

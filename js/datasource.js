@@ -1,7 +1,10 @@
 /**
- * Created by fabio on 06/11/14.
+ * Enum of all DataSource types
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @readonly
+ * @enum
  */
-
 var DataSourceType = {
     // Codelist based on a Virtuoso SPARQL Query
     virtuosoCodelist: "virtuosoCodelist",
@@ -11,32 +14,100 @@ var DataSourceType = {
 
 };
 
+/**
+ * DataSource class
+ *
+ * @class
+ * @author Fabio Pavesi (fabio@adamassoft.it)
+ */
+
 var DataSource = function(params) {
     var parameters = {
+        /**
+         *
+         * @memberOf DataSource
+         */
         type: DataSourceType.virtuosoCodelist,
+        /**
+         *
+         * @memberOf DataSource
+         */
         url: "http://sp7.irea.cnr.it:8890/sparql",
         // URI of the CodeList
+        /**
+         *
+         * @memberOf DataSource
+         */
         uri: "",
-        // Callback to be called when data is ready
+        /**
+         * Callback to be called when data is ready
+         *
+         * @memberOf DataSource
+         * @type Callback
+         */
         ready: undefined,
-        // Query to be issued
+        /**
+         * Query to be issued
+         * @memberOf DataSource
+         * @type String
+         */
         query: "",
-        // HTML control whose value represents the $search_param of the query
+        /**
+         * HTML control whose value represents the $search_param of the query
+         *
+         * @memberOf DataSource
+         */
         searchItem: undefined,
-        // HTML control triggering a refresh in this datasource
+        /**
+         * HTML control triggering a refresh in this datasource
+         *
+         * @memberOf DataSource
+         */
         triggerItem: undefined,
-        // if true => requires explicit "refresh"
+        /**
+         * if true => requires explicit "refresh"
+         *
+         * @memberOf DataSource
+         */
         lazy: true,
-        // if true => selected row is the same for all items referring to this datasource and all controls are notified if selection changes
+        /**
+         * if true => selected row is the same for all items referring to this datasource and all controls are notified if selection changes
+         *
+         * @memberOf DataSource
+         */
         singleton: false,
-        // if true => this datasource is the product of a cloning operation: NEVER FORCE THIS VALUE
+        /**
+         * if true => this datasource is the product of a cloning operation: NEVER FORCE THIS VALUE
+         *
+         * @memberOf DataSource
+         */
         cloned: false,
+        /**
+         *
+         * @memberOf DataSource
+         */
         isFreshlyCreated: true,
+        /**
+         *
+         * @memberOf DataSource
+         */
         hasResultSet: false,
+        /**
+         *
+         * @memberOf DataSource
+         */
         hasErrors: false,
+        /**
+         *
+         * @memberOf DataSource
+         */
         errors: undefined,
-        // Adapts dataset format to plain array
-        // see datasource_adapters.js
+        /**
+         * Adapts dataset format to plain array
+         * see datasource_adapters.js
+         *
+         * @memberOf DataSource
+         */
         adapter: undefined
     };
     var resultSet = undefined;
@@ -99,7 +170,7 @@ var DataSource = function(params) {
         $("*[datasource='" + parameters.id + "']").removeClass("loading");
     }
 
-    function dataError(arguments) {
+    function dataError() {
         parameters.isFreshlyCreated = false;
         parameters.hasResultSet = false;
         parameters.hasErrors = true;
@@ -240,37 +311,93 @@ var DataSource = function(params) {
     }
 
     self = {
+        /**
+         * Returns the id
+         * @memberOf DataSource
+         * @function
+         */
         getId: getId,
+        /**
+         * @function
+         * @memberOf DataSource
+         * @returns {string[][]}
+         */
         getResultSet: function() {
             return resultSet;
         },
         isReady: function() {
             return ( typeof resultSet !== "undefined" );
         },
+        /**
+         * Loads the data
+         * @memberOf DataSource
+         * @function
+         */
         refresh: function() {
             loadData();
         },
         filter: filter,
+        /**
+         *
+         * @memberOf DataSource
+         * @param lang
+         */
         setLanguage: function(lang) {
             language = lang;
         },
+        /**
+         *
+         * @memberOf DataSource
+         * @returns {string}
+         */
         getLanguage: function() {
             return language;
         },
+        /**
+         *
+         * @memberOf DataSource
+         * @param callback
+         */
         addListener: function(callback) {
             callbacks.push(callback);
         },
+        /**
+         *
+         * @memberOf DataSource
+         * @returns {Array}
+         */
         getListeners: function() {
             return callbacks;
         },
         setCurrentRow: setCurrentRow,
+        /**
+         * @function
+         * @memberOf DataSource
+         * @returns {string[]}
+         */
         getCurrentRow: function() {
             // console.log("current row is " + currentRow);
-            return resultSet[currentRow];
+            var temp;
+            if ( resultSet && currentRow != -1 ) {
+                temp = resultSet[currentRow];
+            } else {
+                console.error("ds: " + parameters.id);
+                console.error(this);
+                console.error("resultSet: ");
+                console.error(resultSet );
+                console.error("currentRow: " + currentRow );
+            }
+            return temp;
         },
+        /**
+         *
+         * @memberOf DataSource
+         * @param value
+         */
         setSearchItem: function(value) {
             parameters.searchItem = value;
         },
+
         addEventListener: addListener,
         triggerEvent: trigger,
         getUrl: function() {

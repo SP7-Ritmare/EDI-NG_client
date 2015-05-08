@@ -1,7 +1,7 @@
 /**
- * Created by fabio on 21/11/14.
+ * Localisation system
+ * @author Fabio Pavesi (fabio@adamassoft.it)
  */
-
 var localised_strings = {
         it: [
             {
@@ -73,13 +73,12 @@ var localised_strings = {
         ]
     };
 
+/**
+ *
+ * @param string
+ * @returns {string}
+ */
 function localise(string) {
-    /*
-    var lang = edi.uiLanguage();
-    if ( typeof lang === "undefined" ) {
-        lang = "it";
-    }
-    */
     var retVal = "";
     for ( var j = 0; j < Object.keys(localised_strings).length; j++ ) {
         var lang = Object.keys(localised_strings)[j];

@@ -1,10 +1,17 @@
 /**
- * Created by fabio on 28/11/14.
- */
-/**
- * Created by fabio on 28/11/14.
+ * Combobox renderer<br>
+ * It compiles all <control_combobox> tags that have been inserted into HTML, and turns them into HTML <select>s<br>
+ *
+ * If the template item was connected to a datasource, the <select> will also be.
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Combobox = (function() {
+    /**
+     *
+     * @memberOf Combobox
+     */
     function render() {
         var control;
         $("control_combobox").each(function() {
@@ -40,7 +47,7 @@ var Combobox = (function() {
             }
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
             html = $(html);
-            var labels = $(this).find("label");
+            var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
             console.log(labels);
             html.append(labels);

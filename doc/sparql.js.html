@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: sparql.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: sparql.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * SPARQL query manager
+ *
+ * @class
+ * @author Fabio Pavesi (fabio@adamassoft.it)
+ *
+ */
+var SPARQL = (function(url, endpointType) {
+    var virtuosoUrl = "http://sp7.irea.cnr.it:8890/sparql";
+    if ( typeof endpointType === "undefined" ) {
+        endpointType = "virtuoso";
+    }
+
+    if ( typeof url !== "undefined") {
+        virtuosoUrl = url;
+    }
+    function getSparqlQuery(uri, currentMetadataLanguage) {
+        var sparql;
+        sparql =    "PREFIX rdfs:&lt;http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX dct:&lt;http://purl.org/dc/terms/> " +
+                    "PREFIX rdf:&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX skos:&lt;http://www.w3.org/2004/02/skos/core#> " +
+                    
+                    "SELECT DISTINCT &lt;" + uri + "> AS ?uri ?c ?l ?a ?z " +
+                    "WHERE { " +
+                    "	{ " +
+                    "	  ?c rdf:type skos:Concept. " +
+                    "	  ?c skos:inScheme &lt;" + uri + ">. " +
+                    "	  OPTIONAL { " +
+                    "	      ?c skos:prefLabel ?l. " +
+                    '	      FILTER ( LANG(?l) = "en" ) ' +
+                    "	  } " +
+                    "	} " +
+                            
+                    "	OPTIONAL { " +
+                    "	    ?c skos:prefLabel ?z. " + 
+                    '	    FILTER ( LANG(?z) = "zxx" ) ' +
+                    "	} " +
+                    "	OPTIONAL { " +
+                    "	    ?c skos:prefLabel ?a. " + 
+                    '	    FILTER ( LANG(?a) = "' + currentMetadataLanguage + '" ) ' +
+                    "	} " +
+                    "	" +
+                    "} " +
+                                    "ORDER BY ASC(?a) ASC(?l)";
+                                    // doDebug(sparql);
+        return sparql;
+    };
+
+    function specificQuery(query, callback, errorCallback, language) {
+        if ( typeof language === "undefined" ) {
+            language = "it";
+        }
+        var newQuery = query.toString().replace(/\$lang\$/g, language);
+        console.log(endpointType);
+        $.ajax({
+            url: virtuosoUrl,
+            type: endpointType.parameters.method,
+            accepts: endpointType.parameters.contentType.json,
+            dataType: "jsonp",
+            crossDomain: true,
+            /*
+            data: {
+                query: newQuery,
+                format: "application/sparql-results+json",
+                save:"display",
+                fname : undefined
+            },
+            */
+            data: endpointType.getQueryStringData(newQuery),
+            success: function(data) {
+                if ( typeof callback === "function") {
+                    callback(data);
+                }
+            },
+            error: function() {
+                console.log(arguments);
+                if ( typeof errorCallback === "function") {
+                    errorCallback(arguments);
+                }
+            }
+        });
+
+    }
+
+    function query(uri, callback, errorCallback, language) {
+        if ( typeof language === "undefined" ) {
+            language = "it";
+        }
+        var sparqlQuery = getSparqlQuery(uri, language);
+        $.ajax({
+            url: virtuosoUrl,
+            type: endpointType.parameters.method,
+            contentType: endpointType.parameters.contentType.json,
+            dataType: "jsonp",
+            /*
+            data: {
+                query: sparqlQuery,
+                format: "application/sparql-results+json",
+                save:"display",
+                fname : undefined
+            },
+            */
+            data: endpointType.getQueryStringData(sparqlQuery),
+            success: function(data) {
+                if ( typeof callback === "function") {
+                    callback(data);
+                }
+            },
+            error: function() {
+                console.log(arguments);
+                if ( typeof errorCallback === "function") {
+                    errorCallback(data);
+                }
+            }
+        });
+    }
+    return {
+        /**
+         * Returns a SPARQL query for a codelist's URI
+         *
+         * @memberOf SPARQL
+         * @param uri
+         * @param currentMetadataLanguage
+         * @returns {string}
+         */
+        getSparqlQuery: getSparqlQuery,
+        /**
+         * Performs a URI based SPARQL query
+         *
+         * @memberOf SPARQL
+         * @param uri
+         * @param callback
+         * @param errorCallback
+         * @param language
+         */
+        query: query,
+        /**
+         * Runs a specific SPARQL query
+         *
+         * @memberOf SPARQL
+         * @param query
+         * @param callback
+         * @param errorCallback
+         * @param language
+         */
+        specificQuery: specificQuery
+    };
+});
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DataSource.html">DataSource</a></li><li><a href="DataSourcePool.html">DataSourcePool</a></li><li><a href="Element.html">Element</a></li><li><a href="EndpointType.html">EndpointType</a></li><li><a href="Item.html">Item</a></li><li><a href="SPARQL.html">SPARQL</a></li></ul><h3>Namespaces</h3><ul><li><a href="adapters.html">adapters</a></li><li><a href="Autocompletion.html">Autocompletion</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="Combobox.html">Combobox</a></li><li><a href="DateRange.html">DateRange</a></li><li><a href="Dates.html">Dates</a></li><li><a href="edi.html">edi</a></li><li><a href="ediml.html">ediml</a></li><li><a href="ItemRenderer.html">ItemRenderer</a></li><li><a href="Label.html">Label</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="validator.html">validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DataSourceType">DataSourceType</a></li><li><a href="global.html#defaults">defaults</a></li><li><a href="global.html#localise">localise</a></li><li><a href="global.html#localised_strings">localised_strings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Mar 26 2015 20:26:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,5 +1,10 @@
 /**
- * Created by fabio on 21/11/14.
+ *
+ * Validator module.<br>
+ * The {@link validate} method calls all specific validations in turn and returns <b>global</b> validation status.
+ *
+ * @author Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 
 var validator = (function() {
@@ -218,6 +223,18 @@ var validator = (function() {
         return result;
     }
 
+    /**
+     * Validate method<br>
+     * It calls specific validation methods in turns and returns true or false<br>
+     * A return value of true can happen in the presence of warnings, so make sure to check {@link getWarningCount} as well<br>
+     * @method
+     * @memberOf validator
+     * @returns {boolean}
+     *
+     * No errors and possible warnings -> true<br>
+     * At least one error -> false<br>
+     *
+     */
     function validate() {
         var result = true;
         errors = 0;
@@ -229,13 +246,26 @@ var validator = (function() {
             result &= validations[i]();
         }
 
+        edi.setLanguage(edi.uiLanguage());
         return result;
     }
     return {
         validate: validate,
+        /**
+         *
+         * @method
+         * @memberOf validator
+         * @returns {number}
+         */
         getWarningCount: function() {
             return warnings;
         },
+        /**
+         *
+         * @method
+         * @memberOf validator
+         * @returns {number}
+         */
         getErrorCount: function() {
             return errors;
         }

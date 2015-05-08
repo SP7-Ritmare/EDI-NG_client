@@ -5,7 +5,7 @@
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-    <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
+    <metadataEndpoint>https://sp7.irea.cnr.it/tomcat2/EDI-T/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
     <requiresValidation>false</requiresValidation>
@@ -18,8 +18,6 @@
          xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
          xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/">
-          <foaf:Person>
-          </foaf:Person>
         </rdf:RDF>
       ]]>
     </baseDocument>    
@@ -46,6 +44,17 @@
       </parameters>
     </endpointType>
 
+    <endpointType>
+      <id>cnr_pubs_endpoint</id>
+      <method>GET</method>
+      <Content-Type>application/sparql-results+json; charset=utf-8</Content-Type>
+      <queryParameter>query</queryParameter>
+      <parameters>
+        <output>json</output>
+        <format>application/sparql-results+json</format>
+      </parameters>
+    </endpointType>
+    
   </endpointTypes>
   <datasources>
     <datasource>
@@ -105,14 +114,14 @@
             WHERE {
               {
                 OPTIONAL {
-                  <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> vcard:hasAddress ?a .
+                  <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> vcard:hasAddress ?a .
                   ?a vcard:street-address ?str .
                   ?a vcard:locality ?loc .
                   ?a vcard:postal-code ?cap .
                   ?a vcard:country-name ?cou .
                 }
               } UNION {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> vcard:org ?org . 
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> vcard:org ?org . 
                 ?org vcard:hasAddress ?b .
                 OPTIONAL {
                   ?b vcard:street-address ?str .
@@ -164,19 +173,19 @@
             FROM <http://ritmare.it/rdfdata/project>
             WHERE {
               OPTIONAL {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> foaf:givenName ?gName .
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> foaf:givenName ?gName .
               }
               OPTIONAL {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> foaf:familyName ?fName .
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> foaf:familyName ?fName .
               }
               OPTIONAL {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> vcard:email ?email .
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> vcard:email ?email .
               }
               OPTIONAL {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> foaf:phone ?phone .
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> foaf:phone ?phone .
               }
               OPTIONAL {
-                <http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA> vcard:org ?org .
+                <http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA> vcard:org ?org .
               }
             }
         ]]>
@@ -240,10 +249,10 @@
       <type>virtuosoCodelist</type>
       -->
     </datasource>
+    <!--
     <datasource>
       <id>knows</id>
       <singleton>false</singleton>
-      <!-- <url>http://10.0.0.20:8890/sparql</url> -->
       <endpointType>virtuoso</endpointType>
       <query>
         <![CDATA[
@@ -260,6 +269,26 @@
         ]]>
       </query>
       <triggerItem>webid_1</triggerItem>
+      <type>
+        sparql
+      </type>
+    </datasource>
+    -->
+    <datasource>
+      <id>cnr_pubs</id>
+      <singleton>false</singleton>
+      <url>http://data.cnr.it/sparql-proxy/</url>
+      <endpointType>cnr_pubs_endpoint</endpointType>
+      <query>
+        <![CDATA[
+          prefix pubblicazioni:	<http://www.cnr.it/ontology/cnr/pubblicazioni.owl#>
+          
+          select ?c ?l where {
+            ?c pubblicazioni:autoreCNR <http://www.cnr.it/ontology/cnr/individuo/unitaDiPersonaleInterno/MATRICOLA11429> .
+            ?c pubblicazioni:titolo ?l .
+          }
+        ]]>
+      </query>   
       <type>
         sparql
       </type>
@@ -326,23 +355,6 @@
     <label xml:lang="en">External accounts</label>
 
     <element>
-      <id>webid</id>
-      <isMandatory>forAll</isMandatory>
-      <isMultiple>false</isMultiple>
-      <hasRoot>/rdf:RDF/foaf:Person</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/rdf:RDF/foaf:Person/@rdf:about</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>URI</hasDatatype> 
-          <queryStringParameter>webid</queryStringParameter>
-          <defaultValue>http://sp7.irea.cnr.it/rdfdata/project/CristianoFugazzaIREA</defaultValue>
-        </item>
-      </produces>
-    </element>
-
-    <element>
       <id>ref_acc</id>
       <label xml:lang="it">Estremi account</label>
       <label xml:lang="en">Account details</label>
@@ -377,6 +389,22 @@
     <id>anagrafica</id>
     <label xml:lang="it">Anagrafica</label>
     <label xml:lang="en">Vital statistics</label>
+    <element>
+      <id>webid</id>
+      <isMandatory>forAll</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/rdf:RDF/foaf:Person</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/rdf:RDF/foaf:Person/@rdf:about</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <queryStringParameter>webid</queryStringParameter>
+          <hasValue>http://sp7.irea.cnr.it/rdfdata/project/AlessandroOggioniIREA</hasValue>
+        </item>
+      </produces>
+    </element>
     <element>
       <id>dati_personali</id>
       <label xml:lang="it">Dati personali</label>
@@ -597,10 +625,34 @@
           <isFixed>false</isFixed>
           <datasource>pubs</datasource>
           <hasDatatype>autoCompletion</hasDatatype>
-          <isLanguageNeutral>true</isLanguageNeutral>
-        </item>
+          <!-- <isLanguageNeutral>true</isLanguageNeutral> -->
+          <useCode>true</useCode>
+        </item>        
       </produces>
     </element>       
+    
+    <element>
+      <id>people_pubblicazioni</id>
+      <label xml:lang="it">Pubblicazioni da PEOPLE</label>
+      <label xml:lang="en">Publications from PEOPLE</label>
+      <isMandatory>NA</isMandatory>
+      <isMultiple>true</isMultiple>
+      <hasRoot>/rdf:RDF/foaf:Person</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/rdf:RDF/foaf:Person/foaf:made/@rdf:resource</hasPath>
+          <isFixed>false</isFixed>
+          <datasource>cnr_pubs</datasource>
+          <hasDatatype>codelist</hasDatatype>
+          <!-- <hasDatatype>select</hasDatatype> -->
+          <!-- <isLanguageNeutral>true</isLanguageNeutral> -->
+          <useCode>true</useCode>
+          <show>combobox</show>
+        </item>        
+      </produces>
+    </element> 
+    
   </group>
   <group>
     <id>rete</id>

@@ -1,7 +1,15 @@
 /**
- * Created by fabio on 28/11/14.
+ * Date renderer<br>
+ * It compiles all <control_date> tags that have been inserted into HTML, and turns them into Bootstrap datepickers<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Dates = (function() {
+    /**
+     *
+     * @memberOf Dates
+     */
     function render() {
         var control;
         $("control_date").each(function() {
@@ -41,7 +49,7 @@ var Dates = (function() {
 
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( (item.hasDatatype == "date" && item.isFixed != "true" ) ? " date" : "" ) + "'>");
             html = $(html);
-            var labels = $(this).find("label");
+            var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
             console.log(labels);
             html.append(labels);

@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: spin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: spin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Copyright (c) 2011-2013 Felix Gnass
  * Licensed under the MIT license
  */
@@ -8,7 +36,7 @@
   if (typeof exports == 'object')  module.exports = factory()
 
   /* AMD module */
-  else if (typeof define == 'function' && define.amd) define(factory)
+  else if (typeof define == 'function' &amp;&amp; define.amd) define(factory)
 
   /* Browser global */
   else root.Spinner = factory()
@@ -36,7 +64,7 @@
    * Appends children and returns the parent.
    */
   function ins(parent /* child1, child2, ...*/) {
-    for (var i=1, n=arguments.length; i<n; i++)
+    for (var i=1, n=arguments.length; i&lt;n; i++)
       parent.appendChild(arguments[i])
 
     return parent
@@ -61,7 +89,7 @@
       , start = 0.01 + i/lines * 100
       , z = Math.max(1 - (1-alpha) / trail * (100-start), alpha)
       , prefix = useCssAnimations.substring(0, useCssAnimations.indexOf('Animation')).toLowerCase()
-      , pre = prefix && '-' + prefix + '-' || ''
+      , pre = prefix &amp;&amp; '-' + prefix + '-' || ''
 
     if (!animations[name]) {
       sheet.insertRule(
@@ -88,7 +116,7 @@
       , i
 
     prop = prop.charAt(0).toUpperCase() + prop.slice(1)
-    for(i=0; i<prefixes.length; i++) {
+    for(i=0; i&lt;prefixes.length; i++) {
       pp = prefixes[i]+prop
       if(s[pp] !== undefined) return pp
     }
@@ -109,7 +137,7 @@
    * Fills in default values.
    */
   function merge(obj) {
-    for (var i=1; i < arguments.length; i++) {
+    for (var i=1; i &lt; arguments.length; i++) {
       var def = arguments[i]
       for (var n in def)
         if (obj[n] === undefined) obj[n] = def[n]
@@ -208,12 +236,12 @@
 
         ;(function anim() {
           i++;
-          for (var j = 0; j < o.lines; j++) {
+          for (var j = 0; j &lt; o.lines; j++) {
             alpha = Math.max(1 - (i + (o.lines - j) * astep) % f * ostep, o.opacity)
 
             self.opacity(el, j * o.direction + start, alpha, o)
           }
-          self.timeout = self.el && setTimeout(anim, ~~(1000/fps))
+          self.timeout = self.el &amp;&amp; setTimeout(anim, ~~(1000/fps))
         })()
       }
       return self
@@ -254,13 +282,13 @@
         })
       }
 
-      for (; i < o.lines; i++) {
+      for (; i &lt; o.lines; i++) {
         seg = css(createEl(), {
           position: 'absolute',
           top: 1+~(o.width/2) + 'px',
           transform: o.hwaccel ? 'translate3d(0,0,0)' : '',
           opacity: o.opacity,
-          animation: useCssAnimations && addAnimation(o.opacity, o.trail, start + i * o.direction, o.lines) + ' ' + 1/o.speed + 's linear infinite'
+          animation: useCssAnimations &amp;&amp; addAnimation(o.opacity, o.trail, start + i * o.direction, o.lines) + ' ' + 1/o.speed + 's linear infinite'
         })
 
         if (o.shadow) ins(seg, css(fill('#000', '0 0 4px ' + '#000'), {top: 2+'px'}))
@@ -274,7 +302,7 @@
      * Will be overwritten in VML fallback mode below.
      */
     opacity: function(el, i, val) {
-      if (i < el.childNodes.length) el.childNodes[i].style.opacity = val
+      if (i &lt; el.childNodes.length) el.childNodes[i].style.opacity = val
     }
 
   })
@@ -284,7 +312,7 @@
 
     /* Utility function to create a VML tag */
     function vml(tag, attr) {
-      return createEl('<' + tag + ' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">', attr)
+      return createEl('&lt;' + tag + ' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">', attr)
     }
 
     // No CSS transforms but VML support, add a CSS rule for VML elements:
@@ -326,18 +354,18 @@
       }
 
       if (o.shadow)
-        for (i = 1; i <= o.lines; i++)
+        for (i = 1; i &lt;= o.lines; i++)
           seg(i, -2, 'progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)')
 
-      for (i = 1; i <= o.lines; i++) seg(i)
+      for (i = 1; i &lt;= o.lines; i++) seg(i)
       return ins(el, g)
     }
 
     Spinner.prototype.opacity = function(el, i, val, o) {
       var c = el.firstChild
-      o = o.shadow && o.lines || 0
-      if (c && i+o < c.childNodes.length) {
-        c = c.childNodes[i+o]; c = c && c.firstChild; c = c && c.firstChild
+      o = o.shadow &amp;&amp; o.lines || 0
+      if (c &amp;&amp; i+o &lt; c.childNodes.length) {
+        c = c.childNodes[i+o]; c = c &amp;&amp; c.firstChild; c = c &amp;&amp; c.firstChild
         if (c) c.opacity = val
       }
     }
@@ -345,9 +373,32 @@
 
   var probe = css(createEl('group'), {behavior: 'url(#default#VML)'})
 
-  if (!vendor(probe, 'transform') && probe.adj) initVML()
+  if (!vendor(probe, 'transform') &amp;&amp; probe.adj) initVML()
   else useCssAnimations = vendor(probe, 'animation')
 
   return Spinner
 
 }));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DataSource.html">DataSource</a></li><li><a href="DataSourcePool.html">DataSourcePool</a></li><li><a href="Element.html">Element</a></li><li><a href="EndpointType.html">EndpointType</a></li><li><a href="Item.html">Item</a></li><li><a href="SPARQL.html">SPARQL</a></li></ul><h3>Namespaces</h3><ul><li><a href="adapters.html">adapters</a></li><li><a href="Autocompletion.html">Autocompletion</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="Combobox.html">Combobox</a></li><li><a href="DateRange.html">DateRange</a></li><li><a href="Dates.html">Dates</a></li><li><a href="edi.html">edi</a></li><li><a href="ediml.html">ediml</a></li><li><a href="ItemRenderer.html">ItemRenderer</a></li><li><a href="Label.html">Label</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="validator.html">validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DataSourceType">DataSourceType</a></li><li><a href="global.html#defaults">defaults</a></li><li><a href="global.html#lines">lines</a></li><li><a href="global.html#localise">localise</a></li><li><a href="global.html#localised_strings">localised_strings</a></li><li><a href="global.html#opacity">opacity</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#spin">spin</a></li><li><a href="global.html#stop">stop</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Mar 26 2015 20:21:27 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

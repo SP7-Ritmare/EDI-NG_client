@@ -1,7 +1,15 @@
 /**
- * Created by fabio on 28/11/14.
+ * Textbox renderer<br>
+ * It compiles all <control_date> tags that have been inserted into HTML, and turns them into <input type="text">s<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Textbox = (function() {
+    /**
+     *
+     * @memberOf Textbox
+     */
     function render() {
         var control;
         $("control_textbox").each(function() {
@@ -43,7 +51,7 @@ var Textbox = (function() {
             }
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
             html = $(html);
-            var labels = $(this).find("label");
+            var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
             console.log(labels);
             if ( item.show != "hidden" ) {

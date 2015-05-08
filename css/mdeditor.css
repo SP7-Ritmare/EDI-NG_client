@@ -437,7 +437,8 @@ element {
 
 #myTab {
     position: fixed;
-    overflow: hidden;
+    overflow: auto;
+    max-height: 100%;
 }
 
 #mdcontent {
@@ -485,4 +486,8 @@ element {
 
 .debug {
     display: none;
+}
+
+.url_thumb img {
+    height: 200px;
 }

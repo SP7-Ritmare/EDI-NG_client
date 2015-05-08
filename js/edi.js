@@ -1,9 +1,10 @@
 /**
  *
- * Main module for EDI
+ * Main module for EDI<br>
  * It is responsible for orchestrating other modules and classes at the presentation level
  *
  * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  *
  */
 
@@ -59,13 +60,19 @@ var edi = (function() {
     function duplicateElement(element_id, newId, updateEdiml) {
         var div = $("div[represents_element='" + element_id + "']:last");
         element_id = div.attr("id");
-        newId = div.attr("id") + cloneSuffix;
+        var newId = div.attr("id") + cloneSuffix;
         var found = false;
 
-        // doDebug("duplicating " + element_id);
+        console.error("duplicating " + element_id + " as " + newId);
         var newDiv = div.clone();
-        var newDivString = String(newDiv.html());
-        newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
+        newDiv.attr("id", newId);
+        // Fix all id names
+        newDiv.find("*[id^='" + element_id + "']").each(function() {
+            console.error($(this));
+            $(this).attr("id", $(this).attr("id").replaceAll(element_id, newId));
+        });
+        // var newDivString = String(newDiv.html());
+        // newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
         newDiv.find('.duplicator').remove();
 
         newDiv.find('button[removes]').remove();
@@ -83,36 +90,57 @@ var edi = (function() {
         });
         // end of quick and dirty fix
         div.after(newDiv);
+        newDiv.find("select:not(.fixed)").each(function () {
+            $(this).val("");
+        });
+        newDiv.find("input:not(.fixed)").each(function () {
+            $(this).val("");
+        });
 
-        var relevantDatasources = DataSourcePool.getInstance().findByTriggeredItemInElement(element_id);
+
+        var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
+        console.log(relevantDatasources);
         if ( $.isArray(relevantDatasources) ) {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
                 var datasource = relevantDatasources[i];
                 var id = datasource.getId();
-                var newTriggerItem = datasource.parameters.triggerItem.replace(element_id, newId);
-                var newSearchItem = datasource.parameters.searchItem.replace(element_id, newId);
+                var newTriggerItem = ( datasource.parameters.triggerItem ? datasource.parameters.triggerItem.replace(element_id, newId) : undefined );
+                var newSearchItem = ( datasource.parameters.searchItem ? datasource.parameters.searchItem.replace(element_id, newId) : undefined );
+                console.log("Qui");
+                console.log(element_id);
+                console.log(newId);
+                console.log(datasource.parameters.triggerItem);
+                console.log(newTriggerItem);
                 var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
-                newDiv.find("*[datatype='select']", "*[datasource='" + id + "']").each(function(){
+                newDiv.find("*[datatype='select'][datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
                     var theId = $(this).attr("id");
                     var field = $(this).attr("field");
+                    var theDsId = newDsId;
                     var ds = DataSourcePool.getInstance().findById(newDsId);
-                    console.log("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
+
+                    console.error("turning datasource for " + theId + " from " + id + " to " + newDsId);
+
+                    console.error("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
                     ds.addEventListener("selectionChanged", function (event) {
-                        var ds = DataSourcePool.getInstance().findById(newDsId);
+                        var ds = DataSourcePool.getInstance().findById(theDsId);
                         console.log(event + " received by " + theId);
                         var row = ds.getCurrentRow();
-                        if ( row ) {
+                        if (row) {
                             $("#" + theId).val(row[field]).trigger("change");
                         } else {
                             $("#" + theId).val("").trigger("change");
                         }
 
                     });
+                    console.error("refreshing ds " + ds.parameters.id);
                     ds.refresh();
+                });
+                newDiv.find("*[datasource='" + id + "']").each(function () {
+                    $(this).attr("datasource", newDsId);
                 });
             }
         }
@@ -121,7 +149,14 @@ var edi = (function() {
         if ( updateEdiml ) {
             ediml.duplicateElement(element_id, newId);
         }
-        newDiv.find(".datepicker").datepicker({
+        newDiv.find("*[datasource]").each(function () {
+            var item = ediml.findItemById($(this).attr("id"));
+            if ( item ) {
+                item.datasource = $(this).attr("datasource");
+            }
+        });
+
+            newDiv.find(".datepicker").datepicker({
             format: "yyyy-mm-dd"
         }).on('changeDate', function(ev) {
             // $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
@@ -158,6 +193,7 @@ var edi = (function() {
                     $("#" + id + "_uri").val(datum.c).trigger("change");
                     $("#" + id + "_urn").val(datum.urn);
                     var item = ediml.findItemById(id);
+                    item.datasource = self.attr("datasource");
 //                    var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
@@ -198,6 +234,7 @@ var edi = (function() {
             ediml.removeElement(element_id);
             // doDebug(elements);
         });
+
         newDiv.find("*[defaultValue]").each(function() {
             // console.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));
@@ -468,6 +505,14 @@ var edi = (function() {
         };
     };
 
+    function findLabelForLang(labels, lang) {
+        for ( var i = 0; i < labels.length; i++ ) {
+            if ( labels[i]["_xml:lang"] == lang ) {
+                return labels[i]["__text"];
+            }
+        }
+        return undefined;
+    }
     function compileItem(div, item, element) {
         var id = div.attr("id") + "_" + item.hasIndex;
         var showType = ItemRenderer.getRenderer(item);
@@ -487,22 +532,32 @@ var edi = (function() {
 
         html += ">";
         var labels = "<labels>";
+        var helps = "<helps>";
         if ( item.label ) {
+            if ( !$.isArray(item.label) ) {
+                item.label = [item.label];
+            }
             for (var k = 0; k < item.label.length; k++) {
                 labels += "<label for='" + id + "' language='" + item.label[k]["_xml:lang"] + "";
                 labels += "'>" + item.label[k]["__text"] + "</label>";
             }
-        }
-        var helps = "<helps>";
-        if ( item.help ) {
-            for (var k = 0; k < item.help.length; k++) {
-                helps += "<help for='" + id + "' language='" + item.help[k]["_xml:lang"] + "";
-                helps += "'>" + item.help[k]["__text"] + "</label>";
+            if ( item.help ) {
+                if ( !$.isArray(item.help) ) {
+                    item.help = [item.help];
+                }
+                console.error(item.help);
+                for (var k = 0; k < item.help.length; k++) {
+                    helps += '<span class="help-inline" language="' + item.help[k]["_xml:lang"] + '">';
+                    helps += '<a data-content="' + item.help[k]["__text"] + '" data-original-title="' + findLabelForLang(item.label, item.help[k]["_xml:lang"]) + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
+                    helps += '&nbsp;<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>';
+                    helps += '</a>';
+                    helps += '</span>';
+                }
             }
+            helps += "</helps>";
         }
-        helps += "</helps>";
-        html += labels + "</control_" + showType + ">";
-
+        html += labels + helps + "</control_" + showType + ">";
+        console.log(html);
         div.append(html);
     }
 
@@ -575,7 +630,7 @@ var edi = (function() {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
         navigation.append("<li><a href='#" + group.id + "' id='linkTo_" + group.id + "' " + /* "data-toggle='tab'" + */"></a></li>");
-        form.append("<div id='" + group.id + "' " /* + "class='" + ( groupCounter++ == 0 ? " active" : "") */ + "'>");
+        form.append("<div id='" + group.id + "' " /* + "class='" + ( groupCounter++ == 0 ? " active" : "") */ + ">");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
         for ( var j = 0; j < group.label.length; j++ ) {
@@ -725,7 +780,7 @@ var edi = (function() {
             runQueries();
         });
 
-        var datasources = DataSourcePool.getInstance().datasources();
+        var datasources = DataSourcePool.getInstance().getDataSources();
         for ( var i = 0; i < datasources.length; i++ ) {
             var ds = datasources[i];
             ds.addListener(fillInCombos);

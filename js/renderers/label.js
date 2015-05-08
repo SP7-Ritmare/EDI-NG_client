@@ -1,10 +1,15 @@
 /**
- * Created by fabio on 04/12/14.
- */
-/**
- * Created by fabio on 28/11/14.
+ * Label renderer<br>
+ * It compiles all <control_label> tags that have been inserted into HTML, and turns them into labels<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Label = (function() {
+    /**
+     *
+     * @memberOf Label
+     */
     function render() {
         var control;
         $("control_label").each(function() {
@@ -37,7 +42,7 @@ var Label = (function() {
             }
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
             html = $(html);
-            var labels = $(this).find("label");
+            var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
             console.log(labels);
             if ( item.show != "hidden" ) {

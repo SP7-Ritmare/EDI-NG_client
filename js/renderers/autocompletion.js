@@ -1,7 +1,15 @@
 /**
- * Created by fabio on 28/11/14.
+ * Autocompletion renderer<br>
+ * It compiles all <control_autocompletion> tags that have been inserted into HTML, and turns them into fully functional bootstrap typeahead fields<br>
+ *
+ * @author  Fabio Pavesi (fabio@adamassoft.it)
+ * @namespace
  */
 var Autocompletion = (function() {
+    /**
+     *
+     * @memberOf Autocompletion
+     */
     function render() {
         var control;
         $("control_autocompletion").each(function() {
@@ -35,7 +43,7 @@ var Autocompletion = (function() {
             }
             var html = $.parseHTML("<div class='" + defaults.controlGroupCSS + " col-md-12" + ( item.hasDatatype == "date" ? " date" : "" ) + "'>");
             html = $(html);
-            var labels = $(this).find("label");
+            var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
             console.log(labels);
             html.append(labels);
