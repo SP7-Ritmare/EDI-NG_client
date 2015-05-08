@@ -246,6 +246,7 @@ var validator = (function() {
             result &= validations[i]();
         }
 
+        edi.setLanguage(edi.uiLanguage());
         return result;
     }
     return {
