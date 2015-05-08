@@ -19,6 +19,8 @@ var ItemRenderer = (function() {
             case "combobox":
             case "label":
             case "boolean":
+            case "image":
+            case "qrcode":
                 return item.show;
             default:
                 switch(item.hasDatatype) {
@@ -30,6 +32,7 @@ var ItemRenderer = (function() {
                     case "string":
                     case "URN":
                     case "URI":
+                    case "URL":
                     case "int":
                     case "real":
                     case "double":
@@ -57,15 +60,39 @@ var ItemRenderer = (function() {
      * @memberOf ItemRenderer
      */
     function render() {
-        Textbox.render();
-        Boolean.render();
-        Combobox.render();
-        Autocompletion.render();
-        Dates.render();
-        DateRange.render();
-        Label.render();
-        BoundingBox.render();
-        FunctionType.render();
+        if ( typeof Textbox !== "undefined" ) {
+            Textbox.render();
+        }
+        if ( typeof Boolean !== "undefined" ) {
+            Boolean.render();
+        }
+        if ( typeof Combobox !== "undefined" ) {
+            Combobox.render();
+        }
+        if ( typeof Autocompletion !== "undefined" ) {
+            Autocompletion.render();
+        }
+        if ( typeof Dates !== "undefined" ) {
+            Dates.render();
+        }
+        if ( typeof DateRange !== "undefined" ) {
+            DateRange.render();
+        }
+        if ( typeof Label !== "undefined" ) {
+            Label.render();
+        }
+        if ( typeof BoundingBox !== "undefined" ) {
+            BoundingBox.render();
+        }
+        if ( typeof FunctionType !== "undefined" ) {
+            FunctionType.render();
+        }
+        if ( typeof ImageType !== "undefined" ) {
+            ImageType.render();
+        }
+        if ( typeof QRCode !== "undefined" ) {
+            QRCode.render();
+        }
     }
 
     /**

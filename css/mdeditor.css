@@ -487,3 +487,7 @@ element {
 .debug {
     display: none;
 }
+
+.url_thumb img {
+    height: 200px;
+}
