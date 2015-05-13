@@ -6,6 +6,7 @@
  * @namespace
  */
 var Autocompletion = (function() {
+    var logger = new Logger(availableContexts.AUTOCOMPLETION);
     /**
      *
      * @memberOf Autocompletion
@@ -45,7 +46,7 @@ var Autocompletion = (function() {
             html = $(html);
             var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
-            console.log(labels);
+            logger.log(labels);
             html.append(labels);
             html.append(control);
             html.append(suffix);
@@ -73,7 +74,7 @@ var Autocompletion = (function() {
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
                 }).blur(function(event) {
-                    console.log("Changed: " + event.target.value);
+                    logger.log("Changed: " + event.target.value);
                     if ( event.target.value.trim() == "" ) {
                         $("#" + id + "_uri").val("");
                         $("#" + id + "_uri").trigger("change");

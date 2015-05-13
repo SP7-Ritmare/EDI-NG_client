@@ -6,6 +6,7 @@
  * @namespace
  */
 var DateRange = (function() {
+    var logger = new Logger(availableContexts.DATE_RANGE);
     /**
      *
      * @memberOf DateRange
@@ -81,9 +82,9 @@ var DateRange = (function() {
             }
 
             $(labels).addClass(defaults.labelCSS);
-            console.log(labels);
+            logger.log(labels);
             $(labels2).addClass(defaults.labelCSS);
-            console.log(labels2);
+            logger.log(labels2);
             html.append(labels);
             html.append(control);
             html.append(labels2);

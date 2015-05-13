@@ -22,6 +22,8 @@ var DataSourceType = {
  */
 
 var DataSource = function(params) {
+    var logger = new Logger(availableContexts.DATASOURCE);
+
     var parameters = {
         /**
          *
@@ -147,17 +149,17 @@ var DataSource = function(params) {
         }
 */
         if ( resultSet.length == 1 ) {
-            console.log(parameters.id + " has a single row");
+            logger.log(parameters.id + " has a single row");
             currentRow = 0;
             trigger("selectionChanged");
         } else {
-            console.log(parameters.id + " has " + resultSet.length + " rows");
-            console.log(resultSet);
+            logger.log(parameters.id + " has " + resultSet.length + " rows");
+            logger.log(resultSet);
             trigger("selectionChanged");
         }
 
-        // console.log("Data Success " + parameters.id);
-        // console.log(resultSet);
+        // logger.log("Data Success " + parameters.id);
+        // logger.log(resultSet);
         if ( typeof parameters.ready === "function" ) {
             parameters.ready(resultSet);
         }
@@ -176,8 +178,8 @@ var DataSource = function(params) {
         parameters.hasErrors = true;
         parameters.errors = arguments;
 
-        // console.log("Data Error");
-        // console.log(arguments);
+        // logger.log("Data Error");
+        // logger.log(arguments);
         isLoading = false;
         DataSourcePool.getInstance().queryEnd(self);
         $("*[datasource='" + parameters.id + "']").removeClass("loading");
@@ -192,12 +194,12 @@ var DataSource = function(params) {
         }
         isLoading = true;
         if ( typeof parameters.triggerItem !== "undefined" ) {
-            console.log("datasource " + parameters.id + " depends on trigger " + parameters.triggerItem);
-            console.log("trigger item has " + $("#" + parameters.triggerItem).length + " occurrences");
+            logger.log("datasource " + parameters.id + " depends on trigger " + parameters.triggerItem);
+            logger.log("trigger item has " + $("#" + parameters.triggerItem).length + " occurrences");
             DataSourcePool.getInstance().setDatasourceTrigger(parameters.triggerItem, self);
             /*
              $("#" + ds.parameters.triggerItem).change(function() {
-             console.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
+             logger.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
 
              ds.refresh(false);
              });
@@ -214,12 +216,12 @@ var DataSource = function(params) {
         switch (parameters.type) {
             case DataSourceType.virtuosoCodelist:
                 var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
-                // console.log("load data for " + parameters.id);
+                // logger.log("load data for " + parameters.id);
                 sparql.query(parameters.uri, dataSuccess, dataError, language);
                 break;
             case DataSourceType.sparql:
                 if ( typeof parameters.triggerItem !== "undefined" ) {
-                    console.log(parameters.id + " is a datasource triggered by " + parameters.triggerItem);
+                    logger.log(parameters.id + " is a datasource triggered by " + parameters.triggerItem);
                     parameters.searchItem = parameters.triggerItem;
                 }
                 /*
@@ -234,7 +236,7 @@ var DataSource = function(params) {
                 if ( typeof parameters.searchItem !== "undefined" && $("#" + parameters.searchItem).val() != "" ) {
                     newQuery = parameters.query.toString().replace(/\$search_param\$/g, $("#" + parameters.searchItem).val()).replace(/\$search_param/g, $("#" + parameters.searchItem).val());
                 }
-                console.log(newQuery);
+                logger.log(newQuery);
                 sparql.specificQuery(newQuery, dataSuccess, dataError, language);
                 break;
             default:
@@ -268,19 +270,19 @@ var DataSource = function(params) {
             event: event,
             callbacks: [callback]
         });
-        console.log(listeners);
+        logger.log(listeners);
     }
 
     function trigger(event) {
-        // console.log("triggering event " + event);
+        // logger.log("triggering event " + event);
         for ( var i = 0; i < listeners.length; i++ ) {
             if ( listeners[i].event == event ) {
-                // console.log(listeners[i].event);
+                // logger.log(listeners[i].event);
                 if ( listeners[i].callbacks ) {
-                    // console.log(listeners[i].callbacks);
+                    // logger.log(listeners[i].callbacks);
                     for (var j = 0; j < listeners[i].callbacks.length; j++) {
                         if ( typeof listeners[i].callbacks[j] === "function") {
-                            // console.log(listeners[i].callbacks[j]);
+                            // logger.log(listeners[i].callbacks[j]);
                             listeners[i].callbacks[j](event);
                         }
                     }
@@ -294,20 +296,20 @@ var DataSource = function(params) {
             // Current row only makes sense if datasource is a singleton
             currentRow = -1;
             for (var i = 0; i < resultSet.length; i++) {
-                // console.log("checking " + resultSet[i][field]);
+                // logger.log("checking " + resultSet[i][field]);
                 if (resultSet[i][field] == value) {
                     currentRow = i;
-                    // console.log("current row is " + i);
+                    // logger.log("current row is " + i);
                     trigger("selectionChanged");
-                    console.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value found")
+                    logger.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value found")
                     return;
                 }
             }
             trigger("selectionChanged");
-            console.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value NOT found")
+            logger.log("selectionChange event triggered with singleton datasource " + parameters.id + " and value NOT found")
         }
         trigger("selectionChanged");
-        console.log("selectionChange event triggered with NON singleton datasource " + parameters.id + " ")
+        logger.log("selectionChange event triggered with NON singleton datasource " + parameters.id + " ")
     }
 
     self = {
@@ -376,16 +378,16 @@ var DataSource = function(params) {
          * @returns {string[]}
          */
         getCurrentRow: function() {
-            // console.log("current row is " + currentRow);
+            // logger.log("current row is " + currentRow);
             var temp;
             if ( resultSet && currentRow != -1 ) {
                 temp = resultSet[currentRow];
             } else {
-                console.error("ds: " + parameters.id);
-                console.error(this);
-                console.error("resultSet: ");
-                console.error(resultSet );
-                console.error("currentRow: " + currentRow );
+                logger.log("ds: " + parameters.id);
+                logger.log(this);
+                logger.log("resultSet: ");
+                logger.log(resultSet );
+                logger.log("currentRow: " + currentRow );
             }
             return temp;
         },
@@ -406,8 +408,8 @@ var DataSource = function(params) {
         parameters: parameters
     };
 
-    // console.log("adding self to datasourcepool");
-    // console.log(self);
+    // logger.log("adding self to datasourcepool");
+    // logger.log(self);
     DataSourcePool.getInstance().add(self);
 
     if ( parameters.lazy != true ) {

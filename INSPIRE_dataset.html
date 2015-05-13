@@ -17,6 +17,7 @@
     <script src="js/localised_strings.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/jquery-1.11.2.js"></script>
+    <script src="js/logger.js"></script>
     <script src="js/jquery-ui.js"></script>
     <!--
 <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -74,12 +75,15 @@
         $(document).ready(function () {
             // ediml.setPostCallbackError(pippo);
             edi.loadLocalTemplate("INSPIRE_dataset", "1.00", onTemplateLoaded);
+
+            /*
             ediml.setPostCallbackSuccess(function () {
                 console.log(arguments);
             });
             ediml.setPostCallbackError(function () {
                 console.log(arguments);
             });
+            */
             $("#ediml").hide();
             $("#sendMetadata").click(ediml.post);
         });
