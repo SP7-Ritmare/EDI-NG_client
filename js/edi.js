@@ -22,6 +22,7 @@ var edi = (function() {
     var theTemplate;
     var lastAlternativeGroup = 0;
     var generatedXml = undefined;
+    var logger = new Logger(availableContexts.EDI);
 
     function setLanguage(lang) {
         $("*[language]").addClass("hidden");
@@ -39,8 +40,8 @@ var edi = (function() {
     function setLanguageSelector() {
         if (settings.languageSelection) {
             var languageSelector = "#" + settings.languageSelection.byItem;
-            console.log("language selector: " + languageSelector);
-            console.log($(languageSelector));
+            logger.log("language selector: " + languageSelector);
+            logger.log($(languageSelector));
             $(languageSelector).addClass("languageSelector").change(function(){
                 var optionSelected = $(this).find("option:selected");
                 var selectedLanguage =  optionSelected.attr("language_neutral");
@@ -53,7 +54,7 @@ var edi = (function() {
     }
 
     function doDebug(message) {
-        console.log(message);
+        logger.log(message);
     }
 
 
@@ -63,12 +64,12 @@ var edi = (function() {
         var newId = div.attr("id") + cloneSuffix;
         var found = false;
 
-        console.error("duplicating " + element_id + " as " + newId);
+        logger.log("duplicating " + element_id + " as " + newId);
         var newDiv = div.clone();
         newDiv.attr("id", newId);
         // Fix all id names
         newDiv.find("*[id^='" + element_id + "']").each(function() {
-            console.error($(this));
+            logger.log($(this));
             $(this).attr("id", $(this).attr("id").replaceAll(element_id, newId));
         });
         // var newDivString = String(newDiv.html());
@@ -99,18 +100,18 @@ var edi = (function() {
 
 
         var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
-        console.log(relevantDatasources);
+        logger.log(relevantDatasources);
         if ( $.isArray(relevantDatasources) ) {
             for ( var i = 0; i < relevantDatasources.length; i++ ) {
                 var datasource = relevantDatasources[i];
                 var id = datasource.getId();
                 var newTriggerItem = ( datasource.parameters.triggerItem ? datasource.parameters.triggerItem.replace(element_id, newId) : undefined );
                 var newSearchItem = ( datasource.parameters.searchItem ? datasource.parameters.searchItem.replace(element_id, newId) : undefined );
-                console.log("Qui");
-                console.log(element_id);
-                console.log(newId);
-                console.log(datasource.parameters.triggerItem);
-                console.log(newTriggerItem);
+                logger.log("Qui");
+                logger.log(element_id);
+                logger.log(newId);
+                logger.log(datasource.parameters.triggerItem);
+                logger.log(newTriggerItem);
                 var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
@@ -122,12 +123,12 @@ var edi = (function() {
                     var theDsId = newDsId;
                     var ds = DataSourcePool.getInstance().findById(newDsId);
 
-                    console.error("turning datasource for " + theId + " from " + id + " to " + newDsId);
+                    logger.log("turning datasource for " + theId + " from " + id + " to " + newDsId);
 
-                    console.error("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
+                    logger.log("creating dependency on datasource " + $(this).attr("datasource") + " for item " + theId);
                     ds.addEventListener("selectionChanged", function (event) {
                         var ds = DataSourcePool.getInstance().findById(theDsId);
-                        console.log(event + " received by " + theId);
+                        logger.log(event + " received by " + theId);
                         var row = ds.getCurrentRow();
                         if (row) {
                             $("#" + theId).val(row[field]).trigger("change");
@@ -136,7 +137,7 @@ var edi = (function() {
                         }
 
                     });
-                    console.error("refreshing ds " + ds.parameters.id);
+                    logger.log("refreshing ds " + ds.parameters.id);
                     ds.refresh();
                 });
                 newDiv.find("*[datasource='" + id + "']").each(function () {
@@ -198,7 +199,7 @@ var edi = (function() {
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
                 }).blur(function(event) {
-                    console.log("Changed: " + event.target.value);
+                    logger.log("Changed: " + event.target.value);
                     if ( event.target.value.trim() == "" ) {
                         $("#" + id + "_uri").val("");
                         $("#" + id + "_uri").trigger("change");
@@ -226,7 +227,7 @@ var edi = (function() {
                 var dsId = $(this).attr("datasource");
                 var ds = dp.findById(dsId);
                 if ( ds && ds.parameters.cloned ) {
-                    console.log("removing datasource " + ds.parameters.id);
+                    logger.log("removing datasource " + ds.parameters.id);
                     dp.remove(ds.parameters.id);
                 }
             });
@@ -236,7 +237,7 @@ var edi = (function() {
         });
 
         newDiv.find("*[defaultValue]").each(function() {
-            // console.log(this + " -> " + $(this).attr("defaultValue"));
+            // logger.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));
             $(this).trigger("change");
         });
@@ -272,8 +273,8 @@ var edi = (function() {
     function getParameter(parameter) {
         var pars = decodeURIComponent(querystring("parameters"));
         var par;
-        console.log("loading querystring parameters");
-        console.log(pars);
+        logger.log("loading querystring parameters");
+        logger.log(pars);
         if ( pars && pars != "undefined" && pars != "" ) {
             pars = JSON.parse(pars);
             return pars[parameter];
@@ -283,15 +284,15 @@ var edi = (function() {
     function loadQuerystringDefaults() {
         var pars = decodeURIComponent(querystring("parameters"));
         var par;
-        console.log("loading querystring parameters");
-        console.log(pars);
+        logger.log("loading querystring parameters");
+        logger.log(pars);
         if ( pars && pars != "undefined" && pars != "" ) {
             pars = JSON.parse(pars);
             // doDebug(pars);
             // doDebug(pars.uid);
             $("*[querystringparameter]").each(function() {
-                console.log($(this));
-                console.log($(this).text());
+                logger.log($(this));
+                logger.log($(this).text());
                 doDebug("evaluating " + ("pars." + $(this).attr("querystringparameter")));
                 par = eval("pars." + $(this).attr("querystringparameter"));
                 doDebug("input id='" + $(this).attr("id")  + " -> parametro '" + $(this).attr("querystringparameter") + "' = '" + par + "'");
@@ -313,8 +314,8 @@ var edi = (function() {
         var regex = "";
 
         if ( typeof query.match !== "function" ) {
-            console.log("query");
-            console.log(query);
+            logger.log("query");
+            logger.log(query);
             return;
         }
         var reference = query.match(/\$(.*)\$/i)[1];
@@ -326,9 +327,9 @@ var edi = (function() {
         }
         thisOne.attr("dependsOn", principal);
 
-        console.log("dependent item " + thisOne.attr("id") + " depending on " + principal + ", query: " + query);
+        logger.log("dependent item " + thisOne.attr("id") + " depending on " + principal + ", query: " + query);
         // doDebug("item " + $(this).attr("id") + " -> " + regex.test(query));
-        console.log("item " + "_" + thisOne.attr("id") + " -> " + item.elementId + "_" + query.match(/\$(.*)\$/i)[1]);
+        logger.log("item " + "_" + thisOne.attr("id") + " -> " + item.elementId + "_" + query.match(/\$(.*)\$/i)[1]);
         // $("#" + principal).unbind("change");
         $("#" + principal + "_uri").bind("change", function() {
             doDebug("cambiamento di " + $(this).attr("id"));
@@ -349,7 +350,7 @@ var edi = (function() {
                     thisOne.trigger("change");
                 },
                 function() {
-                    console.log(arguments);
+                    logger.log(arguments);
                     thisOne.removeClass("loading");
                 }
             );
@@ -382,7 +383,7 @@ var edi = (function() {
         var ds = DataSourcePool.getInstance().findById(datasource);
         data = ds.getResultSet();
         */
-        // console.log(data);
+        // logger.log(data);
         html = "";
         if ( typeof data !== "undefined" ) {
             for ( var i = 0; i < data.length; i++ ) {
@@ -398,39 +399,39 @@ var edi = (function() {
             self.val([]);
             if (typeof self.attr("defaultValue") !== "undefined" && self.attr("defaultValue") != "") {
                 self.val(self.attr("defaultValue"));
-                console.log(self.attr("id") + " -> " + self.attr("defaultValue"));
+                logger.log(self.attr("id") + " -> " + self.attr("defaultValue"));
                 // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
             if (typeof self.attr("querystringparameter") !== "undefined" && self.attr("querystringparameter") != "") {
                 self.val(getParameter(self.attr("querystringparameter")));
-                console.log(self.attr("id") + " -> " + getParameter(self.attr("querystringparameter")));
+                logger.log(self.attr("id") + " -> " + getParameter(self.attr("querystringparameter")));
                 // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
-            console.log("orginal value: " + originalValue);
+            logger.log("orginal value: " + originalValue);
             if ( originalValue != null ) {
                 self.val([]);
                 self.val(originalValue);
-                console.log(self.attr("id") + " -> " + originalValue);
+                logger.log(self.attr("id") + " -> " + originalValue);
                 // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
 
-            console.log(self.attr("id") + " = " + self.val());
+            logger.log(self.attr("id") + " = " + self.val());
             /*
             if ( self.attr("required") && self.val() == null ) {
                 self.val($("#" + self.attr("id") + " option:first-child").val());
-                console.log(self.attr("id") + " -> first item in combo");
+                logger.log(self.attr("id") + " -> first item in combo");
                 toBeRefreshed.push(self.attr("id"));
             }
             */
         });
         for ( var i = 0; i < toBeRefreshed.length; i++ ) {
-            // console.log(toBeRefreshed);
+            // logger.log(toBeRefreshed);
             var item = ediml.findItemById(toBeRefreshed[i]);
             ediml.update(item);
-            console.log(item);
+            logger.log(item);
             $(toBeRefreshed[i]).change();
         }
         $(".container").removeClass("loading");
@@ -445,9 +446,9 @@ var edi = (function() {
     }
 
     function autoCompletionQuery(item, query, process) {
-        console.log(item);
-        console.log(query);
-        console.log(process);
+        logger.log(item);
+        logger.log(query);
+        logger.log(process);
     }
 
     var substringMatcher = function(datasource, id) {
@@ -457,48 +458,48 @@ var edi = (function() {
             var item = ediml.findItemById(id);
             var ds = DataSourcePool.getInstance().findById(item.datasource);
             if ( typeof ds === "undefined" ) {
-                console.log("can't find datasource " + item.datasource + " for id " + id);
-                console.log(item);
+                logger.log("can't find datasource " + item.datasource + " for id " + id);
+                logger.log(item);
                 return;
             }
             ds.addListener(function(data) {
-                // console.log(data);
+                // logger.log(data);
                 cb(data);
             });
             ds.setSearchItem(id);
             ds.refresh();
             return;
 
-            console.log(q);
-            console.log(query);
+            logger.log(q);
+            logger.log(query);
             // an array that will be populated with substring matches
             matches = [];
             var sparql = new SPARQL();
             var newQuery = query.replace(/\$search_param/gi, q);
-            console.log(newQuery);
+            logger.log(newQuery);
             sparql.specificQuery(
                 newQuery,
                 function(data) {
                     data = data.results.bindings;
                     for ( var i = 0; i < data.length; i++ ) {
-                        // console.log(data[i]);
+                        // logger.log(data[i]);
                         var record = {};
                         // {ttValue: data[i].c.value, value: data[i].l.value, uri: data[i].c.value, urn: ( data[i].urn ? data[i].urn.value : "" )}
                         record.ttVaue = data[i].c.value;
-                        // console.log("bindings row has " + data[i].length + " fields");
+                        // logger.log("bindings row has " + data[i].length + " fields");
                         for ( var field in data[i] ) {
-                            // console.log(field);
+                            // logger.log(field);
                             record[field] = data[i][field].value;
                         }
                         matches.push(record);
                     }
-                    // console.log(matches);
-                    // console.log(cb);
+                    // logger.log(matches);
+                    // logger.log(cb);
 
                     cb(matches);
                 },
                 function() {
-                    console.log(arguments);
+                    logger.log(arguments);
                 }
             );
             // cb(matches);
@@ -545,7 +546,7 @@ var edi = (function() {
                 if ( !$.isArray(item.help) ) {
                     item.help = [item.help];
                 }
-                console.error(item.help);
+                logger.log(item.help);
                 for (var k = 0; k < item.help.length; k++) {
                     helps += '<span class="help-inline" language="' + item.help[k]["_xml:lang"] + '">';
                     helps += '<a data-content="' + item.help[k]["__text"] + '" data-original-title="' + findLabelForLang(item.label, item.help[k]["_xml:lang"]) + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
@@ -557,12 +558,12 @@ var edi = (function() {
             helps += "</helps>";
         }
         html += labels + helps + "</control_" + showType + ">";
-        console.log(html);
+        logger.log(html);
         div.append(html);
     }
 
     function compileElement(div, element) {
-        // console.log(element);
+        // logger.log(element);
         var atLeastOneEditableItem = false;
         var theElement = new Element();
         theElement.id = element.id;
@@ -598,7 +599,7 @@ var edi = (function() {
         if ( element.produces ) {
             if ( $.isArray(element.produces.item) ) {
                 for (var i = 0; i < element.produces.item.length; i++) {
-                    // console.log(element.produces.item[i]);
+                    // logger.log(element.produces.item[i]);
                     if (element.produces.item[i].isFixed == "false") {
                         atLeastOneEditableItem = true;
                     }
@@ -623,7 +624,7 @@ var edi = (function() {
             div.addClass("mandatory");
         }
         // $("#debug").append("<p>" + element.id + "</p>");
-        // console.log(element.id);
+        // logger.log(element.id);
     }
     var groupCounter = 0;
     function compileGroup(group) {
@@ -658,7 +659,7 @@ var edi = (function() {
 
     function updateDefaults() {
         $("*[defaultValue]").each(function() {
-            // console.log(this + " -> " + $(this).attr("defaultValue"));
+            // logger.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));
             $(this).trigger("change");
         });
@@ -709,7 +710,7 @@ var edi = (function() {
         theTemplate = data;
 
         endpointTypes = [];
-        console.log("endpoints");
+        logger.log("endpoints");
         if ( data.endpointTypes ) {
             if ( !$.isArray(data.endpointTypes.endpointType) ) {
                 data.endpointTypes.endpointType = [data.endpointTypes.endpointType];
@@ -717,18 +718,18 @@ var edi = (function() {
 
             for ( var i = 0; i < data.endpointTypes.endpointType.length; i++ ) {
                 var e = data.endpointTypes.endpointType[i];
-                console.log(e);
+                logger.log(e);
                 var endpointType = new EndpointType(e);
-                console.log(endpointType);
+                logger.log(endpointType);
                 endpointTypes[e.id] = endpointType;
             }
         }
-        console.log("endpoints end");
+        logger.log("endpoints end");
 
         if ( data.datasources ) {
             var dss = data.datasources.datasource;
             for (var i = 0; i < dss.length; i++) {
-                // console.log(dss[i]);
+                // logger.log(dss[i]);
                 var ds = new DataSource({
                     id: dss[i].id,
                     type: dss[i].type,
@@ -740,17 +741,17 @@ var edi = (function() {
                     triggerItem: dss[i].triggerItem,
                     singleton: dss[i].singleton,
                     ready: function (data) {
-                        // console.log("ds callback success");
-                        // console.log(data);
+                        // logger.log("ds callback success");
+                        // logger.log(data);
                     }
                 });
                 dataSources.push(ds);
             }
         }
-        // console.log(dataSources);
+        // logger.log(dataSources);
 //        return;
 
-        // console.log(data.group);
+        // logger.log(data.group);
         var groups = data.group;
         if ( !$.isArray(groups) ) {
             groups = [ groups ];
@@ -776,7 +777,7 @@ var edi = (function() {
         setLanguageSelector();
 
         DataSourcePool.getInstance().addListener("allReady", function(event) {
-            console.log("all datasets loaded");
+            logger.log("all datasets loaded");
             runQueries();
         });
 
@@ -791,9 +792,9 @@ var edi = (function() {
             var id = $(this).attr("id");
             var item = ediml.findItemById(id);
 
-            console.log(item.id);
+            logger.log(item.id);
             $("#" + item.itemId).change(function (event) {
-                console.log(event + " received");
+                logger.log(event + " received");
                 if ( item.show != "label" ) {
                     $("#" + item.id).val($(this).val()).change();
                 } else {
@@ -806,9 +807,9 @@ var edi = (function() {
             var id = $(this).attr("id");
             var item = ediml.findItemById(id);
             var ds = DataSourcePool.getInstance().findById(item.datasource);
-            console.log("creating dependency on datasource " + item.datasource + " for item " + item.id);
+            logger.log("creating dependency on datasource " + item.datasource + " for item " + item.id);
             ds.addEventListener("selectionChanged", function (event) {
-                console.log(event + " received by " + item.id);
+                logger.log(event + " received by " + item.id);
                 var row = ds.getCurrentRow();
                 if ( row ) {
                     $("#" + item.id).val(row[item.field]).trigger("change");
@@ -859,10 +860,10 @@ var edi = (function() {
     }
 
     function edimlOutput() {
-        console.log(JSON.stringify(ediml.content, undefined, 4));
+        logger.log(JSON.stringify(ediml.content, undefined, 4));
         $("#ediml").html('<pre class="prettyprint lang-json" draggable="true">' + JSON.stringify(ediml.content, undefined, 4) + '</pre>');
         prettyPrint();
-        // console.log(new Date());
+        // logger.log(new Date());
     }
 
     function loadLocalTemplate(template, version, theCallback) {
@@ -877,7 +878,7 @@ var edi = (function() {
                    success: function(data) {
                        var x2j = new X2JS({});
                        data = x2j.xml2json(data);
-                       // console.log(data);
+                       // logger.log(data);
                        onTemplateLoaded(template, version, data.template);
                    }
         });
@@ -894,7 +895,7 @@ var edi = (function() {
             success: function(data) {
                 var x2j = new X2JS({});
                 data = x2j.xml2json(data);
-                // console.log(data);
+                // logger.log(data);
                 onTemplateLoaded(template, version, data.template);
             }
         });
@@ -910,7 +911,7 @@ var edi = (function() {
             success: function(data) {
                 var x2j = new X2JS({});
                 data = x2j.xml2json(data);
-                // console.log(data);
+                // logger.log(data);
                 onTemplateLoaded(template, version, data.template);
             }
         });
@@ -954,9 +955,9 @@ var edi = (function() {
         });
     }
     $(window).bind("beforeunload", function(e) {
-        console.error("unload " + ediml.isDirty());
+        logger.log("unload " + ediml.isDirty());
         if ( ediml.isDirty() ) {
-            console.error("is dirty");
+            logger.log("is dirty");
             /*
             // e.preventDefault();
             var heading = 'Leaving unsaved page';

@@ -2,6 +2,7 @@ var paths = [
     "defaults",
     "localised_strings",
     "validator",
+    "logger",
     "jquery-ui",
     "utils",
     "sparql",

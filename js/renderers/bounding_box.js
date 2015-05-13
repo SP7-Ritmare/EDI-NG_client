@@ -8,6 +8,7 @@
  * @namespace
  */
 var BoundingBox = (function() {
+    var logger = new Logger(availableContexts.BBOX);
     var maps = [];
 //Make sure your bounding box interaction variable is global
     var boundingBox;
@@ -17,10 +18,10 @@ var BoundingBox = (function() {
         if ( typeof epsg !== "undefined" ) {
             extent = ol.proj.transformExtent(extent, 'EPSG:' + epsg, 'EPSG:3857');
         }
-        console.log("drawBoxOnMap");
-        console.log(map);
+        logger.log("drawBoxOnMap");
+        logger.log(map);
         var features = source.getFeatures();
-        console.log(features);
+        logger.log(features);
         for ( var i = 0; i < features.length; i++ ) {
             source.removeFeature(features[i]);
         }
@@ -67,11 +68,11 @@ var BoundingBox = (function() {
              })*/
         }));
 
-        console.log(3);
+        logger.log(3);
 
         source.addFeature(rectangleFeature);
         map.getView().fitExtent(extent, map.getSize());
-        console.log(4);
+        logger.log(4);
 
     }
 
@@ -269,10 +270,10 @@ var BoundingBox = (function() {
                     var box = boundingBox.getGeometry().getExtent();
                     var extent = ol.proj.transformExtent(box, 'EPSG:3857', 'EPSG:' + epsg);
                     map.getView().fitExtent(box, map.getSize());
-                    console.log(epsg);
-                    console.log(box);
-                    console.log(extent);
-                    console.log(item.id);
+                    logger.log(epsg);
+                    logger.log(box);
+                    logger.log(extent);
+                    logger.log(item.id);
                     $("#" + item.id + "_westLongitude").val(extent[0]).trigger("change");
                     $("#" + item.id + "_southLatitude").val(extent[1]).trigger("change");
                     $("#" + item.id + "_eastLongitude").val(extent[2]).trigger("change");
@@ -300,9 +301,9 @@ var BoundingBox = (function() {
                     // map.removeInteraction(boundingBox);
                 })
                 function updateBox() {
-                    console.log("updateBox");
+                    logger.log("updateBox");
                     var epsg = "4326"; // $("#" + item.CRSItem + " option:selected").text();
-                    console.log(epsg);
+                    logger.log(epsg);
                     var extent = [
                         parseFloat($("#" + item.id + "_westLongitude").val()),
                         parseFloat($("#" + item.id + "_southLatitude").val()),
@@ -315,8 +316,8 @@ var BoundingBox = (function() {
                             allNumbers = false;
                         }
                     }
-                    console.log(allNumbers);
-                    console.log(epsg);
+                    logger.log(allNumbers);
+                    logger.log(epsg);
                     if ( !epsg ) {
                         epsg = "4326";
                     }
@@ -344,9 +345,9 @@ var BoundingBox = (function() {
 
             /*
             if (item.hasDatatype == "copy") {
-                console.log(item.id);
+                logger.log(item.id);
                 $("#" + item.itemId).change(function (event) {
-                    console.log(event + " received");
+                    logger.log(event + " received");
                     $("#" + item.id).val($(this).val()).trigger("change");
                 });
             }

@@ -10,6 +10,7 @@
  *
  */
 var EndpointType = function(params) {
+    var logger = new Logger(availableContexts.ENDPOINTTYPE);
     var baseParams = {
         id: undefined,
         method: "GET",
@@ -28,7 +29,7 @@ var EndpointType = function(params) {
 
     function getQueryStringData(query) {
         var qs = clone(parameters.parameters);
-        console.log(qs);
+        logger.log(qs);
         qs[parameters.queryParameter] = query;
         return qs;
     }

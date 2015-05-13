@@ -8,6 +8,7 @@
  * @namespace
  */
 var Combobox = (function() {
+    var logger = new Logger(availableContexts.COMBO);
     /**
      *
      * @memberOf Combobox
@@ -49,7 +50,7 @@ var Combobox = (function() {
             html = $(html);
             var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
-            console.log(labels);
+            logger.log(labels);
             html.append(labels);
             html.append(control);
             $(this).replaceWith(html);
@@ -58,15 +59,15 @@ var Combobox = (function() {
             if (item.hasDatatype == "select") {
                 var ds = DataSourcePool.getInstance().findById(item.datasource);
                 ds.addEventListener("selectionChanged", function (event) {
-                    console.log(event + " received");
+                    logger.log(event + " received");
                     var row = ds.getCurrentRow();
                     $("#" + item.id).val(row[item.field]).trigger("change");
                 });
             }
             if (item.hasDatatype == "copy") {
-                console.log(item.id);
+                logger.log(item.id);
                 $("#" + item.itemId).change(function (event) {
-                    console.log(event + " received");
+                    logger.log(event + " received");
                     $("#" + item.id).val($(this).val());
                 });
             }
