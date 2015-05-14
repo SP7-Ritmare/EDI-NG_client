@@ -8,6 +8,7 @@
  */
 var DataSourcePool = (function(){
     var instance;
+    var logger = new Logger(availableContexts.DATASOURCE_POOL);
 
     function init() {
         var listeners = [];
@@ -24,9 +25,9 @@ var DataSourcePool = (function(){
          * @param datasource
          */
         function setDatasourceTrigger(item, datasource) {
-            console.log("setting trigger on element " + item + " for datasource " + datasource.getId());
+            logger.log("setting trigger on element " + item + " for datasource " + datasource.getId());
             $("#" + item).change(function() {
-                console.log(item + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
+                logger.log(item + " fired change towards datasource " + datasource.getId() + " current value is '" + $(this).val() + "'");
 
                 datasource.refresh(false);
             });
@@ -66,8 +67,8 @@ var DataSourcePool = (function(){
              * @param ds
              */
             add: function(ds) {
-                // console.log("adding datasource");
-                // console.log(ds);
+                // logger.log("adding datasource");
+                // logger.log(ds);
                 ds.setLanguage(language);
                 datasources.push(ds);
             },
@@ -122,7 +123,7 @@ var DataSourcePool = (function(){
                         }
                     }
                 }
-                console.log(results);
+                logger.log(results);
                 return results;
             },
             isDatasourceIn: function(ds_id, array) {
@@ -171,9 +172,9 @@ var DataSourcePool = (function(){
                 newPars.triggerItem = newTriggerItem;
                 newPars.searchItem = newSearchItem;
                 newPars.cloned = true;
-                console.error("duplicating ds " + id + " as " + newId);
-                console.error("triggerItem: " + newTriggerItem);
-                console.error("searchItem: " + newSearchItem);
+                logger.log("duplicating ds " + id + " as " + newId);
+                logger.log("triggerItem: " + newTriggerItem);
+                logger.log("searchItem: " + newSearchItem);
                 var newDs = new DataSource(newPars);
                 if ( newTriggerItem ) {
                     setDatasourceTrigger(newTriggerItem, newDs);
@@ -205,7 +206,7 @@ var DataSourcePool = (function(){
                     event: event,
                     callbacks: [callback]
                 });
-                // console.log(listeners);
+                // logger.log(listeners);
             },
             /**
              *
@@ -216,15 +217,15 @@ var DataSourcePool = (function(){
                 if ( ! notifyListeners ) {
                     return;
                 }
-                // console.log("triggering event " + event);
+                // logger.log("triggering event " + event);
                 for ( var i = 0; i < listeners.length; i++ ) {
                     if ( listeners[i].event == event ) {
-                        // console.log(listeners[i].event);
+                        // logger.log(listeners[i].event);
                         if ( listeners[i].callbacks ) {
-                            // console.log(listeners[i].callbacks);
+                            // logger.log(listeners[i].callbacks);
                             for (var j = 0; j < listeners[i].callbacks.length; j++) {
                                 if ( typeof listeners[i].callbacks[j] === "function") {
-                                    // console.log(listeners[i].callbacks[j]);
+                                    // logger.log(listeners[i].callbacks[j]);
                                     listeners[i].callbacks[j](event);
                                 }
                             }
@@ -253,12 +254,12 @@ var DataSourcePool = (function(){
              * @param ds
              */
             queryEnd: function(ds) {
-                // console.log("removing datasource " + ds.getId());
+                // logger.log("removing datasource " + ds.getId());
                 for ( var i = 0; i < runningDatasources.length; i++ ) {
                     if ( runningDatasources[i] == ds ) {
                         runningDatasources.splice(i, 1);
                         if ( runningDatasources.length == 0 ) {
-                            console.log("allReady");
+                            logger.log("allReady");
                             instance.trigger("allReady");
                         }
                         return;
@@ -293,12 +294,12 @@ var DataSourcePool = (function(){
                 for ( var i = 0; i < datasources.length; i++ ) {
                     var ds = datasources[i];
                     if ( typeof ds.parameters.triggerItem !== "undefined" ) {
-                        console.log("datasource " + ds.parameters.id + " depends on trigger " + ds.parameters.triggerItem);
-                        console.log("trigger item has " + $("#" + ds.parameters.triggerItem).length + " occurrences");
+                        logger.log("datasource " + ds.parameters.id + " depends on trigger " + ds.parameters.triggerItem);
+                        logger.log("trigger item has " + $("#" + ds.parameters.triggerItem).length + " occurrences");
                         setDatasourceTrigger(ds.parameters.triggerItem, ds);
                         /*
                          $("#" + ds.parameters.triggerItem).change(function() {
-                         console.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
+                         logger.log($(this).attr("id") + " fired change towards datasource " + ds.getId() + " - " + i);
 
                          ds.refresh(false);
                          });

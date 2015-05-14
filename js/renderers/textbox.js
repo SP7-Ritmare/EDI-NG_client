@@ -6,6 +6,7 @@
  * @namespace
  */
 var Textbox = (function() {
+    var logger = new Logger(availableContexts.TEXTBOX)
     /**
      *
      * @memberOf Textbox
@@ -53,7 +54,7 @@ var Textbox = (function() {
             html = $(html);
             var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
-            console.log(labels);
+            logger.log(labels);
             if ( item.show != "hidden" ) {
                 html.append(labels);
             }
@@ -61,9 +62,9 @@ var Textbox = (function() {
             $(this).replaceWith(html);
             /*
             if (item.hasDatatype == "copy") {
-                console.log(item.id);
+                logger.log(item.id);
                 $("#" + item.itemId).change(function (event) {
-                    console.log(event + " received");
+                    logger.log(event + " received");
                     $("#" + item.id).val($(this).val()).trigger("change");
                 });
             }

@@ -20,6 +20,7 @@
 
  */
 var Item = (function() {
+    var logger = new Logger(availableContexts.ITEM);
 
     var item = {
         id: undefined,
@@ -39,7 +40,7 @@ var Item = (function() {
         isLanguageNeutral: undefined,
         startListening: function() {
             var item = this;
-            console.log("listening for " + "#" + item.id);
+            logger.log("listening for " + "#" + item.id);
             item.listeningFor = "#" + item.id;
             // $("#" + item.id).unbind("change", update);
             $("#" + item.id).change(ediml.changeHandler);
@@ -59,8 +60,8 @@ var Item = (function() {
         getAlternativeElement: function() {
             var item = this;
             if ( typeof item.elementId === "undefined" ) {
-                console.error("item " + item.id + " has no associated element");
-                console.log(item);
+                logger.error("item " + item.id + " has no associated element");
+                logger.log(item);
                 return;
             }
             var element = ediml.getElement(item.elementId);

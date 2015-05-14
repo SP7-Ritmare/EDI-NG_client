@@ -6,6 +6,7 @@
  *
  */
 var SPARQL = (function(url, endpointType) {
+    var logger = new Logger(availableContexts.SPARQL);
     var virtuosoUrl = "http://sp7.irea.cnr.it:8890/sparql";
     if ( typeof endpointType === "undefined" ) {
         endpointType = "virtuoso";
@@ -52,7 +53,7 @@ var SPARQL = (function(url, endpointType) {
             language = "it";
         }
         var newQuery = query.toString().replace(/\$lang\$/g, language);
-        console.log(endpointType);
+        logger.log(endpointType);
         $.ajax({
             url: virtuosoUrl,
             type: endpointType.parameters.method,
@@ -74,7 +75,7 @@ var SPARQL = (function(url, endpointType) {
                 }
             },
             error: function() {
-                console.log(arguments);
+                logger.log(arguments);
                 if ( typeof errorCallback === "function") {
                     errorCallback(arguments);
                 }
@@ -108,7 +109,7 @@ var SPARQL = (function(url, endpointType) {
                 }
             },
             error: function() {
-                console.log(arguments);
+                logger.log(arguments);
                 if ( typeof errorCallback === "function") {
                     errorCallback(data);
                 }

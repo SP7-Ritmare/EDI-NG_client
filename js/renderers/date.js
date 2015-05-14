@@ -6,6 +6,7 @@
  * @namespace
  */
 var Dates = (function() {
+    var logger = new Logger(availableContexts.DATE);
     /**
      *
      * @memberOf Dates
@@ -51,7 +52,7 @@ var Dates = (function() {
             html = $(html);
             var labels = $(this).find("label, helps");
             $(labels).addClass(defaults.labelCSS);
-            console.log(labels);
+            logger.log(labels);
             html.append(labels);
             html.append(control);
             $(this).replaceWith(html);
@@ -62,15 +63,15 @@ var Dates = (function() {
              if (item.hasDatatype == "select") {
              var ds = DataSourcePool.getInstance().findById(item.datasource);
              ds.addEventListener("selectionChanged", function (event) {
-             console.log(event + " received");
+             logger.log(event + " received");
              var row = ds.getCurrentRow();
              $("#" + item.id).val(row[item.field]);
              });
              }
              if (item.hasDatatype == "copy") {
-             console.log(item.id);
+             logger.log(item.id);
              $("#" + item.item).change(function (event) {
-             console.log(event + " received");
+             logger.log(event + " received");
              $("#" + item.id).val($(this).val());
              });
              }

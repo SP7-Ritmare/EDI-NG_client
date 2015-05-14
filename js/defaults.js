@@ -8,5 +8,6 @@ var defaults = {
     ediVersion: "2.00",
     controlCSS: "form-control",
     controlGroupCSS: "input-group",
-    labelCSS: "form-label"
+    labelCSS: "form-label",
+    DEBUG_DATASOURCES: false
 }
