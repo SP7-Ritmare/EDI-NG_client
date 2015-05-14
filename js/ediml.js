@@ -255,7 +255,7 @@ var ediml = (function() {
                 fillInEdiMl(edimls[name].ediml.elements);
                 setTimeout( function() {
                     DataSourcePool.getInstance().refreshAll();
-                }, 5);
+                }, settings.refreshDelay);
 
             }
         } else {
@@ -396,9 +396,11 @@ var ediml = (function() {
             }
         }
         $("select[languageselector='true']").trigger('change');
+
         setTimeout( function() {
             $("input", ".uris").trigger("change");
-        }, 100);
+        }, 5);
+
         // updateAll();
     };
 
