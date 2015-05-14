@@ -383,6 +383,15 @@ var ediml = (function() {
             }
         }
         $("select[languageselector='true']").trigger('change');
+/*        setTimeout( function() {
+            $("input", ".uris").trigger("change");
+        }, 100);
+*/
+        // TODO: this is a quick patch to reload "select" fields after datasources are refreshed: it should be replaced for a decent solution
+        setTimeout( function() {
+            DataSourcePool.getInstance().refreshAll();
+        }, 500);
+
         // updateAll();
     };
 
