@@ -14,6 +14,7 @@ var ediml = (function() {
     var settings;
     var edimls = {};
     var isDirty = false;
+    var logger = new Logger(availableContexts.EDIML);
 
     var content = {
         elements: {
@@ -30,7 +31,7 @@ var ediml = (function() {
     };
 
     function doDebug(msg) {
-        console.log(msg);
+        logger.log(msg);
     }
 
     function inheritSettings(newSettings) {
@@ -53,13 +54,13 @@ var ediml = (function() {
         $("#mdcontent").prepend("<pre class='prettypring lang-json'>" + JSON.stringify(arguments, undefined, 2) + "</pre>");
         prettyPrint();
 
-        console.log(arguments);
+        logger.log(arguments);
     };
 
     var defaultPostSuccessCallback = function(msg){
         // $( "#debug" ).html( htmlEncode(msg) );
         // doDebug("Ricevuto: " + xmlToString(msg));
-        console.log(msg);
+        logger.log(msg);
         if ( msg.responseCode == 200 ) {
             isDirty = false;
             edi.setGeneratedXml(msg.generatedXml);
@@ -191,7 +192,7 @@ var ediml = (function() {
                 success  : postMetadata,
                 error    : function() {
                     alert("error on " + metadataEndpoint + "rest/ediml/requestId");
-                    console.log(arguments);
+                    logger.log(arguments);
                 }
             });
         }    }
@@ -213,7 +214,7 @@ var ediml = (function() {
             success: function( data ) {
                 var x2j = new X2JS();
                 var json = x2j.xml2json(data);
-                console.log(json);
+                logger.log(json);
 
                 for ( var i = 0; i < json.elements.element.length; i++ ) {
 
@@ -224,12 +225,17 @@ var ediml = (function() {
     };
 
     function fixJSONDiscrepancies() {
+        var logger = new Logger("editfillin");
         for ( var i = 0; i < content.elements.element.length; i++ ) {
             var element = content.elements.element[i];
             if ( $.isArray(element.items) ) {
-                var temp = element.items;
+                var temp = element.items.item;
                 element.items = {};
-                element.items.item = temp;
+                if ( $.isArray(temp) ) {
+                    element.items.item = temp;
+                } else {
+                    element.items.item = [temp];
+                }
             }
 
         }
@@ -242,10 +248,10 @@ var ediml = (function() {
      */
     function load(name) {
         if(typeof(Storage) !== "undefined") {
-            console.log(localStorage.edimls);
+            logger.log(localStorage.edimls);
             if ( typeof localStorage.edimls !== "undefined" ) {
                 edimls = JSON.parse(localStorage.edimls);
-                console.log(edimls[name]);
+                logger.log(edimls[name]);
                 fillInEdiMl(edimls[name].ediml.elements);
                 setTimeout( function() {
                     DataSourcePool.getInstance().refreshAll();
@@ -274,8 +280,8 @@ var ediml = (function() {
         if(typeof(Storage) !== "undefined") {
             edimls[name] = data;
             localStorage.edimls = JSON.stringify(edimls);
-            console.log(localStorage.edimls);
-            console.log(edimls);
+            logger.log(localStorage.edimls);
+            logger.log(edimls);
         } else {
             // Sorry! No Web Storage support..
             alert("No local storage");
@@ -313,11 +319,12 @@ var ediml = (function() {
      * @param ediMl
      */
     function fillInEdiMl(ediMl) {
+        var logger = new Logger("editfillin");
         var element;
         var item;
         var cloneSuffix = edi.cloneSuffix;
-        console.log("ediml caricato:");
-        console.log(ediMl);
+        logger.log("ediml caricato:");
+        logger.log(ediMl);
         content.elements.fileId = ediMl.fileId;
         content.elements.fileUri = ediMl.fileUri;
         content.elements.template = ediMl.templateName;
@@ -328,12 +335,15 @@ var ediml = (function() {
         content.elements.baseDocument = ediMl.baseDocument;
         fixJSONDiscrepancies();
 
-        doDebug(content.elements);
+        logger.log(content.elements);
         var elements = content.elements;
         for ( var i = 0; i < elements.element.length; i++ ) {
             element = elements.element[i];
             if ( element.id.indexOf(cloneSuffix) == -1 ) {
-                doDebug(element);
+                logger.log(element);
+                if ( !$.isArray(element.items.item) ) {
+                    element.items.item = [element.items.item];
+                }
                 for ( var j = 0; element.items.item && j < element.items.item.length; j++ ) {
                     item = element.items.item[j];
                     var newItem = new Item();
@@ -360,6 +370,9 @@ var ediml = (function() {
             } else {
                 var represents_element = element.id.replaceAll(cloneSuffix, "");
                 edi.duplicateElement(represents_element, element.id, false);
+                if ( !$.isArray(element.items.item) ) {
+                    element.items.item = [element.items.item];
+                }
                 for ( var j = 0; element.items.item && j < element.items.item.length; j++ ) {
                     item = element.items.item[j];
                     var newItem = new Item();
@@ -377,21 +390,15 @@ var ediml = (function() {
                         $("#" + item.id + "_uri").val(item.codeValue);
                         $("#" + item.id + "_urn").val(item.urnValue);
                     } else {
-                        $("#" + item.id).val(item.value);
+                        $("#" + item.id).val(item.value).trigger("change");
                     }
                 }
             }
         }
         $("select[languageselector='true']").trigger('change');
-/*        setTimeout( function() {
+        setTimeout( function() {
             $("input", ".uris").trigger("change");
         }, 100);
-*/
-        // TODO: this is a quick patch to reload "select" fields after datasources are refreshed: it should be replaced for a decent solution
-        setTimeout( function() {
-            DataSourcePool.getInstance().refreshAll();
-        }, 500);
-
         // updateAll();
     };
 
@@ -448,7 +455,7 @@ var ediml = (function() {
      */
     function duplicateElement(id, newId) {
         var element = getElement(id);
-        console.log("duplicating element " + id);
+        logger.log("duplicating element " + id);
         if ( typeof element !== "undefined" ) {
             var newElement = new Element();
             newElement.id = newId;
@@ -471,7 +478,7 @@ var ediml = (function() {
                 }
                 newItem.elementId = newId;
                 newElement.items.item.push(newItem);
-                console.log(newItem);
+                logger.log(newItem);
             }
             var i = indexOfLastInstanceOf(id);
             content.elements.element.splice(i, 0, newElement);
@@ -486,16 +493,16 @@ var ediml = (function() {
         }
     }
     function startListening() {
-        console.log("startListening");
+        logger.log("startListening");
         for ( var i = 0; i < content.elements.element.length; i++ ) {
             var element = content.elements.element[i];
-            console.log(element);
+            logger.log(element);
             for ( var j = 0; j < element.items.item.length; j++ ) {
                 if ( typeof element.items.item[j].startListening === "function") {
                     element.items.item[j].startListening();
                 } else {
-                    console.log("no startListening method on item");
-                    console.log(element.items.item[j]);
+                    logger.log("no startListening method on item");
+                    logger.log(element.items.item[j]);
                 }
             }
         }
@@ -504,7 +511,7 @@ var ediml = (function() {
     function findItemById(id) {
         for ( var i = 0; i < content.elements.element.length; i++ ) {
             var element = content.elements.element[i];
-            // console.log(element);
+            // logger.log(element);
             for ( var j = 0; j < element.items.item.length; j++ ) {
                 if ( element.items.item[j].id == id ) {
                     return element.items.item[j];
@@ -515,6 +522,10 @@ var ediml = (function() {
     }
 
     function update(item) {
+        if ( typeof item === "undefined") {
+            console.trace();
+            return;
+        }
         // item = this;
         isDirty = true;
         var selector = "#" + item.id;
@@ -552,20 +563,20 @@ var ediml = (function() {
         if ( item.isLanguageNeutral && item.isLanguageNeutral == "true" ) {
             item.value = item.languageNeutral;
         }
-        console.log(item.id + " changed to " + $(selector).val());
+        logger.log(item.id + " changed to " + $(selector).val());
         /*
          if ( item.datatype != "ref" && $(this).attr("isLanguageNeutral") != "undefined" && $(this).attr("isLanguageNeutral") != "" && $(this).attr("language_neutral") != "undefined" && $(this).attr("language_neutral") != "" ) {
          item.value = item.languageNeutralValue;
          }
          */
-        console.log(item);
+        logger.log(item);
         // edi.edimlOutput();
 
     }
 
     function updateItemForControl(control) {
-        console.log("updating item for control " + control.attr("id"));
-        console.log(control);
+        logger.log("updating item for control " + control.attr("id"));
+        logger.log(control);
         var item = findItemById(control.attr("id"));
         update(item);
     }
@@ -573,7 +584,7 @@ var ediml = (function() {
     function updateAll() {
         for ( var i = 0; i < content.elements.element.length; i++ ) {
             var element = content.elements.element[i];
-            // console.log(element);
+            // logger.log(element);
             for ( var j = 0; j < element.items.item.length; j++ ) {
                 update(element.items.item[j]);
             }
@@ -583,16 +594,16 @@ var ediml = (function() {
     function changeHandler() {
         var control = $(this);
         var id = control.attr("id");
-        console.log("ediml change detected at " + id);
+        logger.log("ediml change detected at " + id);
 
 
         var item = findItemById(id);
-        console.log(item);
+        logger.log(item);
 
         if ( typeof item !== "undefined" ) {
-            console.log("item " + id + " was found with a value of " + item.value + " and is about to be updated");
+            logger.log("item " + id + " was found with a value of " + item.value + " and is about to be updated");
             update(item);
-            console.log("item has been updated to " + item.value);
+            logger.log("item has been updated to " + item.value);
         }
     }
 
