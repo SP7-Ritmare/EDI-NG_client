@@ -8,7 +8,6 @@
 <!-- TO DO: vedere come usare searchItem -->
 <!-- TO DO: verificare validazione -->
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
-<!-- TO DO: gruppo position con mappa -->
 <!-- TO DO: obsevableProperty da gestire con xslt -->
 <!-- TO DO: aggiungere produzione di QR code alla fine della creazione di SensorML -->
 
@@ -2050,7 +2049,7 @@
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <type>image</type><!-- TO DO: è così che si deve chiamare? -->
+                    <show>image</show>
                     <label xml:lang="it">Immagine</label>
                     <label xml:lang="en">Image</label>
                     <!--http://www.radiometer-analytical.com/images/product/ion450.jpg -->
@@ -2712,8 +2711,7 @@
             <label xml:lang="it">Data e ora dei parametri misurati</label>
             <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora relative alla osservazione.</help>
             <label xml:lang="en">Date and time of phenomena</label>
-            <help xml:lang="en">Tick the box if the observation also contain the date and
-                time.</help>
+            <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList</hasRoot>
