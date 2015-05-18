@@ -12,7 +12,7 @@ var FunctionType = (function() {
      */
     function render() {
         var control;
-        $("control_function").each(function() {
+        $("control_function,control_sensorid").each(function() {
             var temp = edi.getTempStructure()[$(this).attr("id")];
             var element = temp.element;
             var item = temp.item;
