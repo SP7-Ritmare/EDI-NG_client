@@ -399,7 +399,7 @@ var ediml = (function() {
 
         setTimeout( function() {
             $("input", ".uris").trigger("change");
-        }, 100);
+        }, defaults.selectsDelay);
 
         // updateAll();
     };
