@@ -4,11 +4,10 @@
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-    <!-- <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint> -->
-    <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
-    <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
+    <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+    <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
-    <requiresValidation>false</requiresValidation>
+    <requiresValidation>true</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata
@@ -22,7 +21,7 @@
       ]]>
     </baseDocument>
     <xsltChain>
-      <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/stylesheet_1.xsl?version=1.00</xslt>
+      <xslt>http://static.get-it.it/stylesheet_1.xsl%3fversion=1.00</xslt>
     </xsltChain>
   </settings>
   <endpointTypes>
@@ -84,25 +83,6 @@
       <endpointType>virtuoso</endpointType>
       <type>virtuosoCodelist</type>
     </datasource>
-    <!-- DA RECUPERARE e commentare
-    <datasource>
-      <id>constraints</id>
-      <uri>http://www.rndt.gov.it/codelists/constraints/items</uri>
-      <singleton>false</singleton>
-      <endpointType>virtuoso</endpointType>
-      <query>
-        <![CDATA[
-          SELECT DISTINCT <http://www.rndt.gov.it/codelists/constraints/items/001> AS ?c ?l
-          FROM <http://ritmare.it/rdfdata/inspire>
-          WHERE {
-            <http://www.rndt.gov.it/codelists/constraints/items/001> skos:prefLabel ?l .
-          }
-        ]]>
-      </query>
-      <type>sparql</type>
-    </datasource>
-    -->
-    <!-- da commentare -->
     <datasource>
       <id>person</id>
       <singleton>false</singleton>
@@ -121,7 +101,7 @@
           ORDER BY ASC(?l)
         ]]>
       </query>
-      <searchItem>md_resp_1</searchItem>
+      <!-- <searchItem>md_resp_1</searchItem> -->
       <type>sparql</type>
     </datasource>
     <datasource>
@@ -195,59 +175,11 @@
         ORDER BY ASC(?l) ASC(?a)
         ]]>
       </query>
-      <searchItem>keyw_voc_contr_1</searchItem>
+      <!-- <searchItem>keyw_voc_contr_1</searchItem> -->
       <endpointType>virtuoso</endpointType>
       <type> sparql </type>
     </datasource>
-
-    <datasource>
-      <id>ERMESproducts</id>
-      <singleton>false</singleton>
-      <query>
-        <![CDATA[
-        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-        SELECT ?c ?l
-        FROM <http://ermes-fp7space.eu/rdfdata/project>
-        WHERE {
-          ?c rdf:type foaf:Group .
-          ?c foaf:name ?l .
-          FILTER( REGEX( STR(?l), "$search_param", "i") )
-        }
-        ORDER BY ASC(?l)
-        ]]>
-      </query>
-      <triggerItem>tit_1</triggerItem>
-      <endpointType>virtuoso</endpointType>
-      <type> sparql </type>
-    </datasource>
-    <datasource>
-      <id>ERMESproducts_2</id>
-      <singleton>true</singleton>
-      <query>
-        <![CDATA[
-        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-        SELECT ?c ?a ?l ?date
-        WHERE {
-          {
-            <$search_param> foaf:topic_interest ?t .
-          } UNION {
-            ?father foaf:member <$search_param> .
-            ?father foaf:topic_interest ?t .
-          }
-          ?t skos:prefLabel ?a .
-          ?t skos:inScheme ?c .
-          ?c skos:prefLabel ?l .
-          ?c dct:issued ?date .
-          FILTER( LANG(?l) = "en" && LANG(?a) = "en")
-        } LIMIT 1
-        ]]>
-      </query>
-      <triggerItem>tit_1_uri</triggerItem>
-      <endpointType>virtuoso</endpointType>
-      <type>sparql</type>
-    </datasource>
-
-    <datasource>
+      <datasource>
       <id>contrVocSpecs</id>
       <singleton>true</singleton>
       <query>
@@ -297,7 +229,7 @@
       <label xml:lang="it">Identificatore del file</label>
       <help xml:lang="en">This metadata item is not required by INSPIRE but is useful to draw the correspondence between the metadata record and the resource itself.
         It is therefore suggested that the workflow invoking EDI provides this piece of information as a request parameter.</help>
-      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente.
+      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente. 
         &#201; quindi consigliato che EDI riceva questa informazione come parametro della richiesta.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
@@ -317,8 +249,8 @@
       <id>ling_md</id>
       <label xml:lang="en">Metadata language</label>
       <label xml:lang="it">Lingua dei metadati</label>
-      <help xml:lang="en">Language used for documenting metadata. The default language in ERMES is English </help>
-      <help xml:lang="it"> La lingua utilizzata nella compilazione dei metadati. La lingua di default in ERMES &#232; l'inglese</help>
+      <help xml:lang="en">Language used for documenting metadata. The default language is English </help>
+      <help xml:lang="it"> La lingua utilizzata nella compilazione dei metadati. La lingua di default &#232; l'inglese</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:language</hasRoot>
@@ -390,10 +322,10 @@
       <id>md_resp</id>
       <label xml:lang="en">Metadata point of contact</label>
       <label xml:lang="it">Punto di contatto dei metadati</label>
-      <help xml:lang="en">Party responsible for the metadata information. Start typing at least the first 3 letters of your e-mail address and,
-        if you are in the database of contacts, the fields will autocomplete. More than one contact can be added clicking the blue button.</help>
-      <help xml:lang="it">Parte responsabile delle informazioni contenute nei metadati. I campi sono ad autocompletamento per chi &#232; inserito nel
-        database dei contatti, &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email. </help>
+      <help xml:lang="en">Party responsible for the metadata information. Start typing at least the first 3 letters of your e-mail address and, 
+          if you are in the database of contacts, the fields will autocomplete. More than one contact can be added clicking the blue button.</help>
+      <help xml:lang="it">Parte responsabile delle informazioni contenute nei metadati. I campi sono ad autocompletamento per chi &#232; inserito nel 
+          database dei contatti, &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata</hasRoot>
@@ -421,19 +353,6 @@
           <datasource>personS</datasource>
           <field>inst</field>
         </item>
-        <!--
-        <item>
-          <hasIndex>3</hasIndex>
-          <outIndex>2</outIndex>
-          <label xml:lang="en">Telephone number</label>
-          <label xml:lang="it">Telefono</label>
-          <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>select</hasDatatype>
-          <datasource>personS</datasource>
-          <field>phone</field>
-        </item>        
-        -->
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
@@ -526,8 +445,8 @@
       <id>sist_rif_spa</id>
       <label xml:lang="en">Spatial reference system. </label>
       <label xml:lang="it">Sistema di riferimento spaziale. </label>
-      <help xml:lang="en">Describes the coordinate reference system that is associated with the resource.The default value is the projection adopted by ERMES.</help>
-      <help xml:lang="it">Esprime il sistema di riferimento in cui &#232; inquadrata la risorsa georiferita. Il valore di default &#232; la proiezione adottata da ERMES</help>
+      <help xml:lang="en">Describes the coordinate reference system that is associated with the resource.</help>
+      <help xml:lang="it">Esprime il sistema di riferimento in cui &#232; inquadrata la risorsa georiferita.</help>
       <isMandatory>forData</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata</hasRoot>
@@ -539,7 +458,7 @@
           <hasDatatype>codelist</hasDatatype>
           <show>combobox</show>
           <datasource>referenceSystemCodes</datasource>
-          <queryStringParameter>referencesystem</queryStringParameter>
+	        <queryStringParameter>referencesystem</queryStringParameter>
           <useCode>true</useCode>
         </item>
         <item>
@@ -561,7 +480,7 @@
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title</hasRoot>
-      <produces>
+        <produces>
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString</hasPath>
@@ -569,17 +488,15 @@
           <hasDatatype>string</hasDatatype>
           <queryStringParameter>title</queryStringParameter>
         </item>
-      </produces>
+        </produces>
     </element>
     <!--Resource abstract -->
     <element>
       <id>desc</id>
       <label xml:lang="en">Resource abstract</label>
       <label xml:lang="it">Descrizione della risorsa</label>
-      <help xml:lang="en">Brief narrative summary of the content of the resource(s). There is already a text with the ERMES short description, add the information
-        regarding the data contents before.</help>
-      <help xml:lang="it">Breve sommario discorsivo del contenuto della/e risorsa/e. E' gia' contenuta una breve descrizione del progetto ERMES,
-        si devono aggiungere prima le informazioni relative ai contenuti della risorsa</help>
+      <help xml:lang="en">Brief narrative summary of the content of the resource(s). </help>
+      <help xml:lang="it">Breve sommario discorsivo del contenuto della/e risorsa/e. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract</hasRoot>
@@ -589,7 +506,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
-          <queryStringParameter>abstract</queryStringParameter>
+         <queryStringParameter>abstract</queryStringParameter>
         </item>
       </produces>
     </element>
@@ -617,11 +534,11 @@
       <label xml:lang="en">Responsible party</label>
       <label xml:lang="it">Responsabile</label>
       <help xml:lang="en">Identification of, and means of communication with, person(s) and organization(s) associated with the resource(s).
-        Start typing at least the first 3 letters of your e-mail address and, if you are in the database of contacts, the fields will autocomplete.
-        More than one contact can be added clicking the blue button.</help>
+          Start typing at least the first 3 letters of your e-mail address and, if you are in the database of contacts, the fields will autocomplete.
+          More than one contact can be added clicking the blue button.</help>
       <help xml:lang="it">Identificazione delle persone e organizzazioni associate alla risorsa, e mezzo di comunicazione con esse.
-        I campi sono ad autocompletamento per chi &#232; inserito nel database dei contatti,
-        &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email.</help>
+          I campi sono ad autocompletamento per chi &#232; inserito nel database dei contatti,
+          &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -633,7 +550,6 @@
           <label xml:lang="it">Email</label>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
-          <!--eMail-->
           <hasDatatype>autoCompletion</hasDatatype>
           <datasource>person</datasource>
         </item>
@@ -644,24 +560,10 @@
           <label xml:lang="it">Ente</label>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
-          <!--Organisation-->
           <hasDatatype>select</hasDatatype>
           <datasource>personS_2</datasource>
           <field>inst</field>
         </item>
-        <!--
-        <item>
-          <hasIndex>3</hasIndex>
-          <outIndex>2</outIndex>
-          <label xml:lang="en">Telephone number</label>
-          <label xml:lang="it">Telefono</label>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>select</hasDatatype>
-          <datasource>personS_2</datasource>
-          <field>phone</field>
-        </item>        
-        -->
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
@@ -701,9 +603,9 @@
       <label xml:lang="en">INSPIRE theme</label>
       <label xml:lang="it">Tema di INSPIRE</label>
       <help xml:lang="en">The INSPIRE Theme that is used for describing the resource. There is already a default value; you can add
-        other themes by clicking the blue button, then choosing form the list.</help>
+      other themes by clicking the blue button, then choosing form the list.</help>
       <help xml:lang="it">Parola chiave per descrivere la risorsa come da temi (categorie tematiche) INSPIRE. E' presente un valore
-        di default, &#232; possibile aggiungere un secondo tema premendo il pulsante blue e scegliendo dalla lista. </help>
+      di default, &#232; possibile aggiungere un secondo tema premendo il pulsante blue e scegliendo dalla lista. </help>
       <isMandatory>forData</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -835,27 +737,7 @@
         </item>
       </produces>
     </element>
-    <element>
-      <id>keyw_2</id>
-      <label xml:lang="en">Free-text keyword</label>
-      <label xml:lang="it">Keyword a testo libero</label>
-      <help xml:lang="en">Keyword not coming from the supported controlled vocabularies.</help>
-      <help xml:lang="it">Parola chiave formalizzata o utilizzata comunemente per descrivere la
-        risorsa ma non vincolata ai temi di INSPIRE o appartenente a vocabolari controllati.</help>
-      <isMandatory>NA</isMandatory>
-      <isMultiple>true</isMultiple>
-      <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
-      <produces>
-        <item>
-          <hasIndex>1</hasIndex>
-          <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>string</hasDatatype>
-          <defaultValue>ERMES</defaultValue>
-        </item>
-      </produces>
-    </element>
-  </group>
+     </group>
   <!--Constraints group -->
   <group>
     <id>constraints</id>
@@ -866,10 +748,10 @@
       <id>lim_uso</id>
       <label xml:lang="en">Conditions applying to access and use</label>
       <label xml:lang="it">Condizioni applicabili all'accesso e all'uso</label>
-      <help xml:lang="en">Access constraints applied to assure the protection of privacy or
-        intellectual property, and any special restrictions or limitations on obtaining the
-        resource. E.g., user registration, monetary charge, non commercial use, etc.</help>
-      <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o propriet&#224; intellettuale. Ad esempio: previa registrazione, addebito monetario, uso non commerciale, ecc. </help>
+        <help xml:lang="en">Access constraints applied to assure the protection of privacy or
+            intellectual property, and any special restrictions or limitations on obtaining the
+            resource. E.g., user registration, monetary charge, non commercial use, etc.</help>
+        <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o propriet&#224; intellettuale. Ad esempio: previa registrazione, addebito monetario, uso non commerciale, ecc. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -885,10 +767,10 @@
     <!--Limitations on public access-->
     <element>
       <id>vinc_acc</id>
-      <label xml:lang="en">Limitations on public access</label>
-      <label xml:lang="it">Limitazioni all&apos;accesso pubblico</label>
-      <help xml:lang="en">Select from the list the limitations on the access and use of a resource or metadata. </help>
-      <help xml:lang="it">Selezionare dalla lista le restrizioni applicabili all&apos;accesso e utilizzo della risorsa. Per gli OpenData indicare &apos;Altri vincoli&apos;. </help>
+        <label xml:lang="en">Limitations on public access</label>
+        <label xml:lang="it">Limitazioni all&apos;accesso pubblico</label>
+        <help xml:lang="en">Select from the list the limitations on the access and use of a resource or metadata. </help>
+        <help xml:lang="it">Selezionare dalla lista le restrizioni applicabili all&apos;accesso e utilizzo della risorsa. Per gli OpenData indicare &apos;Altri vincoli&apos;. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -926,9 +808,9 @@
           <hasDatatype>text</hasDatatype>
         </item>
       </produces>
-    </element>
-    <!--Description group -->
+    </element>    
   </group>
+  <!--Description group -->
   <group>
     <id>ling_d</id>
     <label xml:lang="en">Description</label>
@@ -981,7 +863,7 @@
           <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/uom/ML_gmxUom.xml#m</hasValue>
         </item>
       </produces>
-    </element>
+    </element>    
     <!--Resource language -->
     <element>
       <id>ling</id>
@@ -1040,7 +922,7 @@
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>
+    </element>    
   </group>
   <!--Geo Location group -->
   <group>
@@ -1054,7 +936,7 @@
       <label xml:lang="it">Bounding box geografico</label>
       <help xml:lang="en">Western-, eastern-, sout-, and north-most coordinate of the limit of the
         dataset extent, expressed in decimal degrees in the WGS84 system. The map below allow for drawing, but the manual insertion
-        of precise coordinates is to be preferred</help>
+      of precise coordinates is to be preferred</help>
       <help xml:lang="it">Esprime l&apos;estensione della risorsa nello spazio geografico sotto
         forma di un ipotetico riquadro di delimitazione (Bounding Box), ovvero esprime la massima
         estensione del dato come si ottiene dalla coordinata pi&#249; occidentale, pi&#249;
@@ -1209,7 +1091,7 @@
           <hasValue>auto</hasValue>
         </item>
       </produces>
-    </element>
+    </element> 
   </group>
   <!--Quality and validity group -->
   <group>
@@ -1348,3 +1230,6 @@
     </element>
   </group>
 </template>
+
+
+
