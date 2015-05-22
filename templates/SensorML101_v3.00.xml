@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template [
-    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
-    <!ENTITY dct "http://purl.org/dc/terms/">
-    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
-    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
-]>
-<!-- TO DO: vedere come usare searchItem -->
-<!-- TO DO: verificare validazione -->
+        <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+        <!ENTITY dct "http://purl.org/dc/terms/">
+        <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+        <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+        ]>
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 <!-- TO DO: obsevableProperty da gestire con xslt -->
 <!-- TO DO: aggiungere produzione di QR code alla fine della creazione di SensorML -->
+<!-- TO DO: verificare come passare a inglese per "capabilities" -->
+<!-- TO DO:  -->
 
 <template>
     <!-- SETTINGS -->
@@ -192,7 +192,7 @@
                         }
                         ]]>
             </query>
-            <triggerItem>manufName_3_uri</triggerItem>
+            <triggerItem>manuf_name_3_uri</triggerItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -508,13 +508,13 @@
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-           <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
+            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
                 CTP Recorder, ecc.).</help>
             <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer (e.g. 
-		Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
+                not its description; it could coincide with the name given by the manufacturer (e.g.
+                Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
@@ -671,12 +671,12 @@
             </produces>
         </element>
         <!-- Short Name -->
-        <element>
+        <!--<element>
             <id>short_name</id>
-            <!--<label xml:lang="it">Nome breve del sistema</label>
+            <!-\-<label xml:lang="it">Nome breve del sistema</label>
             <help xml:lang="it">Provvede a fornire un nome breve al sistema</help>
             <label xml:lang="en">Short Name</label>
-            <help xml:lang="en">Provide a short name for the system</help>-->
+            <help xml:lang="en">Provide a short name for the system</help>-\->
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -703,9 +703,9 @@
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/@gml:id</hasValue>
                 </item>
             </produces>
-        </element>
+        </element>-->
         <!-- Long Name -->
-        <element>
+        <!--<element>
             <id>long_name</id>
             <label xml:lang="it">Nome per esteso del sistema/sensore/piattaforma</label>
             <help xml:lang="it">Indicare un nome esteso del sensore, del sistema di sensori o della piattaforma. Il nome per esteso può essere simile a quello indicato in precedenza, nel campo &#8216;Nome del sistema&#8217;, ricordando che se si sono utilizzate siglie vanno qui riportate per esteso.</help>
@@ -737,15 +737,15 @@
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/gml:name</hasValue>
                 </item>
             </produces>
-        </element>
+        </element>-->
         <!-- Sensor something -->
         <element>
             <id>manuf_name</id>
             <label xml:lang="it">Denominazione del produttore</label>
             <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
-		to obtain suggested autocompletion from a manufacturer list.</help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters
+                to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -813,7 +813,7 @@
             <label xml:lang="it">Numero seriale</label>
             <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-	    <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -847,6 +847,7 @@
     <!--================== -->
     <!--System Classifiers -->
     <!--================== -->
+    <!-- valid -->
     <group>
         <id>sys_class</id>
         <label xml:lang="it">Classificazione del sistema</label>
@@ -930,8 +931,8 @@
             <label xml:lang="it">Parole chiave da vocabolari controllati</label>
             <help xml:lang="it">Indicare una o pi&#249; parole chiave da associare al sensore, al sistema di sensori o alla piattaforma, per permetterne il reperimento in fase di ricerca. Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato, creato in ambito SeaDataNet.</help>
             <label xml:lang="en">Keyword from controlled vocabularies</label>
-            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. Start typing the first three letters 
-		to obtain suggested autocompletion from controlled vocabularies, belonging to the SeaDataNet framework.</help>
+            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. Start typing the first three letters
+                to obtain suggested autocompletion from controlled vocabularies, belonging to the SeaDataNet framework.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
@@ -991,16 +992,16 @@
           <hasValue>http://vocab.nerc.ac.uk/collection/L05/current/</hasValue>
           <label xml:lang="it">Parola chiave della tipologia</label>
           <label xml:lang="en">Key words of the typology of the system</label>
-        </item> -->
+        </item>-->
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>4</outIndex>
                     <label xml:lang="it">Parola chiave della tipologia</label>
-	            <help xml:lang="it"> Parola chiave che indica il tipo di sensore o sistema (es. sensore di temperatura dell&#8217;acqua, sensore di salinit&#224;, radiometro, ecc.).
-			Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato </help>
+                    <help xml:lang="it"> Parola chiave che indica il tipo di sensore o sistema (es. sensore di temperatura dell&#8217;acqua, sensore di salinit&#224;, radiometro, ecc.).
+                        Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato </help>
                     <label xml:lang="en">Keyword of the sensor type</label>
                     <help xml:lang="en">Keyword indicating the typology of the sensor or system (e.g. water temperature sensor, salinity sensor, radiometer, etc.). Start typing
-			to obtain suggested autocompletion from controlled vocabularies</help>
+                        to obtain suggested autocompletion from controlled vocabularies</help>
                     <hasPath>sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1104,26 +1105,27 @@
     <!--================= -->
     <!--Temporal Validity -->
     <!--================= -->
-    <!--<group>
+    <!-- valid -->
+    <group>
         <id>temp_val</id>
-        <label xml:lang="it">Validit&#224; descrizione del sistema</label>
-        <!-\-<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
-            sistema</help>-\->
-        <label xml:lang="en">Temporal validity of description</label>
-        <!-\-<help xml:lang="en">Means of providing time validity constraint of description</help>-\->
+        <label xml:lang="it">Validit&#224; dei metadati del sistema</label>
+        <!--<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
+            sistema</help>-->
+        <label xml:lang="en">Temporal validity of metadata description</label>
+        <!--<help xml:lang="en">Means of providing time validity constraint of description</help>-->
         <element>
             <id>valid_time</id>
-            <!-\-<label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
+            <!--<label xml:lang="it">Validit&#224; temporale della descrizione del sistema</label>
             <help/>
             <label xml:lang="en">Temporal Validity of this description</label>
-            <help/>-\->
+            <help/>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/@gml:id</hasPath>
+                    <hasPath>gml:TimePeriod/@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>DOC_TIME</hasValue>
@@ -1135,22 +1137,22 @@
                     <start>
                         <label xml:lang="en">Begin date</label>
                         <label xml:lang="it">Data inizio</label>
-                        <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
+                        <hasPath>gml:TimePeriod/gml:beginPosition</hasPath>
                     </start>
                     <end>
                         <label xml:lang="en">End date</label>
                         <label xml:lang="it">Data fine</label>
-                        <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition</hasPath>
+                        <hasPath>gml:TimePeriod/gml:endPosition</hasPath>
                     </end>
                     <isFixed>false</isFixed>
                     <hasDatatype>dateRange</hasDatatype>
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>2</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:beginPosition</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>dateRange</hasDatatype>
-          <!-\\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\\->
+          <!-\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\->
           <hasValue>user-defined</hasValue>
           <label xml:lang="it">Data di inizio</label>
           <help/>
@@ -1162,21 +1164,22 @@
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:validTime/gml:TimePeriod/gml:endPosition</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>dateRange</hasDatatype>
-          <!-\\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\\->
+          <!-\-VERIFICARE SE DataType date SIA ANCHE TIME 2013-07-15T16:20:00 -\->
           <hasValue>user-defined</hasValue>
           <label xml:lang="it">Data di fine</label>
           <help/>
           <label xml:lang="en">End date</label>
           <help/>
-        </item> -\->
+        </item> -->
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Temporal Validity Group -->
 
     <!--=================== -->
     <!--Security Constraint -->
     <!--=================== -->
+    <!-- VA LASCIATO COMMENTATO -->
     <!--<group>
     <id>sec_cons</id>
     <label xml:lang="it">Vincoli di sicurezza</label>
@@ -1192,6 +1195,7 @@
     <!--================ -->
     <!--Legal Constraint -->
     <!--================ -->
+    <!-- VA LASCIATO COMMENTATO -->
     <!--<group>
     <id>leg_cons</id>
     <label xml:lang="it">Vincoli legali</label>
@@ -1207,13 +1211,14 @@
     <!--=================== -->
     <!--System Capabilities -->
     <!--=================== -->
-    <!--<group>
+    <!-- valid -->
+    <group>
         <id>capab</id>
         <label xml:lang="it">Caratteristiche</label>
-        <!-\-<help xml:lang="it">Lista delle caratteristiche fisiche, elettriche, ecc del sistema</help>-\->
+        <!--<help xml:lang="it">Lista delle caratteristiche fisiche, elettriche, ecc del sistema</help>-->
         <label xml:lang="en">Capabilities</label>
-        <!-\-<help xml:lang="en">Capabilities list for quick discovery</help>-\->
-        <!-\-Physical property -\->
+        <!--<help xml:lang="en">Capabilities list for quick discovery</help>-->
+        <!--Physical property -->
         <element>
             <id>physical</id>
             <label xml:lang="it">Caratteristiche fisiche</label>
@@ -1226,7 +1231,7 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/@name</hasPath>
+                    <hasPath>swe:field/@name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>physical_quantity</datasource>
@@ -1235,11 +1240,10 @@
                     <help xml:lang="it">Scegliere il tipo di grandezza fisica dalla lista</help>
                     <label xml:lang="en">Physical classifier</label>
                     <help xml:lang="en">Choose the type of physical quantity from the list</help>
-
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/@definition</hasPath>
+                    <hasPath>swe:field/swe:Quantity/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/@name</hasValue>
@@ -1247,25 +1251,25 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
-		    <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
+                    <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
-		    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
+                    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
 
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom/@code</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
                     <useURN>true</useURN>
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>3</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
           <isFixed>false</isFixed>
@@ -1301,10 +1305,10 @@
           <hasDatatype>ref</hasDatatype>
           <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasValue>
           <useCode>true</useCode>
-        </item>-\->
+        </item>-->
                 <item>
                     <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
@@ -1312,18 +1316,18 @@
                 </item>
                 <item>
                     <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:value</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <!-\-es. 13 -\->
+                    <!--es. 13 -->
                     <label xml:lang="it">Valore caratteristica fisica</label>
-		    <help xml:lang="it">Indicare il valore della caratteristica fisica nell&#8217;unit&#224; di misura specificata.</help>
-		    <label xml:lang="en">Value</label>
-		    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
+                    <help xml:lang="it">Indicare il valore della caratteristica fisica nell&#8217;unit&#224; di misura specificata.</help>
+                    <label xml:lang="en">Value</label>
+                    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
-        <!-\-material -\->
+        <!--material -->
         <element>
             <id>material</id>
             <label xml:lang="it">Materiale</label>
@@ -1339,11 +1343,11 @@
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]/swe:Category[@definition=&apos;urn:ogc:dictionary:OGC:material&apos;]/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>user-defined</hasValue>
+                    <!--<hasValue>user-defined</hasValue>-->
                 </item>
             </produces>
         </element>
-        <!-\-Electrical property -\->
+        <!--Electrical property -->
         <element>
             <id>Electrical</id>
             <label xml:lang="it">Caratteristiche elettriche</label>
@@ -1356,7 +1360,7 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasPath>
+                    <hasPath>swe:field/@name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>electrical_quantity</datasource>
@@ -1368,54 +1372,54 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/@definition</hasPath>
+                    <hasPath>swe:field/swe:Quantity/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
-                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasValue>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/@name</hasValue>
                     <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Physical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Properties&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:physicalProperties&apos;]/swe:field/swe:Quantity/swe:uom</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
                     <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
-		    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
+                    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
-                    <!-\-es. http://vocab.nerc.ac.uk/collection/P06/current/UXMM/ -\->
-                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <!--es. http://vocab.nerc.ac.uk/collection/P06/current/UXMM/ -->
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
                     <useCode>true</useCode>
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom/@code</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:uom/@code</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
-                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:uom</hasValue>
                     <useURN>true</useURN>
                 </item>
                 <item>
                     <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Electrical/swes:InsertSensor/swes:procedureDescription/sml:SensorML Requirements&apos;]/swe:DataRecord[@definition=&apos;urn:ogc:def:property:powerRequirement&apos;]/swe:field/swe:Quantity/swe:value</hasPath>
+                    <hasPath>swe:field/swe:Quantity/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <!-\-es. 13 -\->
+                    <!--es. 13 -->
                     <label xml:lang="it">Valore caratteristica elettrica</label>
                     <help xml:lang="it">Indicare il valore della caratteristica elettrica nell&#8217;unit&#224; di misura specificata.</help>
-		    <label xml:lang="en">Value</label>
-		    <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
+                    <label xml:lang="en">Value</label>
+                    <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
-        <!-\-status -\->
+        <!--status -->
         <element>
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
@@ -1425,19 +1429,18 @@
             <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
-                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]/swe:Boolean/swe:value</hasPath>
+                    <hasPath>swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
-                    <hasValue>user-defined</hasValue>
+                    <!--<hasValue>user-defined</hasValue>-->
                 </item>
             </produces>
         </element>
-        <!-\-mobility -\->
+        <!--mobility -->
         <element>
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
@@ -1447,19 +1450,18 @@
             <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
-                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]/swe:Boolean/swe:value</hasPath>
+                    <hasPath>swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
-                    <hasValue>user-defined</hasValue>
+                    <!--<hasValue>user-defined</hasValue>-->
                 </item>
             </produces>
         </element>
-        <!-\-storage -\->
+        <!--storage -->
         <element>
             <id>storage_type</id>
             <label xml:lang="it">Tipo di memoria</label>
@@ -1469,58 +1471,58 @@
             <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
-                Capabilities&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational Capabilities&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:DataRecord/swe:field/@name</hasPath>
+                    <hasPath>swe:DataRecord/swe:field/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>Storage Type</hasValue>
-                    <!-\-es. dataLogger -\->
+                    <!--es. dataLogger -->
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:DataRecord/swe:field/@xlink:role</hasPath>
+                    <hasPath>swe:DataRecord/swe:field/@xlink:role</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>urn:ogc:def:property:dataStorage</hasValue>
-                    <!-\-es. dataLogger -\->
+                    <!--es. dataLogger -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:DataRecord/swe:field/swe:Category/@definition</hasPath>
+                    <hasPath>swe:DataRecord/swe:field/swe:Category/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>urn:ogc:def:classifier:SBE:storageType</hasValue>
-                    <!-\-es. dataLogger -\->
+                    <!--es. dataLogger -->
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational/swes:InsertSensor/swes:procedureDescription/sml:SensorML Capabilities&apos;]/swe:DataRecord/swe:field/swe:Category/swe:value</hasPath>
+                    <hasPath>swe:DataRecord/swe:field/swe:Category/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>user-defined</hasValue>
-                    <!-\-es. dataLogger -\->
+                    <!--<hasValue>user-defined</hasValue>-->
+                    <!--es. dataLogger -->
                 </item>
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Capabilities Group -->
 
     <!--================= -->
     <!--Relevant Contacts -->
     <!--================= -->
-    <!--<group>
+    <!-- valid -->
+    <group>
         <id>rel_contacts</id>
         <label xml:lang="it">Punti di contatto</label>
-        <!-\-<help xml:lang="it">Punti di contatto per il systema</help>-\->
+        <!--<help xml:lang="it">Punti di contatto per il systema</help>-->
         <label xml:lang="en">Relevant Contacts</label>
-        <!-\-<help xml:lang="en">Relevant contacts for that system</help>-\->
-        <!-\-=============================== -\->
-        <!-\-Relevant Contacts: Manufacturer -\->
-        <!-\-=============================== -\->
+        <!--<help xml:lang="en">Relevant contacts for that system</help>-->
+        <!--=============================== -->
+        <!--Relevant Contacts: Manufacturer -->
+        <!--=============================== -->
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
@@ -1537,13 +1539,13 @@
                     <label xml:lang="en">Manufacturer name</label>
                     <help/>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <hasPath>sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>manName</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>manufacturers</datasource>
                     <field>l</field>
-                    <!-\-es SENSIRION AG -\->
+                    <!--es SENSIRION AG -->
                 </item>
                 <item>
                     <label xml:lang="it">Telefono produttore</label>
@@ -1551,17 +1553,17 @@
                     <label xml:lang="en">Manufacturer phone number</label>
                     <help/>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <hasPath>sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:voice</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_manufacturers</datasource>
                     <field>phone</field>
-                    <!-\-es 0041 44 306 40 00 -\->
+                    <!--es 0041 44 306 40 00 -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:deliveryPoint</id>
                     <hasDatatype>select</hasDatatype>
@@ -1571,11 +1573,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer address</label>
                     <help/>
-                    <!-\-es Laubisruetistr. 50 -\->
+                    <!--es Laubisruetistr. 50 -->
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:city</id>
                     <hasDatatype>select</hasDatatype>
@@ -1585,11 +1587,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer city</label>
                     <help/>
-                    <!-\-es Staefa -\->
+                    <!--es Staefa -->
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:administrativeArea</id>
                     <hasDatatype>select</hasDatatype>
@@ -1599,11 +1601,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer administrative area</label>
                     <help/>
-                    <!-\-es ZH -\->
+                    <!--es ZH -->
                 </item>
                 <item>
                     <hasIndex>6</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:postalCode</id>
                     <hasDatatype>select</hasDatatype>
@@ -1613,11 +1615,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer Postal code</label>
                     <help/>
-                    <!-\-es CH-8712 -\->
+                    <!--es CH-8712 -->
                 </item>
                 <item>
                     <hasIndex>7</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:country</id>
                     <hasDatatype>select</hasDatatype>
@@ -1627,11 +1629,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer country</label>
                     <help/>
-                    <!-\-es Switzerland -\->
+                    <!--es Switzerland -->
                 </item>
                 <item>
                     <hasIndex>8</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:electronicMailAddress</id>
                     <hasDatatype>select</hasDatatype>
@@ -1641,11 +1643,11 @@
                     <help/>
                     <label xml:lang="en">Manufacturer e-mail address</label>
                     <help/>
-                    <!-\-es info@sensirion.com -\->
+                    <!--es info@sensirion.com -->
                 </item>
                 <item>
                     <hasIndex>9</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:onlineResource</id>
                     <hasDatatype>select</hasDatatype>
@@ -1655,18 +1657,18 @@
                     <help/>
                     <label xml:lang="en">Manufacturer web site</label>
                     <help/>
-                    <!-\-es http://www.sensirion.com -\->
+                    <!--es http://www.sensirion.com -->
                 </item>
             </produces>
         </element>
-        <!-\-======================== -\->
-        <!-\-Relevant Contacts: Owner -\->
-        <!-\-======================== -\->
+        <!--======================== -->
+        <!--Relevant Contacts: Owner -->
+        <!--======================== -->
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
             <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
-             del progetto RITMARE</help>
+                del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
@@ -1681,17 +1683,17 @@
                     <help/>
                     <label xml:lang="en">Owner e-mail address</label>
                     <help/>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
                     <isFixed>false</isFixed>
                     <id>electronicMailAddress</id>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>owners</datasource>
-                    <!-\-es mauro.bastianini@ismar.cnr.it -\->
+                    <!--es mauro.bastianini@ismar.cnr.it -->
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <hasPath>sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:organisationName</id>
                     <hasDatatype>select</hasDatatype>
@@ -1701,12 +1703,12 @@
                     <help/>
                     <label xml:lang="en">Owner organization</label>
                     <help/>
-                    <!-\-es CNR Institute of Marine Science (CNR - ISMAR) -\->
+                    <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
                     <outIndex>2</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <hasPath>sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1715,12 +1717,12 @@
                     <help/>
                     <label xml:lang="en">Owner phone number</label>
                     <help/>
-                    <!-\-es 0039 041 240 7982 -\->
+                    <!--es 0039 041 240 7982 -->
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1729,12 +1731,12 @@
                     <help/>
                     <label xml:lang="en">Owner address</label>
                     <help/>
-                    <!-\-es Castello 2737/F Tesa 104 -\->
+                    <!--es Castello 2737/F Tesa 104 -->
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1743,9 +1745,9 @@
                     <help/>
                     <label xml:lang="en">Owner city</label>
                     <help/>
-                    <!-\-es Venezia -\->
+                    <!--es Venezia -->
                 </item>
-                <!-\-<item>
+                <!--<item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
@@ -1757,11 +1759,11 @@
                     <help/>
                     <label xml:lang="en">Owner administrative area</label>
                     <help/>
-                </item>-\->
+                </item>-->
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>6</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1770,12 +1772,12 @@
                     <help/>
                     <label xml:lang="en">Owner Postal code</label>
                     <help/>
-                    <!-\-es IT-30122 -\->
+                    <!--es IT-30122 -->
                 </item>
                 <item>
                     <hasIndex>8</hasIndex>
                     <outIndex>7</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1784,12 +1786,12 @@
                     <help/>
                     <label xml:lang="en">Owner country</label>
                     <help/>
-                    <!-\-es Italy -\->
+                    <!--es Italy -->
                 </item>
                 <item>
                     <hasIndex>9</hasIndex>
                     <outIndex>9</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1798,13 +1800,13 @@
                     <help/>
                     <label xml:lang="en">Owner web site</label>
                     <help/>
-                    <!-\-es http://www.sensirion.com -\->
+                    <!--es http://www.sensirion.com -->
                 </item>
             </produces>
         </element>
-        <!-\-=========================== -\->
-        <!-\-Relevant Contacts: Operator -\->
-        <!-\-=========================== -\->
+        <!--=========================== -->
+        <!--Relevant Contacts: Operator -->
+        <!--=========================== -->
         <element>
             <id>operator</id>
             <label xml:lang="it">Informazioni sull&apos;operatore</label>
@@ -1818,7 +1820,7 @@
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>8</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:electronicMailAddress</hasPath>
                     <isFixed>false</isFixed>
                     <id>electronicMailAddress</id>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1827,12 +1829,12 @@
                     <help/>
                     <label xml:lang="en">Operator e-mail address</label>
                     <help/>
-                    <!-\-es mauro.bastianini@ismar.cnr.it -\->
+                    <!--es mauro.bastianini@ismar.cnr.it -->
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:organizationName</hasPath>
+                    <hasPath>sml:organizationName</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:organisationName</id>
                     <hasDatatype>select</hasDatatype>
@@ -1842,12 +1844,12 @@
                     <help/>
                     <label xml:lang="en">Operator name</label>
                     <help/>
-                    <!-\-es CNR Institute of Marine Science (CNR - ISMAR) -\->
+                    <!--es CNR Institute of Marine Science (CNR - ISMAR) -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
                     <outIndex>2</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:phone/sml:voice</hasPath>
+                    <hasPath>sml:contactInfo/sml:phone/sml:voice</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1856,12 +1858,12 @@
                     <help/>
                     <label xml:lang="en">Operator phone number</label>
                     <help/>
-                    <!-\-es 0039 041 240 7982 -\->
+                    <!--es 0039 041 240 7982 -->
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:deliveryPoint</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1870,12 +1872,12 @@
                     <help/>
                     <label xml:lang="en">Operator address</label>
                     <help/>
-                    <!-\-es Castello 2737/F Tesa 104 -\->
+                    <!--es Castello 2737/F Tesa 104 -->
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:city</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:city</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1884,9 +1886,9 @@
                     <help/>
                     <label xml:lang="en">Operator city</label>
                     <help/>
-                    <!-\-es Venezia -\->
+                    <!--es Venezia -->
                 </item>
-                <!-\-<item>
+                <!--<item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:administrativeArea</hasPath>
@@ -1897,11 +1899,11 @@
                     <help/>
                     <label xml:lang="en">Operator administrative area</label>
                     <help/>
-                </item>-\->
+                </item>-->
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>6</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:postalCode</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:postalCode</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1910,12 +1912,12 @@
                     <help/>
                     <label xml:lang="en">Operator Postal code</label>
                     <help/>
-                    <!-\-es IT-30122 -\->
+                    <!--es IT-30122 -->
                 </item>
                 <item>
                     <hasIndex>8</hasIndex>
                     <outIndex>7</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:address/sml:country</hasPath>
+                    <hasPath>sml:contactInfo/sml:address/sml:country</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1924,12 +1926,12 @@
                     <help/>
                     <label xml:lang="en">Operator country</label>
                     <help/>
-                    <!-\-es Italy -\->
+                    <!--es Italy -->
                 </item>
                 <item>
                     <hasIndex>9</hasIndex>
                     <outIndex>9</outIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty/sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>sml:contactInfo/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1938,54 +1940,55 @@
                     <help/>
                     <label xml:lang="en">Operator web site</label>
                     <help/>
-                    <!-\-es http://www.sensirion.com -\->
+                    <!--es http://www.sensirion.com -->
                 </item>
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Relevant Contacts Group -->
 
     <!--==================== -->
     <!--System Documentation -->
     <!--==================== -->
-    <!--<group>
+    <!-- valid -->
+    <group>
         <id>system_documentation</id>
         <label xml:lang="it">Documentazione tecnica del sistema</label>
-        <!-\-<help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
-            anche puntare ad una risorsa online.</help>-\->
+        <!--<help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
+            anche puntare ad una risorsa online.</help>-->
         <label xml:lang="en">System Documentation</label>
-        <!-\-<help xml:lang="en">Documentation for that object with date/time, version, author, etc.
-            pointing to an online resource related to the enclosing object</help>-\->
-        <!-\- Documentation -\->
+        <!--<help xml:lang="en">Documentation for that object with date/time, version, author, etc.
+            pointing to an online resource related to the enclosing object</help>-->
+        <!-- Documentation -->
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
             <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
+                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
             <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
-		 peer-reviewed algorithm literature, etc.).</help>
+                peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/@xlink:arcrole</hasPath>
+                    <hasPath>sml:documentation/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>URN</hasDatatype>
                     <hasValue>urn:ogc:def:classifiers:OGC:documentType:datasheet</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/gml:description</hasPath>
+                    <hasPath>sml:documentation/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>user-defined</hasValue>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:date</hasPath>
+                    <hasPath>sml:documentation/sml:Document/sml:date</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>date</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -1996,7 +1999,7 @@
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:format</hasPath>
+                    <hasPath>sml:documentation/sml:Document/sml:format</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>format</datasource>
@@ -2007,7 +2010,7 @@
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>sml:documentation/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URI</hasDatatype>
                     <hasValue>user-defined</hasValue>
@@ -2015,11 +2018,11 @@
                     <help xml:lang="it">Collegamento alla documentazione on-line (scheda tecnica, pubblicazione, etc.) sotto forma di URI (o URL). </help>
                     <label xml:lang="en">Documentation link</label>
                     <help xml:lang="en">Link to reach on-line the documentation (URI or URL)</help>
-                    <!-\-http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -\->
+                    <!--http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -->
                 </item>
             </produces>
         </element>
-        <!-\- Image -\->
+        <!-- Image -->
         <element>
             <id>image</id>
             <label xml:lang="it">Link all'immagine</label>
@@ -2032,33 +2035,32 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation/@xlink:arcrole</hasPath>
+                    <hasPath>sml:documentation/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>URN</hasDatatype>
                     <hasValue>urn:ogc:def:object:OGC:1.0:image</hasValue>
                 </item>
-                <!-\-<item>
+                <!--<item>
                     <hasIndex>2</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                </item>-\->
+                </item>-->
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <show>image</show>
-                    <!-\-<label xml:lang="it">Immagine</label>
-                    <label xml:lang="en">Image</label>-\->
-                    <!-\-http://www.radiometer-analytical.com/images/product/ion450.jpg -\->
+                    <!--<label xml:lang="it">Immagine</label>
+                    <label xml:lang="en">Image</label>-->
+                    <!--http://www.radiometer-analytical.com/images/product/ion450.jpg -->
                 </item>
-                <!-\- TO DO: aggiungere un link -\->
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END System Documentation Group -->
 
     <!--======= -->
@@ -2933,7 +2935,7 @@
                     <label xml:lang="it">Unit&#224; di misura dell&apos;accuratezza</label>
                     <help xml:lang="it">Unit&#224; di misura dell&apos;accuratezza, come espressa nel campo precedente. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
                     <label xml:lang="en">Unit of measurement of accuracy</label>
-                     <help xml:lang="en">Unit of measurement of system accuracy, as indicated in the previous field. Start typing the first three letters 
+                    <help xml:lang="en">Unit of measurement of system accuracy, as indicated in the previous field. Start typing the first three letters 
 		to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
@@ -2960,4 +2962,3 @@
     <!--END Output Group -->
 
 </template>
-

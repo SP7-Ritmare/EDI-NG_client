@@ -102,7 +102,7 @@
       <type>sparql</type>
     </datasource>
     -->
-<!-- da commentare -->
+    <!-- da commentare -->
     <datasource>
       <id>person</id>
       <singleton>false</singleton>
@@ -246,7 +246,7 @@
       <endpointType>virtuoso</endpointType>
       <type>sparql</type>
     </datasource>
-    
+
     <datasource>
       <id>contrVocSpecs</id>
       <singleton>true</singleton>
@@ -297,7 +297,7 @@
       <label xml:lang="it">Identificatore del file</label>
       <help xml:lang="en">This metadata item is not required by INSPIRE but is useful to draw the correspondence between the metadata record and the resource itself.
         It is therefore suggested that the workflow invoking EDI provides this piece of information as a request parameter.</help>
-      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente. 
+      <help xml:lang="it">Questo metadato non &#232; richiesto da INSPIRE ma &#232; utile per tracciare la corrispondenza tra il metadato e la risorsa corrispondente.
         &#201; quindi consigliato che EDI riceva questa informazione come parametro della richiesta.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
@@ -390,10 +390,10 @@
       <id>md_resp</id>
       <label xml:lang="en">Metadata point of contact</label>
       <label xml:lang="it">Punto di contatto dei metadati</label>
-      <help xml:lang="en">Party responsible for the metadata information. Start typing at least the first 3 letters of your e-mail address and, 
-          if you are in the database of contacts, the fields will autocomplete. More than one contact can be added clicking the blue button.</help>
-      <help xml:lang="it">Parte responsabile delle informazioni contenute nei metadati. I campi sono ad autocompletamento per chi &#232; inserito nel 
-          database dei contatti, &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email. </help>
+      <help xml:lang="en">Party responsible for the metadata information. Start typing at least the first 3 letters of your e-mail address and,
+        if you are in the database of contacts, the fields will autocomplete. More than one contact can be added clicking the blue button.</help>
+      <help xml:lang="it">Parte responsabile delle informazioni contenute nei metadati. I campi sono ad autocompletamento per chi &#232; inserito nel
+        database dei contatti, &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata</hasRoot>
@@ -539,7 +539,7 @@
           <hasDatatype>codelist</hasDatatype>
           <show>combobox</show>
           <datasource>referenceSystemCodes</datasource>
-	  <queryStringParameter>referencesystem</queryStringParameter>
+          <queryStringParameter>referencesystem</queryStringParameter>
           <useCode>true</useCode>
         </item>
         <item>
@@ -561,7 +561,7 @@
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title</hasRoot>
-        <produces>
+      <produces>
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString</hasPath>
@@ -569,7 +569,7 @@
           <hasDatatype>string</hasDatatype>
           <queryStringParameter>title</queryStringParameter>
         </item>
-        </produces>
+      </produces>
     </element>
     <!--Resource abstract -->
     <element>
@@ -577,9 +577,9 @@
       <label xml:lang="en">Resource abstract</label>
       <label xml:lang="it">Descrizione della risorsa</label>
       <help xml:lang="en">Brief narrative summary of the content of the resource(s). There is already a text with the ERMES short description, add the information
-      regarding the data contents before.</help>
+        regarding the data contents before.</help>
       <help xml:lang="it">Breve sommario discorsivo del contenuto della/e risorsa/e. E' gia' contenuta una breve descrizione del progetto ERMES,
-      si devono aggiungere prima le informazioni relative ai contenuti della risorsa</help>
+        si devono aggiungere prima le informazioni relative ai contenuti della risorsa</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract</hasRoot>
@@ -589,7 +589,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
-         <queryStringParameter>abstract</queryStringParameter>
+          <queryStringParameter>abstract</queryStringParameter>
         </item>
       </produces>
     </element>
@@ -617,11 +617,11 @@
       <label xml:lang="en">Responsible party</label>
       <label xml:lang="it">Responsabile</label>
       <help xml:lang="en">Identification of, and means of communication with, person(s) and organization(s) associated with the resource(s).
-          Start typing at least the first 3 letters of your e-mail address and, if you are in the database of contacts, the fields will autocomplete.
-          More than one contact can be added clicking the blue button.</help>
+        Start typing at least the first 3 letters of your e-mail address and, if you are in the database of contacts, the fields will autocomplete.
+        More than one contact can be added clicking the blue button.</help>
       <help xml:lang="it">Identificazione delle persone e organizzazioni associate alla risorsa, e mezzo di comunicazione con esse.
-          I campi sono ad autocompletamento per chi &#232; inserito nel database dei contatti,
-          &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email.</help>
+        I campi sono ad autocompletamento per chi &#232; inserito nel database dei contatti,
+        &#232; sufficiente cominciare a digitare le prime 3 lettere dell'indirizzo email.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -644,7 +644,7 @@
           <label xml:lang="it">Ente</label>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
-         <!--Organisation-->
+          <!--Organisation-->
           <hasDatatype>select</hasDatatype>
           <datasource>personS_2</datasource>
           <field>inst</field>
@@ -690,7 +690,7 @@
       </produces>
     </element>
   </group>
-<!-- Classification group-->
+  <!-- Classification group-->
   <group>
     <id>keyword</id>
     <label xml:lang="en">Classification</label>
@@ -701,9 +701,9 @@
       <label xml:lang="en">INSPIRE theme</label>
       <label xml:lang="it">Tema di INSPIRE</label>
       <help xml:lang="en">The INSPIRE Theme that is used for describing the resource. There is already a default value; you can add
-      other themes by clicking the blue button, then choosing form the list.</help>
+        other themes by clicking the blue button, then choosing form the list.</help>
       <help xml:lang="it">Parola chiave per descrivere la risorsa come da temi (categorie tematiche) INSPIRE. E' presente un valore
-      di default, &#232; possibile aggiungere un secondo tema premendo il pulsante blue e scegliendo dalla lista. </help>
+        di default, &#232; possibile aggiungere un secondo tema premendo il pulsante blue e scegliendo dalla lista. </help>
       <isMandatory>forData</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -856,7 +856,7 @@
       </produces>
     </element>
   </group>
-<!--Constraints group -->
+  <!--Constraints group -->
   <group>
     <id>constraints</id>
     <label xml:lang="en">Constraints related to access and use</label>
@@ -866,10 +866,10 @@
       <id>lim_uso</id>
       <label xml:lang="en">Conditions applying to access and use</label>
       <label xml:lang="it">Condizioni applicabili all'accesso e all'uso</label>
-        <help xml:lang="en">Access constraints applied to assure the protection of privacy or
-            intellectual property, and any special restrictions or limitations on obtaining the
-            resource. E.g., user registration, monetary charge, non commercial use, etc.</help>
-        <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o propriet&#224; intellettuale. Ad esempio: previa registrazione, addebito monetario, uso non commerciale, ecc. </help>
+      <help xml:lang="en">Access constraints applied to assure the protection of privacy or
+        intellectual property, and any special restrictions or limitations on obtaining the
+        resource. E.g., user registration, monetary charge, non commercial use, etc.</help>
+      <help xml:lang="it">Vincoli di accesso per garantire la protezione di privacy o propriet&#224; intellettuale. Ad esempio: previa registrazione, addebito monetario, uso non commerciale, ecc. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -885,10 +885,10 @@
     <!--Limitations on public access-->
     <element>
       <id>vinc_acc</id>
-        <label xml:lang="en">Limitations on public access</label>
-        <label xml:lang="it">Limitazioni all&apos;accesso pubblico</label>
-        <help xml:lang="en">Select from the list the limitations on the access and use of a resource or metadata. </help>
-        <help xml:lang="it">Selezionare dalla lista le restrizioni applicabili all&apos;accesso e utilizzo della risorsa. Per gli OpenData indicare &apos;Altri vincoli&apos;. </help>
+      <label xml:lang="en">Limitations on public access</label>
+      <label xml:lang="it">Limitazioni all&apos;accesso pubblico</label>
+      <help xml:lang="en">Select from the list the limitations on the access and use of a resource or metadata. </help>
+      <help xml:lang="it">Selezionare dalla lista le restrizioni applicabili all&apos;accesso e utilizzo della risorsa. Per gli OpenData indicare &apos;Altri vincoli&apos;. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -918,16 +918,16 @@
         <item>
           <hasIndex>4</hasIndex>
           <label xml:lang="en">Other constraints</label>
-		<help xml:lang="en">Free-text describing constraints or prerequisites for access and fruition of the data. For OpenData it is suggested to indicate as public access, or public access and fruition.</help>
-          <label xml:lang="it">Altri vincoli</label>          
-<help xml:lang="it">E&apos; un testo libero che descrive i vincoli o prerequisiti legali per l&apos;accesso e/o l&apos;utilizzo della risorsa (o dato), da indicare se nel campo precedente si &#232; indicato &apos; Altri vincoli&apos;. Per il dato pubblico (o OpenData) si deve qui indicare: l&apos;accesso ai dati &#232; pubblico o l&apos;accesso e la fruibilit&#224; del dato sono pubblici ed . </help>
+          <help xml:lang="en">Free-text describing constraints or prerequisites for access and fruition of the data. For OpenData it is suggested to indicate as public access, or public access and fruition.</help>
+          <label xml:lang="it">Altri vincoli</label>
+          <help xml:lang="it">E&apos; un testo libero che descrive i vincoli o prerequisiti legali per l&apos;accesso e/o l&apos;utilizzo della risorsa (o dato), da indicare se nel campo precedente si &#232; indicato &apos; Altri vincoli&apos;. Per il dato pubblico (o OpenData) si deve qui indicare: l&apos;accesso ai dati &#232; pubblico o l&apos;accesso e la fruibilit&#224; del dato sono pubblici ed . </help>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
         </item>
       </produces>
     </element>
-<!--Description group -->    
+    <!--Description group -->
   </group>
   <group>
     <id>ling_d</id>
@@ -981,7 +981,7 @@
           <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/uom/ML_gmxUom.xml#m</hasValue>
         </item>
       </produces>
-    </element>    
+    </element>
     <!--Resource language -->
     <element>
       <id>ling</id>
@@ -1040,9 +1040,9 @@
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>    
+    </element>
   </group>
-<!--Geo Location group -->
+  <!--Geo Location group -->
   <group>
     <id>geographic_location</id>
     <label xml:lang="en">Geographic location</label>
@@ -1054,7 +1054,7 @@
       <label xml:lang="it">Bounding box geografico</label>
       <help xml:lang="en">Western-, eastern-, sout-, and north-most coordinate of the limit of the
         dataset extent, expressed in decimal degrees in the WGS84 system. The map below allow for drawing, but the manual insertion
-      of precise coordinates is to be preferred</help>
+        of precise coordinates is to be preferred</help>
       <help xml:lang="it">Esprime l&apos;estensione della risorsa nello spazio geografico sotto
         forma di un ipotetico riquadro di delimitazione (Bounding Box), ovvero esprime la massima
         estensione del dato come si ottiene dalla coordinata pi&#249; occidentale, pi&#249;
@@ -1209,9 +1209,9 @@
           <hasValue>auto</hasValue>
         </item>
       </produces>
-    </element> 
+    </element>
   </group>
-<!--Quality and validity group -->
+  <!--Quality and validity group -->
   <group>
     <id>quality</id>
     <label xml:lang="en">Quality and validity</label>
@@ -1348,4 +1348,3 @@
     </element>
   </group>
 </template>
-
