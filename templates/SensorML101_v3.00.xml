@@ -2876,7 +2876,7 @@ WHERE {
                     <hasIndex>2</hasIndex>
                     <outIndex>5</outIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/@definition</hasPath>
-                    <isFixed>false</isFixed>
+                    <isFixed>true</isFixed>
                     <datasource>keywordsS</datasource>
                     <hasDatatype>select</hasDatatype>
                     <field>c</field>
