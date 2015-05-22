@@ -9,7 +9,11 @@
 <!-- TO DO: obsevableProperty da gestire con xslt -->
 <!-- TO DO: aggiungere produzione di QR code alla fine della creazione di SensorML -->
 <!-- TO DO: verificare come passare a inglese per "capabilities" -->
-<!-- TO DO:  -->
+<!-- TO DO: per INSPIRE Conf:
+    <xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt>
+    <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+    <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
+-->
 
 <template>
     <!-- SETTINGS -->
@@ -2500,18 +2504,18 @@
             </produces>
         </element>
     </group>
-    <!--END Hystory Group -->
+    <!--END History Group -->
 
     <!--=================== -->
     <!--Position Properties -->
     <!--=================== -->
-    <!--<group>
+    <group>
         <id>position_prop</id>
         <label xml:lang="it">Posizione geografica</label>
         <help/>
         <label xml:lang="en">Position Properties</label>
         <help/>
-        <!-\-Reference system -\->
+        <!--Reference system -->
         <element>
             <id>ref_sys</id>
             <label xml:lang="en">Reference system</label>
@@ -2538,8 +2542,8 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <!-\-<label xml:lang="it">Sistema di riferimento</label>-\->
-                    <!-\-<label xml:lang="en">Reference system</label>-\->
+                    <!--<label xml:lang="it">Sistema di riferimento</label>-->
+                    <!--<label xml:lang="en">Reference system</label>-->
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/@referenceFrame</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
@@ -2554,7 +2558,7 @@
                 </item>
             </produces>
         </element>
-        <!-\-easting -\->
+        <!--easting -->
         <element>
             <id>easting</id>
             <label xml:lang="it">Est</label>
@@ -2585,15 +2589,15 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>degree</hasValue>
-                    <!-\-<defaultValue>degree</defaultValue> -\->
+                    <!--<defaultValue>degree</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>3</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2601,13 +2605,13 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                    <!-\- <help xml:lang="it"></help> -\->
+                    <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                    <!-\-<help xml:lang="en"></help> -\->
+                    <!--<help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
-        <!-\-northing -\->
+        <!--northing -->
         <element>
             <id>northing</id>
             <label xml:lang="it">Nord</label>
@@ -2638,15 +2642,15 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>degree</hasValue>
-                    <!-\-<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -\->
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>3</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2654,13 +2658,13 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                   <!-\- <help xml:lang="it"></help> -\->
+                   <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                   <!-\-  <help xml:lang="en"></help> -\->
+                   <!--  <help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
-        <!-\-Altitude -\->
+        <!--Altitude -->
         <element>
             <id>altitude</id>
             <label xml:lang="it">Altitudine</label>
@@ -2680,26 +2684,26 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>m</hasValue>
-                    <!-\-<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -\->
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>2</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>2</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <!-\-<label>Altitudine (Altitude)</label> -\->
+                    <!--<label>Altitudine (Altitude)</label> -->
                 </item>
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Position Properties Group -->
 
     <!--===== -->
