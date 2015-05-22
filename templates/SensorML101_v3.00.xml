@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template [
-        <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
-        <!ENTITY dct "http://purl.org/dc/terms/">
-        <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
-        <!ENTITY dcat "http://www.w3.org/ns/dcat#">
-        ]>
+    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+    <!ENTITY dct "http://purl.org/dc/terms/">
+    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+]>
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 <!-- TO DO: obsevableProperty da gestire con xslt -->
 <!-- TO DO: aggiungere produzione di QR code alla fine della creazione di SensorML -->
 <!-- TO DO: verificare come passare a inglese per "capabilities" -->
-<!-- TO DO:  -->
+<!-- TO DO: per INSPIRE Conf:
+    <xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt>
+    <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+    <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
+-->
+<!-- INSPIRE workshop -->
 
 <template>
     <!-- SETTINGS -->
@@ -508,13 +513,13 @@
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
+           <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
                 CTP Recorder, ecc.).</help>
             <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer (e.g.
-                Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
+                not its description; it could coincide with the name given by the manufacturer (e.g. 
+		Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
@@ -744,8 +749,8 @@
             <label xml:lang="it">Denominazione del produttore</label>
             <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters
-                to obtain suggested autocompletion from a manufacturer list.</help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
+		to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -813,7 +818,7 @@
             <label xml:lang="it">Numero seriale</label>
             <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -931,8 +936,8 @@
             <label xml:lang="it">Parole chiave da vocabolari controllati</label>
             <help xml:lang="it">Indicare una o pi&#249; parole chiave da associare al sensore, al sistema di sensori o alla piattaforma, per permetterne il reperimento in fase di ricerca. Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato, creato in ambito SeaDataNet.</help>
             <label xml:lang="en">Keyword from controlled vocabularies</label>
-            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. Start typing the first three letters
-                to obtain suggested autocompletion from controlled vocabularies, belonging to the SeaDataNet framework.</help>
+            <help xml:lang="en">One or more keywords describing the sensor, system or platform for enabling its discovery. Start typing the first three letters 
+		to obtain suggested autocompletion from controlled vocabularies, belonging to the SeaDataNet framework.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:keywords/sml:KeywordList</hasRoot>
@@ -997,11 +1002,11 @@
                     <hasIndex>2</hasIndex>
                     <outIndex>4</outIndex>
                     <label xml:lang="it">Parola chiave della tipologia</label>
-                    <help xml:lang="it"> Parola chiave che indica il tipo di sensore o sistema (es. sensore di temperatura dell&#8217;acqua, sensore di salinit&#224;, radiometro, ecc.).
-                        Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato </help>
+	            <help xml:lang="it"> Parola chiave che indica il tipo di sensore o sistema (es. sensore di temperatura dell&#8217;acqua, sensore di salinit&#224;, radiometro, ecc.).
+			Digitare almeno tre lettere per ottenere suggerimenti di parole chiave da vocabolario controllato </help>
                     <label xml:lang="en">Keyword of the sensor type</label>
                     <help xml:lang="en">Keyword indicating the typology of the sensor or system (e.g. water temperature sensor, salinity sensor, radiometer, etc.). Start typing
-                        to obtain suggested autocompletion from controlled vocabularies</help>
+			to obtain suggested autocompletion from controlled vocabularies</help>
                     <hasPath>sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1256,9 +1261,9 @@
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
-                    <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
+		            <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
-                    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
+		            <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
 
                 </item>
                 <item>
@@ -1321,9 +1326,9 @@
                     <hasDatatype>string</hasDatatype>
                     <!--es. 13 -->
                     <label xml:lang="it">Valore caratteristica fisica</label>
-                    <help xml:lang="it">Indicare il valore della caratteristica fisica nell&#8217;unit&#224; di misura specificata.</help>
-                    <label xml:lang="en">Value</label>
-                    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
+		    <help xml:lang="it">Indicare il valore della caratteristica fisica nell&#8217;unit&#224; di misura specificata.</help>
+		    <label xml:lang="en">Value</label>
+		    <help xml:lang="en">Insert the physical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
@@ -1387,7 +1392,7 @@
                     <label xml:lang="it">Unit&#224; di misura</label>
                     <help xml:lang="it">Indicare l'unit&#224; di misura per esteso; iniziare a digitare per ottenere l&#8217;autocompletamento del campo.</help>
                     <label xml:lang="en">Unit of measurement</label>
-                    <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
+		            <help xml:lang="en">Unit of measurement written in full, start typing for autocompletion.</help>
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
@@ -1414,8 +1419,8 @@
                     <!--es. 13 -->
                     <label xml:lang="it">Valore caratteristica elettrica</label>
                     <help xml:lang="it">Indicare il valore della caratteristica elettrica nell&#8217;unit&#224; di misura specificata.</help>
-                    <label xml:lang="en">Value</label>
-                    <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
+		            <label xml:lang="en">Value</label>
+		            <help xml:lang="en">Insert the electrical quantity in the specified unit of measurement.</help>
                 </item>
             </produces>
         </element>
@@ -1668,7 +1673,7 @@
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
             <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
-                del progetto RITMARE</help>
+             del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
@@ -1964,10 +1969,10 @@
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
             <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
+                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
             <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
-                peer-reviewed algorithm literature, etc.).</help>
+		 peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -2500,18 +2505,18 @@
             </produces>
         </element>
     </group>
-    <!--END Hystory Group -->
+    <!--END History Group -->
 
     <!--=================== -->
     <!--Position Properties -->
     <!--=================== -->
-    <!--<group>
+    <group>
         <id>position_prop</id>
         <label xml:lang="it">Posizione geografica</label>
         <help/>
         <label xml:lang="en">Position Properties</label>
         <help/>
-        <!-\-Reference system -\->
+        <!--Reference system -->
         <element>
             <id>ref_sys</id>
             <label xml:lang="en">Reference system</label>
@@ -2538,8 +2543,8 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <!-\-<label xml:lang="it">Sistema di riferimento</label>-\->
-                    <!-\-<label xml:lang="en">Reference system</label>-\->
+                    <!--<label xml:lang="it">Sistema di riferimento</label>-->
+                    <!--<label xml:lang="en">Reference system</label>-->
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/@referenceFrame</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
@@ -2554,7 +2559,7 @@
                 </item>
             </produces>
         </element>
-        <!-\-easting -\->
+        <!--easting -->
         <element>
             <id>easting</id>
             <label xml:lang="it">Est</label>
@@ -2585,15 +2590,15 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>degree</hasValue>
-                    <!-\-<defaultValue>degree</defaultValue> -\->
+                    <!--<defaultValue>degree</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>3</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2601,13 +2606,13 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                    <!-\- <help xml:lang="it"></help> -\->
+                    <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                    <!-\-<help xml:lang="en"></help> -\->
+                    <!--<help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
-        <!-\-northing -\->
+        <!--northing -->
         <element>
             <id>northing</id>
             <label xml:lang="it">Nord</label>
@@ -2638,15 +2643,15 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>degree</hasValue>
-                    <!-\-<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -\->
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>3</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2654,13 +2659,13 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                   <!-\- <help xml:lang="it"></help> -\->
+                   <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                   <!-\-  <help xml:lang="en"></help> -\->
+                   <!--  <help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
-        <!-\-Altitude -\->
+        <!--Altitude -->
         <element>
             <id>altitude</id>
             <label xml:lang="it">Altitudine</label>
@@ -2680,26 +2685,26 @@
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>m</hasValue>
-                    <!-\-<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -\->
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -->
                 </item>
-                <!-\-<item>
+                <!--<item>
           <hasIndex>2</hasIndex>
           <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@xlink:href</hasPath>
           <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</hasValue>
-        </item> -\->
+        </item> -->
                 <item>
                     <hasIndex>2</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
-                    <!-\-<label>Altitudine (Altitude)</label> -\->
+                    <!--<label>Altitudine (Altitude)</label> -->
                 </item>
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Position Properties Group -->
 
     <!--===== -->
@@ -2962,3 +2967,4 @@
     <!--END Output Group -->
 
 </template>
+
