@@ -668,12 +668,18 @@ var edi = (function() {
             ediml.loadEDIML(querystring("edit"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
+                setTimeout( function() {
+                    DataSourcePool.getInstance().refreshAll();
+                }, settings.refreshDelay);
             });
         }
         if ( querystring("duplicate") ) {
             ediml.loadEDIML(querystring("duplicate"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
+                setTimeout( function() {
+                    DataSourcePool.getInstance().refreshAll();
+                }, settings.refreshDelay);
                 ediml.content.elements.fileId = undefined;
             });
         }

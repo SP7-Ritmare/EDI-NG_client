@@ -20,8 +20,8 @@
          xmlns:foaf="http://xmlns.com/foaf/0.1/">
         </rdf:RDF>
       ]]>
-    </baseDocument>    
-  </settings> 
+    </baseDocument>
+  </settings>
   <endpointTypes>
     <endpointType>
       <id>virtuoso</id>
@@ -54,7 +54,7 @@
         <format>application/sparql-results+json</format>
       </parameters>
     </endpointType>
-    
+
   </endpointTypes>
   <datasources>
     <datasource>
@@ -206,8 +206,8 @@
       <singleton>false</singleton>
       <!-- <url>http://10.0.0.10:8890/sparql</url> -->
       <endpointType>virtuoso</endpointType>
-      <query>    
-            <![CDATA[
+      <query>
+        <![CDATA[
               SELECT ?c ?l
               FROM <http://ritmare.it/rdfdata/reference>
               WHERE {
@@ -221,11 +221,11 @@
       <type>
         sparql
       </type>
-    </datasource>    
+    </datasource>
     <datasource>
       <id>networks</id>
       <uri>http://ritmare.it/rdfdata/thesauri/accountServices</uri>
-      
+
       <singleton>false</singleton>
       <endpointType>virtuoso</endpointType>
       <query>
@@ -288,12 +288,12 @@
             ?c pubblicazioni:titolo ?l .
           }
         ]]>
-      </query>   
+      </query>
       <type>
         sparql
       </type>
     </datasource>
-    
+
     <datasource>
       <id>pubs</id>
       <singleton>false</singleton>
@@ -347,8 +347,8 @@
         sparql
       </type>
     </datasource>
-    
-  </datasources>    
+
+  </datasources>
   <group>
     <id>external_accounts</id>
     <label xml:lang="it">Account esterni</label>
@@ -369,7 +369,7 @@
           <hasPath>/rdf:RDF/foaf:Person/foaf:account/foaf:accountName</hasPath>
           <isFixed>false</isFixed>
           <id>foaf:accountName</id>
-          <hasDatatype>string</hasDatatype> 
+          <hasDatatype>string</hasDatatype>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -379,7 +379,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>code</hasDatatype>
           <datasource>networks</datasource>
-	        <useCode>true</useCode>
+          <useCode>true</useCode>
           <show>combobox</show>
         </item>
       </produces>
@@ -529,7 +529,7 @@
           <datasource>address</datasource>
           <hasDatatype>select</hasDatatype>
           <field>loc</field>
-        </item>      
+        </item>
         <item>
           <label xml:lang="it">C.A.P.</label>
           <label xml:lang="en">Postal code</label>
@@ -552,7 +552,7 @@
           <show>hidden</show>
           <field>cou</field>
         </item>
-        -->        
+        -->
         <item>
           <label xml:lang="it">Nazione</label>
           <label xml:lang="en">Country</label>
@@ -564,7 +564,7 @@
           <hasDatatype>select</hasDatatype>
           <!-- <useCode>true</useCode> -->
           <defaultValue>http://eulersharp.sourceforge.net/2003/03swap/countries#it</defaultValue>
-        </item>      
+        </item>
       </produces>
     </element>
   </group>
@@ -610,7 +610,7 @@
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>     
+    </element>
     <element>
       <id>pubblicazioni</id>
       <label xml:lang="it">Pubblicazioni</label>
@@ -627,10 +627,10 @@
           <hasDatatype>autoCompletion</hasDatatype>
           <!-- <isLanguageNeutral>true</isLanguageNeutral> -->
           <useCode>true</useCode>
-        </item>        
+        </item>
       </produces>
-    </element>       
-    
+    </element>
+
     <element>
       <id>people_pubblicazioni</id>
       <label xml:lang="it">Pubblicazioni da PEOPLE</label>
@@ -649,10 +649,10 @@
           <!-- <isLanguageNeutral>true</isLanguageNeutral> -->
           <useCode>true</useCode>
           <show>combobox</show>
-        </item>        
+        </item>
       </produces>
-    </element> 
-    
+    </element>
+
   </group>
   <group>
     <id>rete</id>
@@ -679,7 +679,7 @@
           <field>c</field>
         </item>
         -->
-       <item>
+        <item>
           <hasIndex>1</hasIndex>
           <hasPath>/rdf:RDF/foaf:Person/foaf:knows/@rdf:resource</hasPath>
           <isFixed>false</isFixed>
@@ -688,6 +688,6 @@
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
-    </element>    
+    </element>
   </group>
 </template>
