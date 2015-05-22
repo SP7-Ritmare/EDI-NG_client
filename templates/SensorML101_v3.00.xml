@@ -14,6 +14,7 @@
     <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
     <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
 -->
+<!-- development -->
 
 <template>
     <!-- SETTINGS -->
@@ -2509,6 +2510,7 @@
     <!--=================== -->
     <!--Position Properties -->
     <!--=================== -->
+    <!-- valid -->
     <group>
         <id>position_prop</id>
         <label xml:lang="it">Posizione geografica</label>
@@ -2793,12 +2795,12 @@
     <!--====== -->
     <!--Output -->
     <!--====== -->
-    <!--<group>
+    <group>
         <id>output</id>
         <label xml:lang="it">Parametri misurati</label>
-        <!-\-<help xml:lang="it">Lista dei parametri misurati</help>-\->
+        <!--<help xml:lang="it">Lista dei parametri misurati</help>-->
         <label xml:lang="en">Output signals</label>
-        <!-\-<help xml:lang="en">List of output signals</help>-\->
+        <!--<help xml:lang="en">List of output signals</help>-->
         <element>
             <id>output_datatime</id>
             <label xml:lang="it">Data e ora dei parametri misurati</label>
@@ -2831,20 +2833,19 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasPath>
+                    <hasPath>sml:output/@name</hasPath>
                     <isFixed>false</isFixed>                    
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
                     <label xml:lang="it">Nome parametro misurato</label>
                     <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
-                    <!-\-es CP -\->
+                    <!--es CP -->
                     <label xml:lang="en">Output signal</label>
-                    <help xml:lang="en">Measured parameter. Start typing the first three letters 
-		to obtain suggested autocompletion from controlled vocabularies.</help>
+                    <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/@definition</hasPath>
+                    <hasPath>sml:output/swe:Quantity/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>ref</hasDatatype>
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasValue>
@@ -2870,8 +2871,7 @@
                     <label xml:lang="it">Unit&#224; di misura</label>
                     <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
                     <label xml:lang="en">Unit of measurement</label>
-                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters 
-		to obtain suggested autocompletion from controlled vocabularies.</help>
+                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
@@ -2922,7 +2922,7 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Accuratezza del sistema</label>
-		<!-\- o accuratezza dello strumento? -\->
+		<!-- o accuratezza dello strumento? -->
                     <help xml:lang="it">Accuratezza del sistema, espressa da un singolo valore numerico (es. 0.01), 
 			di cui si esprimer&#224; l&apos;unit&#224; nel campo successivo. </help>
                     <label xml:lang="en">Accuracy of system (ex. 1)</label>
@@ -2962,7 +2962,7 @@
                 </item>
             </produces>
         </element>
-    </group>-->
+    </group>
     <!--END Output Group -->
 
 </template>
