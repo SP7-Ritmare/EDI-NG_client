@@ -2833,13 +2833,156 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
+                    <outIndex>1</outIndex>
+                    <hasPath>sml:output/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>keywords</datasource>
+                    <label xml:lang="it">Nome parametro misurato</label>
+                    <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
+                    <!--es CP -->
+                    <label xml:lang="en">Output signal</label>
+                    <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <outIndex>5</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <datasource>keywordsS</datasource>
+                    <hasDatatype>select</hasDatatype>
+                    <field>c</field>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasValue>
+                    <!-- <useCode>true</useCode> -->
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <outIndex>6</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/gml:description</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>text</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Descrizione del parametro misurato</label>
+                    <help xml:lang="it">Breve descrizione testuale del parametro in output.</help>
+                    <label xml:lang="en">Description of output signal</label>
+                    <help xml:lang="en">Brief textual description of the output signal.</help>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <outIndex>7</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
+                    <label xml:lang="it">Unit&#224; di misura</label>
+                    <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
+                    <label xml:lang="en">Unit of measurement</label>
+                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <outIndex>8</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>6</hasIndex>
+                    <outIndex>9</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+                <item>
+                    <hasIndex>7</hasIndex>
+                    <outIndex>10</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:constraint/swe:AllowedValues/swe:interval</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Ampiezza valori ammissibili</label>
+                    <help xml:lang="it">Intervallo dei valori in output del parametro misurato, espresso come valore minimo e valore massimo intervallati da uno spazio, ad esempio -5 +35</help>
+                    <label xml:lang="en">Allowed values</label>
+                    <help xml:lang="en">Output range, expressed by minimum value and maximum value separated by a blank space, e.g., 5 +35</help>
+                </item>
+                <item>
+                    <hasIndex>8</hasIndex>
+                    <outIndex>11</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/@xlink:role</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:phenomenon:OGC:accuracy</hasValue>
+                </item>
+                <item>
+                    <hasIndex>9</hasIndex>
+                    <outIndex>12</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/@definition</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URN</hasDatatype>
+                    <hasValue>urn:ogc:def:sensor:OGC:absoluteAccuracy</hasValue>
+                </item>
+                <item>
+                    <hasIndex>10</hasIndex>
+                    <outIndex>13</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>user-defined</hasValue>
+                    <label xml:lang="it">Accuratezza del sistema</label>
+                    <!-- o accuratezza dello strumento? -->
+                    <help xml:lang="it">Accuratezza del sistema, espressa da un singolo valore numerico (es. 0.01),
+                        di cui si esprimer&#224; l&apos;unit&#224; nel campo successivo. </help>
+                    <label xml:lang="en">Accuracy of system (ex. 1)</label>
+                    <help xml:lang="en">System accuracy, as a single value (e.g., 0.01), whose unit of measurement will be indicated
+                        in the following field.</help>
+                </item>
+                <item>
+                    <hasIndex>11</hasIndex>
+                    <outIndex>10</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>uom</datasource>
+                    <label xml:lang="it">Unit&#224; di misura dell&apos;accuratezza</label>
+                    <help xml:lang="it">Unit&#224; di misura dell&apos;accuratezza, come espressa nel campo precedente. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
+                    <label xml:lang="en">Unit of measurement of accuracy</label>
+                    <help xml:lang="en">Unit of measurement of system accuracy, as indicated in the previous field. Start typing the first three letters
+                        to obtain suggested autocompletion from controlled vocabularies.</help>
+                </item>
+                <item>
+                    <hasIndex>12</hasIndex>
+                    <outIndex>11</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasValue>
+                    <useURN>true</useURN>
+                </item>
+                <item>
+                    <hasIndex>13</hasIndex>
+                    <outIndex>12</outIndex>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasValue>
+                    <useCode>true</useCode>
+                </item>
+            </produces>
+            
+            <!--<produces>
+                <item>
+                    <hasIndex>1</hasIndex>
                     <hasPath>sml:output/@name</hasPath>
                     <isFixed>false</isFixed>                    
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
                     <label xml:lang="it">Nome parametro misurato</label>
                     <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
-                    <!--es CP -->
+                    <!-\-es CP -\->
                     <label xml:lang="en">Output signal</label>
                     <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
@@ -2922,7 +3065,7 @@
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                     <label xml:lang="it">Accuratezza del sistema</label>
-		<!-- o accuratezza dello strumento? -->
+		<!-\- o accuratezza dello strumento? -\->
                     <help xml:lang="it">Accuratezza del sistema, espressa da un singolo valore numerico (es. 0.01), 
 			di cui si esprimer&#224; l&apos;unit&#224; nel campo successivo. </help>
                     <label xml:lang="en">Accuracy of system (ex. 1)</label>
@@ -2960,7 +3103,7 @@
                     <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:quality/swe:Quantity/swe:uom</hasValue>
                     <useCode>true</useCode>
                 </item>
-            </produces>
+            </produces>-->
         </element>
     </group>
     <!--END Output Group -->
