@@ -321,7 +321,7 @@
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/project>
+                        FROM <http://ritmare.it/rdfdata/lotrx>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
@@ -389,7 +389,7 @@
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/project>
+                        FROM <http://ritmare.it/rdfdata/lotrx>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
