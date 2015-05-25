@@ -6,7 +6,6 @@
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
-<!-- TO DO: verificare come usare la parte di xlink:href e code per codelist e autocompletion (es. output, physical prop e electrical prop) -->
 <!-- inspireworkshop -->
 
 <template>
@@ -340,43 +339,61 @@
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-                        WHERE { 
-                          OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
-                          }
-                          OPTIONAL {
-                            <$search_param> foaf:fullName ?fullname .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:email ?email .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3 .
-                            ?b3 foaf:homepage ?homepage .
-                            ?b3 foaf:name ?l .
-                          }
+SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+WHERE {
+  OPTIONAL {
+    <$search_param> foaf:phone ?phone .
+  }
+  OPTIONAL {
+    <$search_param> foaf:fullName ?fullname .
+  }
+  OPTIONAL {
+    <$search_param> vcard:email ?email .
+  }
+  OPTIONAL {
+    <$search_param> vcard:org ?b3 .
+    ?b3 foaf:homepage ?homepage .
+    ?b3 foaf:name ?l .
+  }
 
-                          {
-                            <$search_param> vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          } UNION {
-                            ?b3 vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          }
-
-                          FILTER(lang(?l)='it')
-                        }
-                        LIMIT 1
-                        ]]>
+  {
+    <$search_param> vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  } UNION {
+    ?b3 vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  }
+}
+LIMIT 1
+                ]]>
             </query>
             <triggerItem>owner_1_uri</triggerItem>
             <type> sparql </type>
@@ -408,42 +425,60 @@
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-                        WHERE { 
-                          OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
-                          }
-                          OPTIONAL {
-                            <$search_param> foaf:fullName ?fullname .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:email ?email .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3 .
-                            ?b3 foaf:homepage ?homepage .
-                            ?b3 foaf:name ?l .
-                          }
-
-                          {
-                            <$search_param> vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          } UNION {
-                            ?b3 vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          }
-
-                          FILTER(lang(?l)='it')
-                        }
-                        LIMIT 1
+SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+WHERE {
+  OPTIONAL {
+    <$search_param> foaf:phone ?phone .
+  }
+  OPTIONAL {
+    <$search_param> foaf:fullName ?fullname .
+  }
+  OPTIONAL {
+    <$search_param> vcard:email ?email .
+  }
+  OPTIONAL {
+    <$search_param> vcard:org ?b3 .
+    ?b3 foaf:homepage ?homepage .
+    ?b3 foaf:name ?l .
+  }
+  
+  {
+    <$search_param> vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  } UNION {
+    ?b3 vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  }
+}
+LIMIT 1
                         ]]>
             </query>
             <triggerItem>operator_1_uri</triggerItem>
