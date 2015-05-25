@@ -19,7 +19,7 @@ var availableContexts = {
     SPARQL: "sparql"
 }
 var enabledContexts = [
-    "editfillin"
+    "duplicator"
 ];
 
 /*

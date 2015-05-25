@@ -441,7 +441,7 @@ element {
     max-height: 100%;
 }
 
-#mdcontent {
+#mdcontent, #please_wait {
     margin-left: 300px;
 }
 

@@ -368,7 +368,10 @@ var ediml = (function() {
                     }
                 }
             } else {
+                var logger = new Logger("duplicator");
                 var represents_element = element.id.replaceAll(cloneSuffix, "");
+                logger.log("represents_element: " + represents_element);
+                logger.log("element: " + element.id);
                 edi.duplicateElement(represents_element, element.id, false);
                 if ( !$.isArray(element.items.item) ) {
                     element.items.item = [element.items.item];
@@ -456,6 +459,8 @@ var ediml = (function() {
      * @param newId
      */
     function duplicateElement(id, newId) {
+        var logger = new Logger("duplicator");
+
         var element = getElement(id);
         logger.log("duplicating element " + id);
         if ( typeof element !== "undefined" ) {
@@ -463,6 +468,7 @@ var ediml = (function() {
             newElement.id = newId;
             newElement.root = element.root;
             newElement.mandatory = element.mandatory;
+            newElement.represents_element = element.represents_element;
             for ( var i = 0; i < element.items.item.length; i++ ) {
                 var item = element.items.item[i];
                 var newItem = new Item();

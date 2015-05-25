@@ -144,13 +144,17 @@ var DataSourcePool = (function(){
             findByElementId: function(element_id) {
                 var results = [];
                 var element = ediml.getElement(element_id);
-                for ( var i = 0; i < element.items.item.length; i++ ) {
-                    if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
-                        var ds = this.findById(element.items.item[i].datasource);
-                        if ( ! this.isDatasourceIn(ds.parameters.id, results) ) {
-                            results.push(ds);
+                if ( typeof element !== "undefined" ) {
+                    for ( var i = 0; i < element.items.item.length; i++ ) {
+                        if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
+                            var ds = this.findById(element.items.item[i].datasource);
+                            if ( ! this.isDatasourceIn(ds.parameters.id, results) ) {
+                                results.push(ds);
+                            }
                         }
                     }
+                } else {
+                    console.error("element " + element_id + " not found");
                 }
                 return results;
             },
@@ -291,6 +295,7 @@ var DataSourcePool = (function(){
              * @memberOf DataSourcePool
              */
             refreshAll: function() {
+                $("#theForm").addClass("loading");
                 for ( var i = 0; i < datasources.length; i++ ) {
                     var ds = datasources[i];
                     if ( typeof ds.parameters.triggerItem !== "undefined" ) {

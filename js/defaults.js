@@ -10,6 +10,6 @@ var defaults = {
     controlGroupCSS: "input-group",
     labelCSS: "form-label",
     DEBUG_DATASOURCES: false,
-    refreshDelay: 100,
-    selectsDelay: 1000
+    refreshDelay: 1000,
+    selectsDelay: 2000
 }

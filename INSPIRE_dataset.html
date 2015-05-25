@@ -22,6 +22,7 @@
     <!--
 <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
 -->
+    <script src="js/xml2json.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/sparql.js"></script>
     <script src="js/endpointtype.js"></script>
@@ -32,7 +33,6 @@
     <script src="js/element.js"></script>
     <script src="js/ediml.js"></script>
     <script src="js/edi.js"></script>
-    <script src="js/xml2json.js"></script>
     <script src="js/typeahead.jquery.js"></script>
     <script src="js/raphael-2.1.0-min.js"></script>
     <script src="js/qrcodesvg.js"></script>
@@ -74,7 +74,7 @@
         }
         $(document).ready(function () {
             // ediml.setPostCallbackError(pippo);
-            edi.loadLocalTemplate("INSPIRE_dataset", "1.00", onTemplateLoaded);
+            edi.loadLocalTemplate("INSPIRE_dataset", "1.01", onTemplateLoaded);
 
             /*
             ediml.setPostCallbackSuccess(function () {
@@ -111,7 +111,6 @@
 </head>
 <body>
 <div class="content-wrap">
-    <div id="mdcontent"></div>
     <div id="ediml">
 
     </div>

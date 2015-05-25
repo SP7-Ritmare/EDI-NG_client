@@ -59,6 +59,8 @@ var edi = (function() {
 
 
     function duplicateElement(element_id, newId, updateEdiml) {
+        var logger = new Logger("duplicator");
+
         var div = $("div[represents_element='" + element_id + "']:last");
         element_id = div.attr("id");
         var newId = div.attr("id") + cloneSuffix;
@@ -434,7 +436,7 @@ var edi = (function() {
             logger.log(item);
             $(toBeRefreshed[i]).change();
         }
-        $(".container").removeClass("loading");
+        $("#theForm").removeClass("loading");
         ediml.setDirty(false);
 
     }
@@ -658,30 +660,53 @@ var edi = (function() {
     }
 
     function updateDefaults() {
-        $("*[defaultValue]").each(function() {
-            // logger.log(this + " -> " + $(this).attr("defaultValue"));
-            $(this).val($(this).attr("defaultValue"));
-            $(this).trigger("change");
-        });
-        loadQuerystringDefaults();
-        if ( querystring("edit") ) {
+        if ( querystring("edit").length > 0 ) {
+            $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
+            $("#mdcontent").hide();
             ediml.loadEDIML(querystring("edit"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
                 setTimeout( function() {
+                    /*
+                    DataSourcePool.getInstance().addListener("allReady", function(event) {
+                        $("input", ".uris").trigger("change");
+                    });
+                    */
                     DataSourcePool.getInstance().refreshAll();
+
+                    setTimeout( function() {
+                        $("input", ".uris").trigger("change");
+                        $("#mdcontent").show();
+                        $("#please_wait").remove();
+                    }, defaults.selectsDelay);
                 }, settings.refreshDelay);
             });
-        }
-        if ( querystring("duplicate") ) {
+        } else if ( querystring("duplicate").length > 0 ) {
+            $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
+            $("#mdcontent").hide();
             ediml.loadEDIML(querystring("duplicate"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
                 setTimeout( function() {
+                    DataSourcePool.getInstance().addListener("allReady", function(event) {
+                        $("input", ".uris").trigger("change");
+                    });
                     DataSourcePool.getInstance().refreshAll();
+                    setTimeout( function() {
+                        $("input", ".uris").trigger("change");
+                        $("#mdcontent").show();
+                        $("#please_wait").remove();
+                    }, defaults.selectsDelay);
                 }, settings.refreshDelay);
                 ediml.content.elements.fileId = undefined;
             });
+        } else {
+            $("*[defaultValue]").each(function() {
+                // logger.log(this + " -> " + $(this).attr("defaultValue"));
+                $(this).val($(this).attr("defaultValue"));
+                $(this).trigger("change");
+            });
+            loadQuerystringDefaults();
         }
     }
 
@@ -856,7 +881,7 @@ var edi = (function() {
         });
 
         ediml.startListening();
-        updateDefaults();
+        setTimeout(updateDefaults, 2000);
         setLanguage(uiLanguage);
 
         if ( typeof callback === "function" ) {
