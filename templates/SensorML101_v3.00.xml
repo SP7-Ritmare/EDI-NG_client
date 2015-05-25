@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template [
-    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
-    <!ENTITY dct "http://purl.org/dc/terms/">
-    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
-    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
-]>
+        <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+        <!ENTITY dct "http://purl.org/dc/terms/">
+        <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+        <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+        ]>
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
 <!-- inspireworkshop -->
 
@@ -67,7 +67,7 @@
         </baseDocument>
 
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=2.00</xslt>
+            <xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt>
         </xsltChain>
     </settings>
 
@@ -570,13 +570,13 @@ LIMIT 1
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-           <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
+            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
                 CTP Recorder, ecc.).</help>
             <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer (e.g. 
-		Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
+                not its description; it could coincide with the name given by the manufacturer (e.g.
+                Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
@@ -816,8 +816,8 @@ LIMIT 1
             <label xml:lang="it">Denominazione del produttore</label>
             <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
-		to obtain suggested autocompletion from a manufacturer list.</help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters
+                to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -885,7 +885,7 @@ LIMIT 1
             <label xml:lang="it">Numero seriale</label>
             <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -1650,7 +1650,7 @@ LIMIT 1
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
             <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
-             del progetto RITMARE</help>
+                del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
@@ -1946,10 +1946,10 @@ LIMIT 1
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
             <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
+                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
             <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
-		 peer-reviewed algorithm literature, etc.).</help>
+                peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -2533,7 +2533,7 @@ LIMIT 1
                 di riferimento scelto</help>
             <label xml:lang="en">East</label>
             <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                 refers to the actual position of the sensor. The value must be given in 
+                refers to the actual position of the sensor. The value must be given in
                 the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -2586,7 +2586,7 @@ LIMIT 1
                 di riferimento scelto.</help>
             <label xml:lang="en">North</label>
             <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                 refers to the actual position of the sensor. The value must be given in 
+                refers to the actual position of the sensor. The value must be given in
                 the chosen reference system and in decimal degrees (ex. 45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -2621,9 +2621,9 @@ LIMIT 1
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                   <!-- <help xml:lang="it"></help> -->
+                    <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                   <!--  <help xml:lang="en"></help> -->
+                    <!--  <help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
