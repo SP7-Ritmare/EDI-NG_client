@@ -287,6 +287,12 @@ element {
     display: table-cell;
 }
 .uris {
+    /*
+    display: none;
+    */
+}
+
+.debug_info {
     display: none;
 }
 
@@ -490,4 +496,9 @@ element {
 
 .url_thumb img {
     height: 200px;
+}
+
+.debug_info {
+    min-height: 100px;
+    border: 1px red solid;
 }

@@ -23,6 +23,7 @@ var Autocompletion = (function() {
             $(control).attr("useCode", item.useCode);
             var suffix = '<div class="uris"><p><input type="text" disabled="disabled" size="80" id="' + id + '_uri"/></p><p><input type="text" disabled="disabled" size="80" id="' + id + '_urn"/></p></div>';
 
+            suffix += '<div id="' + id + '_debug_info' + '" class="debug_info"><label>datasource</label>&nbsp;<label>' + item.datasource + '</label>';
             var theElement = ediml.getElement(element.id);
             var theItem = new Item();
             theItem.id = item.id;

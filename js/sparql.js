@@ -53,12 +53,17 @@ var SPARQL = (function(url, endpointType) {
             language = "it";
         }
         var newQuery = query.toString().replace(/\$lang\$/g, language);
+/*
+        Escaping of parentheses
+            .replace(/\(/g, "\\(")
+            .replace(/\)/g, "\\)");
+*/
         logger.log(endpointType);
-        $.ajax({
+        var jqXHR = $.ajax({
             url: virtuosoUrl,
             type: endpointType.parameters.method,
             accepts: endpointType.parameters.contentType.json,
-            dataType: "jsonp",
+            dataType: "json",
             crossDomain: true,
             /*
             data: {
@@ -81,7 +86,7 @@ var SPARQL = (function(url, endpointType) {
                 }
             }
         });
-
+        return jqXHR;
     }
 
     function query(uri, callback, errorCallback, language) {
@@ -89,11 +94,12 @@ var SPARQL = (function(url, endpointType) {
             language = "it";
         }
         var sparqlQuery = getSparqlQuery(uri, language);
-        $.ajax({
+        var jqXHR = $.ajax({
             url: virtuosoUrl,
             type: endpointType.parameters.method,
-            contentType: endpointType.parameters.contentType.json,
-            dataType: "jsonp",
+            accepts: endpointType.parameters.contentType.json,
+            dataType: "json",
+            crossDomain: true,
             /*
             data: {
                 query: sparqlQuery,
@@ -111,10 +117,11 @@ var SPARQL = (function(url, endpointType) {
             error: function() {
                 logger.log(arguments);
                 if ( typeof errorCallback === "function") {
-                    errorCallback(data);
+                    errorCallback(arguments);
                 }
             }
         });
+        return jqXHR;
     }
     return {
         /**
