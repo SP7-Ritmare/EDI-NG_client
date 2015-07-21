@@ -13,6 +13,7 @@ var DataSourcePool = (function(){
     function init() {
         var listeners = [];
         var runningDatasources = [];
+        var promises = [];
         var datasources = [];
         var language = "it";
         var notifyListeners = true;
@@ -40,14 +41,81 @@ var DataSourcePool = (function(){
          * @returns {string}
          */
         function generateNewId(baseId) {
+            var id = baseId.replace(/_Clone_[0-9]+/g, "");
             var count = 0;
             for ( var i = 0; i < datasources.length; i++ ) {
-                if ( datasources[i].parameters.id.indexOf(baseId) == 0 ) {
+                if ( datasources[i].parameters.id.indexOf(id) == 0 ) {
                     count++;
                 }
             }
-            return baseId + "_Clone_" + count;
+            return id + "_Clone_" + count;
         }
+        /**
+         * @description whenAll receives an array of JQuery Promises (Deferreds) and stores them in an array.
+         * When all promises are fullfilled or rejected (that is "settled"), the global Deferred returned by this function
+         * is settled: resolved if all promised are fulfilled or rejected if at least one promise is rejected.
+         * Both the fail and done handler of the returned value of this method are called with the following object:
+         *
+         *      {
+    *          resolved:[{
+    *                      data: {*},
+    *                      textStatus: {string},
+    *                      jqXHR: {jqXHR}
+    *                   }],
+    *          rejected:[{
+    *                      jqXHR: {jqXHR},
+    *                      textStatus: {string},
+    *                      errorThrown: {string}
+    *                   }]
+    *       }
+         *
+         * @note the jqXHRs within out.resolved and out.rejected are the ones to inspect for myInfo.
+         * @param promises
+         * @returns {Deferred}
+         * @note cf. http://stackoverflow.com/questions/21515643/when-apply-on-array-of-promises
+         * @note This is a way to keep track of all the promises: on the contrary, JQuery.when.apply(promises).fail() does not behave the same way:
+         * it fails with the first promise failure.
+         */
+        function whenAll(promises) {
+            var i, resolved = [], rejected = [], countFinished=0 , dfd = $.Deferred();
+
+            var oneRejected = false;
+
+            function resolveOrReject() {
+                logger.warn(countFinished);
+                if (countFinished === promises.length) {
+                    var out={resolved: resolved,rejected:rejected};
+
+                    oneRejected ? dfd.reject(out) : dfd.resolve(out);
+                }
+            }
+
+            // init promises done and fail handlers
+            // for the done and fail args cf. https://github.com/jquery/api.jquery.com/issues/49
+            // and the (following) JQuery Ajax documentation
+            for (i = 0; i < promises.length; i++) {
+                promises[i]
+                    .done(function (data, textStatus, jqXHR) {
+                        resolved.push({data:data,textStatus:textStatus,jqXHR:jqXHR});
+                        jqXHR.additionalInfoFromHandler="done!";
+                        countFinished++;
+
+                        resolveOrReject();
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        oneRejected = true;
+
+                        //console.error("one promise failed:");
+                        //console.log(jqXHR.myInfo);
+                        rejected.push({jqXHR:jqXHR,textStatus:textStatus,errorThrown:errorThrown});
+                        countFinished++;
+                        jqXHR.additionalInfoFromHandler="failed!";
+                        resolveOrReject();
+                    });
+            }
+            return dfd.promise();
+        }
+
         return {
             setDatasourceTrigger: setDatasourceTrigger,
             /**
@@ -99,6 +167,15 @@ var DataSourcePool = (function(){
                 }
                 return undefined;
             },
+            addPromise: function(promise) {
+                promises.push(promise);
+            },
+            clearPromises: function() {
+                promises = [];
+            },
+            getPromises: function() {
+                return promises;
+            },
             /**
              * Find all datasources that are triggered by some Item belonging to an Element
              * Element is identified by its id
@@ -144,13 +221,17 @@ var DataSourcePool = (function(){
             findByElementId: function(element_id) {
                 var results = [];
                 var element = ediml.getElement(element_id);
-                for ( var i = 0; i < element.items.item.length; i++ ) {
-                    if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
-                        var ds = this.findById(element.items.item[i].datasource);
-                        if ( ! this.isDatasourceIn(ds.parameters.id, results) ) {
-                            results.push(ds);
+                if ( typeof element !== "undefined" ) {
+                    for ( var i = 0; i < element.items.item.length; i++ ) {
+                        if ( typeof element.items.item[i].datasource !== "undefined" && element.items.item[i].datasource != "" ) {
+                            var ds = this.findById(element.items.item[i].datasource);
+                            if ( ! this.isDatasourceIn(ds.parameters.id, results) ) {
+                                results.push(ds);
+                            }
                         }
                     }
+                } else {
+                    console.error("element " + element_id + " not found");
                 }
                 return results;
             },
@@ -181,6 +262,7 @@ var DataSourcePool = (function(){
                 }
                 return newDs;
             },
+            generateNewId: generateNewId,
             /**
              *
              * @memberOf DataSourcePool
@@ -214,6 +296,7 @@ var DataSourcePool = (function(){
              * @param event
              */
             trigger: function (event) {
+                logger.log("event " + event + " fired");
                 if ( ! notifyListeners ) {
                     return;
                 }
@@ -291,6 +374,8 @@ var DataSourcePool = (function(){
              * @memberOf DataSourcePool
              */
             refreshAll: function() {
+                DataSourcePool.getInstance().clearPromises();
+                $("#theForm").addClass("loading");
                 for ( var i = 0; i < datasources.length; i++ ) {
                     var ds = datasources[i];
                     if ( typeof ds.parameters.triggerItem !== "undefined" ) {
@@ -313,6 +398,13 @@ var DataSourcePool = (function(){
                     var ds = datasources[i];
                     ds.refresh(false);
                 }
+                function all_success() {
+                    instance.trigger("allDSRefreshed");
+                }
+                function some_failure() {
+                    instance.trigger("allDSRefreshed");
+                }
+                whenAll(promises).done(all_success).fail(some_failure);
             }
         };
     }
