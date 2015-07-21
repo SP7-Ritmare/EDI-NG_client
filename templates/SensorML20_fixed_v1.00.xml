@@ -6,8 +6,7 @@
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
 
-<!-- SensorML for mobile physical system where the positionis registered by a GPS from component output.
-     Position group is linked to the component output of the physiscal system.-->
+<!-- SensorML for fixed physical system -->
 
 <template>
     <!-- SETTINGS -->
@@ -43,9 +42,9 @@
         </baseDocument>
 
         <xsltChain>
-            <!-- TO DO: add SensorML20.xsl -->
-            <!-- TO DO: add in a SensorML20.xsl elements of InsertSensor by 52°North -->
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20.xsl?version=1.00</xslt>
+            <!-- TO DO: add SensorML20_fixed.xsl -->
+            <!-- TO DO: add in a SensorML20_fixed.xsl elements of InsertSensor by 52°North -->
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20_fixed.xsl?version=1.00</xslt>
         </xsltChain>
     </settings>
 
@@ -2318,21 +2317,21 @@
         <label xml:lang="en">Output signals</label>
         <!--<help xml:lang="en">List of output signals</help>-->
         <element>
-            <id>output_location</id>
-            <label xml:lang="it">Posizione, data e ora del sistema</label>
-            <help xml:lang="it">Spuntare la casella se il sistema raccoglie posizione geografica, data e ora durante i suoi spostamenti.</help>
-            <label xml:lang="en">Location, date and hour of physical system</label>
-            <help xml:lang="en">Tick the box if the observation also contain the geographic position, data and time.</help>
+            <id>output_datatime</id>
+            <label xml:lang="it">Data e ora dei parametri misurati</label>
+            <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora relative alla osservazione.</help>
+            <label xml:lang="en">Date and time of phenomena</label>
+            <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>/position</hasPath>
+                    <hasPath>GgimmiOFenomeno</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
-                    <defaultValue>true</defaultValue>
+                    <defaultValue>false</defaultValue>
                 </item>
             </produces>
         </element>
@@ -2344,11 +2343,12 @@
             <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output/swe:DataRecord</hasRoot>
+            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>sml:field/@name</hasPath>
+                    <outIndex>6</outIndex>
+                    <hasPath>sml:output/@name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
@@ -2360,16 +2360,19 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>sml:field/swe:Quantity/@definition</hasPath>
+                    <outIndex>7</outIndex>
+                    <hasPath>sml:output/swe:Quantity/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>keywordsS</datasource>
                     <hasDatatype>select</hasDatatype>
                     <field>c</field>
-                    <hasValue>/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output/swe:DataRecord/swe:field/@name</hasValue>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/@name</hasValue>
+                    <!-- <useCode>true</useCode> -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>sml:field/swe:Quantity/gml:description</hasPath>
+                    <outIndex>1</outIndex>
+                    <hasPath>sml:output/swe:Quantity/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
@@ -2380,7 +2383,8 @@
                 </item>
                 <item>
                     <hasIndex>4</hasIndex>
-                    <hasPath>sml:field/swe:Quantity/swe:uom</hasPath>
+                    <outIndex>2</outIndex>
+                    <hasPath>sml:output/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
@@ -2391,27 +2395,30 @@
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
-                    <hasPath>sml:field/swe:Quantity/swe:uom/@code</hasPath>
+                    <outIndex>3</outIndex>
+                    <hasPath>sml:output/swe:Quantity/swe:uom/@code</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>uom</datasource>
                     <hasDatatype>select</hasDatatype>
                     <field>urn</field>
-                    <hasValue>/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output/swe:DataRecord/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
                     <!--<useURN>true</useURN>-->
                 </item>
                 <item>
                     <hasIndex>6</hasIndex>
-                    <hasPath>swe:field/swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <outIndex>4</outIndex>
+                    <hasPath>sml:output/swe:Quantity/swe:uom/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>uom</datasource>
                     <hasDatatype>select</hasDatatype>
                     <field>c</field>
-                    <hasValue>/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output/swe:DataRecord/swe:field/swe:Quantity/swe:uom</hasValue>
+                    <hasValue>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList/sml:output/swe:Quantity/swe:uom</hasValue>
                     <!--<useCode>true</useCode>-->
                 </item>
                 <item>
                     <hasIndex>7</hasIndex>
-                    <hasPath>sml:field/swe:Quantity/swe:constraint/swe:AllowedValues/swe:interval</hasPath>
+                    <outIndex>5</outIndex>
+                    <hasPath>sml:output/swe:Quantity/swe:constraint/swe:AllowedValues/swe:interval</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
@@ -2489,76 +2496,20 @@
                 </item>-->
             </produces>
         </element>
-        <!--=============== -->
-        <!--Reference frame -->
-        <!--=============== -->
-        <element>
-            <id>lacation</id>
-            <isMandatory>NA</isMandatory>
-            <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:localReferenceFrame</hasRoot>
-            <produces>
-                <item>
-                    <hasIndex>1</hasIndex>
-                    <hasPath>sml:SpatialFrame/@id</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>physical_system_frame</hasValue>
-                </item>
-                <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:origin</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>Origin is situated at the center of physical system. X,Y,Z are undetermined since orientation is not critical.</hasValue>
-                </item>
-                <item>
-                    <hasIndex>3</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis/@name</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>X</hasValue>
-                </item>
-                <item>
-                    <hasIndex>4</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis[@name=&apos;X&apos;]</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>X is the symetric axis of the physical system</hasValue>
-                </item>
-                <item>
-                    <hasIndex>5</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis/@name</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>Y</hasValue>
-                </item>
-                <item>
-                    <hasIndex>6</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis[@name=&apos;Y&apos;]</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>Y is orthogonal to Z ans X (=Z cross X)</hasValue>
-                </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis/@name</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>Z</hasValue>
-                </item>
-                <item>
-                    <hasIndex>8</hasIndex>
-                    <hasPath>sml:SpatialFrame/sml:axis[@name=&apos;Z&apos;]</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>Z is along the symetric axis of the physical system</hasValue>
-                </item>
-            </produces>
-        </element>
-        <!--=================== -->
-        <!--Position Properties -->
-        <!--=================== -->
+    </group>
+    <!--END Output Group -->
+    
+    <!--=================== -->
+    <!--Position Properties -->
+    <!--=================== -->
+    <!-- valid -->
+    <group>
+        <id>position_prop</id>
+        <label xml:lang="it">Posizione geografica</label>
+        <help/>
+        <label xml:lang="en">Position Properties</label>
+        <help/>
+        <!-- Location from Component Output -->
         <element>
             <id>lacation</id>
             <isMandatory>NA</isMandatory>
@@ -2574,8 +2525,196 @@
                 </item>
             </produces>
         </element>
+        <!--Reference system -->
+        <element>
+            <id>ref_sys</id>
+            <label xml:lang="en">Reference system</label>
+            <help xml:lang="en">Select from the list the reference system of the position property of the system.</help>
+            <label xml:lang="it">Sistema di riferimento</label>
+            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del sistema, sensore o piattaforma.</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>sml:position/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>sensorPosition</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>sml:position/swe:Position/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>SYSTEM_LOCATION</hasValue>
+                </item>
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <!--<label xml:lang="it">Sistema di riferimento</label>-->
+                    <!--<label xml:lang="en">Reference system</label>-->
+                    <hasPath>sml:position/swe:Position/@referenceFrame</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>codelist</hasDatatype>
+                    <datasource>EPSG</datasource>
+                </item>
+                <item>
+                    <hasIndex>4</hasIndex>
+                    <hasPath>sml:position/swe:Position/swe:location/swe:Vector/@gml:id</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>STATION_LOCATION</hasValue>
+                </item>
+            </produces>
+        </element>
+        <!--easting -->
+        <element>
+            <id>easting</id>
+            <label xml:lang="it">Est</label>
+            <help xml:lang="it">Esprime i valori della longitudine (est) dell&apos;ultima posizione assunta dal sensore o della
+                posizione usuale dove viene mantenuto il sensore quando non &#232; in
+                funzione (es. pu&#242; essere la posizione del proprietario del sensore).
+                Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                sensore. Deve essere espressa in gradi decimali (es. 12.337) nel sistema
+                di riferimento scelto</help>
+            <label xml:lang="en">East</label>
+            <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
+                refers to the actual position of the sensor. The value must be given in 
+                the chosen reference system and in decimal degrees (ex. 12.337) </help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>swe:coordinate/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>easting</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>swe:coordinate/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>degree</hasValue>
+                    <!--<defaultValue>degree</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>swe:coordinate/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                    <label xml:lang="it">Valore (decimi di grado)</label>
+                    <!-- <help xml:lang="it"></help> -->
+                    <label xml:lang="en">Decimal degree value</label>
+                    <!--<help xml:lang="en"></help> -->
+                </item>
+            </produces>
+        </element>
+        <!--northing -->
+        <element>
+            <id>northing</id>
+            <label xml:lang="it">Nord</label>
+            <help xml:lang="it">Esprime i valori della latitudine (nord) dell&apos;ultima posizione assunta dal sensore o della
+                posizione usuale dove viene mantenuto il sensore quando non &#232; in
+                funzione (es. pu&#242; essere la posizione del proprietario del sensore).
+                Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                sensore. Deve essere espressa in gradi decimali (es. 45.430) nel sistema
+                di riferimento scelto.</help>
+            <label xml:lang="en">North</label>
+            <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
+                refers to the actual position of the sensor. The value must be given in 
+                the chosen reference system and in decimal degrees (ex. 45.430).</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>swe:coordinate/@name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>northing</hasValue>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>swe:coordinate/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>degree</hasValue>
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>3</hasIndex>
+          <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>3</hasIndex>
+                    <hasPath>swe:coordinate/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                    <label xml:lang="it">Valore (decimi di grado)</label>
+                    <!-- <help xml:lang="it"></help> -->
+                    <label xml:lang="en">Decimal degree value</label>
+                    <!--  <help xml:lang="en"></help> -->
+                </item>
+            </produces>
+        </element>
+        <!--Altitude -->
+        <element>
+            <id>altitude</id>
+            <label xml:lang="it">Altitudine</label>
+            <help xml:lang="it">Inserire il valori in metri dell&apos;
+                sopra il livello del mare della altezza a cui si trova il sensore (es. 2013.13). Nel caso di sistemi mobili si pu&#242;
+                indicare la quota altimetrica del proprietario del sensore. Nel caso di
+                sensori fissi sar&#224; indicata l&apos;altezza reale del sensore.</help>
+            <label xml:lang="en">Altitude </label>
+            <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.</help>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@code</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <hasValue>m</hasValue>
+                    <!--<defaultValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</defaultValue> -->
+                </item>
+                <!--<item>
+          <hasIndex>2</hasIndex>
+          <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector/swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:uom/@xlink:href</hasPath>
+          <isFixed>true</isFixed>
+          <hasDatatype>string</hasDatatype>
+          <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</hasValue>
+        </item> -->
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>swe:coordinate[@name=&apos;altitude&apos;]/swe:Quantity/swe:value</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>
+                    <!--<hasValue>user-defined</hasValue>-->
+                    <!--<label>Altitudine (Altitude)</label> -->
+                </item>
+            </produces>
+        </element>
     </group>
-    <!--END Output Group -->
+    <!--END Position Properties Group -->
     
     <!--========== -->
     <!--Components -->
@@ -2597,16 +2736,12 @@
                     <hasPath>sml:component/@name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <label xml:lang="en">Component name</label>
-                    <label xml:lang="it">Nome del componente</label>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
                     <hasPath>sml:component/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
-                    <label xml:lang="en">Component description (xml)</label>
-                    <label xml:lang="it">Descrizione del componente (xml)</label>
                 </item>
             </produces>
         </element>
