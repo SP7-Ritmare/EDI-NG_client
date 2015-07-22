@@ -468,7 +468,7 @@ var edi = (function() {
                 logger.log(item);
                 return;
             }
-            ds.addListener("dataLoaded", function(data) {
+            ds.addListener(function(data) {
                 // logger.log(data);
                 cb(data);
             });

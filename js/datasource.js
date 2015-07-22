@@ -165,7 +165,9 @@ var DataSource = function(params) {
             parameters.ready(resultSet);
         }
         for ( var i = 0; i < callbacks.length; i++ ) {
-            callbacks[i](resultSet, parameters.id);
+            if ( typeof callbacks[i] === "function" ) {
+                callbacks[i](resultSet, parameters.id);
+            }
         }
         isLoading = false;
         DataSourcePool.getInstance().queryEnd(self);
