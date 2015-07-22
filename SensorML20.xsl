@@ -55,6 +55,7 @@
     <xsl:template match="sml:identifier[ @name='Manufacturer Name' and not(./sml:Term[@definition='urn:ogc:def:identifier:OGC:manufacturerName']/sml:value) ]" />
     <xsl:template match="sml:identifier[ @name='Model Number' and not(./sml:Term[@definition='urn:ogc:def:identifier:SBE:modelNumber']/sml:value) ]" />
     <xsl:template match="sml:identifier[ @name='Serial Number' and not(./sml:Term[@definition='urn:ogc:def:identifier:OGC:serialNumber']/sml:value) ]" />
+    <xsl:template match="//TheName" />
     
     <!-- Classification -->
     <!--

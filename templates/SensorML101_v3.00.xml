@@ -16,7 +16,7 @@
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>https://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
+        <metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
         <!--<metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>-->
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <!--<sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>-->
