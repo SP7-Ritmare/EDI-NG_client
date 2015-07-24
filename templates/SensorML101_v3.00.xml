@@ -2039,14 +2039,14 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/gml:description</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:arcrole=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>user-defined</hasValue>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:role=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
+                    <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:documentation[@xlink:arcrole=&apos;urn:ogc:def:object:OGC:1.0:image&apos;]/sml:Document/sml:onlineResource/@xlink:href</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <hasValue>user-defined</hasValue>
