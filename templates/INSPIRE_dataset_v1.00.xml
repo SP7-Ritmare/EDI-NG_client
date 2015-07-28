@@ -8,7 +8,7 @@
     <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
-    <requiresValidation>false</requiresValidation>
+    <requiresValidation>true</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata
@@ -109,13 +109,13 @@
       <endpointType>virtuoso</endpointType>
       <query>
         <![CDATA[
-          PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+          PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
           SELECT DISTINCT ?c ?l
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          FROM <http://ermes-fp7space.eu/rdfdata/project>
           WHERE {
             ?c rdf:type foaf:Person .
-            ?c vcard:email ?l .
-            ?c vcard:org ?o .
+            ?c ns:email ?l .
+            ?c ns:org ?o .
             FILTER( REGEX( STR(?l), "$search_param", "i") )
           }
           ORDER BY ASC(?l)
@@ -131,14 +131,14 @@
       <query>
         <![CDATA[
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-          SELECT ?inst 
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          SELECT ?inst ?home ?phone
+          FROM <http://ermes-fp7space.eu/rdfdata/project>
           WHERE {
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
-            # <$search_param> foaf:phone ?phone.
+            <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            # FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -151,14 +151,14 @@
       <query>
         <![CDATA[
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-          SELECT ?inst 
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          SELECT ?inst ?home ?phone
+          FROM <http://ermes-fp7space.eu/rdfdata/project>
           WHERE {
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
-            # <$search_param> foaf:phone ?phone.
+            <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            # FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -421,7 +421,7 @@
           <datasource>personS</datasource>
           <field>inst</field>
         </item>
-        <!--
+
         <item>
           <hasIndex>3</hasIndex>
           <outIndex>2</outIndex>
@@ -432,8 +432,8 @@
           <hasDatatype>select</hasDatatype>
           <datasource>personS</datasource>
           <field>phone</field>
-        </item>        
-        -->
+        </item>
+
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
@@ -539,7 +539,6 @@
           <hasDatatype>codelist</hasDatatype>
           <show>combobox</show>
           <datasource>referenceSystemCodes</datasource>
-	  <queryStringParameter>referencesystem</queryStringParameter>
           <useCode>true</useCode>
         </item>
         <item>
@@ -567,7 +566,6 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
-          <queryStringParameter>title</queryStringParameter>
         </item>
         </produces>
     </element>
@@ -589,7 +587,6 @@
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>text</hasDatatype>
-         <queryStringParameter>abstract</queryStringParameter>
         </item>
       </produces>
     </element>
@@ -649,7 +646,7 @@
           <datasource>personS_2</datasource>
           <field>inst</field>
         </item>
-        <!--
+
         <item>
           <hasIndex>3</hasIndex>
           <outIndex>2</outIndex>
@@ -660,8 +657,8 @@
           <hasDatatype>select</hasDatatype>
           <datasource>personS_2</datasource>
           <field>phone</field>
-        </item>        
-        -->
+        </item>
+
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
