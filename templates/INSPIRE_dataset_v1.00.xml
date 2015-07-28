@@ -421,7 +421,7 @@
           <datasource>personS</datasource>
           <field>inst</field>
         </item>
-
+        
         <item>
           <hasIndex>3</hasIndex>
           <outIndex>2</outIndex>
@@ -432,8 +432,8 @@
           <hasDatatype>select</hasDatatype>
           <datasource>personS</datasource>
           <field>phone</field>
-        </item>
-
+        </item>        
+        
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
@@ -646,7 +646,7 @@
           <datasource>personS_2</datasource>
           <field>inst</field>
         </item>
-
+        
         <item>
           <hasIndex>3</hasIndex>
           <outIndex>2</outIndex>
@@ -657,8 +657,8 @@
           <hasDatatype>select</hasDatatype>
           <datasource>personS_2</datasource>
           <field>phone</field>
-        </item>
-
+        </item>        
+        
         <item>
           <hasIndex>4</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
