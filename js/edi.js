@@ -59,6 +59,8 @@ var edi = (function() {
 
 
     function duplicateElement(element_id, newId, updateEdiml) {
+        var logger = new Logger("duplicator");
+
         var div = $("div[represents_element='" + element_id + "']:last");
         element_id = div.attr("id");
         var newId = div.attr("id") + cloneSuffix;
@@ -116,6 +118,7 @@ var edi = (function() {
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
+                logger.log("*[datatype='select'][datasource='" + id + "']");
                 newDiv.find("*[datatype='select'][datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
                     var theId = $(this).attr("id");
@@ -142,6 +145,8 @@ var edi = (function() {
                 });
                 newDiv.find("*[datasource='" + id + "']").each(function () {
                     $(this).attr("datasource", newDsId);
+                    $("#" + $(this).attr("id") + '_debug_info').append("<br>new datasource: " + newDsId);
+                    $("#" + $(this).attr("id") + '_debug_info').append("<br>new search item: " + newSearchItem + " (used to be '" + datasource.parameters.searchItem + "')");
                 });
             }
         }
@@ -377,6 +382,7 @@ var edi = (function() {
     }
 
     function fillInCombos(data, datasource) {
+        logger.log("fillInCombos");
         var toBeRefreshed = [];
 
         /*
@@ -434,7 +440,7 @@ var edi = (function() {
             logger.log(item);
             $(toBeRefreshed[i]).change();
         }
-        $(".container").removeClass("loading");
+        $("#theForm").removeClass("loading");
         ediml.setDirty(false);
 
     }
@@ -469,7 +475,9 @@ var edi = (function() {
             ds.setSearchItem(id);
             ds.refresh();
             return;
-
+            /** TODO: check whether following code is actually no longer needed.
+             *
+             */
             logger.log(q);
             logger.log(query);
             // an array that will be populated with substring matches
@@ -485,7 +493,7 @@ var edi = (function() {
                         // logger.log(data[i]);
                         var record = {};
                         // {ttValue: data[i].c.value, value: data[i].l.value, uri: data[i].c.value, urn: ( data[i].urn ? data[i].urn.value : "" )}
-                        record.ttVaue = data[i].c.value;
+                        record.ttValue = data[i].c.value;
                         // logger.log("bindings row has " + data[i].length + " fields");
                         for ( var field in data[i] ) {
                             // logger.log(field);
@@ -658,24 +666,64 @@ var edi = (function() {
     }
 
     function updateDefaults() {
-        $("*[defaultValue]").each(function() {
-            // logger.log(this + " -> " + $(this).attr("defaultValue"));
-            $(this).val($(this).attr("defaultValue"));
-            $(this).trigger("change");
-        });
-        loadQuerystringDefaults();
-        if ( querystring("edit") ) {
+        if ( querystring("edit").length > 0 ) {
+            $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
+            $("#mdcontent").hide();
             ediml.loadEDIML(querystring("edit"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
+                logger.log("1");
+                setTimeout( function() {
+                    logger.log("2");
+                    /*
+                    DataSourcePool.getInstance().addListener("allReady", function(event) {
+                        $("input", ".uris").trigger("change");
+                    });
+                    */
+                    DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
+                        logger.log("all datasets loaded");
+                        $("input", ".uris").trigger("change");
+                        $("#mdcontent").show();
+                        $("#please_wait").remove();
+                    });
+                    DataSourcePool.getInstance().refreshAll();
+/*
+                    setTimeout( function() {
+                        logger.log("3");
+
+                        $("input", ".uris").trigger("change");
+                        $("#mdcontent").show();
+                        $("#please_wait").remove();
+                    }, defaults.selectsDelay);
+*/
+                }, settings.refreshDelay);
             });
-        }
-        if ( querystring("duplicate") ) {
+        } else if ( querystring("duplicate").length > 0 ) {
+            $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
+            $("#mdcontent").hide();
             ediml.loadEDIML(querystring("duplicate"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
+                setTimeout( function() {
+                    DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
+                        $("input", ".uris").trigger("change");
+                    });
+                    DataSourcePool.getInstance().refreshAll();
+                    setTimeout( function() {
+                        $("input", ".uris").trigger("change");
+                        $("#mdcontent").show();
+                        $("#please_wait").remove();
+                    }, defaults.selectsDelay);
+                }, settings.refreshDelay);
                 ediml.content.elements.fileId = undefined;
             });
+        } else {
+            $("*[defaultValue]").each(function() {
+                // logger.log(this + " -> " + $(this).attr("defaultValue"));
+                $(this).val($(this).attr("defaultValue"));
+                $(this).trigger("change");
+            });
+            loadQuerystringDefaults();
         }
     }
 
@@ -776,7 +824,7 @@ var edi = (function() {
         setMetadataLanguage(metadataLanguage);
         setLanguageSelector();
 
-        DataSourcePool.getInstance().addListener("allReady", function(event) {
+        DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
             logger.log("all datasets loaded");
             runQueries();
         });
@@ -807,6 +855,7 @@ var edi = (function() {
             var id = $(this).attr("id");
             var item = ediml.findItemById(id);
             var ds = DataSourcePool.getInstance().findById(item.datasource);
+            $(this).parent().append('<div id="' + id + '_debug_info' + '" class="debug_info"><label>datasource</label>&nbsp;<label>' + item.datasource + '</label>');
             logger.log("creating dependency on datasource " + item.datasource + " for item " + item.id);
             ds.addEventListener("selectionChanged", function (event) {
                 logger.log(event + " received by " + item.id);
@@ -850,7 +899,7 @@ var edi = (function() {
         });
 
         ediml.startListening();
-        updateDefaults();
+        setTimeout(updateDefaults, 2000);
         setLanguage(uiLanguage);
 
         if ( typeof callback === "function" ) {

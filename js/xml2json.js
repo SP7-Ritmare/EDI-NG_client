@@ -1,1105 +1,1005 @@
 /*
 
  Copyright 2011-2013 Abdulla Abdurakhmanov
-
  Original sources are available at https://code.google.com/p/x2js/
 
-
-
  Licensed under the Apache License, Version 2.0 (the "License");
-
  you may not use this file except in compliance with the License.
-
  You may obtain a copy of the License at
-
-
-
  http://www.apache.org/licenses/LICENSE-2.0
-
-
-
  Unless required by applicable law or agreed to in writing, software
-
  distributed under the License is distributed on an "AS IS" BASIS,
-
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
  See the License for the specific language governing permissions and
-
  limitations under the License.
 
  */
 
 
-
 function X2JS(config) {
 
-	'use strict';
+    'use strict';
 
-		
 
-	var VERSION = "1.1.4";
+    var VERSION = "1.1.4";
 
-	
 
-	config = config || {};
+    config = config || {};
 
-	initConfigDefaults();
+    initConfigDefaults();
 
-	initRequiredPolyfills();
+    initRequiredPolyfills();
 
-	
 
-	function initConfigDefaults() {
+    function initConfigDefaults() {
 
-		if(config.escapeMode === undefined) {
+        if (config.escapeMode === undefined) {
 
-			config.escapeMode = true;
+            config.escapeMode = true;
 
-		}
+        }
 
-		config.attributePrefix = config.attributePrefix || "_";
+        config.attributePrefix = config.attributePrefix || "_";
 
-		config.arrayAccessForm = config.arrayAccessForm || "none";
+        config.arrayAccessForm = config.arrayAccessForm || "none";
 
-		config.emptyNodeForm = config.emptyNodeForm || "text";
+        config.emptyNodeForm = config.emptyNodeForm || "text";
 
-		if(config.enableToStringFunc === undefined) {
+        if (config.enableToStringFunc === undefined) {
 
-			config.enableToStringFunc = true; 
+            config.enableToStringFunc = true;
 
-		}
+        }
 
-		config.arrayAccessFormPaths = config.arrayAccessFormPaths || []; 
+        config.arrayAccessFormPaths = config.arrayAccessFormPaths || [];
 
-		if(config.skipEmptyTextNodesForObj === undefined) {
+        if (config.skipEmptyTextNodesForObj === undefined) {
 
-			config.skipEmptyTextNodesForObj = true;
+            config.skipEmptyTextNodesForObj = true;
 
-		}
+        }
 
-		if(config.stripWhitespaces === undefined) {
+        if (config.stripWhitespaces === undefined) {
 
-			config.stripWhitespaces = true;
+            config.stripWhitespaces = true;
 
-		}
+        }
 
-		config.datetimeAccessFormPaths = config.datetimeAccessFormPaths || [];
+        config.datetimeAccessFormPaths = config.datetimeAccessFormPaths || [];
 
-	}
+    }
 
 
+    var DOMNodeTypes = {
 
-	var DOMNodeTypes = {
+        ELEMENT_NODE: 1,
 
-		ELEMENT_NODE 	   : 1,
+        TEXT_NODE: 3,
 
-		TEXT_NODE    	   : 3,
+        CDATA_SECTION_NODE: 4,
 
-		CDATA_SECTION_NODE : 4,
+        COMMENT_NODE: 8,
 
-		COMMENT_NODE	   : 8,
+        DOCUMENT_NODE: 9
 
-		DOCUMENT_NODE 	   : 9
+    };
 
-	};
 
-	
+    function initRequiredPolyfills() {
 
-	function initRequiredPolyfills() {
+        function pad(number) {
 
-		function pad(number) {
+            var r = String(number);
 
-	      var r = String(number);
+            if (r.length === 1) {
 
-	      if ( r.length === 1 ) {
+                r = '0' + r;
 
-	        r = '0' + r;
+            }
 
-	      }
+            return r;
 
-	      return r;
+        }
 
-	    }
+        // Hello IE8-
 
-		// Hello IE8-
+        if (typeof String.prototype.trim !== 'function') {
 
-		if(typeof String.prototype.trim !== 'function') {			
+            String.prototype.trim = function () {
 
-			String.prototype.trim = function() {
+                return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '');
 
-				return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '');
+            }
 
-			}
+        }
 
-		}
+        if (typeof Date.prototype.toISOString !== 'function') {
 
-		if(typeof Date.prototype.toISOString !== 'function') {
+            // Implementation from http://stackoverflow.com/questions/2573521/how-do-i-output-an-iso-8601-formatted-string-in-javascript
 
-			// Implementation from http://stackoverflow.com/questions/2573521/how-do-i-output-an-iso-8601-formatted-string-in-javascript
+            Date.prototype.toISOString = function () {
 
-			Date.prototype.toISOString = function() {
+                return this.getUTCFullYear()
 
-		      return this.getUTCFullYear()
+                    + '-' + pad(this.getUTCMonth() + 1)
 
-		        + '-' + pad( this.getUTCMonth() + 1 )
+                    + '-' + pad(this.getUTCDate())
 
-		        + '-' + pad( this.getUTCDate() )
+                    + 'T' + pad(this.getUTCHours())
 
-		        + 'T' + pad( this.getUTCHours() )
+                    + ':' + pad(this.getUTCMinutes())
 
-		        + ':' + pad( this.getUTCMinutes() )
+                    + ':' + pad(this.getUTCSeconds())
 
-		        + ':' + pad( this.getUTCSeconds() )
+                    + '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5)
 
-		        + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
+                    + 'Z';
 
-		        + 'Z';
+            };
 
-		    };
+        }
 
-		}
+    }
 
-	}
 
-	
+    function getNodeLocalName(node) {
 
-	function getNodeLocalName( node ) {
+        var nodeLocalName = node.localName;
 
-		var nodeLocalName = node.localName;			
+        if (nodeLocalName == null) // Yeah, this is IE!!
 
-		if(nodeLocalName == null) // Yeah, this is IE!! 
+            nodeLocalName = node.baseName;
 
-			nodeLocalName = node.baseName;
+        if (nodeLocalName == null || nodeLocalName == "") // =="" is IE too
 
-		if(nodeLocalName == null || nodeLocalName=="") // =="" is IE too
+            nodeLocalName = node.nodeName;
 
-			nodeLocalName = node.nodeName;
+        return nodeLocalName;
 
-		return nodeLocalName;
+    }
 
-	}
 
-	
+    function getNodePrefix(node) {
 
-	function getNodePrefix(node) {
+        return node.prefix;
 
-		return node.prefix;
+    }
 
-	}
 
-		
+    function escapeXmlChars(str) {
 
-	function escapeXmlChars(str) {
+        if (typeof(str) == "string")
 
-		if(typeof(str) == "string")
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
 
-			return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
+        else
 
-		else
+            return str;
 
-			return str;
+    }
 
-	}
 
+    function unescapeXmlChars(str) {
 
+        return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&#x2F;/g, '\/');
 
-	function unescapeXmlChars(str) {
+    }
 
-		return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&#x2F;/g, '\/');
 
-	}
+    function toArrayAccessForm(obj, childName, path) {
 
-	
+        switch (config.arrayAccessForm) {
 
-	function toArrayAccessForm(obj, childName, path) {
+            case "property":
 
-		switch(config.arrayAccessForm) {
+                if (!(obj[childName] instanceof Array))
 
-		case "property":
+                    obj[childName + "_asArray"] = [obj[childName]];
 
-			if(!(obj[childName] instanceof Array))
+                else
 
-				obj[childName+"_asArray"] = [obj[childName]];
+                    obj[childName + "_asArray"] = obj[childName];
 
-			else
+                break;
 
-				obj[childName+"_asArray"] = obj[childName];
+            /*case "none":
 
-			break;		
+             break;*/
 
-		/*case "none":
+        }
 
-			break;*/
 
-		}
+        if (!(obj[childName] instanceof Array) && config.arrayAccessFormPaths.length > 0) {
 
-		
+            var idx = 0;
 
-		if(!(obj[childName] instanceof Array) && config.arrayAccessFormPaths.length > 0) {
+            for (; idx < config.arrayAccessFormPaths.length; idx++) {
 
-			var idx = 0;
+                var arrayPath = config.arrayAccessFormPaths[idx];
 
-			for(; idx < config.arrayAccessFormPaths.length; idx++) {
+                if (typeof arrayPath === "string") {
 
-				var arrayPath = config.arrayAccessFormPaths[idx];
+                    if (arrayPath == path)
 
-				if( typeof arrayPath === "string" ) {
+                        break;
 
-					if(arrayPath == path)
+                }
 
-						break;
+                else if (arrayPath instanceof RegExp) {
 
-				}
+                    if (arrayPath.test(path))
 
-				else
+                        break;
 
-				if( arrayPath instanceof RegExp) {
+                }
 
-					if(arrayPath.test(path))
+                else if (typeof arrayPath === "function") {
 
-						break;
+                    if (arrayPath(obj, childName, path))
 
-				}				
+                        break;
 
-				else
+                }
 
-				if( typeof arrayPath === "function") {
+            }
 
-					if(arrayPath(obj, childName, path))
+            if (idx != config.arrayAccessFormPaths.length) {
 
-						break;
+                obj[childName] = [obj[childName]];
 
-				}
+            }
 
-			}
+        }
 
-			if(idx!=config.arrayAccessFormPaths.length) {
+    }
 
-				obj[childName] = [obj[childName]];
 
-			}
+    function fromXmlDateTime(prop) {
 
-		}
+        // Implementation based up on http://stackoverflow.com/questions/8178598/xml-datetime-to-javascript-date-object
 
-	}
+        // Improved to support full spec and optional parts
 
-	
+        var bits = prop.split(/[-T:+Z]/g);
 
-	function fromXmlDateTime(prop) {
 
-		// Implementation based up on http://stackoverflow.com/questions/8178598/xml-datetime-to-javascript-date-object
+        var d = new Date(bits[0], bits[1] - 1, bits[2]);
 
-		// Improved to support full spec and optional parts
+        var secondBits = bits[5].split("\.");
 
-		var bits = prop.split(/[-T:+Z]/g);
+        d.setHours(bits[3], bits[4], secondBits[0]);
 
-		
+        if (secondBits.length > 1)
 
-		var d = new Date(bits[0], bits[1]-1, bits[2]);			
+            d.setMilliseconds(secondBits[1]);
 
-		var secondBits = bits[5].split("\.");
 
-		d.setHours(bits[3], bits[4], secondBits[0]);
+        // Get supplied time zone offset in minutes
 
-		if(secondBits.length>1)
+        if (bits[6] && bits[7]) {
 
-			d.setMilliseconds(secondBits[1]);
+            var offsetMinutes = bits[6] * 60 + Number(bits[7]);
 
+            var sign = /\d\d-\d\d:\d\d$/.test(prop) ? '-' : '+';
 
 
-		// Get supplied time zone offset in minutes
+            // Apply the sign
 
-		if(bits[6] && bits[7]) {
+            offsetMinutes = 0 + (sign == '-' ? -1 * offsetMinutes : offsetMinutes);
 
-			var offsetMinutes = bits[6] * 60 + Number(bits[7]);
 
-			var sign = /\d\d-\d\d:\d\d$/.test(prop)? '-' : '+';
+            // Apply offset and local timezone
 
+            d.setMinutes(d.getMinutes() - offsetMinutes - d.getTimezoneOffset())
 
+        }
 
-			// Apply the sign
+        else if (prop.indexOf("Z", prop.length - 1) !== -1) {
 
-			offsetMinutes = 0 + (sign == '-'? -1 * offsetMinutes : offsetMinutes);
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()));
 
+        }
 
 
-			// Apply offset and local timezone
+        // d is now a local time equivalent to the supplied time
 
-			d.setMinutes(d.getMinutes() - offsetMinutes - d.getTimezoneOffset())
+        return d;
 
-		}
+    }
 
-		else
 
-			if(prop.indexOf("Z", prop.length - 1) !== -1) {
+    function checkFromXmlDateTimePaths(value, childName, fullPath) {
 
-				d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()));					
+        if (config.datetimeAccessFormPaths.length > 0) {
 
-			}
+            var path = fullPath.split("\.#")[0];
 
+            var idx = 0;
 
+            for (; idx < config.datetimeAccessFormPaths.length; idx++) {
 
-		// d is now a local time equivalent to the supplied time
+                var dtPath = config.datetimeAccessFormPaths[idx];
 
-		return d;
+                if (typeof dtPath === "string") {
 
-	}
+                    if (dtPath == path)
 
-	
+                        break;
 
-	function checkFromXmlDateTimePaths(value, childName, fullPath) {
+                }
 
-		if(config.datetimeAccessFormPaths.length > 0) {
+                else if (dtPath instanceof RegExp) {
 
-			var path = fullPath.split("\.#")[0];
+                    if (dtPath.test(path))
 
-			var idx = 0;
+                        break;
 
-			for(; idx < config.datetimeAccessFormPaths.length; idx++) {
+                }
 
-				var dtPath = config.datetimeAccessFormPaths[idx];
+                else if (typeof dtPath === "function") {
 
-				if( typeof dtPath === "string" ) {
+                    if (dtPath(obj, childName, path))
 
-					if(dtPath == path)
+                        break;
 
-						break;
+                }
 
-				}
+            }
 
-				else
+            if (idx != config.datetimeAccessFormPaths.length) {
 
-				if( dtPath instanceof RegExp) {
+                return fromXmlDateTime(value);
 
-					if(dtPath.test(path))
+            }
 
-						break;
+            else
 
-				}				
+                return value;
 
-				else
+        }
 
-				if( typeof dtPath === "function") {
+        else
 
-					if(dtPath(obj, childName, path))
+            return value;
 
-						break;
+    }
 
-				}
 
-			}
+    function parseDOMChildren(node, path) {
 
-			if(idx!=config.datetimeAccessFormPaths.length) {
+        if (node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
 
-				return fromXmlDateTime(value);
+            var result = new Object;
 
-			}
+            var nodeChildren = node.childNodes;
 
-			else
+            // Alternative for firstElementChild which is not supported in some environments
 
-				return value;
+            for (var cidx = 0; cidx < nodeChildren.length; cidx++) {
 
-		}
+                var child = nodeChildren.item(cidx);
 
-		else
+                if (child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
 
-			return value;
+                    var childName = getNodeLocalName(child);
 
-	}
+                    result[childName] = parseDOMChildren(child, childName);
 
+                }
 
+            }
 
-	function parseDOMChildren( node, path ) {
+            return result;
 
-		if(node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
+        }
 
-			var result = new Object;
+        else if (node.nodeType == DOMNodeTypes.ELEMENT_NODE) {
 
-			var nodeChildren = node.childNodes;
+            var result = new Object;
 
-			// Alternative for firstElementChild which is not supported in some environments
+            result.__cnt = 0;
 
-			for(var cidx=0; cidx <nodeChildren.length; cidx++) {
 
-				var child = nodeChildren.item(cidx);
+            var nodeChildren = node.childNodes;
 
-				if(child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
 
-					var childName = getNodeLocalName(child);
+            // Children nodes
 
-					result[childName] = parseDOMChildren(child, childName);
+            for (var cidx = 0; cidx < nodeChildren.length; cidx++) {
 
-				}
+                var child = nodeChildren.item(cidx); // nodeChildren[cidx];
 
-			}
+                var childName = getNodeLocalName(child);
 
-			return result;
 
-		}
+                if (child.nodeType != DOMNodeTypes.COMMENT_NODE) {
 
-		else
+                    result.__cnt++;
 
-		if(node.nodeType == DOMNodeTypes.ELEMENT_NODE) {
+                    if (result[childName] == null) {
 
-			var result = new Object;
+                        result[childName] = parseDOMChildren(child, path + "." + childName);
 
-			result.__cnt=0;
+                        toArrayAccessForm(result, childName, path + "." + childName);
 
-			
+                    }
 
-			var nodeChildren = node.childNodes;
+                    else {
 
-			
+                        if (result[childName] != null) {
 
-			// Children nodes
+                            if (!(result[childName] instanceof Array)) {
 
-			for(var cidx=0; cidx <nodeChildren.length; cidx++) {
+                                result[childName] = [result[childName]];
 
-				var child = nodeChildren.item(cidx); // nodeChildren[cidx];
+                                toArrayAccessForm(result, childName, path + "." + childName);
 
-				var childName = getNodeLocalName(child);
+                            }
 
-				
+                        }
 
-				if(child.nodeType!= DOMNodeTypes.COMMENT_NODE) {
+                        (result[childName])[result[childName].length] = parseDOMChildren(child, path + "." + childName);
 
-					result.__cnt++;
+                    }
 
-					if(result[childName] == null) {
+                }
 
-						result[childName] = parseDOMChildren(child, path+"."+childName);
+            }
 
-						toArrayAccessForm(result, childName, path+"."+childName);					
 
-					}
+            // Attributes
 
-					else {
+            for (var aidx = 0; aidx < node.attributes.length; aidx++) {
 
-						if(result[childName] != null) {
+                var attr = node.attributes.item(aidx); // [aidx];
 
-							if( !(result[childName] instanceof Array)) {
+                result.__cnt++;
 
-								result[childName] = [result[childName]];
+                result[config.attributePrefix + attr.name] = attr.value;
 
-								toArrayAccessForm(result, childName, path+"."+childName);
+            }
 
-							}
 
-						}
+            // Node namespace prefix
 
-						(result[childName])[result[childName].length] = parseDOMChildren(child, path+"."+childName);
+            var nodePrefix = getNodePrefix(node);
 
-					}
+            if (nodePrefix != null && nodePrefix != "") {
 
-				}								
+                result.__cnt++;
 
-			}
+                result.__prefix = nodePrefix;
 
-			
+            }
 
-			// Attributes
 
-			for(var aidx=0; aidx <node.attributes.length; aidx++) {
+            if (result["#text"] != null) {
 
-				var attr = node.attributes.item(aidx); // [aidx];
+                result.__text = result["#text"];
 
-				result.__cnt++;
+                if (result.__text instanceof Array) {
 
-				result[config.attributePrefix+attr.name]=attr.value;
+                    result.__text = result.__text.join("\n");
 
-			}
+                }
 
-			
+                if (config.escapeMode)
 
-			// Node namespace prefix
+                    result.__text = unescapeXmlChars(result.__text);
 
-			var nodePrefix = getNodePrefix(node);
+                if (config.stripWhitespaces)
 
-			if(nodePrefix!=null && nodePrefix!="") {
+                    result.__text = result.__text.trim();
 
-				result.__cnt++;
+                delete result["#text"];
 
-				result.__prefix=nodePrefix;
+                if (config.arrayAccessForm == "property")
 
-			}
+                    delete result["#text_asArray"];
 
-			
+                result.__text = checkFromXmlDateTimePaths(result.__text, childName, path + "." + childName);
 
-			if(result["#text"]!=null) {				
+            }
 
-				result.__text = result["#text"];
+            if (result["#cdata-section"] != null) {
 
-				if(result.__text instanceof Array) {
+                result.__cdata = result["#cdata-section"];
 
-					result.__text = result.__text.join("\n");
+                delete result["#cdata-section"];
 
-				}
+                if (config.arrayAccessForm == "property")
 
-				if(config.escapeMode)
+                    delete result["#cdata-section_asArray"];
 
-					result.__text = unescapeXmlChars(result.__text);
+            }
 
-				if(config.stripWhitespaces)
 
-					result.__text = result.__text.trim();
+            if (result.__cnt == 1 && result.__text != null) {
 
-				delete result["#text"];
+                result = result.__text;
 
-				if(config.arrayAccessForm=="property")
+            }
 
-					delete result["#text_asArray"];
+            else if (result.__cnt == 0 && config.emptyNodeForm == "text") {
 
-				result.__text = checkFromXmlDateTimePaths(result.__text, childName, path+"."+childName);
+                result = '';
 
-			}
+            }
 
-			if(result["#cdata-section"]!=null) {
+            else if (result.__cnt > 1 && result.__text != null && config.skipEmptyTextNodesForObj) {
 
-				result.__cdata = result["#cdata-section"];
+                if ((config.stripWhitespaces && result.__text == "") || (result.__text.trim() == "")) {
 
-				delete result["#cdata-section"];
+                    delete result.__text;
 
-				if(config.arrayAccessForm=="property")
+                }
 
-					delete result["#cdata-section_asArray"];
+            }
 
-			}
+            delete result.__cnt;
 
-			
 
-			if( result.__cnt == 1 && result.__text!=null  ) {
+            if (config.enableToStringFunc && (result.__text != null || result.__cdata != null )) {
 
-				result = result.__text;
+                result.toString = function () {
 
-			}
+                    return (this.__text != null ? this.__text : '') + ( this.__cdata != null ? this.__cdata : '');
 
-			else
+                };
 
-			if( result.__cnt == 0 && config.emptyNodeForm=="text" ) {
+            }
 
-				result = '';
 
-			}
+            return result;
 
-			else
+        }
 
-			if ( result.__cnt > 1 && result.__text!=null && config.skipEmptyTextNodesForObj) {
+        else if (node.nodeType == DOMNodeTypes.TEXT_NODE || node.nodeType == DOMNodeTypes.CDATA_SECTION_NODE) {
 
-				if( (config.stripWhitespaces && result.__text=="") || (result.__text.trim()=="")) {
+            return node.nodeValue;
 
-					delete result.__text;
+        }
 
-				}
+    }
 
-			}
 
-			delete result.__cnt;			
+    function startTag(jsonObj, element, attrList, closed) {
 
-			
+        var resultStr = "<" + ( (jsonObj != null && jsonObj.__prefix != null) ? (jsonObj.__prefix + ":") : "") + element;
 
-			if( config.enableToStringFunc && (result.__text!=null || result.__cdata!=null )) {
+        if (attrList != null) {
 
-				result.toString = function() {
+            for (var aidx = 0; aidx < attrList.length; aidx++) {
 
-					return (this.__text!=null? this.__text:'')+( this.__cdata!=null ? this.__cdata:'');
+                var attrName = attrList[aidx];
 
-				};
+                var attrVal = jsonObj[attrName];
 
-			}
+                if (config.escapeMode)
 
-			
+                    attrVal = escapeXmlChars(attrVal);
 
-			return result;
+                resultStr += " " + attrName.substr(config.attributePrefix.length) + "='" + attrVal + "'";
 
-		}
+            }
 
-		else
+        }
 
-		if(node.nodeType == DOMNodeTypes.TEXT_NODE || node.nodeType == DOMNodeTypes.CDATA_SECTION_NODE) {
+        if (!closed)
 
-			return node.nodeValue;
+            resultStr += ">";
 
-		}	
+        else
 
-	}
+            resultStr += "/>";
 
-	
+        return resultStr;
 
-	function startTag(jsonObj, element, attrList, closed) {
+    }
 
-		var resultStr = "<"+ ( (jsonObj!=null && jsonObj.__prefix!=null)? (jsonObj.__prefix+":"):"") + element;
 
-		if(attrList!=null) {
+    function endTag(jsonObj, elementName) {
 
-			for(var aidx = 0; aidx < attrList.length; aidx++) {
+        return "</" + (jsonObj.__prefix != null ? (jsonObj.__prefix + ":") : "") + elementName + ">";
 
-				var attrName = attrList[aidx];
+    }
 
-				var attrVal = jsonObj[attrName];
 
-				if(config.escapeMode)
+    function endsWith(str, suffix) {
 
-					attrVal=escapeXmlChars(attrVal);
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
 
-				resultStr+=" "+attrName.substr(config.attributePrefix.length)+"='"+attrVal+"'";
+    }
 
-			}
 
-		}
+    function jsonXmlSpecialElem(jsonObj, jsonObjField) {
 
-		if(!closed)
+        if ((config.arrayAccessForm == "property" && endsWith(jsonObjField.toString(), ("_asArray")))
 
-			resultStr+=">";
+            || jsonObjField.toString().indexOf(config.attributePrefix) == 0
 
-		else
+            || jsonObjField.toString().indexOf("__") == 0
 
-			resultStr+="/>";
+            || (jsonObj[jsonObjField] instanceof Function))
 
-		return resultStr;
+            return true;
 
-	}
+        else
 
-	
+            return false;
 
-	function endTag(jsonObj,elementName) {
+    }
 
-		return "</"+ (jsonObj.__prefix!=null? (jsonObj.__prefix+":"):"")+elementName+">";
 
-	}
+    function jsonXmlElemCount(jsonObj) {
 
-	
+        var elementsCnt = 0;
 
-	function endsWith(str, suffix) {
+        if (jsonObj instanceof Object) {
 
-	    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            for (var it in jsonObj) {
 
-	}
+                if (jsonXmlSpecialElem(jsonObj, it))
 
-	
+                    continue;
 
-	function jsonXmlSpecialElem ( jsonObj, jsonObjField ) {
+                elementsCnt++;
 
-		if((config.arrayAccessForm=="property" && endsWith(jsonObjField.toString(),("_asArray"))) 
+            }
 
-				|| jsonObjField.toString().indexOf(config.attributePrefix)==0 
+        }
 
-				|| jsonObjField.toString().indexOf("__")==0
+        return elementsCnt;
 
-				|| (jsonObj[jsonObjField] instanceof Function) )
+    }
 
-			return true;
 
-		else
+    function parseJSONAttributes(jsonObj) {
 
-			return false;
+        var attrList = [];
 
-	}
+        if (jsonObj instanceof Object) {
 
-	
+            for (var ait in jsonObj) {
 
-	function jsonXmlElemCount ( jsonObj ) {
+                if (ait.toString().indexOf("__") == -1 && ait.toString().indexOf(config.attributePrefix) == 0) {
 
-		var elementsCnt = 0;
+                    attrList.push(ait);
 
-		if(jsonObj instanceof Object ) {
+                }
 
-			for( var it in jsonObj  ) {
+            }
 
-				if(jsonXmlSpecialElem ( jsonObj, it) )
+        }
 
-					continue;			
+        return attrList;
 
-				elementsCnt++;
+    }
 
-			}
 
-		}
+    function parseJSONTextAttrs(jsonTxtObj) {
 
-		return elementsCnt;
+        var result = "";
 
-	}
 
-	
+        if (jsonTxtObj.__cdata != null) {
 
-	function parseJSONAttributes ( jsonObj ) {
+            result += "<![CDATA[" + jsonTxtObj.__cdata + "]]>";
 
-		var attrList = [];
+        }
 
-		if(jsonObj instanceof Object ) {
 
-			for( var ait in jsonObj  ) {
+        if (jsonTxtObj.__text != null) {
 
-				if(ait.toString().indexOf("__")== -1 && ait.toString().indexOf(config.attributePrefix)==0) {
+            if (config.escapeMode)
 
-					attrList.push(ait);
+                result += escapeXmlChars(jsonTxtObj.__text);
 
-				}
+            else
 
-			}
+                result += jsonTxtObj.__text;
 
-		}
+        }
 
-		return attrList;
+        return result;
 
-	}
+    }
 
-	
 
-	function parseJSONTextAttrs ( jsonTxtObj ) {
+    function parseJSONTextObject(jsonTxtObj) {
 
-		var result ="";
+        var result = "";
 
-		
 
-		if(jsonTxtObj.__cdata!=null) {										
+        if (jsonTxtObj instanceof Object) {
 
-			result+="<![CDATA["+jsonTxtObj.__cdata+"]]>";					
+            result += parseJSONTextAttrs(jsonTxtObj);
 
-		}
+        }
 
-		
+        else if (jsonTxtObj != null) {
 
-		if(jsonTxtObj.__text!=null) {			
+            if (config.escapeMode)
 
-			if(config.escapeMode)
+                result += escapeXmlChars(jsonTxtObj);
 
-				result+=escapeXmlChars(jsonTxtObj.__text);
+            else
 
-			else
+                result += jsonTxtObj;
 
-				result+=jsonTxtObj.__text;
+        }
 
-		}
 
-		return result;
+        return result;
 
-	}
+    }
 
-	
 
-	function parseJSONTextObject ( jsonTxtObj ) {
+    function parseJSONArray(jsonArrRoot, jsonArrObj, attrList) {
 
-		var result ="";
+        var result = "";
 
+        if (jsonArrRoot.length == 0) {
 
+            result += startTag(jsonArrRoot, jsonArrObj, attrList, true);
 
-		if( jsonTxtObj instanceof Object ) {
+        }
 
-			result+=parseJSONTextAttrs ( jsonTxtObj );
+        else {
 
-		}
+            for (var arIdx = 0; arIdx < jsonArrRoot.length; arIdx++) {
 
-		else
+                result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false);
 
-			if(jsonTxtObj!=null) {
+                result += parseJSONObject(jsonArrRoot[arIdx]);
 
-				if(config.escapeMode)
+                result += endTag(jsonArrRoot[arIdx], jsonArrObj);
 
-					result+=escapeXmlChars(jsonTxtObj);
+            }
 
-				else
+        }
 
-					result+=jsonTxtObj;
+        return result;
 
-			}
+    }
 
-		
 
-		return result;
+    function parseJSONObject(jsonObj) {
 
-	}
+        var result = "";
 
-	
 
-	function parseJSONArray ( jsonArrRoot, jsonArrObj, attrList ) {
+        var elementsCnt = jsonXmlElemCount(jsonObj);
 
-		var result = ""; 
 
-		if(jsonArrRoot.length == 0) {
+        if (elementsCnt > 0) {
 
-			result+=startTag(jsonArrRoot, jsonArrObj, attrList, true);
+            for (var it in jsonObj) {
 
-		}
 
-		else {
+                if (jsonXmlSpecialElem(jsonObj, it))
 
-			for(var arIdx = 0; arIdx < jsonArrRoot.length; arIdx++) {
+                    continue;
 
-				result+=startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false);
 
-				result+=parseJSONObject(jsonArrRoot[arIdx]);
+                var subObj = jsonObj[it];
 
-				result+=endTag(jsonArrRoot[arIdx],jsonArrObj);						
 
-			}
+                var attrList = parseJSONAttributes(subObj)
 
-		}
 
-		return result;
+                if (subObj == null || subObj == undefined) {
 
-	}
+                    result += startTag(subObj, it, attrList, true);
 
-	
+                }
 
-	function parseJSONObject ( jsonObj ) {
+                else if (subObj instanceof Object) {
 
-		var result = "";	
 
+                    if (subObj instanceof Array) {
 
+                        result += parseJSONArray(subObj, it, attrList);
 
-		var elementsCnt = jsonXmlElemCount ( jsonObj );
+                    }
 
-		
+                    else if (subObj instanceof Date) {
 
-		if(elementsCnt > 0) {
+                        result += startTag(subObj, it, attrList, false);
 
-			for( var it in jsonObj ) {
+                        result += subObj.toISOString();
 
-				
+                        result += endTag(subObj, it);
 
-				if(jsonXmlSpecialElem ( jsonObj, it) )
+                    }
 
-					continue;			
+                    else {
 
-				
+                        var subObjElementsCnt = jsonXmlElemCount(subObj);
 
-				var subObj = jsonObj[it];						
+                        if (subObjElementsCnt > 0 || subObj.__text != null || subObj.__cdata != null) {
 
-				
+                            result += startTag(subObj, it, attrList, false);
 
-				var attrList = parseJSONAttributes( subObj )
+                            result += parseJSONObject(subObj);
 
-				
+                            result += endTag(subObj, it);
 
-				if(subObj == null || subObj == undefined) {
+                        }
 
-					result+=startTag(subObj, it, attrList, true);
+                        else {
 
-				}
+                            result += startTag(subObj, it, attrList, true);
 
-				else
+                        }
 
-				if(subObj instanceof Object) {
+                    }
 
-					
+                }
 
-					if(subObj instanceof Array) {					
+                else {
 
-						result+=parseJSONArray( subObj, it, attrList );					
+                    result += startTag(subObj, it, attrList, false);
 
-					}
+                    result += parseJSONTextObject(subObj);
 
-					else if(subObj instanceof Date) {
+                    result += endTag(subObj, it);
 
-						result+=startTag(subObj, it, attrList, false);
+                }
 
-						result+=subObj.toISOString();
+            }
 
-						result+=endTag(subObj,it);
+        }
 
-					}
+        result += parseJSONTextObject(jsonObj);
 
-					else {
 
-						var subObjElementsCnt = jsonXmlElemCount ( subObj );
+        return result;
 
-						if(subObjElementsCnt > 0 || subObj.__text!=null || subObj.__cdata!=null) {
+    }
 
-							result+=startTag(subObj, it, attrList, false);
 
-							result+=parseJSONObject(subObj);
+    this.parseXmlString = function (xmlDocStr) {
 
-							result+=endTag(subObj,it);
+        if (xmlDocStr === undefined) {
 
-						}
+            return null;
 
-						else {
+        }
 
-							result+=startTag(subObj, it, attrList, true);
+        var xmlDoc;
 
-						}
+        if (window.DOMParser) {
 
-					}
+            var parser = new window.DOMParser();
 
-				}
+            var parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI;
 
-				else {
+            xmlDoc = parser.parseFromString(xmlDocStr, "text/xml");
 
-					result+=startTag(subObj, it, attrList, false);
+            if (xmlDoc.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0) {
 
-					result+=parseJSONTextObject(subObj);
+                //throw new Error('Error parsing XML: '+xmlDocStr);
 
-					result+=endTag(subObj,it);
+                xmlDoc = null;
 
-				}
+            }
 
-			}
+        }
 
-		}
+        else {
 
-		result+=parseJSONTextObject(jsonObj);
+            // IE :(
 
-		
+            if (xmlDocStr.indexOf("<?") == 0) {
 
-		return result;
+                xmlDocStr = xmlDocStr.substr(xmlDocStr.indexOf("?>") + 2);
 
-	}
+            }
 
-	
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
 
-	this.parseXmlString = function(xmlDocStr) {
+            xmlDoc.async = "false";
 
-		if (xmlDocStr === undefined) {
+            xmlDoc.loadXML(xmlDocStr);
 
-			return null;
+        }
 
-		}
+        return xmlDoc;
 
-		var xmlDoc;
+    };
 
-		if (window.DOMParser) {
 
-			var parser=new window.DOMParser();			
+    this.asArray = function (prop) {
 
-			var parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI;
+        if (prop instanceof Array)
 
-			xmlDoc = parser.parseFromString( xmlDocStr, "text/xml" );
+            return prop;
 
-			if(xmlDoc.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0) {
+        else
 
-		        //throw new Error('Error parsing XML: '+xmlDocStr);
+            return [prop];
 
-				xmlDoc = null;
+    };
 
-		    }
 
-		}
+    this.toXmlDateTime = function (dt) {
 
-		else {
+        if (dt instanceof Date)
 
-			// IE :(
+            return dt.toISOString();
 
-			if(xmlDocStr.indexOf("<?")==0) {
+        else if (typeof(dt) === 'number')
 
-				xmlDocStr = xmlDocStr.substr( xmlDocStr.indexOf("?>") + 2 );
+            return new Date(dt).toISOString();
 
-			}
+        else
 
-			xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+            return null;
 
-			xmlDoc.async="false";
+    };
 
-			xmlDoc.loadXML(xmlDocStr);
 
-		}
+    this.asDateTime = function (prop) {
 
-		return xmlDoc;
+        if (typeof(prop) == "string") {
 
-	};
+            return fromXmlDateTime(prop);
 
-	
+        }
 
-	this.asArray = function(prop) {
+        else
 
-		if(prop instanceof Array)
+            return prop;
 
-			return prop;
+    };
 
-		else
 
-			return [prop];
+    this.xml2json = function (xmlDoc) {
 
-	};
+        return parseDOMChildren(xmlDoc);
 
-	
+    };
 
-	this.toXmlDateTime = function(dt) {
 
-		if(dt instanceof Date)
+    this.xml_str2json = function (xmlDocStr) {
 
-			return dt.toISOString();
+        var xmlDoc = this.parseXmlString(xmlDocStr);
 
-		else
+        if (xmlDoc != null)
 
-		if(typeof(dt) === 'number' )
+            return this.xml2json(xmlDoc);
 
-			return new Date(dt).toISOString();
+        else
 
-		else	
+            return null;
 
-			return null;
+    };
 
-	};
 
-	
+    this.json2xml_str = function (jsonObj) {
 
-	this.asDateTime = function(prop) {
+        return parseJSONObject(jsonObj);
 
-		if(typeof(prop) == "string") {
+    };
 
-			return fromXmlDateTime(prop);
 
-		}
+    this.json2xml = function (jsonObj) {
 
-		else
+        var xmlDocStr = this.json2xml_str(jsonObj);
 
-			return prop;
+        return this.parseXmlString(xmlDocStr);
 
-	};
+    };
 
 
+    this.getVersion = function () {
 
-	this.xml2json = function (xmlDoc) {
+        return VERSION;
 
-		return parseDOMChildren ( xmlDoc );
+    };
 
-	};
-
-	
-
-	this.xml_str2json = function (xmlDocStr) {
-
-		var xmlDoc = this.parseXmlString(xmlDocStr);
-
-		if(xmlDoc!=null)
-
-			return this.xml2json(xmlDoc);
-
-		else
-
-			return null;
-
-	};
-
-
-
-	this.json2xml_str = function (jsonObj) {
-
-		return parseJSONObject ( jsonObj );
-
-	};
-
-
-
-	this.json2xml = function (jsonObj) {
-
-		var xmlDocStr = this.json2xml_str (jsonObj);
-
-		return this.parseXmlString(xmlDocStr);
-
-	};
-
-	
-
-	this.getVersion = function () {
-
-		return VERSION;
-
-	};
-
-	
 
 }
 
-
+

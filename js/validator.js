@@ -140,6 +140,9 @@ var validator = (function() {
     }
 
     function validateURI() {
+        // TODO: Watch out - demo stuff!!!
+        return true;
+
         var result = true;
         var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name

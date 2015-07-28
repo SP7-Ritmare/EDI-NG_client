@@ -19,7 +19,12 @@ var availableContexts = {
     SPARQL: "sparql"
 }
 var enabledContexts = [
-    "editfillin"
+    /*
+    "reorderElement",
+    "duplicator",
+    */
+    availableContexts.DATASOURCE,
+    availableContexts.EDI
 ];
 
 /*

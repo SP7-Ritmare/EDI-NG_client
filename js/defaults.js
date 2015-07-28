@@ -9,5 +9,7 @@ var defaults = {
     controlCSS: "form-control",
     controlGroupCSS: "input-group",
     labelCSS: "form-label",
-    DEBUG_DATASOURCES: false
+    DEBUG_DATASOURCES: false,
+    refreshDelay: 1,
+    selectsDelay: 100
 }

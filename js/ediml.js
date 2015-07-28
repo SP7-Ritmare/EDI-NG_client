@@ -21,6 +21,7 @@ var ediml = (function() {
             ediVersion: 2.0,
             version: undefined,
             template: undefined,
+            templateDocument: undefined,
             fileId: undefined,
             fileUri: undefined,
             user: undefined,
@@ -154,6 +155,7 @@ var ediml = (function() {
 
             content.elements.fileId = data.id;
             content.elements.fileUri = metadataEndpoint + "rest/ediml/" + data.uri;
+            // content.elements.templateDocument = edi.getTemplate();
             if ( typeof successCallback == 'undefined' ) {
                 successCallback = defaultPostSuccessCallback;
             }
@@ -215,14 +217,58 @@ var ediml = (function() {
                 var x2j = new X2JS();
                 var json = x2j.xml2json(data);
                 logger.log(json);
+                var elementsToReorder = [];
 
                 for ( var i = 0; i < json.elements.element.length; i++ ) {
-
+                    if ( json.elements.element[i].id != json.elements.element[i].represents_element ) {
+                        if ( !contains(elementsToReorder, json.elements.element[i].represents_element) ) {
+                            elementsToReorder.push(json.elements.element[i].represents_element);
+                        }
+                    }
+                }
+                for ( var i = 0; i < elementsToReorder.length; i++ ) {
+                    reorderElements(json.elements.element, elementsToReorder[i]);
                 }
                 callback(json.elements);
             }
         });
     };
+
+    function contains(array, item) {
+        for ( var i = 0; i < array.length; i++ ) {
+            if ( array[i] == item ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function reorderElements(elements, baseElement) {
+        var logger = new Logger("reorderElement");
+        logger.error("element " + baseElement + " needs to be reordered");
+        var temp = [];
+        var tempPos = [];
+
+        logger.log(elements);
+        for ( var i = 0; i < elements.length; i++ ) {
+            var element = elements[i];
+            // logger.log("considering " + element.id);
+            if ( element.represents_element == baseElement ) {
+                logger.log("adding " + element.id);
+                temp.push(element);
+                tempPos.push(i);
+            }
+        }
+        temp.sort(function(a, b) {
+            return a.id > b.id;
+        });
+        logger.log(temp);
+        for ( var i = 0; i < temp.length; i++ ) {
+            elements[tempPos[i]] = temp[i];
+            logger.log("setting element " + tempPos[i] + " to " + temp[i].id)
+        }
+        logger.log(elements);
+    }
 
     function fixJSONDiscrepancies() {
         var logger = new Logger("editfillin");
@@ -255,7 +301,7 @@ var ediml = (function() {
                 fillInEdiMl(edimls[name].ediml.elements);
                 setTimeout( function() {
                     DataSourcePool.getInstance().refreshAll();
-                }, 5);
+                }, settings.refreshDelay);
 
             }
         } else {
@@ -368,7 +414,10 @@ var ediml = (function() {
                     }
                 }
             } else {
+                var logger = new Logger("duplicator");
                 var represents_element = element.id.replaceAll(cloneSuffix, "");
+                logger.log("represents_element: " + represents_element);
+                logger.log("element: " + element.id);
                 edi.duplicateElement(represents_element, element.id, false);
                 if ( !$.isArray(element.items.item) ) {
                     element.items.item = [element.items.item];
@@ -396,9 +445,12 @@ var ediml = (function() {
             }
         }
         $("select[languageselector='true']").trigger('change');
+
+
         setTimeout( function() {
             $("input", ".uris").trigger("change");
-        }, 100);
+        }, defaults.selectsDelay);
+
         // updateAll();
     };
 
@@ -454,6 +506,8 @@ var ediml = (function() {
      * @param newId
      */
     function duplicateElement(id, newId) {
+        var logger = new Logger("duplicator");
+
         var element = getElement(id);
         logger.log("duplicating element " + id);
         if ( typeof element !== "undefined" ) {
@@ -461,6 +515,7 @@ var ediml = (function() {
             newElement.id = newId;
             newElement.root = element.root;
             newElement.mandatory = element.mandatory;
+            newElement.represents_element = element.represents_element;
             for ( var i = 0; i < element.items.item.length; i++ ) {
                 var item = element.items.item[i];
                 var newItem = new Item();

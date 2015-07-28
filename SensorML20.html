@@ -75,7 +75,7 @@
         }
         $(document).ready(function() {
             // ediml.setPostCallbackError(pippo);
-            edi.loadLocalTemplate("SensorML101", "3.00", onTemplateLoaded);
+            edi.loadLocalTemplate("SensorML20", "1.00", onTemplateLoaded);
             $("#ediml").hide();
             $("#sendMetadata").click(ediml.post);
         });
@@ -108,7 +108,7 @@
                 
             </div>
             <div class="container">
-                <h1>RITMARE EDI <span id="template-version"></span></h1>
+                <h1>EDI <span id="template-version"></span></h1>
                 <script> var elements = []; </script>
                 <div class="row">
                     <div class="tabbable tabs-left">

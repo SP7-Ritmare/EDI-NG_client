@@ -133,6 +133,7 @@ var DataSource = function(params) {
     if ( typeof parameters.id === "undefined" ) {
         throw "DataSource id is mandatory";
     }
+
     var self;
     function dataSuccess(data) {
         resultSet = data;
@@ -164,7 +165,9 @@ var DataSource = function(params) {
             parameters.ready(resultSet);
         }
         for ( var i = 0; i < callbacks.length; i++ ) {
-            callbacks[i](resultSet, parameters.id);
+            if ( typeof callbacks[i] === "function" ) {
+                callbacks[i](resultSet, parameters.id);
+            }
         }
         isLoading = false;
         DataSourcePool.getInstance().queryEnd(self);
@@ -178,10 +181,11 @@ var DataSource = function(params) {
         parameters.hasErrors = true;
         parameters.errors = arguments;
 
-        // logger.log("Data Error");
-        // logger.log(arguments);
+        logger.error("Data Error on datasource " + parameters.id);
+        logger.error(arguments);
         isLoading = false;
         DataSourcePool.getInstance().queryEnd(self);
+        trigger("dataLoaded");
         $("*[datasource='" + parameters.id + "']").removeClass("loading");
     }
 
@@ -217,7 +221,8 @@ var DataSource = function(params) {
             case DataSourceType.virtuosoCodelist:
                 var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
                 // logger.log("load data for " + parameters.id);
-                sparql.query(parameters.uri, dataSuccess, dataError, language);
+                var jqXHR = sparql.query(parameters.uri, dataSuccess, dataError, language);
+                DataSourcePool.getInstance().addPromise(jqXHR);
                 break;
             case DataSourceType.sparql:
                 if ( typeof parameters.triggerItem !== "undefined" ) {
@@ -234,10 +239,15 @@ var DataSource = function(params) {
                 var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
                 var newQuery = parameters.query.toString();
                 if ( typeof parameters.searchItem !== "undefined" && $("#" + parameters.searchItem).val() != "" ) {
-                    newQuery = parameters.query.toString().replace(/\$search_param\$/g, $("#" + parameters.searchItem).val()).replace(/\$search_param/g, $("#" + parameters.searchItem).val());
+                    if ( parameters.searchItem && $("#" + parameters.searchItem).length <= 0 ) {
+                        throw "Datasource '" + parameters.id + "': search item '" + parameters.searchItem + "' does not exist";
+                    }
+
+                    newQuery = parameters.query.toString().replace(/\$search_param\$/g, escapeSearchItem($("#" + parameters.searchItem).val())).replace(/\$search_param/g, escapeSearchItem($("#" + parameters.searchItem).val()));
                 }
                 logger.log(newQuery);
-                sparql.specificQuery(newQuery, dataSuccess, dataError, language);
+                var jqXHR = sparql.specificQuery(newQuery, dataSuccess, dataError, language);
+                DataSourcePool.getInstance().addPromise(jqXHR);
                 break;
             default:
                 isLoading = false;
@@ -245,6 +255,13 @@ var DataSource = function(params) {
         }
     }
 
+    function escapeSearchItem(item) {
+        var returnValue = item;
+        returnValue = returnValue
+                .replace(/\(/g, "\\\\(")
+                .replace(/\)/g, "\\\\)");
+        return returnValue;
+    }
     function filter(field, value) {
         var retVal = [];
         for ( var i = 0; i < resultSet.length; i++ ) {
@@ -336,6 +353,7 @@ var DataSource = function(params) {
          * @function
          */
         refresh: function() {
+
             loadData();
         },
         filter: filter,
