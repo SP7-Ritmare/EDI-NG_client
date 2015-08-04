@@ -107,21 +107,23 @@
         <div class="row">
             <div class="tabbable tabs-left">
                 <ul id="myTab" class="nav nav-tabs">
-                    <button class="btn btn-primary" onclick="edi.setLanguage('it');">it</button>
-                    <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
-                    <br>
-                    <button class="btn btn-danger debug" onclick="toggleEDIML(this);">show EDIML</button>
-                    <br>
-                    <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
-                    <br>
-                    <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
-                    <br>
-                    <button class="btn btn-danger" style="display: none;" id="EDIMLDownload" onclick="ediml.downloadEDIML();">download EDIML</button>
-                    <br>
-                    <button class="btn btn-danger" style="display: none;" id="MDDownload" onclick="ediml.downloadMetadata();">download generated XML</button>
-                    <br>
-                    <button class="btn btn-primary" id="sendMetadata">send metadata</button>
-                    <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
+                    <div class="bottoniera">
+                        <button class="btn btn-primary" onclick="edi.setLanguage('it');">it</button>
+                        <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
+                        <br>
+                        <button class="btn btn-danger debug" onclick="toggleEDIML(this);">show EDIML</button>
+                        <br>
+                        <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
+                        <br>
+                        <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
+                        <br>
+                        <button class="btn btn-danger" style="display: none;" id="EDIMLDownload" onclick="ediml.downloadEDIML();">download EDIML</button>
+                        <br>
+                        <button class="btn btn-danger" style="display: none;" id="MDDownload" onclick="ediml.downloadMetadata();">download generated XML</button>
+                        <br>
+                        <button class="btn btn-primary" id="sendMetadata">send metadata</button>
+                        <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
+                    </div>
                 </ul>
                 <article class="span8" id="mdcontent">
                     <div id="theForm">
