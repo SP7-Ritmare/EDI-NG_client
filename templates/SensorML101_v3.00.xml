@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template [
-    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
-    <!ENTITY dct "http://purl.org/dc/terms/">
-    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
-    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
-]>
+        <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+        <!ENTITY dct "http://purl.org/dc/terms/">
+        <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+        <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+        ]>
 <!-- TO DO: aggiungere un nuovo tag che riguarda la possibilità di updateSensor solo di alcuni campi -->
-<!-- TO DO: verificare come usare la parte di xlink:href e code per codelist e autocompletion (es. output, physical prop e electrical prop) -->
-<!-- development -->
+<!-- inspireworkshop -->
 
 <template>
     <!-- SETTINGS -->
@@ -16,33 +15,15 @@
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
-        <!--<metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>-->
+        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
-        <!--<sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>-->
         <requiresAuthentication>false</requiresAuthentication>
         <requiresValidation>false</requiresValidation>
 
         <baseDocument>
             <!-- Base Document SensorML version 1.0.1 -->
             <![CDATA[
-            <swes:InsertSensor xmlns:sos="http://www.opengis.net/sos/2.0"
-    xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
-    xmlns:swe="http://www.opengis.net/swe/1.0.1"
-    xmlns:tns="http://www.w3.org/2005/08/addressing"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:gco="http://www.isotc211.org/2005/gco"
-    xmlns:gss="http://www.isotc211.org/2005/gss"
-    xmlns:gmd="http://www.isotc211.org/2005/gmd"
-    xmlns:gml="http://www.opengis.net/gml"
-    xmlns:swes="http://www.opengis.net/swes/2.0"
-    xmlns:om="http://www.opengis.net/om/2.0"
-    xmlns:ows="http://www.opengis.net/ows/1.1"
-    xmlns:wstop="http://docs.oasis-open.org/wsn/t-1"
-    xmlns:gsr="http://www.isotc211.org/2005/gsr"
-    xmlns:gts="http://www.isotc211.org/2005/gts"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.opengis.net/sos/2.0/ http://schemas.opengis.net/sos/2.0/sosInsertSensor.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd" version="2.0.0" service="SOS">
+            <swes:InsertSensor xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:tns="http://www.w3.org/2005/08/addressing" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml" xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:om="http://www.opengis.net/om/2.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wstop="http://docs.oasis-open.org/wsn/t-1" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sos/2.0/ http://schemas.opengis.net/sos/2.0/sosInsertSensor.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd" version="2.0.0" service="SOS">
     <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
     <swes:procedureDescription>
         <!-- Licence CC By SA 3.0  http://creativecommon.org/licences/by-SA/3.0 -->
@@ -68,7 +49,7 @@
         </baseDocument>
 
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=2.00</xslt>
+            <xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt>
         </xsltChain>
     </settings>
 
@@ -119,6 +100,7 @@
                         ORDER BY ASC(?l) ASC(?a) 
                         ]]>
             </query>
+            <searchItem>keyword_p01</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -165,6 +147,7 @@
                         ORDER BY ASC(?l)                        
                         ]]>
             </query>
+            <searchItem>manufacturers_codelist</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -247,6 +230,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
+            <searchItem>intended_applications_codelist</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -276,11 +260,12 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
+            <searchItem>type_of_systems_keywords</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
             <id>uom</id>
-            <singleton>true</singleton>
+            <singleton>false</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
@@ -306,6 +291,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
+            <searchItem>unit_of_measure</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -316,7 +302,7 @@
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/project>
+                        FROM <http://ritmare.it/rdfdata/lotrx>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
@@ -325,6 +311,7 @@
                         ORDER BY ASC(?l)
                         ]]>
             </query>
+            <searchItem>owners_codeList</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -334,43 +321,61 @@
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-                        WHERE { 
-                          OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
-                          }
-                          OPTIONAL {
-                            <$search_param> foaf:fullName ?fullname .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:email ?email .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3 .
-                            ?b3 foaf:homepage ?homepage .
-                            ?b3 foaf:name ?l .
-                          }
+SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+WHERE {
+  OPTIONAL {
+    <$search_param> foaf:phone ?phone .
+  }
+  OPTIONAL {
+    <$search_param> foaf:fullName ?fullname .
+  }
+  OPTIONAL {
+    <$search_param> vcard:email ?email .
+  }
+  OPTIONAL {
+    <$search_param> vcard:org ?b3 .
+    ?b3 foaf:homepage ?homepage .
+    ?b3 foaf:name ?l .
+  }
 
-                          {
-                            <$search_param> vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          } UNION {
-                            ?b3 vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          }
-
-                          FILTER(lang(?l)='it')
-                        }
-                        LIMIT 1
-                        ]]>
+  {
+    <$search_param> vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  } UNION {
+    ?b3 vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  }
+}
+LIMIT 1
+                ]]>
             </query>
             <triggerItem>owner_1_uri</triggerItem>
             <type> sparql </type>
@@ -383,7 +388,7 @@
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/project>
+                        FROM <http://ritmare.it/rdfdata/lotrx>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
@@ -392,6 +397,7 @@
                         ORDER BY ASC(?l)
                         ]]>
             </query>
+            <searchItem>operators_codeList</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -401,42 +407,60 @@
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-                        WHERE { 
-                          OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
-                          }
-                          OPTIONAL {
-                            <$search_param> foaf:fullName ?fullname .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:email ?email .
-                          }
-                          OPTIONAL {
-                            <$search_param> vcard:org ?b3 .
-                            ?b3 foaf:homepage ?homepage .
-                            ?b3 foaf:name ?l .
-                          }
-
-                          {
-                            <$search_param> vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          } UNION {
-                            ?b3 vcard:hasAddress ?b1 .
-                            ?b1 vcard:street-address ?addr .
-                            ?b1 vcard:locality ?town .
-                            ?b1 vcard:postal-code ?postcode .
-                            ?b1 vcard:country-name ?b2 .
-                            ?b2 foaf:name ?country .
-                          }
-
-                          FILTER(lang(?l)='it')
-                        }
-                        LIMIT 1
+SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+WHERE {
+  OPTIONAL {
+    <$search_param> foaf:phone ?phone .
+  }
+  OPTIONAL {
+    <$search_param> foaf:fullName ?fullname .
+  }
+  OPTIONAL {
+    <$search_param> vcard:email ?email .
+  }
+  OPTIONAL {
+    <$search_param> vcard:org ?b3 .
+    ?b3 foaf:homepage ?homepage .
+    ?b3 foaf:name ?l .
+  }
+  
+  {
+    <$search_param> vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  } UNION {
+    ?b3 vcard:hasAddress ?b1 .
+    OPTIONAL {
+      ?b1 vcard:street-address ?addr .
+    }
+    OPTIONAL {
+      ?b1 vcard:locality ?town .
+    }
+    OPTIONAL {
+      ?b1 vcard:postal-code ?postcode .
+    }
+    OPTIONAL {
+      ?b1 vcard:country-name ?b2 .
+    }
+    OPTIONAL {
+      ?b2 foaf:name ?country .
+    }
+  }
+}
+LIMIT 1
                         ]]>
             </query>
             <triggerItem>operator_1_uri</triggerItem>
@@ -469,6 +493,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
+            <searchItem>parameters_codeList</searchItem>
             <type> sparql </type>
         </datasource>
         <datasource>
@@ -527,13 +552,13 @@
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-           <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
+            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
                 CTP Recorder, ecc.).</help>
             <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer (e.g. 
-		Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
+                not its description; it could coincide with the name given by the manufacturer (e.g.
+                Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member</hasRoot>
@@ -773,8 +798,8 @@
             <label xml:lang="it">Denominazione del produttore</label>
             <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
-		to obtain suggested autocompletion from a manufacturer list.</help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters
+                to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -842,7 +867,7 @@
             <label xml:lang="it">Numero seriale</label>
             <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -1607,7 +1632,7 @@
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
             <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
-             del progetto RITMARE</help>
+                del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
@@ -1903,10 +1928,10 @@
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
             <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
+                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
             <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
-		 peer-reviewed algorithm literature, etc.).</help>
+                peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -2490,7 +2515,7 @@
                 di riferimento scelto</help>
             <label xml:lang="en">East</label>
             <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                 refers to the actual position of the sensor. The value must be given in 
+                refers to the actual position of the sensor. The value must be given in
                 the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -2543,7 +2568,7 @@
                 di riferimento scelto.</help>
             <label xml:lang="en">North</label>
             <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                 refers to the actual position of the sensor. The value must be given in 
+                refers to the actual position of the sensor. The value must be given in
                 the chosen reference system and in decimal degrees (ex. 45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -2578,9 +2603,9 @@
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Valore (decimi di grado)</label>
-                   <!-- <help xml:lang="it"></help> -->
+                    <!-- <help xml:lang="it"></help> -->
                     <label xml:lang="en">Decimal degree value</label>
-                   <!--  <help xml:lang="en"></help> -->
+                    <!--  <help xml:lang="en"></help> -->
                 </item>
             </produces>
         </element>
