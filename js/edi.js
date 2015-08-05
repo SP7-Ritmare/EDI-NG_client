@@ -672,9 +672,7 @@ var edi = (function() {
             ediml.loadEDIML(querystring("edit"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
-                logger.log("1");
                 setTimeout( function() {
-                    logger.log("2");
                     /*
                     DataSourcePool.getInstance().addListener("allReady", function(event) {
                         $("input", ".uris").trigger("change");
@@ -686,16 +684,18 @@ var edi = (function() {
                         $("#mdcontent").show();
                         $("#please_wait").remove();
                     });
+                    DataSourcePool.getInstance().startNotifying();
                     DataSourcePool.getInstance().refreshAll();
-/*
-                    setTimeout( function() {
-                        logger.log("3");
 
-                        $("input", ".uris").trigger("change");
-                        $("#mdcontent").show();
-                        $("#please_wait").remove();
-                    }, defaults.selectsDelay);
-*/
+                    /*
+                     setTimeout( function() {
+                     logger.log("3");
+
+                     $("input", ".uris").trigger("change");
+                     $("#mdcontent").show();
+                     $("#please_wait").remove();
+                     }, defaults.selectsDelay);
+                     */
                 }, settings.refreshDelay);
             });
         } else if ( querystring("duplicate").length > 0 ) {
@@ -713,6 +713,7 @@ var edi = (function() {
                         $("input", ".uris").trigger("change");
                         $("#mdcontent").show();
                         $("#please_wait").remove();
+
                     }, defaults.selectsDelay);
                 }, settings.refreshDelay);
                 ediml.content.elements.fileId = undefined;

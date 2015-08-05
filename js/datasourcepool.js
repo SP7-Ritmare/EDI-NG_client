@@ -326,6 +326,13 @@ var DataSourcePool = (function(){
             /**
              *
              * @memberOf DataSourcePool
+             */
+            startNotifying: function () {
+                notifyListeners = true;
+            },
+            /**
+             *
+             * @memberOf DataSourcePool
              * @param ds
              */
             queryStart: function(ds) {
@@ -344,6 +351,7 @@ var DataSourcePool = (function(){
                         if ( runningDatasources.length == 0 ) {
                             logger.log("allReady");
                             instance.trigger("allReady");
+                            instance.trigger("allDSRefreshed");
                         }
                         return;
                     }

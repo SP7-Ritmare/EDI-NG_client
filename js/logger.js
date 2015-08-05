@@ -22,9 +22,9 @@ var enabledContexts = [
     /*
     "reorderElement",
     "duplicator",
+     availableContexts.DATASOURCE,
+     availableContexts.EDI
     */
-    availableContexts.DATASOURCE,
-    availableContexts.EDI
 ];
 
 /*
@@ -52,6 +52,8 @@ var Logger = (function(context) {
         }
     }
     function error(arg) {
+        console.error(arg);
+        return;
         if ($.inArray(_context, enabledContexts) > -1 ) {
             if ( outputContext ) {
                 console.error("context: " + _context);
