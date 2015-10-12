@@ -500,3 +500,32 @@ element {
     min-height: 100px;
     border: 1px red solid;
 }
+
+.disabled {
+    z-index: 1000;
+    background-color: #fff;
+    opacity: 1;
+    pointer-events: none;
+    border: 1px solid #b92c28;
+}
+
+.disabled:before {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #b92c28;
+    content: "\e033 ";
+    padding: 8px;
+}
+
+.forceEnable {
+    z-index: 1010;
+    pointer-events: all;
+}

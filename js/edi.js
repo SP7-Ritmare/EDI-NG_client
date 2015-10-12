@@ -77,7 +77,7 @@ var edi = (function() {
         // var newDivString = String(newDiv.html());
         // newDiv.html(newDivString.replaceAll("\"" + element_id, "\"" + newId));
         newDiv.find('.duplicator').remove();
-
+        newDiv.removeClass("disabled");
         newDiv.find('button[removes]').remove();
         // var label = newDiv.find('label[for="' + element_id + cloneSuffix + '"]').first();
         newDiv.find('a[for="' + newId + '"]').remove();
@@ -631,6 +631,15 @@ var edi = (function() {
         if ( element.isMandatory != "NA" ) {
             div.addClass("mandatory");
         }
+        if (element.lock) {
+            div.addClass("elementLock");
+            if (element.lock["_additionOnly"] == "true") {
+                div.addClass("additionOnly");
+            }
+            if (element.lock["_duplicationOnly"] == "true") {
+                div.addClass("duplicationOnly");
+            }
+        }
         // $("#debug").append("<p>" + element.id + "</p>");
         // logger.log(element.id);
     }
@@ -696,6 +705,11 @@ var edi = (function() {
                      $("#please_wait").remove();
                      }, defaults.selectsDelay);
                      */
+
+                    $(".elementLock:not(.duplicationOnly)").addClass("disabled");
+                    $("button[duplicates]", ".additionOnly").addClass("forceEnable");
+                    $("button[duplicates]:not(.forceEnable)", ".disabled").hide();
+                    $("button[removes]:not(.forceEnable)", ".disabled").hide();
                 }, settings.refreshDelay);
             });
         } else if ( querystring("duplicate").length > 0 ) {
@@ -708,12 +722,16 @@ var edi = (function() {
                     DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
                         $("input", ".uris").trigger("change");
                     });
+                    DataSourcePool.getInstance().startNotifying();
                     DataSourcePool.getInstance().refreshAll();
                     setTimeout( function() {
                         $("input", ".uris").trigger("change");
                         $("#mdcontent").show();
                         $("#please_wait").remove();
-
+                        $(".duplicationOnly").addClass("disabled");
+                        $("button[duplicates]", ".additionOnly").addClass("forceEnable");
+                        $("button[duplicates]:not(.forceEnable)", ".disabled").hide();
+                        $("button[removes]:not(.forceEnable)", ".disabled").hide();
                     }, defaults.selectsDelay);
                 }, settings.refreshDelay);
                 ediml.content.elements.fileId = undefined;

@@ -256,11 +256,17 @@ var DataSource = function(params) {
     }
 
     function escapeSearchItem(item) {
-        var returnValue = item;
-        returnValue = returnValue
+        console.log(item);
+        if (typeof item !== "undefined" && item != null) {
+            var returnValue = item;
+            returnValue = returnValue
                 .replace(/\(/g, "\\\\(")
                 .replace(/\)/g, "\\\\)");
-        return returnValue;
+            return returnValue;
+        } else {
+            console.error("searchItem is null in datasource " + getId());
+            return item;
+        }
     }
     function filter(field, value) {
         var retVal = [];
