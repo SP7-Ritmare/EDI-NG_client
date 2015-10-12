@@ -32,9 +32,14 @@ var edi = (function() {
         uiLanguage = lang;
     }
 
-    function setMetadataLanguage(lang) {
+    function setMetadataLanguage(lang, refresh /* defaults to true */) {
+        if (typeof refresh === "undefined") {
+            refresh = true;
+        }
         DataSourcePool.getInstance().setLanguage(lang);
-        DataSourcePool.getInstance().refreshAll();
+        if (refresh) {
+            DataSourcePool.getInstance().refreshAll();
+        }
     }
 
     function setLanguageSelector() {
@@ -796,7 +801,7 @@ var edi = (function() {
         if ( data.datasources ) {
             var dss = data.datasources.datasource;
             for (var i = 0; i < dss.length; i++) {
-                // logger.log(dss[i]);
+                logger.log(dss[i]);
                 var ds = new DataSource({
                     id: dss[i].id,
                     type: dss[i].type,
@@ -812,6 +817,7 @@ var edi = (function() {
                         // logger.log(data);
                     }
                 });
+                logger.log("Adding datasource " + ds.getId());
                 dataSources.push(ds);
             }
         }
@@ -840,17 +846,22 @@ var edi = (function() {
 
         setLanguage(uiLanguage);
         metadataLanguage = settings.defaultLanguage;
-        setMetadataLanguage(metadataLanguage);
+        logger.log("default language: " + metadataLanguage);
+        setMetadataLanguage(metadataLanguage, false);
+        logger.log("*****************************");
         setLanguageSelector();
 
+        logger.log("Adding global DS listener");
         DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
             logger.log("all datasets loaded");
             runQueries();
         });
 
         var datasources = DataSourcePool.getInstance().getDataSources();
+        logger.log("Adding listeners");
         for ( var i = 0; i < datasources.length; i++ ) {
             var ds = datasources[i];
+            logger.log("adding listener for " + ds.getId());
             ds.addListener(fillInCombos);
         }
         duplicators();

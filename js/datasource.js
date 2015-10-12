@@ -256,7 +256,8 @@ var DataSource = function(params) {
     }
 
     function escapeSearchItem(item) {
-        console.log(item);
+        logger.log("searchItem for " + getId());
+        logger.log(item);
         if (typeof item !== "undefined" && item != null) {
             var returnValue = item;
             returnValue = returnValue
@@ -264,7 +265,7 @@ var DataSource = function(params) {
                 .replace(/\)/g, "\\\\)");
             return returnValue;
         } else {
-            console.error("searchItem is null in datasource " + getId());
+            logger.error("searchItem is null in datasource " + getId());
             return item;
         }
     }
