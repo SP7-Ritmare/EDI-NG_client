@@ -30,11 +30,11 @@ var Element = (function() {
         });
     }
     function sortItems() {
-        element.items.item.sort(function (a, b) {
+        element.items.item.sort(function (aa, bb) {
 
             // convert to integers from strings
-            a = a.outIndex;
-            b = b.outIndex;
+            var a = parseInt(aa.outIndex);
+            var b = parseInt(bb.outIndex);
             if ( a && b ) {
                 // compare
                 if(a > b) {
