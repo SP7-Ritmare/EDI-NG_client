@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <xs:element name="template">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="settings"/>
+        <xs:element ref="endpointTypes"/>
+        <xs:element ref="datasources"/>
+        <xs:element maxOccurs="unbounded" ref="group"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="settings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="userInterfaceLanguage"/>
+        <xs:element ref="metadataLanguage"/>
+        <xs:element ref="metadataEndpoint"/>
+        <xs:element ref="sparqlEndpoint"/>
+        <xs:element ref="requiresValidation"/>
+        <xs:element ref="baseDocument"/>
+        <xs:element ref="xsltChain"/>
+        <xs:element ref="codelistQuery"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="userInterfaceLanguage">
+    <xs:complexType>
+      <xs:attribute ref="xml:lang" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="metadataLanguage">
+    <xs:complexType>
+      <xs:attribute name="selectionItem" use="required" type="xs:IDREF"/>
+      <!-- <xs:attribute ref="xml:lang" use="required"/> -->
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="metadataEndpoint" type="xs:anyURI"/>
+  <xs:element name="sparqlEndpoint" type="xs:anyURI"/>
+  <xs:element name="requiresValidation" type="xs:boolean"/>
+  <xs:element name="baseDocument" type="xs:string"/>
+  <xs:element name="xsltChain">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="xslt"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="xslt" type="xs:anyURI"/>
+  <xs:element name="codelistQuery" type="xs:string"/>
+  <xs:element name="endpointTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="endpointType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="endpointType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="parameters"/>
+      </xs:sequence>
+      <xs:attribute name="method" use="required" type="xs:NCName"/>
+      <xs:attribute name="queryParameter" use="required" type="xs:NCName"/>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="parameter"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:complexType>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="datasources">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="codelist"/>
+        <xs:element ref="sparql"/>
+        <xs:element ref="singleton"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="codelist">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="uri"/>
+        <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uri" type="xs:anyURI"/>
+  <xs:element name="sparql">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="query"/>
+        <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="singleton">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="query"/>
+        <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute name="triggerItem" use="required" type="xs:NCName"/>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="group">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="help"/>
+          <xs:element ref="label"/>
+        </xs:choice>
+        <xs:element ref="element"/>
+      </xs:sequence>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="element">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="help"/>
+          <xs:element ref="label"/>
+        </xs:choice>
+        <xs:element ref="hasRoot"/>
+        <xs:element ref="produces"/>
+      </xs:sequence>
+      <xs:attribute name="isMandatory" use="required" type="xs:boolean"/>
+      <xs:attribute name="isMultiple" use="required" type="xs:boolean"/>
+      <xs:attribute ref="xml:id" use="required"/>
+      <xs:attribute name="alternativeTo" use="optional" type="xs:IDREF"/>
+    </xs:complexType>
+    <xs:key name="ID">
+      <xs:selector xpath="element"/>
+      <xs:field xpath="@xml:id"/>
+    </xs:key>
+    <xs:keyref name="IDREF" refer="ID">
+      <xs:selector xpath="element"/>
+      <xs:field xpath="@alternativeTo"/>
+    </xs:keyref>
+  </xs:element>
+  <xs:element name="hasRoot" type="xs:string"/>
+  <xs:element name="produces">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="help"/>
+          <xs:element ref="label"/>
+        </xs:choice>
+        <xs:element ref="hasPath"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="defaultValue"/>
+          <xs:element ref="field"/>
+          <xs:element ref="hasValue"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="datasource" type="xs:IDREF"/>
+      <xs:attribute name="hasDatatype" use="required" type="xs:NCName"/>
+      <xs:attribute name="hasIndex" use="required" type="xs:integer"/>
+      <xs:attribute name="isFixed" use="required" type="xs:boolean"/>
+      <xs:attribute name="outIndex" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hasPath" type="xs:anyURI"/>
+  <xs:element name="defaultValue" type="xs:NCName"/>
+  <xs:element name="field" type="xs:NCName"/>
+  <xs:element name="hasValue" type="xs:string"/>
+  <xs:element name="url" type="xs:anyURI"/>
+  <xs:element name="query" type="xs:string"/>
+  <xs:element name="label">
+    <xs:complexType mixed="true">
+      <xs:attribute ref="xml:lang" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="help">
+    <xs:complexType mixed="true">
+      <xs:attribute ref="xml:lang" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

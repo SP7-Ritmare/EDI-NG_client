@@ -9,7 +9,7 @@
  *
  */
 
-var ediml = (function() {
+var ediml = (function () {
     var metadataEndpoint;
     var settings;
     var edimls = {};
@@ -38,81 +38,63 @@ var ediml = (function() {
     function inheritSettings(newSettings) {
         settings = newSettings;
         metadataEndpoint = settings.metadataEndpoint;
-        if ( typeof metadataEndpoint === "undefined" ) {
+        if (typeof metadataEndpoint === "undefined") {
             metadataEndpoint = defaults.metadataEndpoint;
         }
-        if ( typeof settings.baseDocument !== "undefined" ) {
+        if (typeof settings.baseDocument !== "undefined") {
             content.elements.baseDocument = settings.baseDocument;
         }
-        if ( typeof settings.xsltChain !== "undefined" ) {
+        if (typeof settings.xsltChain !== "undefined") {
             content.elements.xsltChain = settings.xsltChain;
         }
     }
 
-    var defaultPostErrorCallback = function() {
-        // var newWindow2 = window.open("data:text/xml," + encodeURIComponent(arguments.responseText),"_blank");
-        // doDebug('Failed ' + JSON.stringify(arguments));
+    var defaultPostErrorCallback = function () {
         $("#mdcontent").prepend("<pre class='prettypring lang-json'>" + JSON.stringify(arguments, undefined, 2) + "</pre>");
         prettyPrint();
 
         logger.log(arguments);
     };
 
-    var defaultPostSuccessCallback = function(msg){
-        // $( "#debug" ).html( htmlEncode(msg) );
-        // doDebug("Ricevuto: " + xmlToString(msg));
+    var defaultPostSuccessCallback = function (msg) {
         logger.log(msg);
-        if ( msg.responseCode == 200 ) {
+        if (msg.responseCode == 200) {
             isDirty = false;
             edi.setGeneratedXml(msg.generatedXml);
             alert("your XML has been correctly generated");
             var xmlString = msg.generatedXml;
-            if ( false && xmlString.indexOf("sml:SensorML") >= 0 ) {
+            if (false && xmlString.indexOf("sml:SensorML") >= 0) {
                 xmlString = formatXml(xmlString);
                 $("#mdcontent").prepend("<pre class='prettyprint lang-html linenums:1'>" + xmlString.encodeHTML() + "</pre>");
                 prettyPrint();
 
                 $.ajax({
-                    type     : "POST",
-                    url      : "sos/registerSensor",
+                    type: "POST",
+                    url: "sos/registerSensor",
                     contentType: "application/xml",
                     processData: true,
-                    data     : (xmlString),
-                    success  : function(msg){
-                        // $( "#debug" ).html( htmlEncode(msg) );
-                        // doDebug("Ricevuto: " + xmlToString(msg));
+                    data: (xmlString),
+                    success: function (msg) {
                         var xmlString = xmlToString(msg);
-                        var newWindow = window.open("data:text/xml," + encodeURIComponent(xmlString),"_blank");
+                        var newWindow = window.open("data:text/xml," + encodeURIComponent(xmlString), "_blank");
                         $.ajax({
-                            type     : "POST",
-                            url      : "http://sp7.irea.cnr.it/sigosos/SOS32/sos",
+                            type: "POST",
+                            url: "http://sp7.irea.cnr.it/sigosos/SOS32/sos",
                             contentType: "application/xml",
                             processData: true,
-                            data     : (xmlString),
-                            success  : function(msg){
-                                // $( "#debug" ).html( htmlEncode(msg) );
-                                // doDebug("Ricevuto: " + xmlToString(msg));
+                            data: (xmlString),
+                            success: function (msg) {
                                 var xmlString = xmlToString(msg);
-                                var newWindow = window.open("data:text/xml," + encodeURIComponent(xmlString),"_blank");
-                                /*
-                                 newWindow.document.open();
-                                 newWindow.document.write(xmlToString(msg));
-                                 newWindow.document.close();
-                                 */
+                                var newWindow = window.open("data:text/xml," + encodeURIComponent(xmlString), "_blank");
                             },
-                            error    : function() {
-                                var newWindow2 = window.open("data:text/xml," + encodeURIComponent(arguments.responseText),"_blank");
+                            error: function () {
+                                var newWindow2 = window.open("data:text/xml," + encodeURIComponent(arguments.responseText), "_blank");
                                 // doDebug('Failed ' + JSON.stringify(arguments));
                             }
                         });
-                        /*
-                         newWindow.document.open();
-                         newWindow.document.write(xmlToString(msg));
-                         newWindow.document.close();
-                         */
                     },
-                    error    : function() {
-                        var newWindow2 = window.open("data:text/xml," + encodeURIComponent(arguments.responseText),"_blank");
+                    error: function () {
+                        var newWindow2 = window.open("data:text/xml," + encodeURIComponent(arguments.responseText), "_blank");
                         doDebug('Failed ' + JSON.stringify(arguments));
                     }
                 });
@@ -121,13 +103,7 @@ var ediml = (function() {
                 $("#mdcontent").prepend("<pre class='prettyprint lang-html linenums:1'>" + xmlString.encodeHTML() + "</pre>");
                 $("#mdcontent").prepend("<pre class='prettyprint lang-json'>" + JSON.stringify(msg, undefined, 2) + "</pre>");
                 prettyPrint();
-                // prettyPrintOne('<root><node1><root>', 'xml')
             }
-            /*
-             newWindow.document.open();
-             newWindow.document.write(xmlToString(msg));
-             newWindow.document.close();
-             */
         } else {
 
             $("#mdcontent").prepend("<pre class='prettyprint lang-json'>" + JSON.stringify(msg, undefined, 2) + "</pre>");
@@ -140,64 +116,65 @@ var ediml = (function() {
     function post() {
         $("#MDDownload").hide();
 
-        if ( settings.requiresValidation == "true" ) {
-            if ( !validator.validate() ) {
+        if (settings.requiresValidation == "true") {
+            if (!validator.validate()) {
                 alert(validator.getErrorCount() + " errors, " + validator.getWarningCount() + " warnings");
                 return;
             }
-            if ( validator.getWarningCount() > 0 && !$("#ignoreWarnings").prop("checked") ) {
+            if (validator.getWarningCount() > 0 && !$("#ignoreWarnings").prop("checked")) {
                 alert(validator.getWarningCount() + " warnings");
                 return;
             }
         }
-        var postMetadata = function(data) {
+        var postMetadata = function (data) {
             edi.setGeneratedXml(undefined);
 
             content.elements.fileId = data.id;
             content.elements.fileUri = metadataEndpoint + "rest/ediml/" + data.uri;
-            // content.elements.templateDocument = edi.getTemplate();
-            if ( typeof successCallback == 'undefined' ) {
+            if (typeof successCallback == 'undefined') {
                 successCallback = defaultPostSuccessCallback;
             }
-            if ( typeof errorCallback == 'undefined' ) {
+            if (typeof errorCallback == 'undefined') {
                 errorCallback = defaultPostErrorCallback;
             }
 
             var x2js = new X2JS();
             var xml = /* '<?xml version="1.0" encoding="UTF-8"?>' + */ (x2js.json2xml_str(content));
-            if ( querystring("debug") == "on" ) {
-                //    var newWindow1 = window.open("data:text/xml," + encodeURIComponent(xml),"_blank");
-                // $("#mdcontent").prepend("<pre class='prettyprint lang-json'>" + JSON.stringify(content, undefined, 4) + "</pre>");
+            if (querystring("debug") == "on") {
                 $("#mdcontent").prepend("<pre class='prettyprint lang-html linenums:1'>" + formatXml(xml).encodeHTML() + "</pre>");
                 prettyPrint();
             }
 
 
             $.ajax({
-                type     : "POST",
-                url      : metadataEndpoint + "rest/metadata",
-                dataType : "json",
+                type: "POST",
+                url: metadataEndpoint + "rest/metadata",
+                dataType: "json",
                 contentType: "application/xml",
                 processData: true,
-                data	 : (xml),
-                success  : successCallback,
-                error    : errorCallback
+                data: (xml),
+                success: successCallback,
+                error: errorCallback
             });
         }
-        if ( content.elements.fileId /*querystring("edit")*/ ) {
-            postMetadata({ id: content.elements.fileId, uri: metadataEndpoint + "rest/ediml/" + content.elements.fileId });
+        if (content.elements.fileId /*querystring("edit")*/) {
+            postMetadata({
+                id: content.elements.fileId,
+                uri: metadataEndpoint + "rest/ediml/" + content.elements.fileId
+            });
         } else {
             $.ajax({
-                type     : "GET",
-                url      : metadataEndpoint + "rest/ediml/requestId",
-                dataType : "json",
-                success  : postMetadata,
-                error    : function() {
+                type: "GET",
+                url: metadataEndpoint + "rest/ediml/requestId",
+                dataType: "json",
+                success: postMetadata,
+                error: function () {
                     alert("error on " + metadataEndpoint + "rest/ediml/requestId");
                     logger.log(arguments);
                 }
             });
-        }    }
+        }
+    }
 
     /**
      * Loads EDIML from the metadataEndpoint defined in the template's settings
@@ -207,26 +184,26 @@ var ediml = (function() {
      * @param callback  who to call when done
      */
     function loadEDIML(edimlId, callback) {
-        if ( typeof edimlId === "undefined" || edimlId == "" ) {
+        if (typeof edimlId === "undefined" || edimlId == "") {
             return;
         }
-        $.ajax( {
+        $.ajax({
             url: metadataEndpoint + "rest/ediml/" + edimlId,
             dataType: "xml",
-            success: function( data ) {
+            success: function (data) {
                 var x2j = new X2JS();
                 var json = x2j.xml2json(data);
                 logger.log(json);
                 var elementsToReorder = [];
 
-                for ( var i = 0; i < json.elements.element.length; i++ ) {
-                    if ( json.elements.element[i].id != json.elements.element[i].represents_element ) {
-                        if ( !contains(elementsToReorder, json.elements.element[i].represents_element) ) {
+                for (var i = 0; i < json.elements.element.length; i++) {
+                    if (json.elements.element[i].id != json.elements.element[i].represents_element) {
+                        if (!contains(elementsToReorder, json.elements.element[i].represents_element)) {
                             elementsToReorder.push(json.elements.element[i].represents_element);
                         }
                     }
                 }
-                for ( var i = 0; i < elementsToReorder.length; i++ ) {
+                for (var i = 0; i < elementsToReorder.length; i++) {
                     reorderElements(json.elements.element, elementsToReorder[i]);
                 }
                 callback(json.elements);
@@ -235,8 +212,8 @@ var ediml = (function() {
     };
 
     function contains(array, item) {
-        for ( var i = 0; i < array.length; i++ ) {
-            if ( array[i] == item ) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == item) {
                 return true;
             }
         }
@@ -250,20 +227,20 @@ var ediml = (function() {
         var tempPos = [];
 
         logger.log(elements);
-        for ( var i = 0; i < elements.length; i++ ) {
+        for (var i = 0; i < elements.length; i++) {
             var element = elements[i];
             // logger.log("considering " + element.id);
-            if ( element.represents_element == baseElement ) {
+            if (element.represents_element == baseElement) {
                 logger.log("adding " + element.id);
                 temp.push(element);
                 tempPos.push(i);
             }
         }
-        temp.sort(function(a, b) {
+        temp.sort(function (a, b) {
             return a.id > b.id;
         });
         logger.log(temp);
-        for ( var i = 0; i < temp.length; i++ ) {
+        for (var i = 0; i < temp.length; i++) {
             elements[tempPos[i]] = temp[i];
             logger.log("setting element " + tempPos[i] + " to " + temp[i].id)
         }
@@ -272,12 +249,12 @@ var ediml = (function() {
 
     function fixJSONDiscrepancies() {
         var logger = new Logger("editfillin");
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
-            if ( $.isArray(element.items) ) {
+            if ($.isArray(element.items)) {
                 var temp = element.items.item;
                 element.items = {};
-                if ( $.isArray(temp) ) {
+                if ($.isArray(temp)) {
                     element.items.item = temp;
                 } else {
                     element.items.item = [temp];
@@ -293,13 +270,13 @@ var ediml = (function() {
      * @param name  name the EDIML was saved as
      */
     function load(name) {
-        if(typeof(Storage) !== "undefined") {
+        if (typeof(Storage) !== "undefined") {
             logger.log(localStorage.edimls);
-            if ( typeof localStorage.edimls !== "undefined" ) {
+            if (typeof localStorage.edimls !== "undefined") {
                 edimls = JSON.parse(localStorage.edimls);
                 logger.log(edimls[name]);
                 fillInEdiMl(edimls[name].ediml.elements);
-                setTimeout( function() {
+                setTimeout(function () {
                     DataSourcePool.getInstance().refreshAll();
                 }, settings.refreshDelay);
 
@@ -323,7 +300,7 @@ var ediml = (function() {
             date: new Date()
         };
 
-        if(typeof(Storage) !== "undefined") {
+        if (typeof(Storage) !== "undefined") {
             edimls[name] = data;
             localStorage.edimls = JSON.stringify(edimls);
             logger.log(localStorage.edimls);
@@ -355,7 +332,7 @@ var ediml = (function() {
         var x2js = new X2JS();
         var xml = /* '<?xml version="1.0" encoding="UTF-8"?>' + */ (x2js.json2xml_str(content));
 
-        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(xml),"ediml_" + content.elements.fileId + ".xml");
+        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(xml), "ediml_" + content.elements.fileId + ".xml");
     }
 
     /**
@@ -383,29 +360,28 @@ var ediml = (function() {
 
         logger.log(content.elements);
         var elements = content.elements;
-        for ( var i = 0; i < elements.element.length; i++ ) {
+        for (var i = 0; i < elements.element.length; i++) {
             element = elements.element[i];
-            if ( element.id.indexOf(cloneSuffix) == -1 ) {
+            if (element.id.indexOf(cloneSuffix) == -1) {
                 logger.log(element);
-                if ( !$.isArray(element.items.item) ) {
+                if (!$.isArray(element.items.item)) {
                     element.items.item = [element.items.item];
                 }
-                for ( var j = 0; element.items.item && j < element.items.item.length; j++ ) {
+                for (var j = 0; element.items.item && j < element.items.item.length; j++) {
                     item = element.items.item[j];
                     var newItem = new Item();
-                    for ( var key in item ) {
+                    for (var key in item) {
                         newItem[key] = item[key];
                     }
                     element.items.item[j] = newItem;
                     item = element.items.item[j];
 
-                    // doDebug(item);
-                    if ( typeof item.datatype === "undefined" && typeof item.dataType !== "undefined" ) {
+                    if (typeof item.datatype === "undefined" && typeof item.dataType !== "undefined") {
                         item.datatype = item.dataType;
                     }
-                    if ( item.datatype == "codelist" || item.datatype == "query" ) {
+                    if (item.datatype == "codelist" || item.datatype == "query") {
                         $("#" + item.id).val(item.codeValue).trigger("change");
-                    } else if ( item.datatype == "autoCompletion" ) {
+                    } else if (item.datatype == "autoCompletion") {
                         $("#" + item.id).val(item.value);
                         $("#" + item.id + "_uri").val(item.codeValue);
                         $("#" + item.id + "_urn").val(item.urnValue);
@@ -419,22 +395,21 @@ var ediml = (function() {
                 logger.log("represents_element: " + represents_element);
                 logger.log("element: " + element.id);
                 edi.duplicateElement(represents_element, element.id, false);
-                if ( !$.isArray(element.items.item) ) {
+                if (!$.isArray(element.items.item)) {
                     element.items.item = [element.items.item];
                 }
-                for ( var j = 0; element.items.item && j < element.items.item.length; j++ ) {
+                for (var j = 0; element.items.item && j < element.items.item.length; j++) {
                     item = element.items.item[j];
                     var newItem = new Item();
-                    for ( var key in item ) {
+                    for (var key in item) {
                         newItem[key] = item[key];
                     }
                     element.items.item[j] = newItem;
                     item = element.items.item[j];
 
-//                    doDebug(item);
-                    if ( item.datatype == "codelist" || item.datatype == "query" ) {
+                    if (item.datatype == "codelist" || item.datatype == "query") {
                         $("#" + item.id).val(item.codeValue);
-                    } else if ( item.datatype == "autoCompletion" ) {
+                    } else if (item.datatype == "autoCompletion") {
                         $("#" + item.id).val(item.value);
                         $("#" + item.id + "_uri").val(item.codeValue);
                         $("#" + item.id + "_urn").val(item.urnValue);
@@ -447,27 +422,26 @@ var ediml = (function() {
         $("select[languageselector='true']").trigger('change');
 
 
-        setTimeout( function() {
+        setTimeout(function () {
             $("input", ".uris").trigger("change");
         }, defaults.selectsDelay);
 
-        // updateAll();
     };
 
 
     function indexOfLastInstanceOf(id) {
         var found = false;
 
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
-            if ( element.id == id ) {
+            if (element.id == id) {
                 found = true;
             }
-            if ( found && element.represents_element != id ) {
+            if (found && element.represents_element != id) {
                 return i;
             }
         }
-        if ( found ) {
+        if (found) {
             return content.elements.element.length - 1;
         } else {
             throw "Element " + id + " is not present";
@@ -479,9 +453,9 @@ var ediml = (function() {
     }
 
     function removeElement(element_id) {
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
-            if ( element.id == element_id ) {
+            if (element.id == element_id) {
                 content.elements.element.splice(i, 1);
                 return;
             }
@@ -489,9 +463,9 @@ var ediml = (function() {
     }
 
     function getElement(id) {
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
-            if ( element.id == id ) {
+            if (element.id == id) {
                 return element;
             }
         }
@@ -510,21 +484,21 @@ var ediml = (function() {
 
         var element = getElement(id);
         logger.log("duplicating element " + id);
-        if ( typeof element !== "undefined" ) {
+        if (typeof element !== "undefined") {
             var newElement = new Element();
             newElement.id = newId;
             newElement.root = element.root;
             newElement.mandatory = element.mandatory;
             newElement.represents_element = element.represents_element;
-            for ( var i = 0; i < element.items.item.length; i++ ) {
+            for (var i = 0; i < element.items.item.length; i++) {
                 var item = element.items.item[i];
                 var newItem = new Item();
-                for ( var property in item ) {
+                for (var property in item) {
                     newItem[property] = item[property];
                 }
                 // Adjust id
                 newItem.id = item.id.replace(id, newId);
-                if ( item.fixed == "false" ) {
+                if (item.fixed == "false") {
                     // new item starts with no values
                     newItem.value = undefined;
                     newItem.codeValue = undefined;
@@ -543,17 +517,18 @@ var ediml = (function() {
     }
 
     function startListeningOnElement(element) {
-        for ( var j = 0; j < element.items.item.length; j++ ) {
+        for (var j = 0; j < element.items.item.length; j++) {
             element.items.item[j].startListening();
         }
     }
+
     function startListening() {
         logger.log("startListening");
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
             logger.log(element);
-            for ( var j = 0; j < element.items.item.length; j++ ) {
-                if ( typeof element.items.item[j].startListening === "function") {
+            for (var j = 0; j < element.items.item.length; j++) {
+                if (typeof element.items.item[j].startListening === "function") {
                     element.items.item[j].startListening();
                 } else {
                     logger.log("no startListening method on item");
@@ -564,11 +539,11 @@ var ediml = (function() {
     }
 
     function findItemById(id) {
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
             // logger.log(element);
-            for ( var j = 0; j < element.items.item.length; j++ ) {
-                if ( element.items.item[j].id == id ) {
+            for (var j = 0; j < element.items.item.length; j++) {
+                if (element.items.item[j].id == id) {
                     return element.items.item[j];
                 }
             }
@@ -577,36 +552,36 @@ var ediml = (function() {
     }
 
     function update(item) {
-        if ( typeof item === "undefined") {
+        if (typeof item === "undefined") {
             console.trace();
             return;
         }
         // item = this;
         isDirty = true;
         var selector = "#" + item.id;
-        if ( item.datatype == "code" || item.datatype == "codelist" || item.datatype == "query" ) {
+        if (item.datatype == "code" || item.datatype == "codelist" || item.datatype == "query") {
             item.value = $("#" + $(selector).attr("id") + " option:selected").text();
             item.labelValue = $("#" + $(selector).attr("id") + " option:selected").text();
             item.codeValue = $(selector).val();
             item.languageNeutral = $("#" + $(selector).attr("id") + " option:selected").attr("language_neutral");
-        } else if ( item.datatype == "autoCompletion" ) {
+        } else if (item.datatype == "autoCompletion") {
             item.value = $(selector).val();
             item.labelValue = $(selector).val();
             item.codeValue = $("#" + $(selector).attr("id") + "_uri").val();
             item.urnValue = $("#" + $(selector).attr("id") + "_urn").val();
             item.languageNeutral = item.codeValue;
-            if ( $(selector).attr("useCode") == "true" ) {
+            if ($(selector).attr("useCode") == "true") {
                 item.value = item.codeValue;
             }
-            if ( $(selector).attr("useURN") == "true" ) {
+            if ($(selector).attr("useURN") == "true") {
                 item.value = item.urnValue;
             }
-        } else if ( item.datatype == "boolean" ) {
+        } else if (item.datatype == "boolean") {
             item.value = $(selector).is(":checked");
             item.codeValue = item.value;
             item.languageNeutral = item.codeValue;
 
-        } else if ( item.datatype == "date" || item.datatype == "dateRange" ) {
+        } else if (item.datatype == "date" || item.datatype == "dateRange") {
             item.value = $(selector).val();
             item.codeValue = "";
             item.languageNeutral = item.codeValue;
@@ -615,17 +590,11 @@ var ediml = (function() {
             item.codeValue = "";
             item.languageNeutral = item.codeValue;
         }
-        if ( item.isLanguageNeutral && item.isLanguageNeutral == "true" ) {
+        if (item.isLanguageNeutral && item.isLanguageNeutral == "true") {
             item.value = item.languageNeutral;
         }
         logger.log(item.id + " changed to " + $(selector).val());
-        /*
-         if ( item.datatype != "ref" && $(this).attr("isLanguageNeutral") != "undefined" && $(this).attr("isLanguageNeutral") != "" && $(this).attr("language_neutral") != "undefined" && $(this).attr("language_neutral") != "" ) {
-         item.value = item.languageNeutralValue;
-         }
-         */
         logger.log(item);
-        // edi.edimlOutput();
 
     }
 
@@ -637,10 +606,10 @@ var ediml = (function() {
     }
 
     function updateAll() {
-        for ( var i = 0; i < content.elements.element.length; i++ ) {
+        for (var i = 0; i < content.elements.element.length; i++) {
             var element = content.elements.element[i];
             // logger.log(element);
-            for ( var j = 0; j < element.items.item.length; j++ ) {
+            for (var j = 0; j < element.items.item.length; j++) {
                 update(element.items.item[j]);
             }
         }
@@ -655,7 +624,7 @@ var ediml = (function() {
         var item = findItemById(id);
         logger.log(item);
 
-        if ( typeof item !== "undefined" ) {
+        if (typeof item !== "undefined") {
             logger.log("item " + id + " was found with a value of " + item.value + " and is about to be updated");
             update(item);
             logger.log("item has been updated to " + item.value);
@@ -664,10 +633,10 @@ var ediml = (function() {
 
     return {
         content: content,
-        isDirty: function() {
+        isDirty: function () {
             return isDirty;
         },
-        setDirty: function(value) {
+        setDirty: function (value) {
             isDirty = value;
         },
         addElement: addElement,
@@ -680,10 +649,10 @@ var ediml = (function() {
         findItemById: findItemById,
         inheritSettings: inheritSettings,
         changeHandler: changeHandler,
-        setPostCallbackSuccess: function(cb) {
+        setPostCallbackSuccess: function (cb) {
             successCallback = cb;
         },
-        setPostCallbackError: function(cb) {
+        setPostCallbackError: function (cb) {
             errorCallback = cb;
         },
         post: post,

@@ -8,7 +8,7 @@
  *
  */
 
-var edi = (function() {
+var edi = (function () {
     var callback;
     var settings;
     var endpointTypes = [];
@@ -26,7 +26,7 @@ var edi = (function() {
 
     function setLanguage(lang) {
         $("*[language]").addClass("hidden");
-        $("*[language='" + lang + "']").removeClass("hidden").each(function() {
+        $("*[language='" + lang + "']").removeClass("hidden").each(function () {
             $("#" + $(this).attr("for")).attr("placeholder", $(this).text());
         });
         uiLanguage = lang;
@@ -47,9 +47,9 @@ var edi = (function() {
             var languageSelector = "#" + settings.languageSelection.byItem;
             logger.log("language selector: " + languageSelector);
             logger.log($(languageSelector));
-            $(languageSelector).addClass("languageSelector").change(function(){
+            $(languageSelector).addClass("languageSelector").change(function () {
                 var optionSelected = $(this).find("option:selected");
-                var selectedLanguage =  optionSelected.attr("language_neutral");
+                var selectedLanguage = optionSelected.attr("language_neutral");
                 // doDebug("html: " + optionSelected.html());
                 // doDebug("selected language is " + selectedLanguage);
                 var currentMetadataLanguage = lookupLanguage(selectedLanguage);
@@ -75,7 +75,7 @@ var edi = (function() {
         var newDiv = div.clone();
         newDiv.attr("id", newId);
         // Fix all id names
-        newDiv.find("*[id^='" + element_id + "']").each(function() {
+        newDiv.find("*[id^='" + element_id + "']").each(function () {
             logger.log($(this));
             $(this).attr("id", $(this).attr("id").replaceAll(element_id, newId));
         });
@@ -93,7 +93,7 @@ var edi = (function() {
         // For some obscure reason it closes <http:> tag it finds in SPARQL queries
         // quick and dirty fix:
 
-        newDiv.find("*[query]").each(function() {
+        newDiv.find("*[query]").each(function () {
             $(this).attr("query", $(this).attr("query").replaceAll("></http:>", "/>"));
         });
         // end of quick and dirty fix
@@ -108,8 +108,8 @@ var edi = (function() {
 
         var relevantDatasources = DataSourcePool.getInstance().findByElementId(element_id);
         logger.log(relevantDatasources);
-        if ( $.isArray(relevantDatasources) ) {
-            for ( var i = 0; i < relevantDatasources.length; i++ ) {
+        if ($.isArray(relevantDatasources)) {
+            for (var i = 0; i < relevantDatasources.length; i++) {
                 var datasource = relevantDatasources[i];
                 var id = datasource.getId();
                 var newTriggerItem = ( datasource.parameters.triggerItem ? datasource.parameters.triggerItem.replace(element_id, newId) : undefined );
@@ -156,33 +156,28 @@ var edi = (function() {
             }
         }
 
-        // newDiv.find("*").unbind("change");
-        if ( updateEdiml ) {
+        if (updateEdiml) {
             ediml.duplicateElement(element_id, newId);
         }
         newDiv.find("*[datasource]").each(function () {
             var item = ediml.findItemById($(this).attr("id"));
-            if ( item ) {
+            if (item) {
                 item.datasource = $(this).attr("datasource");
             }
         });
 
-            newDiv.find(".datepicker").datepicker({
+        newDiv.find(".datepicker").datepicker({
             format: "yyyy-mm-dd"
-        }).on('changeDate', function(ev) {
-            // $("#" + $(this).attr("Textbox")).val(ev.date.valueOf());
-            // doDebug("data: " + ev.date.valueOf());
+        }).on('changeDate', function (ev) {
             $(this).datepicker('hide');
         });
-
-        // newDiv.find("*[datatype='autoCompletion']").unbind();
 
         newDiv.find(".tt-input").typeahead('destroy');
         newDiv.find(".tt-hint").remove();
         newDiv.find(".tt-dropdown-menu").remove();
         newDiv.find("pre[aria-hidden='true']").remove();
 
-        newDiv.find(".tt-input[datatype='autoCompletion']").each(function() {
+        newDiv.find(".tt-input[datatype='autoCompletion']").each(function () {
             var id = $(this).attr("id");
             var span = $(this).parent();
             var self = $(this);
@@ -200,7 +195,7 @@ var edi = (function() {
                     name: "ds_" + id + "",
                     displayKey: 'l',
                     source: substringMatcher(self.attr("datasource"), id)
-                }).bind('typeahead:selected', function(obj, datum, name) {
+                }).bind('typeahead:selected', function (obj, datum, name) {
                     $("#" + id + "_uri").val(datum.c).trigger("change");
                     $("#" + id + "_urn").val(datum.urn);
                     var item = ediml.findItemById(id);
@@ -208,9 +203,9 @@ var edi = (function() {
 //                    var ds = DataSourcePool.getInstance().findById(self.attr("datasource"));
                     var ds = DataSourcePool.getInstance().findById(item.datasource);
                     ds.setCurrentRow("c", datum.c);
-                }).blur(function(event) {
+                }).blur(function (event) {
                     logger.log("Changed: " + event.target.value);
-                    if ( event.target.value.trim() == "" ) {
+                    if (event.target.value.trim() == "") {
                         $("#" + id + "_uri").val("");
                         $("#" + id + "_uri").trigger("change");
                         $("#" + id + "_urn").val();
@@ -223,20 +218,20 @@ var edi = (function() {
                 });
         });
 
-        newDiv.find("*[datatype='dependent']").each(function() {
+        newDiv.find("*[datatype='dependent']").each(function () {
             doDebug("setting " + $(this) + " as dependent item");
             prepareDependent($(this));
         });
         $(".input-group.date").datepicker();
-        newDiv.find("button[removes]").click(function() {
+        newDiv.find("button[removes]").click(function () {
             // alert('#' + $(this).attr("removes"));
             var element_id = $(this).attr("removes");
             var div = $('#' + $(this).attr("removes"));
-            div.find($("*[datasource]")).each(function() {
+            div.find($("*[datasource]")).each(function () {
                 var dp = DataSourcePool.getInstance();
                 var dsId = $(this).attr("datasource");
                 var ds = dp.findById(dsId);
-                if ( ds && ds.parameters.cloned ) {
+                if (ds && ds.parameters.cloned) {
                     logger.log("removing datasource " + ds.parameters.id);
                     dp.remove(ds.parameters.id);
                 }
@@ -246,19 +241,17 @@ var edi = (function() {
             // doDebug(elements);
         });
 
-        newDiv.find("*[defaultValue]").each(function() {
+        newDiv.find("*[defaultValue]").each(function () {
             // logger.log(this + " -> " + $(this).attr("defaultValue"));
             $(this).val($(this).attr("defaultValue"));
             $(this).trigger("change");
         });
 
 
-        // $(this).detach().appendTo(newDiv);
         // find element in array
-        // doDebug(elements);
         found = false;
-        for ( i = 0; !found && i < elements.length; i++ ) {
-            if ( elements[i].id == element_id ) {
+        for (i = 0; !found && i < elements.length; i++) {
+            if (elements[i].id == element_id) {
                 var existingElement = elements[i];
                 newElement = clone(existingElement);
                 newElement.id = element_id + cloneSuffix;
@@ -268,14 +261,12 @@ var edi = (function() {
                 found = true;
             }
         }
-        // doDebug(elements);
-        // ediml.startListening();
 
     }
 
 
     function duplicators() {
-        $('.duplicator').click(function() {
+        $('.duplicator').click(function () {
             duplicateElement($(this).attr("duplicates"), $(this).attr("duplicates") + cloneSuffix, true);
         });
     }
@@ -285,7 +276,7 @@ var edi = (function() {
         var par;
         logger.log("loading querystring parameters");
         logger.log(pars);
-        if ( pars && pars != "undefined" && pars != "" ) {
+        if (pars && pars != "undefined" && pars != "") {
             pars = JSON.parse(pars);
             return pars[parameter];
         }
@@ -296,17 +287,17 @@ var edi = (function() {
         var par;
         logger.log("loading querystring parameters");
         logger.log(pars);
-        if ( pars && pars != "undefined" && pars != "" ) {
+        if (pars && pars != "undefined" && pars != "") {
             pars = JSON.parse(pars);
             // doDebug(pars);
             // doDebug(pars.uid);
-            $("*[querystringparameter]").each(function() {
+            $("*[querystringparameter]").each(function () {
                 logger.log($(this));
                 logger.log($(this).text());
                 doDebug("evaluating " + ("pars." + $(this).attr("querystringparameter")));
                 par = eval("pars." + $(this).attr("querystringparameter"));
-                doDebug("input id='" + $(this).attr("id")  + " -> parametro '" + $(this).attr("querystringparameter") + "' = '" + par + "'");
-                if ( par && par != "undefined" && par != "" ) {
+                doDebug("input id='" + $(this).attr("id") + " -> parametro '" + $(this).attr("querystringparameter") + "' = '" + par + "'");
+                if (par && par != "undefined" && par != "") {
                     $(this).val(par);
                     $(this).trigger("change");
                 }
@@ -323,14 +314,14 @@ var edi = (function() {
         var query = item.query.toString();
         var regex = "";
 
-        if ( typeof query.match !== "function" ) {
+        if (typeof query.match !== "function") {
             logger.log("query");
             logger.log(query);
             return;
         }
         var reference = query.match(/\$(.*)\$/i)[1];
         var principal;
-        if ( reference.indexOf("_") >= 0 ) {
+        if (reference.indexOf("_") >= 0) {
             principal = reference;
         } else {
             principal = item.elementId + "_" + reference;
@@ -341,47 +332,35 @@ var edi = (function() {
         // doDebug("item " + $(this).attr("id") + " -> " + regex.test(query));
         logger.log("item " + "_" + thisOne.attr("id") + " -> " + item.elementId + "_" + query.match(/\$(.*)\$/i)[1]);
         // $("#" + principal).unbind("change");
-        $("#" + principal + "_uri").bind("change", function() {
+        $("#" + principal + "_uri").bind("change", function () {
             doDebug("cambiamento di " + $(this).attr("id"));
             doDebug("scatta: " + thisOne.attr("id"));
             var originalQuery = query;
-            var queryInstance = replaceAll(query, /\$(.*)\$/i, $("#" + principal + "_uri").val() );
+            var queryInstance = replaceAll(query, /\$(.*)\$/i, $("#" + principal + "_uri").val());
             var queryInstance = queryInstance.replace("</http:>", "");
             var sparql = new SPARQL(settings.sparqlEndpoint);
 
             thisOne.addClass("loading");
             sparql.specificQuery(
                 queryInstance,
-                function( data ) {
+                function (data) {
                     dati = data.results.bindings;
                     thisOne.val(dati[0] ? dati[0].l.value : "");
                     thisOne.removeClass("loading");
                     ediml.updateItemForControl(thisOne);
                     thisOne.trigger("change");
                 },
-                function() {
+                function () {
                     logger.log(arguments);
                     thisOne.removeClass("loading");
                 }
             );
-            /*
-            $.getJSON( virtuosoUrl, {
-                query: queryInstance,
-                format: 'application/sparql-results+json',
-                save:'display',
-                fname : undefined
-            }, function( data ) {
-                dati = data.results.bindings;
-                thisOne.val(dati[0] ? dati[0].l.value : "");
-            });
-            */
-
         });
     }
 
-    var prepareDependents = function() {
+    var prepareDependents = function () {
         doDebug("prepareDependents");
-        $(".dependent").each(function() {
+        $(".dependent").each(function () {
             prepareDependent($(this));
         });
     }
@@ -390,55 +369,38 @@ var edi = (function() {
         logger.log("fillInCombos");
         var toBeRefreshed = [];
 
-        /*
-        var ds = DataSourcePool.getInstance().findById(datasource);
-        data = ds.getResultSet();
-        */
-        // logger.log(data);
         html = "";
-        if ( typeof data !== "undefined" ) {
-            for ( var i = 0; i < data.length; i++ ) {
-//                html += "<option value='" + ( data[i].c ? data[i].c.value : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z.value + "'" : "") + ">" + ( data[i].a ? data[i].a.value : data[i].l.value ) + "</option>";
+        if (typeof data !== "undefined") {
+            for (var i = 0; i < data.length; i++) {
                 html += "<option value='" + ( data[i].c ? data[i].c : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z + "'" : "") + ">" + ( data[i].a ? data[i].a : ( data[i].l ? data[i].l : data[i].z ) ) + "</option>";
             }
         }
-        $("select").filter("*[datasource='" + datasource + "']").each(function() {
+        $("select").filter("*[datasource='" + datasource + "']").each(function () {
             self = $(this);
             var originalValue = self.val();
             self.html(html);
-            // updateDefaults();
             self.val([]);
             if (typeof self.attr("defaultValue") !== "undefined" && self.attr("defaultValue") != "") {
                 self.val(self.attr("defaultValue"));
                 logger.log(self.attr("id") + " -> " + self.attr("defaultValue"));
-                // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
             if (typeof self.attr("querystringparameter") !== "undefined" && self.attr("querystringparameter") != "") {
                 self.val(getParameter(self.attr("querystringparameter")));
                 logger.log(self.attr("id") + " -> " + getParameter(self.attr("querystringparameter")));
-                // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
             logger.log("orginal value: " + originalValue);
-            if ( originalValue != null ) {
+            if (originalValue != null) {
                 self.val([]);
                 self.val(originalValue);
                 logger.log(self.attr("id") + " -> " + originalValue);
-                // self.trigger("change");
                 toBeRefreshed.push(self.attr("id"));
             }
 
             logger.log(self.attr("id") + " = " + self.val());
-            /*
-            if ( self.attr("required") && self.val() == null ) {
-                self.val($("#" + self.attr("id") + " option:first-child").val());
-                logger.log(self.attr("id") + " -> first item in combo");
-                toBeRefreshed.push(self.attr("id"));
-            }
-            */
         });
-        for ( var i = 0; i < toBeRefreshed.length; i++ ) {
+        for (var i = 0; i < toBeRefreshed.length; i++) {
             // logger.log(toBeRefreshed);
             var item = ediml.findItemById(toBeRefreshed[i]);
             ediml.update(item);
@@ -462,83 +424,41 @@ var edi = (function() {
         logger.log(process);
     }
 
-    var substringMatcher = function(datasource, id) {
+    var substringMatcher = function (datasource, id) {
         return function findMatches(q, cb) {
             var matches, substrRegex;
 
             var item = ediml.findItemById(id);
             var ds = DataSourcePool.getInstance().findById(item.datasource);
-            if ( typeof ds === "undefined" ) {
+            if (typeof ds === "undefined") {
                 logger.log("can't find datasource " + item.datasource + " for id " + id);
                 logger.log(item);
                 return;
             }
-            ds.addListener(function(data) {
+            ds.addListener(function (data) {
                 // logger.log(data);
                 cb(data);
             });
             ds.setSearchItem(id);
             ds.refresh();
             return;
-            /** TODO: check whether following code is actually no longer needed.
-             *
-             */
-            logger.log(q);
-            logger.log(query);
-            // an array that will be populated with substring matches
-            matches = [];
-            var sparql = new SPARQL();
-            var newQuery = query.replace(/\$search_param/gi, q);
-            logger.log(newQuery);
-            sparql.specificQuery(
-                newQuery,
-                function(data) {
-                    data = data.results.bindings;
-                    for ( var i = 0; i < data.length; i++ ) {
-                        // logger.log(data[i]);
-                        var record = {};
-                        // {ttValue: data[i].c.value, value: data[i].l.value, uri: data[i].c.value, urn: ( data[i].urn ? data[i].urn.value : "" )}
-                        record.ttValue = data[i].c.value;
-                        // logger.log("bindings row has " + data[i].length + " fields");
-                        for ( var field in data[i] ) {
-                            // logger.log(field);
-                            record[field] = data[i][field].value;
-                        }
-                        matches.push(record);
-                    }
-                    // logger.log(matches);
-                    // logger.log(cb);
-
-                    cb(matches);
-                },
-                function() {
-                    logger.log(arguments);
-                }
-            );
-            // cb(matches);
         };
     };
 
     function findLabelForLang(labels, lang) {
-        for ( var i = 0; i < labels.length; i++ ) {
-            if ( labels[i]["_xml:lang"] == lang ) {
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i]["_xml:lang"] == lang) {
                 return labels[i]["__text"];
             }
         }
         return undefined;
     }
+
     function compileItem(div, item, element) {
         var id = div.attr("id") + "_" + item.hasIndex;
         var showType = ItemRenderer.getRenderer(item);
 
         var html = "<control_" + showType + " id=\"" + id + "\" ";
-/*
-        for ( var propertyName in item ) {
-            if ( propertyName != "label" && propertyName != "help" && propertyName != "show" ) {
-                html += propertyName + "=\"" + item[propertyName] + "\" ";
-            }
-        }
-*/
         tempStructure[id] = {};
         tempStructure[id].item = item;
         tempStructure[id].item.id = id;
@@ -547,16 +467,16 @@ var edi = (function() {
         html += ">";
         var labels = "<labels>";
         var helps = "<helps>";
-        if ( item.label ) {
-            if ( !$.isArray(item.label) ) {
+        if (item.label) {
+            if (!$.isArray(item.label)) {
                 item.label = [item.label];
             }
             for (var k = 0; k < item.label.length; k++) {
                 labels += "<label for='" + id + "' language='" + item.label[k]["_xml:lang"] + "";
                 labels += "'>" + item.label[k]["__text"] + "</label>";
             }
-            if ( item.help ) {
-                if ( !$.isArray(item.help) ) {
+            if (item.help) {
+                if (!$.isArray(item.help)) {
                     item.help = [item.help];
                 }
                 logger.log(item.help);
@@ -592,25 +512,25 @@ var edi = (function() {
         div.attr("multiple", element.isMultiple);
         div.attr("represents_element", element.id);
         div.attr("alternativeTo", element.alternativeTo);
-        if ( $.isArray(element.label) ) {
+        if ($.isArray(element.label)) {
             for (var k = 0; k < element.label.length; k++) {
                 div.append("<label class='form-label" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>" + element.label[k]["__text"] + "</label>");
             }
-        } else if ( element.label ) {
+        } else if (element.label) {
             div.append("<label class='form-label" + (element.label["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label["_xml:lang"] + "'>" + element.label["__text"] + "</label>");
         }
-        if ( element.help ) {
-            for ( var j = 0; j < element.help.length; j++ ) {
+        if (element.help) {
+            for (var j = 0; j < element.help.length; j++) {
                 var temp = '<span class="help-inline" language="' + element.help[j]["_xml:lang"] + '">';
                 temp += '<a data-content="' + element.help[j]["__text"] + '" data-original-title="' + div.find("label[language='" + element.help[j]["_xml:lang"] + "']").text() + '" data-trigger="hover" data-toggle="popover" href="javascript:void(0)">';
                 temp += '&nbsp;<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>';
                 temp += '</a>';
                 temp += '</span>';
-                div.append( temp );
+                div.append(temp);
             }
         }
-        if ( element.produces ) {
-            if ( $.isArray(element.produces.item) ) {
+        if (element.produces) {
+            if ($.isArray(element.produces.item)) {
                 for (var i = 0; i < element.produces.item.length; i++) {
                     // logger.log(element.produces.item[i]);
                     if (element.produces.item[i].isFixed == "false") {
@@ -625,15 +545,15 @@ var edi = (function() {
                 compileItem(div, element.produces.item, element);
             }
         }
-        if ( !atLeastOneEditableItem ) {
+        if (!atLeastOneEditableItem) {
             div.addClass("no-children");
         }
-        if ( element.isMultiple == "true" ) {
+        if (element.isMultiple == "true") {
             for (var k = 0; element.label && k < element.label.length; k++) {
                 div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
             }
         }
-        if ( element.isMandatory != "NA" ) {
+        if (element.isMandatory != "NA") {
             div.addClass("mandatory");
         }
         if (element.lock) {
@@ -645,10 +565,10 @@ var edi = (function() {
                 div.addClass("duplicationOnly");
             }
         }
-        // $("#debug").append("<p>" + element.id + "</p>");
-        // logger.log(element.id);
     }
+
     var groupCounter = 0;
+
     function compileGroup(group) {
         // $("#debug").append("<ul>" + group.id + "</ul>");
         var navigation = $("#myTab");
@@ -656,17 +576,17 @@ var edi = (function() {
         form.append("<div id='" + group.id + "' " /* + "class='" + ( groupCounter++ == 0 ? " active" : "") */ + ">");
         var div = $("#" + group.id).
             append("<div class='panel panel-primary'><div class='panel-heading'>").children("div").children("div");
-        for ( var j = 0; j < group.label.length; j++ ) {
+        for (var j = 0; j < group.label.length; j++) {
             div.append("<h3 class='form-label" + (group.label[j]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</h3>");
             $("#linkTo_" + group.id).append("<label class='form-label" + (group.label[j]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + group.label[j]["_xml:lang"] + "'>" + group.label[j]["__text"] + "</label>");
         }
         div = div.parent().append("<div class='panel-body'>").children("div.panel-body");
-        if ( group.help ) {
-            for ( var j = 0; j < group.help.length; j++ ) {
-                div.append("<p language='" + group.help[j]["_xml:lang"] + "'>" + group.help[j]["__text"] + "<p>" );
+        if (group.help) {
+            for (var j = 0; j < group.help.length; j++) {
+                div.append("<p language='" + group.help[j]["_xml:lang"] + "'>" + group.help[j]["__text"] + "<p>");
             }
         }
-        if ( !$.isArray(group.element) ) {
+        if (!$.isArray(group.element)) {
             group.element = [group.element];
         }
         for (var j = 0; j < group.element.length; j++) {
@@ -680,19 +600,14 @@ var edi = (function() {
     }
 
     function updateDefaults() {
-        if ( querystring("edit").length > 0 ) {
+        if (querystring("edit").length > 0) {
             $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
             $("#mdcontent").hide();
             ediml.loadEDIML(querystring("edit"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
-                setTimeout( function() {
-                    /*
-                    DataSourcePool.getInstance().addListener("allReady", function(event) {
-                        $("input", ".uris").trigger("change");
-                    });
-                    */
-                    DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
+                setTimeout(function () {
+                    DataSourcePool.getInstance().addListener("allDSRefreshed", function (event) {
                         logger.log("all datasets loaded");
                         $("input", ".uris").trigger("change");
                         $("#mdcontent").show();
@@ -701,35 +616,25 @@ var edi = (function() {
                     DataSourcePool.getInstance().startNotifying();
                     DataSourcePool.getInstance().refreshAll();
 
-                    /*
-                     setTimeout( function() {
-                     logger.log("3");
-
-                     $("input", ".uris").trigger("change");
-                     $("#mdcontent").show();
-                     $("#please_wait").remove();
-                     }, defaults.selectsDelay);
-                     */
-
                     $(".elementLock:not(.duplicationOnly)").addClass("disabled");
                     $("button[duplicates]", ".additionOnly").addClass("forceEnable");
                     $("button[duplicates]:not(.forceEnable)", ".disabled").hide();
                     $("button[removes]:not(.forceEnable)", ".disabled").hide();
                 }, settings.refreshDelay);
             });
-        } else if ( querystring("duplicate").length > 0 ) {
+        } else if (querystring("duplicate").length > 0) {
             $("#mdcontent").before("<h1 id='please_wait'>Preparing page, please wait...</h1>");
             $("#mdcontent").hide();
             ediml.loadEDIML(querystring("duplicate"), function (data) {
                 ediMl = data;
                 ediml.fillInEdiMl(ediMl);
-                setTimeout( function() {
-                    DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
+                setTimeout(function () {
+                    DataSourcePool.getInstance().addListener("allDSRefreshed", function (event) {
                         $("input", ".uris").trigger("change");
                     });
                     DataSourcePool.getInstance().startNotifying();
                     DataSourcePool.getInstance().refreshAll();
-                    setTimeout( function() {
+                    setTimeout(function () {
                         $("input", ".uris").trigger("change");
                         $("#mdcontent").show();
                         $("#please_wait").remove();
@@ -742,8 +647,7 @@ var edi = (function() {
                 ediml.content.elements.fileId = undefined;
             });
         } else {
-            $("*[defaultValue]").each(function() {
-                // logger.log(this + " -> " + $(this).attr("defaultValue"));
+            $("*[defaultValue]").each(function () {
                 $(this).val($(this).attr("defaultValue"));
                 $(this).trigger("change");
             });
@@ -754,16 +658,16 @@ var edi = (function() {
     function fixOneItemArrays(data) {
         // XML arrays with one item will be converted, in JSON, to plain objects
         // we need to fix this
-        if ( !$.isArray(data.group) ) {
+        if (!$.isArray(data.group)) {
             data.group = [data.group];
         }
-        for ( var i = 0; i < data.group.length; i++ ) {
-            if ( !$.isArray(data.group[i].element) ) {
+        for (var i = 0; i < data.group.length; i++) {
+            if (!$.isArray(data.group[i].element)) {
                 data.group[i].element = [data.group[i].element];
             }
-            for ( var j = 0; j < data.group[i].element.length; j++ ) {
-                if ( data.group[i].element[j].produces ) {
-                    if ( !$.isArray(data.group[i].element[j].produces.item) ) {
+            for (var j = 0; j < data.group[i].element.length; j++) {
+                if (data.group[i].element[j].produces) {
+                    if (!$.isArray(data.group[i].element[j].produces.item)) {
                         data.group[i].element[j].produces.item = [data.group[i].element[j].produces.item];
                     }
                 }
@@ -783,12 +687,12 @@ var edi = (function() {
 
         endpointTypes = [];
         logger.log("endpoints");
-        if ( data.endpointTypes ) {
-            if ( !$.isArray(data.endpointTypes.endpointType) ) {
+        if (data.endpointTypes) {
+            if (!$.isArray(data.endpointTypes.endpointType)) {
                 data.endpointTypes.endpointType = [data.endpointTypes.endpointType];
             }
 
-            for ( var i = 0; i < data.endpointTypes.endpointType.length; i++ ) {
+            for (var i = 0; i < data.endpointTypes.endpointType.length; i++) {
                 var e = data.endpointTypes.endpointType[i];
                 logger.log(e);
                 var endpointType = new EndpointType(e);
@@ -798,7 +702,7 @@ var edi = (function() {
         }
         logger.log("endpoints end");
 
-        if ( data.datasources ) {
+        if (data.datasources) {
             var dss = data.datasources.datasource;
             for (var i = 0; i < dss.length; i++) {
                 logger.log(dss[i]);
@@ -821,26 +725,22 @@ var edi = (function() {
                 dataSources.push(ds);
             }
         }
-        // logger.log(dataSources);
-//        return;
 
-        // logger.log(data.group);
         var groups = data.group;
-        if ( !$.isArray(groups) ) {
-            groups = [ groups ];
+        if (!$.isArray(groups)) {
+            groups = [groups];
         }
-//        form = $("#theForm").append("<form role='form' method='post'>").children("form");
         form = $("#theForm").append("<div>").children("div");
         ediml.inheritSettings(settings);
         ediml.content.elements.template = template;
         ediml.content.elements.version = version;
-        for ( var i = 0; i < groups.length; i++ ) {
+        for (var i = 0; i < groups.length; i++) {
             compileGroup(groups[i]);
         }
 
         ItemRenderer.render();
 
-        $(".codelist:not([datasource]), .typeahead[id]:not([datasource])").addClass("no-datasource").each(function() {
+        $(".codelist:not([datasource]), .typeahead[id]:not([datasource])").addClass("no-datasource").each(function () {
             $(this).after("<label class='no-datasource'>missing datasource</label>");
         });
 
@@ -852,28 +752,28 @@ var edi = (function() {
         setLanguageSelector();
 
         logger.log("Adding global DS listener");
-        DataSourcePool.getInstance().addListener("allDSRefreshed", function(event) {
+        DataSourcePool.getInstance().addListener("allDSRefreshed", function (event) {
             logger.log("all datasets loaded");
             runQueries();
         });
 
         var datasources = DataSourcePool.getInstance().getDataSources();
         logger.log("Adding listeners");
-        for ( var i = 0; i < datasources.length; i++ ) {
+        for (var i = 0; i < datasources.length; i++) {
             var ds = datasources[i];
             logger.log("adding listener for " + ds.getId());
             ds.addListener(fillInCombos);
         }
         duplicators();
 
-        $("*[datatype='copy']").each(function() {
+        $("*[datatype='copy']").each(function () {
             var id = $(this).attr("id");
             var item = ediml.findItemById(id);
 
             logger.log(item.id);
             $("#" + item.itemId).change(function (event) {
                 logger.log(event + " received");
-                if ( item.show != "label" ) {
+                if (item.show != "label") {
                     $("#" + item.id).val($(this).val()).change();
                 } else {
                     $("#" + item.id).text($(this).val()).change();
@@ -881,7 +781,7 @@ var edi = (function() {
             });
         });
 
-        $("*[datatype='select']").each(function(){
+        $("*[datatype='select']").each(function () {
             var id = $(this).attr("id");
             var item = ediml.findItemById(id);
             var ds = DataSourcePool.getInstance().findById(item.datasource);
@@ -890,7 +790,7 @@ var edi = (function() {
             ds.addEventListener("selectionChanged", function (event) {
                 logger.log(event + " received by " + item.id);
                 var row = ds.getCurrentRow();
-                if ( row ) {
+                if (row) {
                     $("#" + item.id).val(row[item.field]).trigger("change");
                 } else {
                     $("#" + item.id).val("").trigger("change");
@@ -898,33 +798,23 @@ var edi = (function() {
             });
         });
 
-        $("*[alternativeto]").addClass("alternativeElement").each(function() {
+        $("*[alternativeto]").addClass("alternativeElement").each(function () {
             var element = ediml.getElement($(this).attr("id"));
             var altElement = ediml.getElement(element.alternativeTo);
             var first = $("#" + element.id);
             var second = $("#" + altElement.id);
-            if ( !first.parent().hasClass("alternativeGroup") ) {
+            if (!first.parent().hasClass("alternativeGroup")) {
                 $("#" + element.id + ", #" + altElement.id).wrapAll("<div id='alt_" + (++lastAlternativeGroup) + "' class='alternativeGroup'/>");
                 first.append("<span class='oppure'>" + localise("OR") + "</span>");
             }
         });
-        /*
-        $("*[alternativeto] input").keyup(function() {
-            var item = ediml.findItemById($(this).attr("id"));
-            var element = ediml.getElement(item.elementId);
-            var altElement = ediml.getElement(element.alternativeTo);
-            for ( var i = 0; i < altElement.items.item.length; i++ ) {
-                $("#" + altElement.items.item[i].id).val([]);
-            }
-        });
-        */
         DataSourcePool.getInstance().refreshAll();
         $(".date-input, .dateRange-input").datepicker({
             format: "yyyy-mm-dd",
             todayHighlight: true,
             autoclose: true
         });
-        $(".dependent-input").each(function() {
+        $(".dependent-input").each(function () {
             prepareDependent($(this));
         });
 
@@ -932,7 +822,7 @@ var edi = (function() {
         setTimeout(updateDefaults, 2000);
         setLanguage(uiLanguage);
 
-        if ( typeof callback === "function" ) {
+        if (typeof callback === "function") {
             callback(data);
         }
 
@@ -942,7 +832,38 @@ var edi = (function() {
         logger.log(JSON.stringify(ediml.content, undefined, 4));
         $("#ediml").html('<pre class="prettyprint lang-json" draggable="true">' + JSON.stringify(ediml.content, undefined, 4) + '</pre>');
         prettyPrint();
-        // logger.log(new Date());
+    }
+
+    function loadXMLDoc(filename) {
+        var xml = "dummy";
+        $.support.cors = true;
+        $.ajax({
+            url: filename,
+            type: "get",
+            dataType: "xml",
+            async: false,
+            success: function (data) {
+                xml = data;
+            }
+        });
+        return xml;
+    }
+
+    function xsltTransform(xml) {
+        xsl = loadXMLDoc("templates/template_xform_back.xsl");
+
+// code for IE
+        if (window.ActiveXObject /* || xhttp.responseType == "msxml-document" */) {
+            ex = xml.transformNode(xsl);
+            return ex;
+        }
+// code for Chrome, Firefox, Opera, etc.
+        else if (document.implementation && document.implementation.createDocument) {
+            xsltProcessor = new XSLTProcessor();
+            xsltProcessor.importStylesheet(xsl);
+            resultDocument = xsltProcessor.transformToFragment(xml, document);
+            return resultDocument;
+        }
     }
 
     function loadLocalTemplate(template, version, theCallback) {
@@ -950,16 +871,29 @@ var edi = (function() {
         $.support.cors = true;
         // $(".container").addClass("loading");
         $.ajax({
-                   // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
-                   url: "templates/" + template + "_v" + version + ".xml?__=" + Math.random(),
-                   type: "get",
-                   dataType: "xml",
-                   success: function(data) {
-                       var x2j = new X2JS({});
-                       data = x2j.xml2json(data);
-                       // logger.log(data);
-                       onTemplateLoaded(template, version, data.template);
-                   }
+            url: "templates/" + template + "_v" + version + ".xml?__=" + Math.random(),
+            type: "get",
+            dataType: "xml",
+            success: function (data) {
+                logger.log(data);
+                var xmlString = new XMLSerializer().serializeToString(data);
+                var xml = data;
+
+                if (xmlString.indexOf("edi_template.xsd") != -1) {
+                    // alert("new template format");
+                    xml = xsltTransform(data);
+                    xmlString = new XMLSerializer().serializeToString(xml);
+                    xml = jQuery.parseXML(xmlString);
+                    logger.log(xml);
+                } else {
+                    // alert("old template format");
+                }
+                var x2j = new X2JS({});
+                logger.log(xml);
+                data = x2j.xml2json(xml);
+                console.log(data);
+                onTemplateLoaded(template, version, data.template);
+            }
         });
     }
 
@@ -967,11 +901,22 @@ var edi = (function() {
         callback = theCallback;
         // $(".container").addClass("loading");
         $.ajax({
-            // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
             url: defaults.metadataEndpoint + "rest/admin/templates/" + template + "/" + version,
             type: "get",
             dataType: "xml",
-            success: function(data) {
+            success: function (data) {
+                var xmlString = new XMLSerializer().serializeToString(data);
+                var xml = data;
+
+                if (xmlString.indexOf("edi_template.xsd") != -1) {
+                    // alert("new template format");
+                    xml = xsltTransform(data);
+                    xmlString = new XMLSerializer().serializeToString(xml);
+                    xml = jQuery.parseXML(xmlString);
+                    logger.log(xml);
+                } else {
+                    // alert("old template format");
+                }
                 var x2j = new X2JS({});
                 data = x2j.xml2json(data);
                 // logger.log(data);
@@ -983,11 +928,22 @@ var edi = (function() {
     function loadTemplateFromUrl(url, theCallback) {
         callback = theCallback;
         $.ajax({
-            // url: "http://sp7.irea.cnr.it/jboss/MDService/rest/admin/templates/" + template + "/" + version,
             url: url,
             type: "get",
             dataType: "xml",
-            success: function(data) {
+            success: function (data) {
+                var xmlString = new XMLSerializer().serializeToString(data);
+                var xml = data;
+
+                if (xmlString.indexOf("edi_template.xsd") != -1) {
+                    // alert("new template format");
+                    xml = xsltTransform(data);
+                    xmlString = new XMLSerializer().serializeToString(xml);
+                    xml = jQuery.parseXML(xmlString);
+                    logger.log(xml);
+                } else {
+                    // alert("old template format");
+                }
                 var x2j = new X2JS({});
                 data = x2j.xml2json(data);
                 // logger.log(data);
@@ -1000,26 +956,26 @@ var edi = (function() {
 
         var confirmModal =
             $('<div class="modal hide fade">' +
-            '<div class="modal-header">' +
-            '<a class="close" data-dismiss="modal" >&times;</a>' +
-            '<h3>' + heading +'</h3>' +
-            '</div>' +
+                '<div class="modal-header">' +
+                '<a class="close" data-dismiss="modal" >&times;</a>' +
+                '<h3>' + heading + '</h3>' +
+                '</div>' +
 
-            '<div class="modal-body">' +
-            '<p>' + question + '</p>' +
-            '</div>' +
+                '<div class="modal-body">' +
+                '<p>' + question + '</p>' +
+                '</div>' +
 
-            '<div class="modal-footer">' +
-            '<a href="#" class="btn" data-dismiss="modal">' +
-            cancelButtonTxt +
-            '</a>' +
-            '<a href="#" id="okButton" class="btn btn-primary">' +
-            okButtonTxt +
-            '</a>' +
-            '</div>' +
-            '</div>');
+                '<div class="modal-footer">' +
+                '<a href="#" class="btn" data-dismiss="modal">' +
+                cancelButtonTxt +
+                '</a>' +
+                '<a href="#" id="okButton" class="btn btn-primary">' +
+                okButtonTxt +
+                '</a>' +
+                '</div>' +
+                '</div>');
 
-        confirmModal.find('#okButton').click(function(event) {
+        confirmModal.find('#okButton').click(function (event) {
             callback();
             confirmModal.modal('hide');
         });
@@ -1028,29 +984,29 @@ var edi = (function() {
     };
 
     // Initialisation code
-    if ( querystring("debug") == "on" ) {
-        $(document).ready(function() {
+    if (querystring("debug") == "on") {
+        $(document).ready(function () {
             $(".debug").removeClass("debug");
         });
     }
-    $(window).bind("beforeunload", function(e) {
+    $(window).bind("beforeunload", function (e) {
         logger.log("unload " + ediml.isDirty());
-        if ( ediml.isDirty() ) {
+        if (ediml.isDirty()) {
             logger.log("is dirty");
             /*
-            // e.preventDefault();
-            var heading = 'Leaving unsaved page';
-            var question = 'Please confirm that you wish to leave this page without posting it.';
-            var cancelButtonTxt = 'Cancel';
-            var okButtonTxt = 'Confirm';
+             // e.preventDefault();
+             var heading = 'Leaving unsaved page';
+             var question = 'Please confirm that you wish to leave this page without posting it.';
+             var cancelButtonTxt = 'Cancel';
+             var okButtonTxt = 'Confirm';
 
-            var callback = function() {
-                alert('Ok, see you later');
-                return "later";
-            };
+             var callback = function() {
+             alert('Ok, see you later');
+             return "later";
+             };
 
-            confirm(heading, question, cancelButtonTxt, okButtonTxt, callback);
-            */
+             confirm(heading, question, cancelButtonTxt, okButtonTxt, callback);
+             */
             return "hey";
         }
     });
@@ -1065,21 +1021,25 @@ var edi = (function() {
         substringMatcher: substringMatcher,
         edimlOutput: edimlOutput,
         endpointTypes: endpointTypes,
-        getEndpointTypes: function(which) {
+        getEndpointTypes: function (which) {
             return endpointTypes[which];
         },
-        settings: function() {return settings;},
-        getTemplate: function() {return theTemplate},
-        uiLanguage: function() {
+        settings: function () {
+            return settings;
+        },
+        getTemplate: function () {
+            return theTemplate
+        },
+        uiLanguage: function () {
             return uiLanguage;
         },
-        getTempStructure: function() {
+        getTempStructure: function () {
             return tempStructure;
         },
-        setGeneratedXml: function(xml) {
+        setGeneratedXml: function (xml) {
             generatedXml = xml;
         },
-        getGeneratedXml: function() {
+        getGeneratedXml: function () {
             return generatedXml;
         }
     };
