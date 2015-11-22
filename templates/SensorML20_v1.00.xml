@@ -6,7 +6,7 @@
     <!ENTITY dcat "http://www.w3.org/ns/dcat#">
 ]>
 
-<!-- SensorML for mobile physical system where the positionis registered by a GPS from component output.
+<!-- SensorML for mobile physical system where the positions registered by a GPS from component output.
      Position group is linked to the component output of the physiscal system.-->
 
 <template>
@@ -24,7 +24,7 @@
         <requiresValidation>false</requiresValidation>
 
         <baseDocument>
-            <!-- Base Document SensorML version 1.0.1 -->
+            <!-- Base Document SensorML version 2.0.0 -->
             <![CDATA[
             <sml:PhysicalSystem xmlns:gml="http://www.opengis.net/gml/3.2"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -36,6 +36,7 @@
     xmlns:gts="http://www.isotc211.org/2005/gts"
     xmlns:gss="http://www.isotc211.org/2005/gss"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:swes="http://www.opengis.net/swes/2.0"
     xsi:schemaLocation="http://www.opengis.net/sensorml/2.0 http://www.utm.csic.es/SensorWeb/Schemas/sensorML/2.0/sensorML.xsd">
     
     </sml:PhysicalSystem>
@@ -480,6 +481,12 @@
             <endpointType>virtuoso</endpointType>
             <type>virtuosoCodelist</type>
         </datasource>
+        <datasource>
+            <id>roleCodes</id>
+            <uri>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole</uri>
+            <endpointType>virtuoso</endpointType>
+            <type>virtuosoCodelist</type>
+        </datasource>
     </datasources>
     
     <!-- GROUP -->
@@ -512,8 +519,8 @@
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <outIndex>3</outIndex>
-                    <hasPath>gml:name</hasPath>
+                    <outIndex>2</outIndex>
+                    <hasPath>TheName</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
@@ -524,7 +531,7 @@
                     <hasPath>@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('ID_', translate(gml:name/text(), ' ', '_'))</hasValue>
+                    <hasValue>concat('ID_', translate(TheName/text(), ' ', '_'))</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -540,11 +547,19 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <outIndex>2</outIndex>
+                    <outIndex>3</outIndex>
                     <hasPath>gml:identifier/@codeSpace</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('ID_', translate(gml:name/text(), ' ', '_'))</hasValue>
+                    <hasValue>concat('ID_', translate(TheName/text(), ' ', '_'))</hasValue>
+                </item>
+                <item>
+                    <hasIndex>5</hasIndex>
+                    <outIndex>5</outIndex>
+                    <hasPath>gml:name</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>TheName</hasValue>
                 </item>
             </produces>
         </element>
@@ -842,7 +857,7 @@
                     <hasPath>sml:classifier/sml:Term/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>systemType</hasValue>
+                    <hasValue>http://www.opengis.net/def/property/OGC/0/SensorType</hasValue>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
@@ -1204,6 +1219,7 @@
                     <hasPath>swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
+                    <hasValue>false</hasValue>
                 </item>
             </produces>
         </element>
@@ -1224,6 +1240,7 @@
                     <hasPath>swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
+                    <hasValue>false</hasValue>
                 </item>
             </produces>
         </element>
@@ -1680,6 +1697,32 @@
                     <label xml:lang="en">Operator web site</label>
                     <help/>
                     <!--es http://www.sensirion.com -->
+                </item>
+                <item>
+                    <hasIndex>10</hasIndex>
+                    <outIndex>10</outIndex>
+                    <hasPath>gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>URI</hasDatatype>
+                    <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode</hasValue>
+                </item>
+                <item>
+                    <hasIndex>11</hasIndex>
+                    <outIndex>11</outIndex>
+                    <hasPath>gmd:role/gmd:CI_RoleCode</hasPath>
+                    <isFixed>true</isFixed>
+                    <datasource>roleCodes</datasource>
+                    <hasDatatype>codelist</hasDatatype>
+                    <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact</defaultValue>
+                    <isLanguageNeutral>true</isLanguageNeutral>
+                </item>
+                <item>
+                    <hasIndex>12</hasIndex>
+                    <outIndex>12</outIndex>
+                    <hasPath>gmd:role/gmd:CI_RoleCode/@codeListValue</hasPath>
+                    <isFixed>true</isFixed>
+                    <hasDatatype>ref</hasDatatype>
+                    <hasValue>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode</hasValue>
                 </item>
             </produces>
         </element>
@@ -2308,6 +2351,31 @@
     </group>-->
     <!--END Input Group -->
 
+    <!--================== -->
+    <!--featuresOfInterest -->
+    <!--================== -->
+    <group>
+        <id>foi_sml</id>
+        <label xml:lang="it">Zona di interesse</label>
+        <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web geografico</help>
+        <label xml:lang="en">Feature Of Interest</label>
+        <help xml:lang="en">The geometric sensor to which the system is associated. Add a URL of a WFS item</help>
+        <element>
+            <id>foi</id>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:PhysicalSystem/sml:featuresOfInterest/sml:FeatureList[@definition=&apos;http://www.opengis.net/def/featureOfInterest/identifier&apos;]</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>sml:feature/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URL</hasDatatype>
+                </item>
+            </produces>
+        </element>
+    </group>
+
     <!--====== -->
     <!--Output -->
     <!--====== -->
@@ -2493,7 +2561,7 @@
         <!--Reference frame -->
         <!--=============== -->
         <element>
-            <id>lacation</id>
+            <id>location</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:localReferenceFrame</hasRoot>
@@ -2560,7 +2628,7 @@
         <!--Position Properties -->
         <!--=================== -->
         <element>
-            <id>lacation</id>
+            <id>loc_pos</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem</hasRoot>

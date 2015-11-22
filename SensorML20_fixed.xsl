@@ -11,26 +11,6 @@
     exclude-result-prefixes="xs"
     version="2.0">
     
-    <!--<xsl:template match="gmd:descriptiveKeywords[ not( .//gmd:keyword ) ]" />
-    <xsl:template match="gmd:distance[ not( .//*/text() ) ]" />
-    <xsl:template match="gmd:equivalentScale[ not( .//gco:Integer ) ]" />
-    <xsl:template match="gmd:extent[ not( .//gml:beginPosition ) and not( .//gco:Decimal ) ]" />-->
-    
-    <!-- UOM -->
-    <!--<xsl:template match="swe:uom[@code/text() = '']">
-        <xsl:variable name="valore" select="text()" />
-        
-        <!-\-<xsl:for-each select="//swe:uom[not(@code/text() = '')]">
-            <xsl:value-of select="text()" />
-        </xsl:for-each>-\->
-        <xsl:if test="//swe:uom[not(@code/text() = '')]/text() = $valore">
-            <swe:uom>
-                <xsl:attribute name="code" select="$valore" />
-                <!-\-<xsl:attribute name="code" select="//swe:uom[not(@code/text() = '') and text()=$valore]/@code/text()" />-\->
-                <!-\-<xsl:value-of select="$valore" />-\->
-            </swe:uom>
-        </xsl:if>
-    </xsl:template>-->
     <xsl:template match="swe:uom">
         <xsl:choose>
             <xsl:when test="text()">            
@@ -44,7 +24,7 @@
                 <xsl:copy-of select="."/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template> 
+    </xsl:template>
     
     <!-- Keyword -->
     <xsl:template match="sml:keywords[not(.//sml:keyword)]" />
@@ -67,7 +47,12 @@
     <xsl:template match="sml:classifier[not(.//sml:value)]" />
     
     <!-- Valid time -->
-    <xsl:template match="sml:validTime[ not(./gml:TimePeriod[@gml:id='DOC_TIME']/gml:beginPosition) and not(./gml:TimePeriod[@gml:id='DOC_TIME']/gml:endPosition) ]" />
+    <xsl:template match="sml:validTime[ not(./gml:TimePeriod[@gml:id='deploymentDates']/gml:beginPosition) and not(./gml:TimePeriod[@gml:id='deploymentDates']/gml:endPosition) ]" />
+    <xsl:template match="sml:validTime">
+        <xsl:if test="gml:endPosition/text()='true'">
+            <gml:endPosition indeterminatePosition="now"/>
+        </xsl:if>
+    </xsl:template>
     
     <!-- Capabilities -->
     <xsl:template match="swe:field[ @name='material' and not(./swe:Category[@definition='urn:ogc:dictionary:OGC:material']/swe:value) ]" />
@@ -97,50 +82,11 @@
     <xsl:template match="sml:position[not(.//swe:value)]" />
     
     <!-- position -->
-    <xsl:template match="sml:outputs/sml:OutputList/position">
+    <xsl:template match="sml:outputs/sml:OutputList/DateTime">
         <xsl:if test="text()='true'">
-            <sml:output name="location">
-                <sml:DataInterface>
-                    <!-- data description -->
-                    <sml:data>
-                        <swe:DataStream>
-                            <swe:elementType name="location">
-                                <swe:DataRecord>
-                                    <swe:field name="dataTime">
-                                        <swe:Time>
-                                            <swe:uom
-                                                xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
-                                            />
-                                        </swe:Time>
-                                    </swe:field>
-                                    <swe:field name="Position">
-                                        <swe:DataRecord>
-                                            <swe:field name="Latitude">
-                                                <swe:Quantity definition="latitude" axisID="latitude">
-                                                    <swe:uom code="deg"/>
-                                                </swe:Quantity>
-                                            </swe:field>
-                                            <swe:field name="Longitude">
-                                                <swe:Quantity definition="longitude" axisID="longitude">
-                                                    <swe:uom code="deg"/>
-                                                </swe:Quantity>
-                                            </swe:field>
-                                        </swe:DataRecord>
-                                    </swe:field>
-                                </swe:DataRecord>
-                            </swe:elementType>
-                            
-                            <swe:encoding>
-                                <swe:TextEncoding tokenSeparator="," blockSeparator=" "/>
-                            </swe:encoding>
-                            
-                            <!-- <swe:values xlink:href="http://www.utm.csic.es/SadoWS/DataQuery?BaseDatos=SADO_SDG_RT&grupo=posicion&servicio=ultimo"/> -->
-                            <swe:values
-                                xlink:href="http://www.utm.csic.es/SadoWS/DataQuery?BaseDatos=SADO_SDG_RT&amp;grupo=posicion&amp;servicio=ultimo"
-                            />
-                        </swe:DataStream>
-                    </sml:data>
-                </sml:DataInterface>
+            <sml:output name="phenomenonTime" xlink:href="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+                <swe:Time definition="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+                </swe:Time>
             </sml:output>
         </xsl:if>
     </xsl:template>

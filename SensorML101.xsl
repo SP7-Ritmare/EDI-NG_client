@@ -113,6 +113,12 @@
         </sml:output>
     </xsl:template>
     
+    <xsl:template match="swe:uom[@code]">
+        <sml:output name="{replace(@code, ' ', '_')}">
+            <xsl:apply-templates select="*" />
+        </sml:output>
+    </xsl:template>
+    
     <xsl:template match="swes:observableProperty">
         <xsl:for-each select="//sml:output/swe:Quantity">
             <swes:observableProperty>

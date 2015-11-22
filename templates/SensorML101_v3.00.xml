@@ -16,8 +16,8 @@
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
-        <!--<metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>-->
+        <!--<metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>-->
+        <metadataEndpoint>http://sp7.irea.cnr.it/jboss/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <!--<sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>-->
         <requiresAuthentication>false</requiresAuthentication>
@@ -1368,14 +1368,14 @@
             <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>swe:Boolean/swe:value</hasPath>
+                    <hasPath>swe:field[@name=&apos;status&apos;]/swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
-                    <!--<hasValue>user-defined</hasValue>-->
+                    <hasValue>false</hasValue>
                 </item>
             </produces>
         </element>
@@ -1389,14 +1389,14 @@
             <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
-                    <hasPath>swe:Boolean/swe:value</hasPath>
+                    <hasPath>swe:field[@name=&apos;mobile&apos;]/swe:Boolean/swe:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>boolean</hasDatatype>
-                    <!--<hasValue>user-defined</hasValue>-->
+                    <hasValue>false</hasValue>
                 </item>
             </produces>
         </element>
@@ -1610,7 +1610,6 @@
              del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
             <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
-            <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/sml:ResponsibleParty</hasRoot>
