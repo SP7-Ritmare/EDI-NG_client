@@ -548,6 +548,7 @@ var edi = (function () {
         if (!atLeastOneEditableItem) {
             div.addClass("no-children");
         }
+        console.log("" + element.id + " -> multiple: " + element.isMultiple);
         if (element.isMultiple == "true") {
             for (var k = 0; element.label && k < element.label.length; k++) {
                 div.append("<button role='button' duplicates='" + element.id + "' class='btn btn-primary btn-sm duplicator" + (element.label[k]["_xml:lang"] == uiLanguage ? "" : " hidden") + "' language='" + element.label[k]["_xml:lang"] + "'>+ " + element.label[k]["__text"] + "</button>");
