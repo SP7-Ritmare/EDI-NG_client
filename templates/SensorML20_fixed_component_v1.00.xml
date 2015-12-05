@@ -24,20 +24,16 @@
         <baseDocument>
             <!-- Base Document SensorML version 2.0.0 -->
             <![CDATA[
-            <sml:PhysicalSystem xmlns:gml="http://www.opengis.net/gml/3.2"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:gco="http://www.isotc211.org/2005/gco"
-    xmlns:gmd="http://www.isotc211.org/2005/gmd"
-    xmlns:sml="http://www.opengis.net/sensorml/2.0"
-    xmlns:swe="http://www.opengis.net/swe/2.0"
-    xmlns:gsr="http://www.isotc211.org/2005/gsr"
-    xmlns:gts="http://www.isotc211.org/2005/gts"
-    xmlns:gss="http://www.isotc211.org/2005/gss"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:swes="http://www.opengis.net/swes/2.0"
-    xsi:schemaLocation="http://www.opengis.net/sensorml/2.0 http://www.utm.csic.es/SensorWeb/Schemas/sensorML/2.0/sensorML.xsd">
+            <sml:PhysicalComponent gml:id="MY_SENSOR"
+   xmlns:sml="http://www.opengis.net/sensorml/2.0"
+   xmlns:swe="http://www.opengis.net/swe/2.0"
+   xmlns:gml="http://www.opengis.net/gml/3.2"
+   xmlns:gmd="http://www.isotc211.org/2005/gmd"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xsi:schemaLocation="http://www.opengis.net/sensorml/2.0 http://schemas.opengis.net/sensorml/2.0/sensorML.xsd">
     
-    </sml:PhysicalSystem>
+    </sml:PhysicalComponent>
         ]]>
         </baseDocument>
 
@@ -494,26 +490,26 @@
     <!-- valid -->
     <group>
         <id>name_desc</id>
-        <label xml:lang="it">Descrizione del sistema</label>
+        <label xml:lang="it">Descrizione del componente</label>
         <!--<help xml:lang="it">Questi campi provvedono a fornire una descrizione del sistema,
             denominandolo e descrivendone genericamente le caratteristiche</help>-->
-        <label xml:lang="en">Description of system</label>
+        <label xml:lang="en">Description of component</label>
         <!--<help xml:lang="en">Means of providing a description of system, a name and describing
             general characteristics</help>-->
         <!-- system name -->
         <element>
             <id>system_name</id>
-            <label xml:lang="it">Nome del sistema di sensori</label>
-            <label xml:lang="en">Physical system name</label>
-            <help xml:lang="it">&#200; il nome con cui si identifica il sistema di sensori (es. piattaforma), deve
+            <label xml:lang="it">Nome del componente</label>
+            <label xml:lang="en">Component name</label>
+            <help xml:lang="it">&#200; il nome con cui si identifica il componente (es. termometro), deve
                 essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
                 CTP Recorder, ecc.).</help>
-            <help xml:lang="en">Name assigned to identify the physical system. It should be short, while it is
+            <help xml:lang="en">Name assigned to identify the physical component. It should be short, while it is
                 not its description; it could coincide with the name given by the manufacturer.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -534,10 +530,10 @@
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
-                    <label xml:lang="it">Descrizione sistema di sensori</label>
-                    <help xml:lang="it">Contiene una descrizione testuale del sistema di sensori o della piattaforma nel suo complesso.</help>
+                    <label xml:lang="it">Descrizione del componente</label>
+                    <help xml:lang="it">Contiene una descrizione testuale del singolo componente.</help>
                     <label xml:lang="en">Description of the physical system</label>
-                    <help xml:lang="en">Brief description of the sensor, of the system or of the platform as a whole.</help>
+                    <help xml:lang="en">Brief description of the sensor, of the component.</help>
                     <hasPath>gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
@@ -578,12 +574,12 @@
         <element>
             <id>free_keywords</id>
             <label xml:lang="it">Parole chiave a campo libero</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del singolo componente, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
             <label xml:lang="en">Free keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:keywords/sml:KeywordList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:keywords/sml:KeywordList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -606,7 +602,7 @@
         <!--<help xml:lang="it">Questa parte fornisce diversi valori di identit&#224; e di alias, con
             tipi come &quot;nome breve del sesnore&quot; (alias), &quot;nome per esteso&quot;,
             &quot;numero del modello&quot;, &quot;numero seriale&quot;, ecc.</help>-->
-        <label xml:lang="en">Identification of the system</label>
+        <label xml:lang="en">Identification of the component</label>
         <!--<help xml:lang="en">Means of providing various identity and alias values, with types such as
             &quot;longName&quot;, &quot;abbreviation&quot;, &quot;modelNumber&quot;,
             &quot;serialNumber&quot;, whose terms can be defined in a dictionary.</help>-->
@@ -618,7 +614,7 @@
             <help xml:lang="en">Means of providing unique identifier</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;uniqueID&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;uniqueID&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -640,13 +636,13 @@
         <element>
             <id>manuf_name</id>
             <label xml:lang="it">Denominazione del produttore</label>
-            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
+            <help xml:lang="it">Indicare la denominazione del produttore del componente. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
+            <help xml:lang="en">Name of the manufacturer of the physical component. Start typing the first three letters 
 		to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;manufacturerName&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;manufacturerName&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -668,12 +664,12 @@
         <element>
             <id>mod_number</id>
             <label xml:lang="it">Modello</label>
-            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Indicare, se presente, il modello del componente.</help>
             <label xml:lang="en">Model</label>
-            <help xml:lang="en">Model, if available, of the sensor, system or platform.</help>
+            <help xml:lang="en">Model, if available, of the physical component.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;modelNumber&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;modelNumber&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -695,12 +691,12 @@
         <element>
             <id>serial_num</id>
             <label xml:lang="it">Numero seriale</label>
-            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Indicare il numero seriale, se presente, del componente.</help>
             <label xml:lang="en">Serial Number</label>
-	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+	        <help xml:lang="en">Serial number, if available, of the physical component.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;serialNumber&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:identification/sml:IdentifierList/sml:identifier/sml:Term[@definition=&apos;serialNumber&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -732,7 +728,7 @@
         <element>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -757,11 +753,11 @@
     <!-- TO DO: fare una codelist con systemType, sensorType, application, SeaDataNetDeviceCategory, platformCategory -->
     <group>
         <id>sys_class</id>
-        <label xml:lang="it">Classificazione del sistema</label>
+        <label xml:lang="it">Classificazione del componente</label>
         <!--<help xml:lang="it">Definizione dei valori di classificazione con tipi come &quot;Tipo di
             sensori&quot;, &quot;Applicazione&quot;, etc., i cui termini possono essere definiti da
             dei vocabolari</help>-->
-        <label xml:lang="en">System Classifiers</label>
+        <label xml:lang="en">Physical component classifiers</label>
         <!--<help xml:lang="en">Means of specifying classification values with types such as
             &quot;sensorType&quot;, &quot;intendedApplication&quot;, etc., whose terms can be
             defined in a dictionary</help>-->
@@ -774,7 +770,7 @@
             <help xml:lang="en">Intended application of the sistem</help>-\->
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:classification/sml:ClassifierList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:classification/sml:ClassifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -835,30 +831,23 @@
         <!--Sensor type element -->
         <element>
             <id>sensor_type</id>
-            <label xml:lang="it">Tipologia sistema</label>
-            <help xml:lang="it">Parola chiave che indica la tiplogia del sistema</help>
+            <label xml:lang="it">Tipologia coponente</label>
+            <help xml:lang="it">Parola chiave che indica la tiplogia del componente</help>
             <label xml:lang="en">Sensor type</label>
-            <help xml:lang="en">Key words mean the typology of the system</help>
+            <help xml:lang="en">Key words mean the typology of the physical component</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:classification/sml:ClassifierList/sml:classifier/sml:Term</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:classification/sml:ClassifierList/sml:classifier/sml:Term[definition=&apos;systemType&apos;]</hasRoot>
             <produces>
                 <item>
-                    <hasDatatype>1</hasDatatype>
-                    <hasPath>sml:classifier/sml:Term/@definition</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>http://www.opengis.net/def/property/OGC/0/SensorType</hasValue>
-                </item>
-                <item>
-                    <hasIndex>2</hasIndex>
+                    <hasIndex>1</hasIndex>
                     <hasPath>sml:classifier/sml:Term/sml:label</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>SensorType</hasValue>
+                    <hasValue>systemType</hasValue>
                 </item>
                 <item>
-                    <hasIndex>3</hasIndex>
+                    <hasIndex>2</hasIndex>
                     <hasPath>sml:classifier/sml:Term/sml:value</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
@@ -874,7 +863,7 @@
             <help xml:lang="en">One or more keywords indicating the deployment role of the system, to be selected from the list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:classification/sml:ClassifierList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:classification/sml:ClassifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -924,7 +913,7 @@
     <!-- valid -->
     <group>
         <id>temp_val</id>
-        <label xml:lang="it">Validit&#224; dei metadati del sistema</label>
+        <label xml:lang="it">Validit&#224; dei metadati del componente</label>
         <!--<help xml:lang="it">Indica i vincoli di validit&#224; temporale della descrizione del
             sistema</help>-->
         <label xml:lang="en">Temporal validity of metadata description</label>
@@ -937,7 +926,7 @@
             <help/>-->
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:validTime</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:validTime</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1095,12 +1084,12 @@
         <element>
             <id>material</id>
             <label xml:lang="it">Materiale</label>
-            <help xml:lang="it">Materiale di cui &#232; composto il sistema.</help>
+            <help xml:lang="it">Materiale di cui &#232; composto il componente.</help>
             <label xml:lang="en">Material</label>
-            <help xml:lang="en">Material the system is constructed by.</help>
+            <help xml:lang="en">Material the physical system is constructed by.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:characteristics[@name=&apos;generalProperties&apos;]/sml:CharacteristicList/sml:characteristic[@name=&apos;physicalProperties&apos;]/swe:DataRecord[@definition=&apos;physicalProperties&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:characteristics[@name=&apos;generalProperties&apos;]/sml:CharacteristicList/sml:characteristic[@name=&apos;physicalProperties&apos;]/swe:DataRecord[@definition=&apos;physicalProperties&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1209,14 +1198,14 @@
         <!-- status -->
         <element>
             <id>status_capab</id>
-            <label xml:lang="it">Stato del sistema</label>
-            <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato.
-                Spuntare la casella nel caso di sistema attivo</help>
+            <label xml:lang="it">Stato del componente</label>
+            <help xml:lang="it">Viene indicato se il componente &#232; attivo o disattivato.
+                Spuntare la casella nel caso di componente attivo</help>
             <label xml:lang="en">Status</label>
-            <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
+            <help xml:lang="en">Tick the box if the physical component is on, otherwise it is off.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]/swe:field[@name=&apos;status&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]/swe:field[@name=&apos;status&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1231,13 +1220,13 @@
         <element>
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
-            <help xml:lang="it">Viene indicato se il sistema &#232; mobile o fisso. Spuntare la
-                casella nel caso si tratti di sistema mobile</help>
+            <help xml:lang="it">Viene indicato se il componente &#232; mobile o fisso. Spuntare la
+                casella nel caso si tratti di componente mobile</help>
             <label xml:lang="en">Mobility Capabilities</label>
-            <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
+            <help xml:lang="en">Tick the box if the physical system is mobile, otherwise it is fixed.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]/swe:field[@name=&apos;mobile&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]/swe:field[@name=&apos;mobile&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1253,12 +1242,12 @@
             <id>storage_type</id>
             <label xml:lang="it">Tipo di memoria</label>
             <help xml:lang="it">Indicare il tipo di memoria che viene utilizzato per archiviare le
-                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data logger)</help>
+                osservazioni raccolte dal componente (es. data logger)</help>
             <label xml:lang="en">Storage Type</label>
-            <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
+            <help xml:lang="en">The type of storage of the observations collected by the physical component (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1287,12 +1276,12 @@
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
-            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del sistema/sensore/piattaforma, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
+            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del componente, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
             <label xml:lang="en">Manufacturer</label>
-            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the system (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
+            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the physical component (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/gmd:CI_ResponsibleParty</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/gmd:CI_ResponsibleParty</hasRoot>
             <produces>
                 <item>
                     <label xml:lang="it">Nome produttore</label>
@@ -1435,7 +1424,7 @@
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/gmd:CI_ResponsibleParty</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:owner&apos;]/gmd:CI_ResponsibleParty</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1574,9 +1563,9 @@
             <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nelle liste anagrafiche del progetto RITMARE.</help>
             <label xml:lang="en">Operator</label>
             <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the RITMARE project contacts&#8217; repository.</help>
-            <isMandatory>NA</isMandatory>
+            <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/gmd:CI_ResponsibleParty</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:contacts/sml:ContactList/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/gmd:CI_ResponsibleParty</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1740,24 +1729,24 @@
     <!-- valid -->
     <group>
         <id>system_documentation</id>
-        <label xml:lang="it">Documentazione tecnica del sistema</label>
+        <label xml:lang="it">Documentazione tecnica del componente</label>
         <!--<help xml:lang="it">Scheda tecnica del sistema con data/ora, versione, autore, ecc. Pu&#242;
             anche puntare ad una risorsa online.</help>-->
-        <label xml:lang="en">System Documentation</label>
+        <label xml:lang="en">Physical component documentation</label>
         <!--<help xml:lang="en">Documentation for that object with date/time, version, author, etc.
             pointing to an online resource related to the enclosing object</help>-->
         <!-- Documentation -->
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
-            <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
+            <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il componente
                    (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
-            <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
+            <help xml:lang="en">Documentation that provides a reference description of the physical component (e.g., specification documentation,
 		 peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1791,12 +1780,12 @@
         <element>
             <id>image</id>
             <label xml:lang="it">Link all'immagine</label>
-            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di sensori o alla piattaforma</help>
+            <help xml:lang="it">Inserire l'URL di una immagine riferita al componente</help>
             <label xml:lang="en">Image link</label>
             <help xml:lang="en">Link to reach on-line the image (URI or URL)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1833,15 +1822,15 @@
     <!--======= -->
     <group>
         <id>history</id>
-        <label xml:lang="it">Storia del sistema</label>
+        <label xml:lang="it">Storia del componente</label>
         <help xml:lang="it">Eventi cui il sistema &#232; andato incontro nel tempo (es. modifiche, ricalibrazione, ecc.)</help>
         <label xml:lang="en">History</label>
-        <help xml:lang="en">Events regarding the system in time (e.g., calibration, adjustments, etc.)</help>
+        <help xml:lang="en">Events regarding the physical component in time (e.g., calibration, adjustments, etc.)</help>
         <element>
             <id>history</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:history/sml:EventList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:history/sml:EventList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2015,7 +2004,7 @@
             <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2029,12 +2018,12 @@
         <element>
             <id>output_param</id>
             <label xml:lang="it">Parametro misurato</label>
-            <help xml:lang="it">Parametro misurato dal sensore, sistema o piattaforma e informazioni relative. Si possono aggiungere pi&#249; parametri, cui associare le relative informazioni</help>
+            <help xml:lang="it">Parametro misurato dal componente e informazioni relative. Si possono aggiungere pi&#249; parametri, cui associare le relative informazioni</help>
             <label xml:lang="en">Output signals</label>
-            <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
+            <help xml:lang="en">Parameter measured by the physical component and related information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2205,14 +2194,14 @@
             <id>location</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <hasPath>sml:position/swe:DataRecord/swe:field/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('location_', sml:PhysicalSystem/@gml:id)</hasValue>
+                    <hasValue>concat('location_', sml:PhysicalComponent/@gml:id)</hasValue>
                 </item>
             </produces>
         </element>
@@ -2220,12 +2209,12 @@
         <element>
             <id>ref_sys</id>
             <label xml:lang="en">Reference system</label>
-            <help xml:lang="en">Select from the list the reference system of the position property of the system.</help>
+            <help xml:lang="en">Select from the list the reference system of the position property of the physical component.</help>
             <label xml:lang="it">Sistema di riferimento</label>
-            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del sistema, sensore o piattaforma.</help>
+            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del componente.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2261,7 +2250,7 @@
                 the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2328,7 +2317,7 @@
                 the chosen reference system and in decimal degrees (ex. 45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2391,7 +2380,7 @@
             <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2453,21 +2442,21 @@
         <id>orientation_prop</id>
         <label xml:lang="it">Orientamento</label>
         <help/>
-        <label xml:lang="en">Orientation Properties</label>
+        <label xml:lang="en">Orientation properties</label>
         <help/>
         <!-- Location from Component Output -->
         <element>
             <id>orientation_id</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/sml:PhysicalComponent</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <hasPath>sml:position/swe:DataRecord/swe:field/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('orientation_', sml:PhysicalSystem/@gml:id)</hasValue>
+                    <hasValue>concat('orientation_', sml:PhysicalComponent/@gml:id)</hasValue>
                 </item>
             </produces>
         </element>
@@ -2476,7 +2465,7 @@
             <id>ned</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2505,7 +2494,7 @@
             <help xml:lang="en">The angular measurement clockwise about the vertical from Earth's true north pole to the projection of the aircraft roll axis into the ground plane, and is valid at the time specified by Coordinated Universal Time (UTC).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2565,7 +2554,7 @@
             <help xml:lang="en">The degree of deviation from a horizontal plane.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
+            <hasRoot>/sml:PhysicalComponent/sml:position/swe:DataRecord/swe:field/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -2618,40 +2607,4 @@
         </element>
     </group>
     <!--END Orientation Properties Group -->
-    
-    <!--========== -->
-    <!--Components -->
-    <!--========== -->
-    <group>
-        <id>componets</id>
-        <label xml:lang="it">Componenti del sistema</label>
-        <help xml:lang="it">Completa il campo con il nome e l'URL dei componenti (sensore o sensori)</help>
-        <label xml:lang="en">Components of the physical system</label>
-        <help xml:lang="en">Fill the field with name and URL of the component sensor/sensors</help>
-        <element>
-            <id>component</id>
-            <isMandatory>true</isMandatory>
-            <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:components/sml:ComponentsList</hasRoot>
-            <produces>
-                <item>
-                    <hasIndex>1</hasIndex>
-                    <hasPath>sml:component/@name</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <label xml:lang="it">Nome del componente</label>
-                    <label xml:lang="en">Name of the component</label>
-                </item>
-                <item>
-                    <hasIndex>2</hasIndex>
-                    <hasPath>sml:component/@xlink:href</hasPath>
-                    <isFixed>false</isFixed>
-                    <hasDatatype>URL</hasDatatype>
-                    <label xml:lang="it">URL del componente</label>
-                    <label xml:lang="en">URL of the component</label>
-                </item>
-            </produces>
-        </element>
-    </group>
-    <!--END Components Group -->
 </template>
