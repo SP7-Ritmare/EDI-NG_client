@@ -20,7 +20,7 @@
         <requiresValidation>false</requiresValidation>
 
         <baseDocument>
-            <!-- Base Document SensorML version 2.0.0 -->
+            <!-- Base Document SensorML version 2.0.0 for 52°North v4.3.x-->
             <![CDATA[
             <swes:InsertSensor service="SOS" version="2.0.0" xmlns:swes="http://www.opengis.net/swes/2.0"
    xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:swe="http://www.opengis.net/swe/2.0"
@@ -139,10 +139,10 @@
             <triggerItem>output_param_1_uri</triggerItem>
             <type>sparql</type>
         </datasource>
-        <datasource>
+        <!--<datasource>
             <id>sensortype</id>
             <singleton>true</singleton>
-            <!--<endpointType></endpointType>-->
+            <endpointType></endpointType>
             <query>
                 <![CDATA[
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -165,7 +165,7 @@
                     ]]>
             </query>
             <type>sparql</type>
-        </datasource>
+        </datasource>-->
         <datasource>
             <id>manufacturers</id>
             <singleton>true</singleton>
@@ -1046,7 +1046,7 @@
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact</hasRoot>
             <produces>
                 <item>
-                    <hasIndex>2</hasIndex>
+                    <hasIndex>1</hasIndex>
                     <outIndex>1</outIndex>
                     <hasPath>@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
@@ -1058,7 +1058,7 @@
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
                     <help/>
-                    <hasIndex>1</hasIndex>
+                    <hasIndex>2</hasIndex>
                     <outIndex>2</outIndex>
                     <hasPath>gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
@@ -1764,12 +1764,12 @@
             <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>5</outIndex>
-                    <hasPath>@name</hasPath>
+                    <hasPath>sml:output/@name</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
@@ -1782,7 +1782,7 @@
                 <item>
                     <hasIndex>3</hasIndex>
                     <outIndex>6</outIndex>
-                    <hasPath>swe:Quantity/@definition</hasPath>
+                    <hasPath>sml:output/swe:Quantity/@definition</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>keywordsS</datasource>
                     <hasDatatype>select</hasDatatype>
@@ -1792,7 +1792,7 @@
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>2</outIndex>
-                    <hasPath>swe:Quantity/swe:uom</hasPath>
+                    <hasPath>sml:output/swe:Quantity/swe:uom</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
@@ -1804,7 +1804,7 @@
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>swe:Quantity/swe:uom/@code</hasPath>
+                    <hasPath>sml:output/swe:Quantity/swe:uom/@code</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>uom</datasource>
                     <hasDatatype>select</hasDatatype>
@@ -1814,7 +1814,7 @@
                 <item>
                     <hasIndex>6</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>swe:Quantity/swe:uom/@xlink:href</hasPath>
+                    <hasPath>sml:output/swe:Quantity/swe:uom/@xlink:href</hasPath>
                     <isFixed>true</isFixed>
                     <datasource>uom</datasource>
                     <hasDatatype>select</hasDatatype>
