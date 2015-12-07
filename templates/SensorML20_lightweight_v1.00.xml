@@ -20,7 +20,7 @@
         <requiresValidation>false</requiresValidation>
 
         <baseDocument>
-            <!-- Base Document SensorML version 2.0.0 for 52°North v4.3.x-->
+            <!-- If you want to use this template to upload SensorML version 2.0.0 for 52°North v4.3.x please use this Base Docuemnt -->
             <![CDATA[
             <swes:InsertSensor service="SOS" version="2.0.0" xmlns:swes="http://www.opengis.net/swes/2.0"
    xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:swe="http://www.opengis.net/swe/2.0"
@@ -609,30 +609,6 @@
                     <hasDatatype>sensorID</hasDatatype>
                     <hasValue>auto</hasValue>
                 </item>
-                <item>
-                    <hasIndex>7</hasIndex>
-                    <outIndex>7</outIndex>
-                    <hasPath>sml:identification/sml:IdentifierList/sml:identifier/sml:Term/@definition</hasPath>
-                    <hasDatatype>string</hasDatatype>
-                    <isFixed>true</isFixed>
-                    <hasValue>http://mmisw.org/ont/ioos/definition/shortName</hasValue>
-                </item>
-                <item>
-                    <hasIndex>8</hasIndex>
-                    <outIndex>8</outIndex>
-                    <hasPath>sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:label</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>string</hasDatatype>
-                    <hasValue>short name</hasValue>
-                </item>
-                <item>
-                    <hasIndex>9</hasIndex>
-                    <outIndex>9</outIndex>
-                    <hasPath>sml:identification/sml:IdentifierList/sml:identifier/sml:Term/sml:value</hasPath>
-                    <isFixed>true</isFixed>
-                    <hasDatatype>ref</hasDatatype>
-                    <hasValue>TheName</hasValue>
-                </item>
             </produces>
         </element>
     </group>
@@ -718,7 +694,7 @@
             <help xml:lang="it">Indicare un nome esteso del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Long Name</label>
             <help xml:lang="en">Long name of the system or platform.</help>
-            <isMandatory>forAll</isMandatory>
+            <isMandatory>false</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
             <produces>

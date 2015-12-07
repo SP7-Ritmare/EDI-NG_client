@@ -10,6 +10,18 @@
     
     <!-- gml:identification -->
     <xsl:template match="sml:identifier[ not(./sml:Term/sml:value) ]" />
+    <xsl:template match="sml:identification">
+        <sml:identification>
+            <sml:IdentifierList>
+                <sml:identifier>
+                    <sml:Term definition="shortName">
+                        <sml:label>Short Name</sml:label>
+                        <sml:value><xsl:value-of select="//TheName" /></sml:value>
+                    </sml:Term>
+                </sml:identifier>
+            </sml:IdentifierList>
+        </sml:identification>
+    </xsl:template>
     <xsl:template match="//TheName" />
     
     <!-- sml:keywords -->
