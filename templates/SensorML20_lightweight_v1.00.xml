@@ -987,7 +987,7 @@
             <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1533,7 +1533,7 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/ml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
@@ -1545,7 +1545,7 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/ml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>User Manual</hasValue>
@@ -1572,7 +1572,7 @@
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/ml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
@@ -1583,7 +1583,7 @@
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/ml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>Image</hasValue>
