@@ -14,27 +14,51 @@
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+        <metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
         <requiresValidation>false</requiresValidation>
 
         <baseDocument>
             <![CDATA[
+            <swes:InsertSensor service="SOS" version="2.0.0" xmlns:swes="http://www.opengis.net/swes/2.0"
+   xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:swe="http://www.opengis.net/swe/2.0"
+   xmlns:sml="http://www.opengis.net/sensorml/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+   xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosInsertSensor.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd http://www.opengis.net/sensorml/2.0 http://schemas.opengis.net/sensorML/2.0/sensorML.xsd">
+    <swes:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</swes:procedureDescriptionFormat>
+    <swes:procedureDescription>
     
-       <sml:PhysicalSystem xmlns:sml="http://www.opengis.net/sensorml/2.0"
-            xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
-            xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-            xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xmlns:sf="http://www.opengis.net/sampling/2.0"
-            xsi:schemaLocation=" http://www.opengis.net/sensorML/2.0 http://schemas.opengis.net/sensorML/2.0/sensorML.xsd http://www.opengis.net/samplingSpatial/2.0 http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd">
+       <sml:PhysicalSystem>
     
        </sml:PhysicalSystem>
+    
+    </swes:procedureDescription>
+    <!-- multiple values possible -->
+    <swes:observableProperty></swes:observableProperty>
+    <swes:metadata>
+        <sos:SosInsertionMetadata>
+            <!-- multiple values possible -->
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</sos:observationType>
+            <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</sos:observationType>
+            <!-- multiple values possible -->
+            <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+            <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingCurve</sos:featureOfInterestType>
+            <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingSurface</sos:featureOfInterestType>
+        </sos:SosInsertionMetadata>
+    </swes:metadata>
+    </swes:InsertSensor>
         ]]>
         </baseDocument>
 
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20_lightweight.xsl?version=1.00</xslt>
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20_lightweight_forGet-It.xsl?version=1.00</xslt>
         </xsltChain>
     </settings>
 
@@ -50,42 +74,10 @@
                 <fname>undefined</fname>
             </parameters>
         </endpointType>
-        <endpointType>
-            <id>fuseki</id>
-            <method>GET</method>
-            <queryParameter>query</queryParameter>
-            <parameters>
-                <format>application/sparql-results+json</format>
-                <save>display</save>
-                <fname>undefined</fname>
-            </parameters>
-        </endpointType>
     </endpointTypes>
 
     <!-- DATA SOURCES -->
     <datasources>
-        <!-- NERC Vocabulary datasources -->
-        <!--datasource>
-            <id>typeSystem</id>
-            <singleton>false</singleton>
-            <endpointType>fuseki</endpointType>
-            <query>
-                <![CDATA[
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        SELECT ?c ?l ?a
-                        WHERE {
-                          ?c rdf:type skos:Concept.
-                          <http://vocab.nerc.ac.uk/collection/P10/current/> skos:member ?c.
-                          OPTIONAL {
-                            ?c skos:prefLabel ?l.
-                            FILTER( LANG(?l) = "en")
-                          }
-                ]]>
-            </query>
-            <type> sparql </type>
-        </datasource-->
-        <!-- END NERC Vocabulary datasources -->
         <datasource>
             <id>languages</id>
             <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
@@ -146,6 +138,33 @@
             <triggerItem>output_param_1_uri</triggerItem>
             <type>sparql</type>
         </datasource>
+        <!--<datasource>
+            <id>sensortype</id>
+            <singleton>true</singleton>
+            <endpointType></endpointType>
+            <query>
+                <![CDATA[
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    SELECT ?c ?l ?a
+                    WHERE {
+                    ?c rdf:type skos:Concept.
+                    <http://vocab.nerc.ac.uk/collection/P10/current/> skos:member ?c.
+                    OPTIONAL {
+                    ?c skos:prefLabel ?l.
+                    FILTER( LANG(?l) = "en")
+                    }
+                    OPTIONAL {
+                    ?c skos:prefLabel ?a.
+                    FILTER( LANG(?a) = "it")
+                    }
+                    FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                    }
+                    ORDER BY ASC(?l) ASC(?a)
+                    ]]>
+            </query>
+            <type>sparql</type>
+        </datasource>-->
         <datasource>
             <id>manufacturers</id>
             <singleton>true</singleton>
@@ -314,7 +333,7 @@
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/lotrx>
+                        FROM <http://ritmare.it/rdfdata/project>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
@@ -331,62 +350,42 @@
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
-                PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-WHERE {
-  OPTIONAL {
-    <$search_param> foaf:phone ?phone .
-  }
-  OPTIONAL {
-    <$search_param> foaf:fullName ?fullname .
-  }
-  OPTIONAL {
-    <$search_param> vcard:email ?email .
-  }
-  OPTIONAL {
-    <$search_param> vcard:org ?b3 .
-    ?b3 foaf:homepage ?homepage .
-    ?b3 foaf:name ?l .
-  }
-
-  {
-    <$search_param> vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  } UNION {
-    ?b3 vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  }
-}
-LIMIT 1
-                ]]>
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <$search_param> foaf:fullName ?fullname .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:email ?email .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3 .
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+                          {
+                            <$search_param> vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          } UNION {
+                            ?b3 vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          }
+                          FILTER(lang(?l)='it')
+                        }
+                        LIMIT 1
+                        ]]>
             </query>
             <triggerItem>owner_1_uri</triggerItem>
             <type> sparql </type>
@@ -399,7 +398,7 @@ LIMIT 1
                 <![CDATA[
                         PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/lotrx>
+                        FROM <http://ritmare.it/rdfdata/project>
                         WHERE { 
                           ?c rdf:type foaf:Person .
                           ?c ns:email ?l.
@@ -417,60 +416,40 @@ LIMIT 1
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-WHERE {
-  OPTIONAL {
-    <$search_param> foaf:phone ?phone .
-  }
-  OPTIONAL {
-    <$search_param> foaf:fullName ?fullname .
-  }
-  OPTIONAL {
-    <$search_param> vcard:email ?email .
-  }
-  OPTIONAL {
-    <$search_param> vcard:org ?b3 .
-    ?b3 foaf:homepage ?homepage .
-    ?b3 foaf:name ?l .
-  }
-
-  {
-    <$search_param> vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  } UNION {
-    ?b3 vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  }
-}
-LIMIT 1
+                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <$search_param> foaf:fullName ?fullname .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:email ?email .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3 .
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+                          {
+                            <$search_param> vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          } UNION {
+                            ?b3 vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
+                          }
+                          FILTER(lang(?l)='it')
+                        }
+                        LIMIT 1
                         ]]>
             </query>
             <triggerItem>operator_1_uri</triggerItem>
@@ -577,7 +556,7 @@ LIMIT 1
                 not its description; it could coincide with the name given by the manufacturer.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -651,7 +630,7 @@ LIMIT 1
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:keywords/sml:KeywordList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:keywords/sml:KeywordList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -682,7 +661,7 @@ LIMIT 1
 		to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -716,7 +695,7 @@ LIMIT 1
             <help xml:lang="en">Long name of the system or platform.</help>
             <isMandatory>false</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -749,7 +728,7 @@ LIMIT 1
             <help xml:lang="en">Model, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -782,7 +761,7 @@ LIMIT 1
 	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -826,7 +805,7 @@ LIMIT 1
             <help xml:lang="en">Key words mean the typology of the system</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:classification/sml:ClassifierList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:classification/sml:ClassifierList</hasRoot>
             <produces>
                 <item>
                     <hasDatatype>1</hasDatatype>
@@ -865,7 +844,7 @@ LIMIT 1
             <id>valid_time</id>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:validTime</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:validTime</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -913,7 +892,7 @@ LIMIT 1
             <help xml:lang="en">Material the system is constructed by.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:characteristics[@name=&apos;generalProperties&apos;]/sml:CharacteristicList/sml:characteristic[@name=&apos;physicalProperties&apos;]/swe:DataRecord[@definition=&apos;physicalProperties&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:characteristics[@name=&apos;generalProperties&apos;]/sml:CharacteristicList/sml:characteristic[@name=&apos;physicalProperties&apos;]/swe:DataRecord[@definition=&apos;physicalProperties&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -951,7 +930,7 @@ LIMIT 1
             <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:capabilities[@name=&apos;specification&apos;]/sml:CapabilityList/sml:capability[@name=&apos;StatusCapabilities&apos;]/swe:DataRecord[@definition=&apos;StatusCapabilities&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -979,7 +958,7 @@ LIMIT 1
             <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability/swe:DataRecord</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability/swe:DataRecord</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1007,7 +986,7 @@ LIMIT 1
             <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1039,7 +1018,7 @@ LIMIT 1
             <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the system (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1200,13 +1179,14 @@ LIMIT 1
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
-            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nel film The Lord of the Ring</help>
+            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nelle liste anagrafiche
+             del progetto RITMARE</help>
             <label xml:lang="en">Owner</label>
-            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the The Lord of the Ring movie.</help>
+            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the RITMARE project contacts&#8217; repository</help>
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1363,12 +1343,12 @@ LIMIT 1
         <element>
             <id>operator</id>
             <label xml:lang="it">Informazioni sull&apos;operatore</label>
-            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nel film The Lord of the Ring.</help>
+            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nelle liste anagrafiche del progetto RITMARE.</help>
             <label xml:lang="en">Operator</label>
-            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the movie The Lord of the Ring.</help>
+            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the RITMARE project contacts&#8217; repository.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1541,7 +1521,7 @@ LIMIT 1
 		 peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1580,7 +1560,7 @@ LIMIT 1
             <help xml:lang="en">Link to reach on-line the image (URI or URL)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
-            <hasRoot>/sml:PhysicalSystem</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1628,7 +1608,7 @@ LIMIT 1
             <label xml:lang="en">Event</label>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:history/sml:EventList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:history/sml:EventList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1694,7 +1674,7 @@ LIMIT 1
             <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web geografico</help>
             <label xml:lang="en">Feature Of Interest</label>
             <help xml:lang="en">The geometric sensor to which the system is associated. Add a URL of a WFS item</help>
-            <hasRoot>/sml:PhysicalSystem/sml:featuresOfInterest/sml:FeatureList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:featuresOfInterest/sml:FeatureList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1740,7 +1720,7 @@ LIMIT 1
             <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1759,7 +1739,7 @@ LIMIT 1
             <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1840,7 +1820,7 @@ LIMIT 1
             <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del sistema, sensore o piattaforma.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:position</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1876,7 +1856,7 @@ LIMIT 1
                 the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1939,7 +1919,7 @@ LIMIT 1
                 the chosen reference system and in decimal degrees (ex. 45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1998,7 +1978,7 @@ LIMIT 1
             <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
