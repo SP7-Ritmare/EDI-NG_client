@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <meta charset="utf-8">
-                <title>RITMARE EDI</title>
+                <title>GET-IT EDI</title>
                 <link rel="stylesheet" href="css/bootstrap.min.css">
                     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
                         <!--
@@ -118,15 +118,15 @@
                                 <button class="btn btn-primary" onclick="edi.setLanguage('en');">en</button>
                                 <br>
                                     <button class="btn btn-danger debug" onclick="toggleEDIML(this);">show EDIML</button>
-                                    <br>
-                                        <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save EDIML</button>
-                                        <br>
-                                            <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
-                                            <br>
-                                                <button class="btn btn-danger" style="display: none;" id="EDIMLDownload"
-                                                    onclick="ediml.downloadEDIML();">download EDIML
-                                                </button>
-                                                <br>
+                        <br>
+                        <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save locally</button>
+                        <br>
+                        <button class="btn btn-danger" onclick="ediml.load('pippo');">load last version</button>
+                        <br>
+                        <button class="btn btn-danger" style="display: none;" id="EDIMLDownload"
+                                onclick="ediml.downloadEDIML();">download EDIML
+                        </button>
+                        <br>
                                                     <button class="btn btn-danger" style="display: none;" id="MDDownload"
                                                         onclick="ediml.downloadMetadata();">download generated XML
                                                     </button>

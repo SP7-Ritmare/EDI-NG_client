@@ -10,11 +10,11 @@
 
 <template>
     <settings>
-        <defaultLanguage>it</defaultLanguage>
+        <defaultLanguage>en</defaultLanguage>
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+        <metadataEndpoint>http://edidemo.get-it.it/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
         <requiresValidation>false</requiresValidation>
@@ -592,7 +592,7 @@ LIMIT 1
                     <hasPath>@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('ID_', translate(translate(TheName/text(),'`~!@#$%^*()-_=+[]{}\|;:°§£€',''), ' ', '_'))</hasValue>
+                    <hasValue>concat('ID_', translate(translate(TheName/text(),'`~!@#$%^*()-_=+[]{}\|;:°§£€¨„Ω®™æøåß∂ƒ∞∆ªº¬∑†©√∫˜µπ',''), ' ', '_'))</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1675,6 +1675,42 @@ LIMIT 1
         </element>
     </group>
     <!--END History Group -->
+
+    <!--======= -->
+    <!--typeOf -->
+    <!--======= -->
+    <!-- VALID -->
+    <group>
+        <id>typeOf</id>
+        <label xml:lang="it">Riferimento sensore tipo</label>
+        <help xml:lang="it">Aggiungere le informazioni per fare riferimento ad un sensore già metadatato.</help>
+        <label xml:lang="en">References to the sensor type</label>
+        <help xml:lang="en">Add the information below to put a referece to existing sensor metadata.</help>
+        <element>
+            <id>typeOfElement</id>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>false</isMultiple>
+            <hasRoot>/sml:PhysicalSystem/sml:typeOf</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URL</hasDatatype>
+                    <label xml:lang="it">Link alla descrizione del sonsore in XML</label>
+                    <label xml:lang="en">Link to the XML description of the sensor</label>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>@xlink:title</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>function</hasDatatype>
+                    <hasValue>document(/sml:PhysicalSystem/sml:typeOf/@xlink:href)//gml:name</hasValue>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END typeOf Group -->
 
     <!--================== -->
     <!--featuresOfInterest -->

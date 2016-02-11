@@ -95,14 +95,19 @@
     
     <!-- swes:observableProperty -->
     <xsl:template match="swes:observableProperty">
-        <xsl:for-each select="//sml:output/swe:Quantity">
-            <swes:observableProperty>
-                <xsl:value-of select="@definition"/>
-            </swes:observableProperty>        
-        </xsl:for-each>
-        <xsl:if test="//sml:outputs/sml:OutputList/dateTime/text()='true'">
-            <swes:observableProperty>http://www.opengis.net/def/property/OGC/0/PhenomenonTime</swes:observableProperty>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="swes:observableProperty/text() = 'not_define'" />
+            <xsl:otherwise>
+                <xsl:for-each select="//sml:output/swe:Quantity">
+                    <swes:observableProperty>
+                        <xsl:value-of select="@definition"/>
+                    </swes:observableProperty>        
+                </xsl:for-each>
+                <xsl:if test="//sml:outputs/sml:OutputList/dateTime/text()='true'">
+                    <swes:observableProperty>http://www.opengis.net/def/property/OGC/0/PhenomenonTime</swes:observableProperty>
+                </xsl:if>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- identity template -->

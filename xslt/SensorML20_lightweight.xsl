@@ -87,7 +87,17 @@
                 <xsl:copy-of select="."/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template> 
+    </xsl:template>
+    
+    <!-- typeOf -->
+    <xsl:template match="sml:typeOf" >
+        <xsl:choose>
+            <xsl:when test="not (@xlink:href)" />
+            <xsl:otherwise>
+                <xsl:attribute name="xlink:title" select="document(@xlink:href)//gml:name" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
     
     <!-- sml:position -->
     <xsl:template match="sml:position[not(.//swe:value)]" />

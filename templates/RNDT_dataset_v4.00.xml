@@ -1,42 +1,29 @@
 <template>
   <settings>
-    <defaultLanguage>en</defaultLanguage>
+    <defaultLanguage>it</defaultLanguage>
     <languageSelection>
       <byItem>ling_md_1</byItem>
     </languageSelection>
-    <!-- <metadataEndpoint>https://adamassoft.it/jbossTest/edi/</metadataEndpoint> -->
     <metadataEndpoint>http://edidemo.get-it.it/edi/</metadataEndpoint>
     <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
     <requiresAuthentication>false</requiresAuthentication>
-    <requiresValidation>true</requiresValidation>
-    <!-- 
+    <requiresValidation>false</requiresValidation>
     <baseDocument>
       <![CDATA[
         <gmd:MD_Metadata
             xsi:schemaLocation="http://www.isotc211.org/2005/gmd
             http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
-            xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml/3.2"
-            xmlns:xlink="http://www.w3.org/1999/xlink">
-    
-        </gmd:MD_Metadata>
-      ]]>
-    </baseDocument>    
-    -->
-    <baseDocument>
-      <![CDATA[
-        <gmd:MD_Metadata
-            xsi:schemaLocation="http://www.isotc211.org/2005/gmd
-            http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
-            xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml"
+            xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+            xmlns:gco="http://www.isotc211.org/2005/gco"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xmlns:gml="http://www.opengis.net/gml/3.2"
             xmlns:xlink="http://www.w3.org/1999/xlink">
     
         </gmd:MD_Metadata>
       ]]>
     </baseDocument>
     <xsltChain>
-      <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/stylesheet_1.xsl?version=1.00</xslt>
+      <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/RNDT_stylesheet?version=2.00</xslt>
     </xsltChain>
   </settings>
   <endpointTypes>
@@ -338,6 +325,49 @@
       <query>
         <![CDATA[
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX dct: <http://purl.org/dc/terms/>
+        SELECT ?l ?date
+        WHERE {
+          ?voc skos:member <$search_param> .
+          OPTIONAL {
+            ?voc skos:prefLabel ?l .
+          }
+          OPTIONAL {
+            ?voc dct:date ?ts .
+          }
+          BIND( STRBEFORE(?ts , " ") AS ?date )
+        }
+        ]]>
+        <!-- 
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX dct: <http://purl.org/dc/terms/>
+        SELECT ?l ?date
+        WHERE {
+          ?voc skos:member <http://vocab.nerc.ac.uk/collection/P01/current/GA2CFS01/> .
+          OPTIONAL {
+            ?voc skos:prefLabel ?l .
+          }
+          OPTIONAL {
+            ?voc dct:date ?ts .
+          }
+          BIND( STRBEFORE(?ts , " ") AS ?date )
+        }
+        -->
+      </query>
+      <triggerItem>keyw_voc_contr_1_uri</triggerItem>
+      <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
+      <endpointType>fuseki</endpointType>
+      <type>
+        sparql
+      </type>
+    </datasource>
+    <!--    
+    <datasource>
+      <id>contrVocSpecs</id>
+      <singleton>true</singleton>
+      <query>
+        <![CDATA[
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         SELECT ?c ?l ?date
         FROM <http://ritmare.it/rdfdata/reference>
         WHERE {
@@ -354,6 +384,7 @@
         sparql
       </type>
     </datasource>
+    -->  
     <datasource>
       <id>paramOss</id>
       <singleton>false</singleton>
@@ -423,6 +454,11 @@
       <id>id_md</id>
       <label xml:lang="en">File identifier</label>
       <label xml:lang="it">Identificatore del file</label>
+      <help xml:lang="en">The element must contain, as a prefix, the iPA code assigned by 
+        the Administration in the Index of Public Administrations (e.g., "cnr:112358").</help>
+      <help xml:lang="it">L'elemento deve contenere, come prefisso, il codice iPA assegnato
+        all’Amministrazione nel momento dell’accreditamento all'Indice delle Pubbliche
+        Amministrazioni (es. "cnr:112358").</help>      
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:fileIdentifier</hasRoot>
@@ -430,9 +466,8 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
-          <queryStringParameter>uid</queryStringParameter>
         </item>
       </produces>
     </element>
@@ -442,7 +477,7 @@
       <label xml:lang="en">Metadata language</label>
       <label xml:lang="it">Lingua dei metadati</label>
       <help xml:lang="en">The language the metadata are expressed in, to be chosen among the official 23 languages of the EU.</help>
-      <help xml:lang="it"> Linguaggio in cui sono espressi i metadati, le lingue selezionabili sono le 23 lingue ufficiali della UE, codificate come da men&#249; a tendina. NOTA: Per la conformit&#224; al profilo RNDT (recepimento Italiano INSPIRE) la lingua da preferirsi e&apos; l&apos;Italiano (valore di default).</help>
+      <help xml:lang="it"> Linguaggio in cui sono espressi i metadati, le lingue selezionabili sono le 23 lingue ufficiali della UE, codificate come da men&#249; a tendina.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:language</hasRoot>
@@ -455,7 +490,7 @@
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
+          <!-- <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -478,6 +513,8 @@
       <id>chset_md</id>
       <label xml:lang="en">Matadata character set</label>
       <label xml:lang="it">Set dei caratteri dei metadati</label>
+      <help xml:lang="en">The encoding of characters in the metadata.</help>
+      <help xml:lang="it">La codifica dei caratteri utilizzati nei metadati.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:characterSet</hasRoot>
@@ -485,12 +522,12 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:characterSet/gmd:MD_CharacterSetCode</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <isLanguageNeutral>true</isLanguageNeutral>
           <hasDatatype>codelist</hasDatatype>
           <datasource>charsets</datasource>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue>
+          <!-- <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -517,6 +554,17 @@
       <id>id_file_prec</id>
       <label xml:lang="en">Preceding file id</label>
       <label xml:lang="it">Id file precedente</label>
+      <help xml:lang="en">The element is meant to keep track of metadata update. The value is 
+        that of the element &#8220;File identifier&#8221; in the metadata record that was available at the 
+        time of the update. In case of first specification of metadata, the value is that of 
+        element &#8220;File identifier&#8221; of the same metadata record.</help>
+      <help xml:lang="it">
+        L’elemento serve a tracciare la storia delle trasmissioni dei file XML e quindi degli
+        aggiornamenti dei metadati. Esso deve assumere il valore dell'elemento
+        &#8220;Identificatore del file&#8221; del file trasmesso temporalmente in precedenza e a cui il file
+        corrente &#232; in relazione. Nel caso di primo impianto (quindi non esiste nessun file
+        precedente) l'elemento assume lo stesso valore dell’elemento &#8220;Identificatore del file&#8221;
+        del file corrente.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:parentIdentifier</hasRoot>
@@ -524,9 +572,8 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:parentIdentifier/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasValue>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
         </item>
       </produces>
     </element>
@@ -535,6 +582,18 @@
       <id>liv_ger</id>
       <label xml:lang="en">Hierarchic level</label>
       <label xml:lang="it">Livello gerarchico</label>
+      <help xml:lang="en">
+        Choose the value that is appropriate to the category of resources:
+        &#8220;dataset&#8221; for an identifyable collection of data that is part of 
+        a data series or an independent resource; &#8220;series&#8221; for a collection of 
+        related resources that share the same specification.
+      </help>
+      <help xml:lang="it">
+        Scegliere il valore più appropriato per il tipo di risorsa: 
+        &#8220;dataset&#8221; per una collezione identificabile di dati che pu&#242; essere parte 
+        di una serie oppure una risorsa indipendente; &#8220;serie&#8221; per una collezione di 
+        risorse o di dataset in relazione tra di loro che condividono le stesse specifiche di prodotto.
+      </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:hierarchyLevel</hasRoot>
@@ -542,7 +601,7 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode</hasPath>
-          <isFixed>true</isFixed>
+          <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>scopes</datasource>
           <isLanguageNeutral>true</isLanguageNeutral>
@@ -569,8 +628,8 @@
       <id>md_resp</id>
       <label xml:lang="en">Metadata responsible party</label>
       <label xml:lang="it">Responsabile dei metadati</label>
-      <help xml:lang="en">The email of the person that is indicated as the contact point for the maintenance of metadata, the organisation she is working by, and the website associated with the latter.</help>
-      <help xml:lang="it">&#200; la persona (punto di contatto) presso l&apos;organizzazione che &#232; responsabile della creazione e manutenzione dei METADATI (ovvero il responsabile del catalogo o registro, non necessariamente dei dati e della loro distribuzione). NOTA: i valori selezionabili sono quelli associati alla persona che si &#232; accreditata per la compilazione. </help>
+      <help xml:lang="en">The email of the person that is indicated as the contact point for the maintenance of metadata and the name of the organisation she is working by.</help>
+      <help xml:lang="it">&#200; la persona (punto di contatto) presso l&apos;organizzazione che &#232; responsabile della creazione e manutenzione dei METADATI (ovvero il responsabile del catalogo o registro. </help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata</hasRoot>
@@ -830,7 +889,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>dateTypes</datasource>
-          <defaultValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items/3</defaultValue>
+          <!-- <defaultValue>http://www.rndt.gov.it/codelists/CI_DateTypeCode/items/3</defaultValue> -->
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
         <item>
@@ -854,6 +913,11 @@
       <id>id</id>
       <label xml:lang="en">Identifier</label>
       <label xml:lang="it">Identificatore</label>
+      <help xml:lang="en">The element must contain, as a prefix, the iPA code assigned by 
+        the Administration in the Index of Public Administrations.</help>
+      <help xml:lang="it">L'elemento deve contenere, come prefisso, il codice iPA assegnato
+        all’Amministrazione nel momento dell’accreditamento all'Indice delle Pubbliche
+        Amministrazioni.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier</hasRoot>
@@ -861,9 +925,8 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>URN</hasDatatype>
-          <hasValue>auto</hasValue>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
         </item>
       </produces>
     </element>
@@ -908,7 +971,7 @@
           <hasDatatype>codelist</hasDatatype>
           <datasource>roleCodes</datasource>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/resourceProvider</defaultValue>
+          <!-- <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/resourceProvider</defaultValue> -->
         </item>
         <item>
           <hasIndex>4</hasIndex>
@@ -982,6 +1045,18 @@
       <id>id_liv_sup</id>
       <label xml:lang="en">Preceding level id</label>
       <label xml:lang="it">Id livello superiore</label>
+      <help xml:lang="en">The element is used to handle the relation between hierarchic levels.
+        The value corresponds to that of element &#8220;Identifier&#8221; in the metadata corresponding 
+        to the upper level.
+        If this does not exist (e.e., for &#8220;flat&#8221; datasets or series) the value corresponds 
+        to that of element &#8220;Identifier&#8221; of the current level.
+      </help>
+      <help xml:lang="it">L'elemento serve a gestire le relazioni tra i livelli gerarchici. 
+        Esso deve assumere
+        il valore dell'elemento &#8220;Identificatore&#8221; del livello padre corrispondente. 
+        Nel caso non esista un livello gerarchico di rango superiore (per es. serie
+        o dataset &#8220;flat&#8221;, cioè che non appartiene a nessuna serie), l'elemento deve assumere
+        comunque il valore dell’elemento &#8220;Identificatore&#8221; del livello corrente.</help>
       <isMandatory>forAll</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification</hasRoot>
@@ -989,9 +1064,8 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification/gco:CharacterString</hasPath>
-          <isFixed>true</isFixed>
-          <hasDatatype>ref</hasDatatype>
-          <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasValue>
+          <isFixed>false</isFixed>
+          <hasDatatype>string</hasDatatype>
         </item>
       </produces>
     </element>
@@ -1158,7 +1232,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>inspireTheme</datasource>
-          <defaultValue>http://inspire.ec.europa.eu/theme/sr</defaultValue>
+          <!-- <defaultValue>http://inspire.ec.europa.eu/theme/sr</defaultValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1598,7 +1672,7 @@
           <show>combobox</show>
           <hasDatatype>codelist</hasDatatype>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue>
+          <!-- <defaultValue>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items/13</defaultValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1636,7 +1710,7 @@
           <isFixed>false</isFixed>
           <isLanguageNeutral>true</isLanguageNeutral>
           <hasDatatype>codelist</hasDatatype>
-          <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue>
+          <!-- <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue> -->
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1673,7 +1747,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>topicCategories</datasource>
-          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/oceans</defaultValue>
+          <!-- <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/oceans</defaultValue> -->
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
@@ -1729,6 +1803,8 @@
       <id>est_vert</id>
       <label xml:lang="en">Vertical extent</label>
       <label xml:lang="it">Estensione verticale</label>
+      <help xml:lang="en">Vertical domain of data.</help>
+      <help xml:lang="it">Dominio verticale dei dati.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>false</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -1767,6 +1843,8 @@
       <id>est_temp</id>
       <label xml:lang="en">Temporal extent</label>
       <label xml:lang="it">Estensione temporale</label>
+      <help xml:lang="en">The start and end date defining the time period the dataset relates to.</help>
+      <help xml:lang="it">La data iniziale e finale che definisce il periodo di riferimento del dataset.</help>
       <isMandatory>NA</isMandatory>
       <isMultiple>true</isMultiple>
       <hasRoot>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification</hasRoot>
@@ -1943,7 +2021,8 @@
         </item>
       </produces>
     </element>
-    <!--Risorsa online -->
+    
+    <!--Risorsa online 
     <element>
       <id>ris_online</id>
       <label xml:lang="en">Online resource</label>
@@ -1963,6 +2042,27 @@
         </item>
       </produces>
     </element>
+    -->
+    <!--Resource locator-->
+    <element>
+      <id>ris_online</id>
+      <label xml:lang="en">Resource locator</label>
+      <label xml:lang="it">Indirizzo della risorsa</label>
+      <help xml:lang="en">Web address (URL) leading to the resource..</help>
+      <help xml:lang="it">Indirizzo web (URL) della risorsa..</help>
+      <isMandatory>NA</isMandatory>
+      <isMultiple>false</isMultiple>
+      <hasRoot>/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage</hasRoot>
+      <produces>
+        <item>
+          <hasIndex>1</hasIndex>
+          <hasPath>/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
+          <isFixed>false</isFixed>
+          <hasDatatype>URI</hasDatatype>
+        </item>
+      </produces>
+    </element>  
+    
   </group>
   <!--Qualit&#224; dei dati -->
   <group>

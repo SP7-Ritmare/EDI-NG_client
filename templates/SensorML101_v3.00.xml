@@ -11,11 +11,11 @@
 <template>
     <!-- SETTINGS -->
     <settings>
-        <defaultLanguage>it</defaultLanguage>
+        <defaultLanguage>en</defaultLanguage>
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+        <metadataEndpoint>http://edidemo.get-it.it/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
         <requiresValidation>false</requiresValidation>
