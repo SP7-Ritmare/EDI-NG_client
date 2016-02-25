@@ -18,7 +18,7 @@
         <metadataEndpoint>http://edidemo.get-it.it/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>false</requiresValidation>
+        <requiresValidation>true</requiresValidation>
 
         <baseDocument>
             <!-- Base Document SensorML version 1.0.1 -->
@@ -32,7 +32,7 @@
  xmlns:swe="http://www.opengis.net/swe/1.0.1"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns:sos="http://www.opengis.net/sos/2.0"
- xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://www.opengis.net/sensorML/1.0.1" version="1.0.1">
+ xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1" version="1.0.1">
         
         </sml:SensorML>
         ]]>
