@@ -9,7 +9,7 @@
  */
 
 var edi = (function () {
-    var version = "1.0.0";
+    var version = "v1.0.0";
     var callback;
     var settings;
     var endpointTypes = [];
