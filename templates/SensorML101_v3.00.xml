@@ -39,7 +39,8 @@
         </baseDocument>
 
         <xsltChain>
-            <xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt>
+            <!--xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt-->
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=2.00</xslt>
         </xsltChain>
     </settings>
 
@@ -251,7 +252,7 @@
         </datasource>
         <datasource>
             <id>uom</id>
-            <singleton>false</singleton>
+            <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[
@@ -534,13 +535,13 @@ LIMIT 1
             <id>system_name</id>
             <label xml:lang="it">Nome del sistema/sensore/piattaforma</label>
             <label xml:lang="en">System name</label>
-            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma. Deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
-                dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
-                CTP Recorder, ecc.).</help>
-            <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer (e.g.
-                Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
+            <help xml:lang="it">&#200; il nome con cui si identifica il sistema/sensore/piattaforma.
+                Deve essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
+                dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT, CTP Recorder,
+                ecc.).</help>
+            <help xml:lang="en">Name assigned to identify the system/sensor/platform. It should be
+                short, while it is not its description; it could coincide with the name given by the
+                manufacturer (e.g. Sensirion STH15, SBE 37-IM, MicroCAT,CTP Recorder, etc.).</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member</hasRoot>
@@ -559,15 +560,18 @@ LIMIT 1
                     <hasPath>sml:System/@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('ID_', translate(sml:System/gml:name/text(), ' ', '_'))</hasValue>
+                    <hasValue>concat('ID_', translate(sml:System/gml:name/text(), ' ',
+                        '_'))</hasValue>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
                     <outIndex>1</outIndex>
                     <label xml:lang="it">Descrizione sistema/sensore/piattaforma</label>
-                    <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema di sensori o della piattaforma nel suo complesso.</help>
+                    <help xml:lang="it">Contiene una descrizione testuale del sensore, del sistema
+                        di sensori o della piattaforma nel suo complesso.</help>
                     <label xml:lang="en">Description</label>
-                    <help xml:lang="en">Brief description of the sensor, of the system or of the platform as a whole.</help>
+                    <help xml:lang="en">Brief description of the sensor, of the system or of the
+                        platform as a whole.</help>
                     <hasPath>sml:System/gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
@@ -648,7 +652,10 @@ LIMIT 1
         <element>
             <id>free_keywords</id>
             <label xml:lang="it">Parole chiave a campo libero</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una
+                descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne
+                il reperimento futuro. Questo campo a differenza del precedente è dedicato alle
+                parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
             <label xml:lang="en">Free keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>NA</isMandatory>
@@ -778,10 +785,15 @@ LIMIT 1
         <element>
             <id>manuf_name</id>
             <label xml:lang="it">Denominazione del produttore</label>
-            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori. In questa demo sono presenti i produttori di sensori marini (es. Sea-Bird).</help>
+            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di
+                sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei
+                suggerimenti da un elenco precompilato di produttori. In questa demo sono presenti i
+                produttori di sensori marini (es. Sea-Bird).</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters
-                to obtain suggested autocompletion from a manufacturer list. In this demo we have used monufacturer of marine sensors (es. Sea-Bird).</help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start
+                typing the first three letters to obtain suggested autocompletion from a
+                manufacturer list. In this demo we have used monufacturer of marine sensors (es.
+                Sea-Bird).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -813,7 +825,8 @@ LIMIT 1
         <element>
             <id>mod_number</id>
             <label xml:lang="it">Modello</label>
-            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di
+                sensori o della piattaforma.</help>
             <label xml:lang="en">Model</label>
             <help xml:lang="en">Model, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
@@ -847,9 +860,11 @@ LIMIT 1
         <element>
             <id>serial_num</id>
             <label xml:lang="it">Numero seriale</label>
-            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di
+                sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+            <help xml:lang="en">Serial number, if available, of the sensor, system or
+                platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:identification/sml:IdentifierList</hasRoot>
@@ -1027,9 +1042,11 @@ LIMIT 1
         <element>
             <id>deployment_role</id>
             <label xml:lang="it">Parola chiave del ruolo</label>
-            <help xml:lang="it">Una o pi&#249; parole chiave che indichino il ruolo di distribuzione del sistema, da selezionare dalla lista proposta.</help>
+            <help xml:lang="it">Una o pi&#249; parole chiave che indichino il ruolo di distribuzione
+                del sistema, da selezionare dalla lista proposta.</help>
             <label xml:lang="en">Keyword of the deployment role</label>
-            <help xml:lang="en">One or more keywords indicating the deployment role of the system, to be selected from the list.</help>
+            <help xml:lang="en">One or more keywords indicating the deployment role of the system,
+                to be selected from the list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:classification/sml:ClassifierList</hasRoot>
@@ -1369,13 +1386,14 @@ LIMIT 1
         <element>
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
-            <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato.
-                Spuntare la casella nel caso di sistema attivo</help>
+            <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato. Spuntare
+                la casella nel caso di sistema attivo</help>
             <label xml:lang="en">Status</label>
             <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;status&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1396,7 +1414,8 @@ LIMIT 1
             <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Status
+                Capabilities&apos;]/swe:SimpleDataRecord/swe:field[@name=&apos;mobile&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1412,12 +1431,15 @@ LIMIT 1
             <id>storage_type</id>
             <label xml:lang="it">Tipo di memoria</label>
             <help xml:lang="it">Indicare il tipo di memoria che viene utilizzato per archiviare le
-                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data logger)</help>
+                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data
+                logger)</help>
             <label xml:lang="en">Storage Type</label>
-            <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
+            <help xml:lang="en">The type of storage of the observations collected by the system,
+                sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
-            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational Capabilities&apos;]</hasRoot>
+            <hasRoot>/sml:SensorML/sml:member/sml:System/sml:capabilities[@name=&apos;Operational
+                Capabilities&apos;]</hasRoot>
             <produces>
                 <item>
                     <hasIndex>1</hasIndex>
@@ -1472,9 +1494,15 @@ LIMIT 1
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
-            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del sistema/sensore/piattaforma, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
+            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate
+                se il produttore del sistema/sensore/piattaforma, figura tra quelli presenti nelle
+                liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione
+                del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
             <label xml:lang="en">Manufacturer</label>
-            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the system (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
+            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the
+                manufacturer of the system (sensor or platform) is present in our repository (in
+                this case has been already recognised in the field &#8216;Manufacturer Name&#8217;
+                in the &#8216;Identification of the system&#8217; section).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
@@ -1613,9 +1641,11 @@ LIMIT 1
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
-            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nel film The Lord of the Ring.</help>
+            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate
+                qualora il proprietario figuri nel film The Lord of the Ring.</help>
             <label xml:lang="en">Owner</label>
-            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the The Lord of the Ring movie</help>
+            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner
+                appears in the The Lord of the Ring movie</help>
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -1755,9 +1785,11 @@ LIMIT 1
         <element>
             <id>operator</id>
             <label xml:lang="it">Informazioni sull&apos;operatore</label>
-            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nel film The Lord of the Ring.</help>
+            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono
+                autocompilate qualora l&apos;operatore figuri nel film The Lord of the Ring.</help>
             <label xml:lang="en">Operator</label>
-            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the The Lord of the Ring movie.</help>
+            <help xml:lang="en">Operator contact information; autocompletion is performed if the
+                operator appears in the The Lord of the Ring movie.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:operator&apos;]/sml:ResponsibleParty</hasRoot>
@@ -1908,11 +1940,12 @@ LIMIT 1
         <element>
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
-            <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
+            <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il
+                sistema (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
-            <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
-                peer-reviewed algorithm literature, etc.).</help>
+            <help xml:lang="en">Documentation that provides a reference description of the system
+                (e.g., specification documentation, peer-reviewed algorithm literature,
+                etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -1949,7 +1982,8 @@ LIMIT 1
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>format</datasource>
                     <label xml:lang="it">Formato elettronico della documentazione</label>
-                    <help xml:lang="it">Selezionare dalla lista il formato elettronico con cui viene distribuita la documentazione</help>
+                    <help xml:lang="it">Selezionare dalla lista il formato elettronico con cui viene
+                        distribuita la documentazione</help>
                     <label xml:lang="en">Description format</label>
                     <help xml:lang="en">Select from the list the documentation format</help>
                 </item>
@@ -1960,7 +1994,8 @@ LIMIT 1
                     <hasDatatype>URI</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link alla documentazione</label>
-                    <help xml:lang="it">Collegamento alla documentazione on-line (scheda tecnica, pubblicazione, etc.) sotto forma di URI (o URL). </help>
+                    <help xml:lang="it">Collegamento alla documentazione on-line (scheda tecnica,
+                        pubblicazione, etc.) sotto forma di URI (o URL). </help>
                     <label xml:lang="en">Documentation link</label>
                     <help xml:lang="en">Link to reach on-line the documentation (URI or URL)</help>
                     <!--http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -->
@@ -1971,7 +2006,8 @@ LIMIT 1
         <element>
             <id>image</id>
             <label xml:lang="it">Link all'immagine</label>
-            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di sensori o alla piattaforma</help>
+            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di
+                sensori o alla piattaforma</help>
             <label xml:lang="en">Image link</label>
             <help xml:lang="en">Link to reach on-line the image (URI or URL)</help>
             <isMandatory>NA</isMandatory>
@@ -2015,16 +2051,19 @@ LIMIT 1
     <group>
         <id>history</id>
         <label xml:lang="it">Storia del sistema</label>
-        <help xml:lang="it">Eventi cui il sistema &#232; andato incontro nel tempo (es. modifiche, ricalibrazione, ecc.)</help>
+        <help xml:lang="it">Eventi cui il sistema &#232; andato incontro nel tempo (es. modifiche,
+            ricalibrazione, ecc.)</help>
         <label xml:lang="en">History</label>
-        <help xml:lang="en">Events regarding the system in time (e.g., calibration, adjustments, etc.)</help>
+        <help xml:lang="en">Events regarding the system in time (e.g., calibration, adjustments,
+            etc.)</help>
         <!--=========== -->
         <!--Installation -->
         <!--=========== -->
         <element>
             <id>history_install</id>
             <label xml:lang="it">Installazione</label>
-            <help xml:lang="it">Informazioni relative alla installazione del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Informazioni relative alla installazione del sensore, del sistema di
+                sensori o della piattaforma.</help>
             <label xml:lang="en">Installation</label>
             <help xml:lang="en">Installation of the system, sensor or platform</help>
             <isMandatory>NA</isMandatory>
@@ -2084,7 +2123,8 @@ LIMIT 1
                     <hasDatatype>URI</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link a documentazione dell'installazione</label>
-                    <help xml:lang="it">Collegamento web alla documentazione relativa all&apos;installazione (URI o URL).</help>
+                    <help xml:lang="it">Collegamento web alla documentazione relativa
+                        all&apos;installazione (URI o URL).</help>
                     <label xml:lang="en">Installation doc link</label>
                     <help xml:lang="en">Web link (URI or URL) to the installation documentation. </help>
                     <!--es http://... -->
@@ -2105,9 +2145,12 @@ LIMIT 1
         <element>
             <id>history_update</id>
             <label xml:lang="it">Aggiornamenti del sistema</label>
-            <help xml:lang="it">Si riferisce agli eventi di aggiornamento del sensore, del sistema di sensori o della piattaforma (ad esempio l&apos;aggiornamento dell&apos;algoritmo di un determinato processo,  del sofware di acquisizione dei dati).</help>
+            <help xml:lang="it">Si riferisce agli eventi di aggiornamento del sensore, del sistema
+                di sensori o della piattaforma (ad esempio l&apos;aggiornamento dell&apos;algoritmo
+                di un determinato processo, del sofware di acquisizione dei dati).</help>
             <label xml:lang="en">History Update</label>
-            <help xml:lang="en">Update events of the system, sensor or platform, (e.g. changes to an algorithm within a process, data management software updates, etc.).</help>
+            <help xml:lang="en">Update events of the system, sensor or platform, (e.g. changes to an
+                algorithm within a process, data management software updates, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;smlUpdates&apos;]/sml:EventList[@gml:id=&apos;Update&apos;]</hasRoot>
@@ -2149,9 +2192,12 @@ LIMIT 1
                     <hasDatatype>text</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Descrizione tipologia di aggiornamento</label>
-                    <help xml:lang="it">Tipologia di aggiornamento come definita dall&apos;utente (aggiornamento dell&apos;algoritmo di un determinato processo,  del sofware di acquisizione dei dati).</help>
+                    <help xml:lang="it">Tipologia di aggiornamento come definita dall&apos;utente
+                        (aggiornamento dell&apos;algoritmo di un determinato processo, del sofware
+                        di acquisizione dei dati).</help>
                     <label xml:lang="en">Update description</label>
-                    <help xml:lang="en">Type of update as defined by the user (e.g., changes to an algorithm within a process, data management software updates, etc.)</help>
+                    <help xml:lang="en">Type of update as defined by the user (e.g., changes to an
+                        algorithm within a process, data management software updates, etc.)</help>
                     <!--update sensorML metadata -->
                 </item>
                 <item>
@@ -2178,7 +2224,8 @@ LIMIT 1
         <element>
             <id>history_ops</id>
             <label xml:lang="it">Storia delle operazioni</label>
-            <help xml:lang="it">Inserire le informazioni di operazioni effettuate sul sensore, sul sistema di sensori o sulla piattaforma come ad esempio modifiche meccaniche</help>
+            <help xml:lang="it">Inserire le informazioni di operazioni effettuate sul sensore, sul
+                sistema di sensori o sulla piattaforma come ad esempio modifiche meccaniche</help>
             <label xml:lang="en">History Operations</label>
             <help xml:lang="en">Operation events such as mechanical changes.</help>
             <isMandatory>NA</isMandatory>
@@ -2204,9 +2251,11 @@ LIMIT 1
                     <hasDatatype>text</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Descrizione modifiche sistema</label>
-                    <help xml:lang="it">Breve descrizione delle operazioni di modifica del sistema</help>
+                    <help xml:lang="it">Breve descrizione delle operazioni di modifica del
+                        sistema</help>
                     <label xml:lang="en">Operation description</label>
-                    <help xml:lang="en">Brief description of the changes applied to the system</help>
+                    <help xml:lang="en">Brief description of the changes applied to the
+                        system</help>
                     <!--es Instrument Data Begins -->
                 </item>
                 <item>
@@ -2266,9 +2315,11 @@ LIMIT 1
         <element>
             <id>history_calib</id>
             <label xml:lang="it">Storia delle calibrazioni</label>
-            <help xml:lang="it">Informazioni di eventi calibrazione del sensore, del sistema di sensori o della piattaforma.</help>
+            <help xml:lang="it">Informazioni di eventi calibrazione del sensore, del sistema di
+                sensori o della piattaforma.</help>
             <label xml:lang="en">Calibration history</label>
-            <help xml:lang="en">History of calibration events of the system, sensor or platform.</help>
+            <help xml:lang="en">History of calibration events of the system, sensor or
+                platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;calibration&apos;]/sml:EventList[@gml:id=&apos;Calibration&apos;]</hasRoot>
@@ -2332,9 +2383,11 @@ LIMIT 1
                     <hasDatatype>URI</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link a documentazione calibrazione</label>
-                    <help xml:lang="it">Collegamento web alla documentazione relativa all&apos;evento di calibrazione (URI o URL).</help>
+                    <help xml:lang="it">Collegamento web alla documentazione relativa
+                        all&apos;evento di calibrazione (URI o URL).</help>
                     <label xml:lang="en">Calibration doc link</label>
-                    <help xml:lang="en">Web link (URI or URL) to the calibration documentation.</help>
+                    <help xml:lang="en">Web link (URI or URL) to the calibration
+                        documentation.</help>
                     <!--es http://... -->
                 </item>
                 <item>
@@ -2353,9 +2406,12 @@ LIMIT 1
         <element>
             <id>history_other</id>
             <label xml:lang="it">Altri eventi</label>
-            <help xml:lang="it">Informazioni relative ad altri eventi effettuati sul sensore, sul sistema di sensori o sulla piattaforma non ricadenti nelle categorie precedenti.</help>
+            <help xml:lang="it">Informazioni relative ad altri eventi effettuati sul sensore, sul
+                sistema di sensori o sulla piattaforma non ricadenti nelle categorie
+                precedenti.</help>
             <label xml:lang="en">Other event history</label>
-            <help xml:lang="en">History of events of the system, sensor or platform, other from the ones listed above.</help>
+            <help xml:lang="en">History of events of the system, sensor or platform, other from the
+                ones listed above.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:history[@xlink:arcrole=&apos;otherEvents&apos;]/sml:EventList[@gml:id=&apos;otherEvent&apos;]</hasRoot>
@@ -2413,7 +2469,8 @@ LIMIT 1
                     <hasDatatype>URI</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link a documentazione altri eventi</label>
-                    <help xml:lang="it">Collegamento web alla documentazione relativa all&apos;evento descritto (URI o URL).</help>
+                    <help xml:lang="it">Collegamento web alla documentazione relativa
+                        all&apos;evento descritto (URI o URL).</help>
                     <label xml:lang="en">Other event doc link</label>
                     <help xml:lang="en">Web link (URI or URL) to the event descripted.</help>
                     <!--es http://... -->
@@ -2445,9 +2502,11 @@ LIMIT 1
         <element>
             <id>ref_sys</id>
             <label xml:lang="en">Reference system</label>
-            <help xml:lang="en">Select from the list the reference system of the position property of the system.</help>
+            <help xml:lang="en">Select from the list the reference system of the position property
+                of the system.</help>
             <label xml:lang="it">Sistema di riferimento</label>
-            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del sistema, sensore o piattaforma.</help>
+            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione
+                geografica del sistema, sensore o piattaforma.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System</hasRoot>
@@ -2488,16 +2547,17 @@ LIMIT 1
         <element>
             <id>easting</id>
             <label xml:lang="it">Est</label>
-            <help xml:lang="it">Esprime i valori della longitudine (est) dell&apos;ultima posizione assunta dal sensore o della
-                posizione usuale dove viene mantenuto il sensore quando non &#232; in
-                funzione (es. pu&#242; essere la posizione del proprietario del sensore).
-                Nel caso di sensori fissi sar&#224; indicata la posizione reale del
-                sensore. Deve essere espressa in gradi decimali (es. 12.337) nel sistema
-                di riferimento scelto</help>
+            <help xml:lang="it">Esprime i valori della longitudine (est) dell&apos;ultima posizione
+                assunta dal sensore o della posizione usuale dove viene mantenuto il sensore quando
+                non &#232; in funzione (es. pu&#242; essere la posizione del proprietario del
+                sensore). Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                sensore. Deve essere espressa in gradi decimali (es. 12.337) nel sistema di
+                riferimento scelto</help>
             <label xml:lang="en">East</label>
-            <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                refers to the actual position of the sensor. The value must be given in
-                the chosen reference system and in decimal degrees (ex. 12.337) </help>
+            <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the
+                position where it is held when not operating (e.g., the location of the owner). In
+                the case of fixed sensors it refers to the actual position of the sensor. The value
+                must be given in the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
@@ -2541,16 +2601,18 @@ LIMIT 1
         <element>
             <id>northing</id>
             <label xml:lang="it">Nord</label>
-            <help xml:lang="it">Esprime i valori della latitudine (nord) dell&apos;ultima posizione assunta dal sensore o della
-                posizione usuale dove viene mantenuto il sensore quando non &#232; in
-                funzione (es. pu&#242; essere la posizione del proprietario del sensore).
-                Nel caso di sensori fissi sar&#224; indicata la posizione reale del
-                sensore. Deve essere espressa in gradi decimali (es. 45.430) nel sistema
-                di riferimento scelto.</help>
+            <help xml:lang="it">Esprime i valori della latitudine (nord) dell&apos;ultima posizione
+                assunta dal sensore o della posizione usuale dove viene mantenuto il sensore quando
+                non &#232; in funzione (es. pu&#242; essere la posizione del proprietario del
+                sensore). Nel caso di sensori fissi sar&#224; indicata la posizione reale del
+                sensore. Deve essere espressa in gradi decimali (es. 45.430) nel sistema di
+                riferimento scelto.</help>
             <label xml:lang="en">North</label>
-            <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                refers to the actual position of the sensor. The value must be given in
-                the chosen reference system and in decimal degrees (ex. 45.430).</help>
+            <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the
+                position where it is held when not operating (e.g., the location of the owner). In
+                the case of fixed sensors it refers to the actual position of the sensor. The value
+                must be given in the chosen reference system and in decimal degrees (ex.
+                45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
@@ -2594,12 +2656,14 @@ LIMIT 1
         <element>
             <id>altitude</id>
             <label xml:lang="it">Altitudine</label>
-            <help xml:lang="it">Inserire il valori in metri dell&apos;
-                sopra il livello del mare della altezza a cui si trova il sensore (es. 2013.13). Nel caso di sistemi mobili si pu&#242;
-                indicare la quota altimetrica del proprietario del sensore. Nel caso di
+            <help xml:lang="it">Inserire il valori in metri dell&apos; sopra il livello del mare
+                della altezza a cui si trova il sensore (es. 2013.13). Nel caso di sistemi mobili si
+                pu&#242; indicare la quota altimetrica del proprietario del sensore. Nel caso di
                 sensori fissi sar&#224; indicata l&apos;altezza reale del sensore.</help>
             <label xml:lang="en">Altitude </label>
-            <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.</help>
+            <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of
+                mobile systems it can coincide with the owner position altitude; for fixed systems
+                it refers to the actual position altitude.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:position/swe:Position/swe:location/swe:Vector</hasRoot>
@@ -2729,9 +2793,11 @@ LIMIT 1
         <element>
             <id>output_datatime</id>
             <label xml:lang="it">Data e ora dei parametri misurati</label>
-            <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora relative alla osservazione.</help>
+            <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora
+                relative alla osservazione.</help>
             <label xml:lang="en">Date and time of phenomena</label>
-            <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
+            <help xml:lang="en">Tick the box if the observation also contain the date and
+                time.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList</hasRoot>
@@ -2749,9 +2815,12 @@ LIMIT 1
         <element>
             <id>output_param</id>
             <label xml:lang="it">Parametro misurato</label>
-            <help xml:lang="it">Parametro misurato dal sensore, sistema o piattaforma e informazioni relative. Si possono aggiungere pi&#249; parametri, cui associare le relative informazioni</help>
+            <help xml:lang="it">Parametro misurato dal sensore, sistema o piattaforma e informazioni
+                relative. Si possono aggiungere pi&#249; parametri, cui associare le relative
+                informazioni</help>
             <label xml:lang="en">Output signals</label>
-            <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
+            <help xml:lang="en">Parameter measured by the system/sensor/platform and related
+                information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:outputs/sml:OutputList</hasRoot>
@@ -2764,10 +2833,12 @@ LIMIT 1
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
                     <label xml:lang="it">Nome parametro misurato</label>
-                    <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
+                    <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere
+                        per ottenere dei suggerimenti da vocabolario controllato.</help>
                     <!--es CP -->
                     <label xml:lang="en">Output signal</label>
-                    <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
+                    <help xml:lang="en">Measured parameter. Start typing the first three letters to
+                        obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -2800,9 +2871,13 @@ LIMIT 1
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
-                    <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
+                    <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a
+                        digitare tre lettere per ottenere dei suggerimenti da vocabolario
+                        controllato.</help>
                     <label xml:lang="en">Unit of measurement</label>
-                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
+                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the
+                        first three letters to obtain suggested autocompletion from controlled
+                        vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
@@ -2834,9 +2909,12 @@ LIMIT 1
                     <hasDatatype>string</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Ampiezza valori ammissibili</label>
-                    <help xml:lang="it">Intervallo dei valori in output del parametro misurato, espresso come valore minimo e valore massimo intervallati da uno spazio, ad esempio -5 +35</help>
+                    <help xml:lang="it">Intervallo dei valori in output del parametro misurato,
+                        espresso come valore minimo e valore massimo intervallati da uno spazio, ad
+                        esempio -5 +35</help>
                     <label xml:lang="en">Allowed values</label>
-                    <help xml:lang="en">Output range, expressed by minimum value and maximum value separated by a blank space, e.g., 5 +35</help>
+                    <help xml:lang="en">Output range, expressed by minimum value and maximum value
+                        separated by a blank space, e.g., 5 +35</help>
                 </item>
                 <!-- TO DO: non è possibile ordinarli -->
                 <!--<item>

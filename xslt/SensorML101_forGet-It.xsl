@@ -14,7 +14,7 @@
     <xsl:template match="swe:uom">
         <xsl:choose>
             <xsl:when test="text()">            
-                <swe:uom code="{./@code}">
+                <swe:uom code="{replace(./@code, ' ', '_')}">
                     <xsl:if test="./@xlink:href">
                         <xsl:attribute name="xlink:href" select="./@xlink:href"></xsl:attribute>
                     </xsl:if>
@@ -84,11 +84,11 @@
         </sml:output>
     </xsl:template>
     
-    <xsl:template match="swe:uom[@code]">
+    <!--xsl:template match="swe:uom[@code]">
         <sml:output name="{replace(@code, ' ', '_')}">
             <xsl:apply-templates select="*" />
         </sml:output>
-    </xsl:template>
+    </xsl:template-->
     
     <xsl:template match="swes:observableProperty">
         <xsl:for-each select="//sml:output/swe:Quantity">
