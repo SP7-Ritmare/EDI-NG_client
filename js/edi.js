@@ -9,6 +9,7 @@
  */
 
 var edi = (function () {
+    var version = "1.0.0";
     var callback;
     var settings;
     var endpointTypes = [];
@@ -1022,6 +1023,7 @@ var edi = (function () {
         substringMatcher: substringMatcher,
         edimlOutput: edimlOutput,
         endpointTypes: endpointTypes,
+        version: version,
         getEndpointTypes: function (which) {
             return endpointTypes[which];
         },
