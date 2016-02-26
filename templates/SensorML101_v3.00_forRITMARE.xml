@@ -34,13 +34,8 @@
 	<swes:observableProperty></swes:observableProperty>
 	<swes:metadata>
 		<sos:SosInsertionMetadata>
+			<!-- multiple values possible -->
 			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</sos:observationType>
 			<sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
 		</sos:SosInsertionMetadata>
 	</swes:metadata>
@@ -1061,7 +1056,7 @@ LIMIT 1
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>deployment_role</datasource>
-                    <!--<hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>-->
+                    <defaultValue>http://vocab.nerc.ac.uk/collection/L19/current/SDNKG01/</defaultValue>
                     <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <item>

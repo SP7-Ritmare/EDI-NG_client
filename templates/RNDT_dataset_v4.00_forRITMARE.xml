@@ -262,7 +262,7 @@
       <type>virtuosoCodelist</type>
     </datasource>
 
-    <datasource>
+    <!--datasource>
       <id>keywordFromContrVoc</id>
       <singleton>false</singleton>
       <query>
@@ -287,8 +287,8 @@
       <type>
         sparql
       </type>
-    </datasource>
-    <!--
+    </datasource-->
+
     <datasource>
       <id>keywordFromContrVoc</id>
       <singleton>false</singleton>
@@ -318,8 +318,8 @@
         sparql
       </type>
     </datasource>
-    -->
-    <datasource>
+
+    <!--datasource>
       <id>contrVocSpecs</id>
       <singleton>true</singleton>
       <query>
@@ -337,8 +337,8 @@
           }
           BIND( STRBEFORE(?ts , " ") AS ?date )
         }
-        ]]>
-        <!-- 
+        ]]> -->
+        <!--
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX dct: <http://purl.org/dc/terms/>
         SELECT ?l ?date
@@ -353,15 +353,15 @@
           BIND( STRBEFORE(?ts , " ") AS ?date )
         }
         -->
-      </query>
+      <!--/query>
       <triggerItem>keyw_voc_contr_1_uri</triggerItem>
       <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
       <endpointType>fuseki</endpointType>
       <type>
         sparql
       </type>
-    </datasource>
-    <!--    
+    </datasource-->
+
     <datasource>
       <id>contrVocSpecs</id>
       <singleton>true</singleton>
@@ -384,7 +384,7 @@
         sparql
       </type>
     </datasource>
-    -->  
+
     <datasource>
       <id>paramOss</id>
       <singleton>false</singleton>
@@ -466,7 +466,7 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
           <queryStringParameter>uid</queryStringParameter>
         </item>
@@ -523,12 +523,12 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:characterSet/gmd:MD_CharacterSetCode</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <isLanguageNeutral>true</isLanguageNeutral>
           <hasDatatype>codelist</hasDatatype>
           <datasource>charsets</datasource>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <!-- <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue> -->
+          <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -573,8 +573,9 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:parentIdentifier/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasValue>
         </item>
       </produces>
     </element>
@@ -602,11 +603,11 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>scopes</datasource>
           <isLanguageNeutral>true</isLanguageNeutral>
-          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</defaultValue>
+          <hasValue>http://inspire.ec.europa.eu/metadata-codelist/ResourceType/dataset</hasValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -926,8 +927,9 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <hasDatatype>string</hasDatatype>
+          <queryStringParameter>id</queryStringParameter>
         </item>
       </produces>
     </element>
@@ -1065,8 +1067,9 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification/gco:CharacterString</hasPath>
-          <isFixed>false</isFixed>
-          <hasDatatype>string</hasDatatype>
+          <isFixed>true</isFixed>
+          <hasDatatype>ref</hasDatatype>
+          <hasValue>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString</hasValue>
         </item>
       </produces>
     </element>
@@ -1233,7 +1236,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>inspireTheme</datasource>
-          <!-- <defaultValue>http://inspire.ec.europa.eu/theme/sr</defaultValue> -->
+          <defaultValue>http://inspire.ec.europa.eu/theme/sr</defaultValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1708,10 +1711,10 @@
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:characterSet/gmd:MD_CharacterSetCode</hasPath>
           <datasource>charsets</datasource>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <isLanguageNeutral>true</isLanguageNeutral>
           <hasDatatype>codelist</hasDatatype>
-          <!-- <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue> -->
+          <defaultValue>http://www.rndt.gov.it/codelists/MD_CharacterSetCode/items/4</defaultValue>
         </item>
         <item>
           <hasIndex>2</hasIndex>
@@ -1748,7 +1751,7 @@
           <isFixed>false</isFixed>
           <hasDatatype>codelist</hasDatatype>
           <datasource>topicCategories</datasource>
-          <!-- <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/oceans</defaultValue> -->
+          <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/oceans</defaultValue>
           <isLanguageNeutral>true</isLanguageNeutral>
         </item>
       </produces>
@@ -2058,8 +2061,9 @@
         <item>
           <hasIndex>1</hasIndex>
           <hasPath>/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
-          <isFixed>false</isFixed>
+          <isFixed>true</isFixed>
           <hasDatatype>URI</hasDatatype>
+          <queryStringParameter>resource</queryStringParameter>
         </item>
       </produces>
     </element>  
