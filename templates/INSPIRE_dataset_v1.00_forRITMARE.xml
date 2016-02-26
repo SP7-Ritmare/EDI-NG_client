@@ -91,7 +91,7 @@
         <![CDATA[
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT DISTINCT ?c ?l
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          FROM <http://ritmare.it/rdfdata/project>
           WHERE {
             ?c rdf:type foaf:Person .
             ?c vcard:email ?l .
@@ -112,13 +112,13 @@
         <![CDATA[
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst 
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          FROM <http://ritmare.it/rdfdata/project>
           WHERE {
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -132,13 +132,13 @@
         <![CDATA[
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst 
-          FROM <http://ritmare.it/rdfdata/lotrx>
+          FROM <http://ritmare.it/rdfdata/project>
           WHERE {
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>

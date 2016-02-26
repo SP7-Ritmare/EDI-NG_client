@@ -49,6 +49,7 @@
         </baseDocument>
 
         <xsltChain>
+            <!--xslt>http://static.get-it.it/SensorML101_forGet-It.xsl%3fversion=2.00</xslt-->
             <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101_forGet-It.xsl?version=2.00</xslt>
         </xsltChain>
     </settings>
@@ -261,7 +262,7 @@
         </datasource>
         <datasource>
             <id>uom</id>
-            <singleton>false</singleton>
+            <singleton>true</singleton>
             <endpointType>virtuoso</endpointType>
             <query>
                 <![CDATA[

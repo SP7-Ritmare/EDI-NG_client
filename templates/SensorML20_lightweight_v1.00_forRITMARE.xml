@@ -17,7 +17,7 @@
         <metadataEndpoint>http://sp7.irea.cnr.it/tomcat2/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>false</requiresValidation>
+        <requiresValidation>true</requiresValidation>
 
         <baseDocument>
             <![CDATA[
