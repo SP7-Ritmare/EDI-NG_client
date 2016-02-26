@@ -1275,7 +1275,7 @@ LIMIT 1
             </produces>
         </element>-->
         <!--material -->
-        <element>
+        <!--element>
             <id>material</id>
             <label xml:lang="it">Materiale</label>
             <help xml:lang="it">Materiale di cui &#232; composto il sistema.</help>
@@ -1289,11 +1289,11 @@ LIMIT 1
                     <hasIndex>1</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]/swe:Category[@definition=&apos;urn:ogc:dictionary:OGC:material&apos;]/swe:value</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
+                    <hasDatatype>string</hasDatatype-->
                     <!--<hasValue>user-defined</hasValue>-->
-                </item>
+                <!--/item>
             </produces>
-        </element>
+        </element-->
         <!--Electrical property -->
         <!-- TO DO: i due item code e xlink:href non vengono valorizzati -->
         <!--<element>
