@@ -468,6 +468,7 @@
           <hasPath>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString</hasPath>
           <isFixed>false</isFixed>
           <hasDatatype>string</hasDatatype>
+          <queryStringParameter>uid</queryStringParameter>
         </item>
       </produces>
     </element>
