@@ -68,7 +68,7 @@
     </xsl:template>
     
     <xsl:template match="sml:output[@name]">
-        <sml:output name="{replace(replace(replace(@name, '                  ', ' '), '\s+', '_'), '\{|\}|\[|\]|\(|\)|&gt;|&lt;', '')}">
+        <sml:output name="{replace(replace(replace(@name, '                  ', ' '), '\s+', '_'), '\{|\}|\[|\]|\(|\)|&gt;|&lt;|:|&amp;|&#163;|&#8356;|&#64;', '')}">
             <xsl:apply-templates select="*" />
         </sml:output>
     </xsl:template>
