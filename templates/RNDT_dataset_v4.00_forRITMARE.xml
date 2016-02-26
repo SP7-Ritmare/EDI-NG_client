@@ -148,7 +148,7 @@
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -195,7 +195,7 @@
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -218,7 +218,7 @@
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -240,7 +240,7 @@
             <$search_param> vcard:org ?o.
             ?o foaf:name ?inst .
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>

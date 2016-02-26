@@ -118,7 +118,7 @@
             ?o foaf:name ?inst .
             # <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
@@ -138,7 +138,7 @@
             ?o foaf:name ?inst .
             # <$search_param> foaf:phone ?phone.
             # ?o foaf:homepage ?home .
-            FILTER(LANG(?inst)='en')
+            FILTER(LANG(?inst)='it')
           }
         ]]>
       </query>
