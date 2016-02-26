@@ -18,7 +18,7 @@
         <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>true</requiresValidation>
+        <requiresValidation>false</requiresValidation>
 
         <baseDocument>
             <!-- Base Document SensorML version 1.0.1 -->
@@ -1486,13 +1486,13 @@ LIMIT 1
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
             <produces>
                 <item>
-                    <label xml:lang="it">Nome produttore</label>
+                    <!-- <label xml:lang="it">Nome produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
-                    <help/>
+                    <help/> -->
                     <hasIndex>1</hasIndex>
                     <hasPath>sml:organizationName</hasPath>
-                    <isFixed>false</isFixed>
+                    <isFixed>true</isFixed>
                     <id>manName</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>manufacturers</datasource>

@@ -1022,14 +1022,14 @@
                     <hasValue>http://mmisw.org/ont/ioos/definition/manufacturerName</hasValue>
                 </item>
                 <item>
-                    <label xml:lang="it">Nome produttore</label>
+                    <!-- <label xml:lang="it">Nome produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
-                    <help/>
+                    <help/> -->
                     <hasIndex>2</hasIndex>
                     <outIndex>2</outIndex>
                     <hasPath>gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
-                    <isFixed>false</isFixed>
+                    <isFixed>true</isFixed>
                     <id>manName</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>manufacturers</datasource>
