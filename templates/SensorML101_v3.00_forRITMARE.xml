@@ -18,7 +18,7 @@
         <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>true</requiresValidation>
+        <requiresValidation>false</requiresValidation>
 
         <baseDocument>
             <!-- Base Document SensorML version 1.0.1 -->
@@ -34,13 +34,8 @@
 	<swes:observableProperty></swes:observableProperty>
 	<swes:metadata>
 		<sos:SosInsertionMetadata>
+			<!-- multiple values possible -->
 			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</sos:observationType>
-			<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</sos:observationType>
 			<sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
 		</sos:SosInsertionMetadata>
 	</swes:metadata>
@@ -1061,7 +1056,7 @@ LIMIT 1
                     <isFixed>false</isFixed>
                     <hasDatatype>codelist</hasDatatype>
                     <datasource>deployment_role</datasource>
-                    <!--<hasValue>http://vocab.nerc.ac.uk/collection/L19/current/</hasValue>-->
+                    <defaultValue>http://vocab.nerc.ac.uk/collection/L19/current/SDNKG01/</defaultValue>
                     <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <item>
@@ -1280,7 +1275,7 @@ LIMIT 1
             </produces>
         </element>-->
         <!--material -->
-        <element>
+        <!--element>
             <id>material</id>
             <label xml:lang="it">Materiale</label>
             <help xml:lang="it">Materiale di cui &#232; composto il sistema.</help>
@@ -1294,11 +1289,11 @@ LIMIT 1
                     <hasIndex>1</hasIndex>
                     <hasPath>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:capabilities/swe:DataRecord/swe:field[@name=&apos;material&apos;]/swe:Category[@definition=&apos;urn:ogc:dictionary:OGC:material&apos;]/swe:value</hasPath>
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
+                    <hasDatatype>string</hasDatatype-->
                     <!--<hasValue>user-defined</hasValue>-->
-                </item>
+                <!--/item>
             </produces>
-        </element>
+        </element-->
         <!--Electrical property -->
         <!-- TO DO: i due item code e xlink:href non vengono valorizzati -->
         <!--<element>
@@ -1491,13 +1486,13 @@ LIMIT 1
             <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
             <produces>
                 <item>
-                    <label xml:lang="it">Nome produttore</label>
+                    <!-- <label xml:lang="it">Nome produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
-                    <help/>
+                    <help/> -->
                     <hasIndex>1</hasIndex>
                     <hasPath>sml:organizationName</hasPath>
-                    <isFixed>false</isFixed>
+                    <isFixed>true</isFixed>
                     <id>manName</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>manufacturers</datasource>
