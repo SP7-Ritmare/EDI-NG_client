@@ -22,6 +22,8 @@ var ediml = (function () {
             version: undefined,
             template: undefined,
             templateDocument: undefined,
+            starterKit: "noSK",
+            starterKitUri: undefined,
             fileId: undefined,
             fileUri: undefined,
             user: undefined,
@@ -630,6 +632,25 @@ var ediml = (function () {
             logger.log("item has been updated to " + item.value);
         }
     }
+
+    function callback() {
+        console.error("******************************************** Tiè ********************************************");
+    }
+    function detectGetItName() {
+        $.get("/whoami", function(data) {
+            content.elements.starterKit = data.sk_domain_name ? data.sk_domain_name : "noSK";
+            content.elements.starterKitUri = data.uri;
+        }).fail(function() {
+            content.elements.starterKit = "noSK";
+            content.elements.starterKitUri = undefined;
+        });
+    }
+
+    function init() {
+        detectGetItName();
+    }
+
+    init();
 
     return {
         content: content,
