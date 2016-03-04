@@ -87,7 +87,9 @@
         <singleton>
             <xsl:attribute name="xml:id"><xsl:value-of select="id" /></xsl:attribute>
             <xsl:attribute name="endpointType"><xsl:value-of select="endpointType" /></xsl:attribute>
-            <xsl:attribute name="triggerItem"><xsl:value-of select="triggerItem" /></xsl:attribute>
+            <xsl:if test="triggerItem">
+                <xsl:attribute name="triggerItem"><xsl:value-of select="triggerItem" /></xsl:attribute>
+            </xsl:if>
             <query>
                 <xsl:value-of select="query" />
             </query>
@@ -101,26 +103,68 @@
         </datasources>
     </xsl:template>
 
+    <xsl:template match="westLongitude|eastLongitude|northLatitude|southLatitude">
+        <xsl:copy>
+            <xsl:if test="outIndex">
+                <xsl:attribute name="outIndex"><xsl:value-of select="outIndex"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="queryStringParameter">
+                <xsl:attribute name="queryStringParameter"><xsl:value-of select="queryStringParameter"/></xsl:attribute>
+            </xsl:if>
+            <xsl:for-each select="label">
+                <xsl:copy-of select="." />
+            </xsl:for-each>
+            <hasPath><xsl:value-of select="hasPath"/></hasPath>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="start|end">
+        <xsl:copy>
+            <xsl:if test="outIndex">
+                <xsl:attribute name="outIndex"><xsl:value-of select="outIndex"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="queryStringParameter">
+                <xsl:attribute name="queryStringParameter"><xsl:value-of select="queryStringParameter"/></xsl:attribute>
+            </xsl:if>
+            <xsl:for-each select="label">
+                <xsl:copy-of select="." />
+            </xsl:for-each>
+            <hasPath><xsl:value-of select="hasPath"/></hasPath>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="item">
         <item>
             <xsl:attribute name="hasIndex"><xsl:value-of select="hasIndex" /></xsl:attribute>
-            <xsl:attribute name="outIndex"><xsl:value-of select="outIndex" /></xsl:attribute>
+            <xsl:if test="outIndex">
+                <xsl:attribute name="outIndex"><xsl:value-of select="outIndex" /></xsl:attribute>
+            </xsl:if>
             <xsl:attribute name="isFixed"><xsl:value-of select="isFixed" /></xsl:attribute>
             <xsl:attribute name="hasDatatype"><xsl:value-of select="hasDatatype" /></xsl:attribute>
             <xsl:if test="datasource">
                 <xsl:attribute name="datasource"><xsl:value-of select="datasource" /></xsl:attribute>
             </xsl:if>
-            <xsl:copy-of select="label" />
-            <xsl:copy-of select="help" />
+            <xsl:if test="label">
+                <xsl:copy-of select="label" />
+            </xsl:if>
+            <xsl:for-each select="help">
+                <xsl:if test=". != ''">
+                    <xsl:copy-of select="." />
+                </xsl:if>
+            </xsl:for-each>
             <xsl:copy-of select="hasPath" />
-            <xsl:copy-of select="hasValue" />
-            <xsl:copy-of select="defaultValue" />
-            <xsl:copy-of select="westLongitude" />
-            <xsl:copy-of select="eastLongitude" />
-            <xsl:copy-of select="northLatitude" />
-            <xsl:copy-of select="southLatitude" />
-            <xsl:copy-of select="start" />
-            <xsl:copy-of select="end" />
+            <xsl:if test="hasValue">
+                <xsl:copy-of select="hasValue" />
+            </xsl:if>
+            <xsl:if test="defaultValue">
+                <xsl:copy-of select="defaultValue" />
+            </xsl:if>
+            <xsl:apply-templates select="westLongitude" />
+            <xsl:apply-templates select="eastLongitude" />
+            <xsl:apply-templates select="northLatitude" />
+            <xsl:apply-templates select="southLatitude" />
+            <xsl:apply-templates select="start" />
+            <xsl:apply-templates select="end" />
         </item>
     </xsl:template>
 
@@ -135,12 +179,23 @@
                     <xsl:attribute name="isMandatory">false</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:attribute name="isMultiple"><xsl:value-of select="isMultiple" /></xsl:attribute>
+            <xsl:attribute name="isMultiple">
+                <xsl:choose>
+                    <xsl:when test="isMultiple = 'NA'">false</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="isMultiple" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:if test="alternativeTo">
                 <xsl:attribute name="alternativeTo"><xsl:value-of select="alternativeTo" /></xsl:attribute>
             </xsl:if>
             <xsl:copy-of select="label" />
-            <xsl:copy-of select="help" />
+            <xsl:for-each select="help">
+                <xsl:if test=". != ''">
+                    <xsl:copy-of select="." />
+                </xsl:if>
+            </xsl:for-each>
             <xsl:copy-of select="hasRoot" />
             <produces>
                 <xsl:apply-templates select="produces/item" />
@@ -152,7 +207,9 @@
         <group>
             <xsl:attribute name="xml:id"><xsl:value-of select="id" /></xsl:attribute>
             <xsl:copy-of select="label" />
-            <xsl:copy-of select="help" />
+            <xsl:if test="help != ''">
+                <xsl:copy-of select="help" />
+            </xsl:if>
             <xsl:apply-templates select="element" />
         </group>
     </xsl:template>

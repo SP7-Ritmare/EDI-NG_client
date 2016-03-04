@@ -101,11 +101,43 @@
             <xsl:apply-templates select="./*" />
         </datasources>
     </xsl:template>
-
+    
+    <xsl:template match="westLongitude|eastLongitude|northLatitude|southLatitude">
+        <xsl:copy>
+            <xsl:if test="@outIndex">
+                <xsl:element name="outIndex"><xsl:value-of select="@outIndex"/></xsl:element>
+            </xsl:if>
+            <xsl:if test="@queryStringParameter">
+                <xsl:element name="queryStringParameter"><xsl:value-of select="@queryStringParameter"/></xsl:element>
+            </xsl:if>
+            <hasPath><xsl:value-of select="hasPath"/></hasPath>
+            <xsl:for-each select="label">
+                <xsl:copy-of select="." />
+            </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="start|end">
+        <xsl:copy>
+            <xsl:if test="@outIndex">
+                <xsl:element name="outIndex"><xsl:value-of select="@outIndex"/></xsl:element>
+            </xsl:if>
+            <xsl:if test="@queryStringParameter">
+                <xsl:element name="queryStringParameter"><xsl:value-of select="@queryStringParameter"/></xsl:element>
+            </xsl:if>
+            <hasPath><xsl:value-of select="hasPath"/></hasPath>
+            <xsl:for-each select="label">
+                <xsl:copy-of select="." />
+            </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="item">
         <item>
             <xsl:element name="hasIndex"><xsl:value-of select="@hasIndex" /></xsl:element>
-            <xsl:element name="outIndex"><xsl:value-of select="@outIndex" /></xsl:element>
+            <xsl:if test="outIndex">
+                <xsl:element name="outIndex"><xsl:value-of select="@outIndex" /></xsl:element>
+            </xsl:if>
             <xsl:element name="isFixed"><xsl:value-of select="@isFixed" /></xsl:element>
             <xsl:element name="hasDatatype"><xsl:value-of select="@hasDatatype" /></xsl:element>
             <xsl:if test="@datasource">
@@ -116,12 +148,12 @@
             <xsl:copy-of select="hasPath" />
             <xsl:copy-of select="hasValue" />
             <xsl:copy-of select="defaultValue" />
-            <xsl:copy-of select="westLongitude" />
-            <xsl:copy-of select="eastLongitude" />
-            <xsl:copy-of select="northLatitude" />
-            <xsl:copy-of select="southLatitude" />
-            <xsl:copy-of select="start" />
-            <xsl:copy-of select="end" />
+            <xsl:apply-templates select="westLongitude" />
+            <xsl:apply-templates select="eastLongitude" />
+            <xsl:apply-templates select="northLatitude" />
+            <xsl:apply-templates select="southLatitude" />
+            <xsl:apply-templates select="start" />
+            <xsl:apply-templates select="end" />
         </item>
     </xsl:template>
 

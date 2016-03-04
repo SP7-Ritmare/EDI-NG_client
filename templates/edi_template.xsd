@@ -25,7 +25,7 @@
         <xs:element ref="requiresValidation"/>
         <xs:element ref="baseDocument"/>
         <xs:element ref="xsltChain"/>
-        <xs:element ref="codelistQuery"/>
+        <xs:element ref="codelistQuery" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -36,7 +36,7 @@
   </xs:element>
   <xs:element name="metadataLanguage">
     <xs:complexType>
-      <xs:attribute name="selectionItem" use="required" type="xs:IDREF"/>
+      <xs:attribute name="selectionItem" use="required" type="xs:string"/>
       <!-- <xs:attribute ref="xml:lang" use="required"/> -->
     </xs:complexType>
   </xs:element>
@@ -120,7 +120,7 @@
         <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
       <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
-      <xs:attribute name="triggerItem" use="required" type="xs:NCName"/>
+      <xs:attribute name="triggerItem" use="optional" type="xs:NCName"/>
       <xs:attribute ref="xml:id" use="required"/>
     </xs:complexType>
   </xs:element>
@@ -142,8 +142,8 @@
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="help"/>
           <xs:element ref="label"/>
+          <xs:element ref="hasRoot"/>
         </xs:choice>
-        <xs:element ref="hasRoot"/>
         <xs:element ref="produces"/>
       </xs:sequence>
       <xs:attribute name="isMandatory" use="required" type="xs:boolean"/>
@@ -172,14 +172,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element ref="help"/>
-          <xs:element ref="label"/>
+          <xs:element ref="help" minOccurs="0"/>
+          <xs:element ref="label" minOccurs="0"/>
         </xs:choice>
-        <xs:element ref="hasPath"/>
-        <xs:choice minOccurs="0">
-          <xs:element ref="defaultValue"/>
-          <xs:element ref="field"/>
-          <xs:element ref="hasValue"/>
+        <xs:element ref="hasPath" minOccurs="0"/>
+        <xs:element ref="westLongitude"  minOccurs="0"/>
+        <xs:element ref="eastLongitude"  minOccurs="0"/>
+        <xs:element ref="northLatitude"  minOccurs="0"/>
+        <xs:element ref="southLatitude"  minOccurs="0"/>
+        <xs:element ref="start"  minOccurs="0"/>
+        <xs:element ref="end"  minOccurs="0"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="defaultValue" minOccurs="0"/>
+          <xs:element ref="field" minOccurs="0"/>
+          <xs:element ref="hasValue" minOccurs="0"/>
         </xs:choice>
       </xs:sequence>
       <xs:attribute name="datasource" type="xs:IDREF"/>
@@ -195,6 +201,36 @@
   <xs:element name="hasValue" type="xs:string"/>
   <xs:element name="url" type="xs:anyURI"/>
   <xs:element name="query" type="xs:string"/>
+  <xs:element name="westLongitude" type="geoCoord" />  
+  <xs:element name="eastLongitude" type="geoCoord"/>
+  <xs:element name="northLatitude" type="geoCoord"/>
+  <xs:element name="southLatitude" type="geoCoord"/>
+  <xs:element name="start" type="date"/>
+  <xs:element name="end" type="date"/>
+  
+  <xs:complexType name="geoCoord">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="help" minOccurs="0"/>
+        <xs:element ref="label" minOccurs="0"/>
+        <xs:element ref="hasPath" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="outIndex" use="optional" type="xs:integer"/>
+    <xs:attribute name="queryStringParameter" use="optional" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="date">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="help" minOccurs="0"/>
+        <xs:element ref="label" minOccurs="0"/>
+        <xs:element ref="hasPath" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="outIndex" use="optional" type="xs:integer"/>
+    <xs:attribute name="queryStringParameter" use="optional" type="xs:string"/>
+  </xs:complexType>
+  
   <xs:element name="label">
     <xs:complexType mixed="true">
       <xs:attribute ref="xml:lang" use="required"/>
