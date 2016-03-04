@@ -1856,7 +1856,7 @@
                     <hasPath>swe:coordinate/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>Lon</hasValue>
+                    <hasValue>easting</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1919,7 +1919,7 @@
                     <hasPath>swe:coordinate/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>Lat</hasValue>
+                    <hasValue>northing</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1978,7 +1978,7 @@
                     <hasPath>swe:coordinate/@name</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>Alt</hasValue>
+                    <hasValue>altitude</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
