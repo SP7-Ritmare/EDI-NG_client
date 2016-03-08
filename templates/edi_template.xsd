@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-           xmlns:xml="http://www.w3.org/XML/1998/namespace"
-           elementFormDefault="qualified"
-           vc:minVersion="1.1" attributeFormDefault="qualified">
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+  xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="qualified"
+  vc:minVersion="1.1" attributeFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+    schemaLocation="http://www.w3.org/2001/xml.xsd"/>
   <xs:element name="template">
     <xs:complexType>
       <xs:sequence>
@@ -18,13 +18,13 @@
   <xs:element name="settings">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="userInterfaceLanguage"/>
-        <xs:element ref="metadataLanguage"/>
-        <xs:element ref="metadataEndpoint"/>
-        <xs:element ref="sparqlEndpoint"/>
-        <xs:element ref="requiresValidation"/>
-        <xs:element ref="baseDocument"/>
-        <xs:element ref="xsltChain"/>
+        <xs:element ref="userInterfaceLanguage" minOccurs="0"/>
+        <xs:element ref="metadataLanguage" minOccurs="0"/>
+        <xs:element ref="metadataEndpoint" minOccurs="1"/>
+        <xs:element ref="sparqlEndpoint" minOccurs="1"/>
+        <xs:element ref="requiresValidation" minOccurs="1"/>
+        <xs:element ref="baseDocument" minOccurs="1"/>
+        <xs:element ref="xsltChain" minOccurs="1"/>
         <xs:element ref="codelistQuery" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
@@ -46,7 +46,7 @@
   <xs:element name="baseDocument" type="xs:string"/>
   <xs:element name="xsltChain">
     <xs:complexType>
-      <xs:sequence>
+      <xs:sequence minOccurs="0">
         <xs:element ref="xslt"/>
       </xs:sequence>
     </xs:complexType>
@@ -63,12 +63,19 @@
   <xs:element name="endpointType">
     <xs:complexType>
       <xs:sequence>
+        <!-- <xs:element name="id"  minOccurs="0"></xs:element> -->
         <xs:element ref="parameters"/>
       </xs:sequence>
       <xs:attribute ref="xml:id" use="required"/>
       <xs:attribute name="method" use="required" type="xs:NCName"/>
       <xs:attribute name="queryParameter" use="required" type="xs:NCName"/>
     </xs:complexType>
+    <!-- 
+    <xs:key name="endpointTypeID">
+      <xs:selector xpath="endpointType/id" />
+      <xs:field xpath="."></xs:field>
+    </xs:key>
+-->
   </xs:element>
   <xs:element name="parameters">
     <xs:complexType>
@@ -175,24 +182,47 @@
           <xs:element ref="help" minOccurs="0"/>
           <xs:element ref="label" minOccurs="0"/>
         </xs:choice>
-        <xs:element ref="hasPath" minOccurs="0"/>
-        <xs:element ref="westLongitude"  minOccurs="0"/>
-        <xs:element ref="eastLongitude"  minOccurs="0"/>
-        <xs:element ref="northLatitude"  minOccurs="0"/>
-        <xs:element ref="southLatitude"  minOccurs="0"/>
-        <xs:element ref="start"  minOccurs="0"/>
-        <xs:element ref="end"  minOccurs="0"/>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="hasPath" minOccurs="0"/>
+          <xs:group ref="boundingBox"/>
+          <xs:group ref="dateRange"/>
           <xs:element ref="defaultValue" minOccurs="0"/>
-          <xs:element ref="field" minOccurs="0"/>
           <xs:element ref="hasValue" minOccurs="0"/>
         </xs:choice>
       </xs:sequence>
+      <xs:attribute name="show" use="optional"/>
       <xs:attribute name="datasource" type="xs:IDREF"/>
-      <xs:attribute name="hasDatatype" use="required" type="xs:NCName"/>
+      <xs:attribute name="hasDatatype" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string" />
+            <xs:enumeration value="codelist" />
+            <xs:enumeration value="ref" />
+            <xs:enumeration value="autoCompletion" />
+            <xs:enumeration value="select" />
+            <xs:enumeration value="URI" />
+            <xs:enumeration value="date" />
+            <xs:enumeration value="text" />
+            <xs:enumeration value="int" />
+            <xs:enumeration value="boundingBox" />
+            <xs:enumeration value="dateRange" />
+            <xs:enumeration value="autonumber" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="URI" />
+            <xs:enumeration value="URL" />
+            <xs:enumeration value="function" />
+            <xs:enumeration value="sensorID" />
+            <xs:enumeration value="string" />
+            <xs:enumeration value="boolean" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="hasIndex" use="required" type="xs:integer"/>
       <xs:attribute name="isFixed" use="required" type="xs:boolean"/>
+      <xs:attribute name="field" use="optional"/>
       <xs:attribute name="outIndex" type="xs:integer"/>
+      <xs:attribute name="isLanguageNeutral"></xs:attribute>
+      <xs:attribute name="queryStringParameter"></xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="hasPath" type="xs:anyURI"/>
@@ -201,13 +231,21 @@
   <xs:element name="hasValue" type="xs:string"/>
   <xs:element name="url" type="xs:anyURI"/>
   <xs:element name="query" type="xs:string"/>
-  <xs:element name="westLongitude" type="geoCoord" />  
-  <xs:element name="eastLongitude" type="geoCoord"/>
-  <xs:element name="northLatitude" type="geoCoord"/>
-  <xs:element name="southLatitude" type="geoCoord"/>
-  <xs:element name="start" type="date"/>
-  <xs:element name="end" type="date"/>
-  
+
+  <xs:group name="boundingBox">
+    <xs:sequence>
+      <xs:element name="westLongitude" type="geoCoord" minOccurs="1"/>
+      <xs:element name="eastLongitude" type="geoCoord" minOccurs="1"/>
+      <xs:element name="northLatitude" type="geoCoord" minOccurs="1"/>
+      <xs:element name="southLatitude" type="geoCoord" minOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="dateRange">
+    <xs:sequence>
+      <xs:element name="start" minOccurs="1"/>
+      <xs:element name="end" minOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
   <xs:complexType name="geoCoord">
     <xs:sequence maxOccurs="unbounded">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -230,7 +268,7 @@
     <xs:attribute name="outIndex" use="optional" type="xs:integer"/>
     <xs:attribute name="queryStringParameter" use="optional" type="xs:string"/>
   </xs:complexType>
-  
+
   <xs:element name="label">
     <xs:complexType mixed="true">
       <xs:attribute ref="xml:lang" use="required"/>

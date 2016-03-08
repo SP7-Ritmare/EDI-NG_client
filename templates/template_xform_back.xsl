@@ -135,8 +135,17 @@
     <xsl:template match="item">
         <item>
             <xsl:element name="hasIndex"><xsl:value-of select="@hasIndex" /></xsl:element>
-            <xsl:if test="outIndex">
+            <xsl:if test="@outIndex">
                 <xsl:element name="outIndex"><xsl:value-of select="@outIndex" /></xsl:element>
+            </xsl:if>
+            <xsl:if test="@queryStringParameter">
+                <xsl:element name="queryStringParameter"><xsl:value-of select="@queryStringParameter" /></xsl:element>
+            </xsl:if>
+            <xsl:if test="@isLanguageNeutral">
+                <xsl:element name="isLanguageNeutral"><xsl:value-of select="@isLanguageNeutral" /></xsl:element>
+            </xsl:if>
+            <xsl:if test="@field">
+                <xsl:element name="field"><xsl:value-of select="@field" /></xsl:element>
             </xsl:if>
             <xsl:element name="isFixed"><xsl:value-of select="@isFixed" /></xsl:element>
             <xsl:element name="hasDatatype"><xsl:value-of select="@hasDatatype" /></xsl:element>
@@ -144,6 +153,9 @@
                 <xsl:element name="datasource"><xsl:value-of select="@datasource" /></xsl:element>
             </xsl:if>
             <xsl:copy-of select="label" />
+            <xsl:if test="@show">
+                <xsl:element name="show"><xsl:value-of select="@show" /></xsl:element>
+            </xsl:if>
             <xsl:copy-of select="help" />
             <xsl:copy-of select="hasPath" />
             <xsl:copy-of select="hasValue" />
