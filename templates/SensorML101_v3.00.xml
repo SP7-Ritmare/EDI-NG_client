@@ -39,7 +39,6 @@
         </baseDocument>
 
         <xsltChain>
-            <!--xslt>http://static.get-it.it/SensorML101.xsl%3fversion=2.00</xslt-->
             <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101.xsl?version=2.00</xslt>
         </xsltChain>
     </settings>
@@ -1508,13 +1507,15 @@ LIMIT 1
             <hasRoot>/sml:SensorML/sml:member/sml:System/sml:contact[@xlink:arcrole=&apos;urn:ogc:def:classifiers:OGC:contactType:manufacturer&apos;]/sml:ResponsibleParty</hasRoot>
             <produces>
                 <item>
+                    <!--
                     <label xml:lang="it">Nome produttore</label>
                     <help/>
                     <label xml:lang="en">Manufacturer name</label>
                     <help/>
+                    -->
                     <hasIndex>1</hasIndex>
                     <hasPath>sml:organizationName</hasPath>
-                    <isFixed>false</isFixed>
+                    <isFixed>true</isFixed>
                     <id>manName</id>
                     <hasDatatype>select</hasDatatype>
                     <datasource>manufacturers</datasource>

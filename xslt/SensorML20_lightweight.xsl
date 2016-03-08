@@ -42,8 +42,8 @@
     <xsl:template match="swe:DataRecord[not(.//swe:value)]" />
     
     <!-- sml:contacts -->
-    <xsl:template match="sml:contact[@xlink:arcrole='http://mmisw.org/ont/ioos/definition/manufacturerName' and not(.//gmd:CI_ResponsibleParty/gmd:organizationName/gco:CharacterString) ]"/>
-    <xsl:template match="sml:contact[@xlink:arcrole='http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/owner' and not(.//gmd:CI_ResponsibleParty/gmd:organizationName/gco:CharacterString) ]"/>
+    <xsl:template match="sml:contact[@xlink:arcrole='http://mmisw.org/ont/ioos/definition/manufacturerName' and not(.//gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString) ]"/>
+    <xsl:template match="sml:contact[@xlink:arcrole='http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/owner' and not(.//gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString) ]"/>
     <!--<xsl:template match="sml:contact[@xlink:arcrole='http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact' and not(.//gmd:CI_ResponsibleParty/gmd:organizationName/gco:CharacterString) ]"/>-->
      
     <!-- sml:documentation -->
