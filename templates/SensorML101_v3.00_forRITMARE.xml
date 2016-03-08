@@ -18,7 +18,7 @@
         <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>false</requiresValidation>
+        <requiresValidation>true</requiresValidation>
 
         <baseDocument>
             <!-- Base Document SensorML version 1.0.1 -->
@@ -44,7 +44,6 @@
         </baseDocument>
 
         <xsltChain>
-            <!--xslt>http://static.get-it.it/SensorML101_forGet-It.xsl%3fversion=2.00</xslt-->
             <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML101_forGet-It.xsl?version=2.00</xslt>
         </xsltChain>
     </settings>
