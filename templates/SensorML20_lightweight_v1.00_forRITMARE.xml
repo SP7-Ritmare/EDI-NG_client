@@ -51,7 +51,7 @@
         </baseDocument>
 
         <xsltChain>
-            <!--xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20_lightweight_forGet-It.xsl?version=1.00</xslt-->
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/SensorML20_lightweight_forGet-It.xsl?version=1.00</xslt>
         </xsltChain>
     </settings>
 
