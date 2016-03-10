@@ -11,18 +11,22 @@
                 <xs:element maxOccurs="unbounded" ref="group"/>
             </xs:sequence>
         </xs:complexType>
+        
         <xs:key name="endpointTypePK">
             <xs:selector xpath="endpointTypes/endpointType/id"></xs:selector>
             <xs:field xpath="."></xs:field>
         </xs:key>
+        
         <xs:keyref name="endpointTypeFK" refer="endpointTypePK">
             <xs:selector xpath="datasources/datasource/endpointType"></xs:selector>
             <xs:field xpath="."></xs:field>
         </xs:keyref>
+        
         <xs:key name="datasourcePK">
             <xs:selector xpath="datasources/datasource/id"></xs:selector> 
             <xs:field xpath="."></xs:field>
         </xs:key>
+        
         <xs:keyref name="datasourceFK" refer="datasourcePK">
             <xs:selector xpath="group/element/produces/item/datasource"></xs:selector>
             <xs:field xpath="."></xs:field>

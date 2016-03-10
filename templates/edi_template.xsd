@@ -14,6 +14,38 @@
         <xs:element maxOccurs="unbounded" ref="group"/>
       </xs:sequence>
     </xs:complexType>
+    
+    <xs:key name="endpointTypePK">
+      <xs:selector xpath="endpointTypes/endpointType"></xs:selector>
+      <xs:field xpath="./@xml:id"></xs:field>
+    </xs:key>
+    <xs:keyref name="codeListEndpointTypeFK" refer="endpointTypePK">
+      <xs:selector xpath="datasources/codelist"></xs:selector>
+      <xs:field xpath="./@endpointType"></xs:field>
+    </xs:keyref>
+    <xs:keyref name="singletonEndpointTypeFK" refer="endpointTypePK">
+      <xs:selector xpath="datasources/singleton"></xs:selector>
+      <xs:field xpath="./@endpointType"></xs:field>
+    </xs:keyref>
+    <xs:keyref name="sparqlEndpointTypeFK" refer="endpointTypePK">
+      <xs:selector xpath="datasources/sparql"></xs:selector>
+      <xs:field xpath="./@endpointType"></xs:field>
+    </xs:keyref>    
+    
+    <xs:key name="datasourcePK">
+      <xs:selector xpath="datasources/*"></xs:selector>
+      <xs:field xpath="./@xml:id"></xs:field>
+    </xs:key>
+    <xs:keyref name="datasourceFK" refer="datasourcePK">
+      <xs:selector xpath="group/element/produces/item"></xs:selector>
+      <xs:field xpath="./@datasource"></xs:field>
+    </xs:keyref>    
+    
+    <xs:key name="elementPK">
+      <xs:selector xpath="group/element"></xs:selector>
+      <xs:field xpath="./@xml:id"></xs:field>
+    </xs:key>
+    
   </xs:element>
   <xs:element name="settings">
     <xs:complexType>
@@ -36,7 +68,7 @@
   </xs:element>
   <xs:element name="metadataLanguage">
     <xs:complexType>
-      <xs:attribute name="selectionItem" use="required" type="xs:string"/>
+      <xs:attribute name="selectionItem" use="required" type="xs:IDREF"/>
       <!-- <xs:attribute ref="xml:lang" use="required"/> -->
     </xs:complexType>
   </xs:element>
@@ -105,7 +137,7 @@
         <xs:element ref="uri"/>
         <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
-      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute name="endpointType" use="required" type="xs:string"/>
       <xs:attribute ref="xml:id" use="required"/>
     </xs:complexType>
   </xs:element>
@@ -116,7 +148,7 @@
         <xs:element ref="query"/>
         <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
-      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute name="endpointType" use="required" type="xs:string"/>
       <xs:attribute ref="xml:id" use="required"/>
     </xs:complexType>
   </xs:element>
@@ -126,7 +158,7 @@
         <xs:element ref="query"/>
         <xs:element ref="url" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
-      <xs:attribute name="endpointType" use="required" type="xs:IDREF"/>
+      <xs:attribute name="endpointType" use="required" type="xs:string"/>
       <xs:attribute name="triggerItem" use="optional" type="xs:NCName"/>
       <xs:attribute ref="xml:id" use="required"/>
     </xs:complexType>
@@ -142,6 +174,15 @@
       </xs:sequence>
       <xs:attribute ref="xml:id" use="required"/>
     </xs:complexType>
+    <xs:key name="ID">
+      <xs:selector xpath="element"/>
+      <xs:field xpath="@xml:id"/>
+    </xs:key>
+    <xs:keyref name="IDREF" refer="ID">
+      <xs:selector xpath="element"/>
+      <xs:field xpath="@alternativeTo"/>
+    </xs:keyref>
+    
   </xs:element>
   <xs:element name="element">
     <xs:complexType>
@@ -158,14 +199,6 @@
       <xs:attribute ref="xml:id" use="required"/>
       <xs:attribute name="alternativeTo" use="optional" type="xs:IDREF"/>
     </xs:complexType>
-    <xs:key name="ID">
-      <xs:selector xpath="element"/>
-      <xs:field xpath="@xml:id"/>
-    </xs:key>
-    <xs:keyref name="IDREF" refer="ID">
-      <xs:selector xpath="element"/>
-      <xs:field xpath="@alternativeTo"/>
-    </xs:keyref>
   </xs:element>
   <xs:element name="hasRoot" type="xs:string"/>
   <xs:element name="produces">
@@ -174,6 +207,11 @@
         <xs:element maxOccurs="unbounded" ref="item"/>
       </xs:sequence>
     </xs:complexType>
+    <xs:key name="itemPK">
+      <xs:selector xpath="item"></xs:selector>
+      <xs:field xpath="./@hasIndex"></xs:field>
+    </xs:key>
+    
   </xs:element>
   <xs:element name="item">
     <xs:complexType>
@@ -191,7 +229,7 @@
         </xs:choice>
       </xs:sequence>
       <xs:attribute name="show" use="optional"/>
-      <xs:attribute name="datasource" type="xs:IDREF"/>
+      <xs:attribute name="datasource" type="xs:string"/>
       <xs:attribute name="hasDatatype" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -218,6 +256,7 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="hasIndex" use="required" type="xs:integer"/>
+      <xs:attribute ref="xml:id" use="required"/>
       <xs:attribute name="isFixed" use="required" type="xs:boolean"/>
       <xs:attribute name="field" use="optional"/>
       <xs:attribute name="outIndex" type="xs:integer"/>

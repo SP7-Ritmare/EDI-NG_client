@@ -136,6 +136,7 @@
     <xsl:template match="item">
         <item>
             <xsl:attribute name="hasIndex"><xsl:value-of select="hasIndex" /></xsl:attribute>
+            <xsl:attribute name="xml:id"><xsl:value-of select="ancestor::element/id"/>_<xsl:value-of select="hasIndex" /></xsl:attribute>
             <xsl:if test="outIndex">
                 <xsl:attribute name="outIndex"><xsl:value-of select="outIndex" /></xsl:attribute>
             </xsl:if>
