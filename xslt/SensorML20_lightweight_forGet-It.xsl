@@ -10,11 +10,11 @@
     
     <!-- gml:identification -->
     <xsl:template match="sml:identifier[ not(./sml:Term/sml:value) ]" />
-    <xsl:template match="sml:identification">
+    <xsl:template match="sml:identification[ not(.//sml:Term/@definition='http://mmisw.org/ont/ioos/definition/manufacturerName')]">
         <sml:identification>
             <sml:IdentifierList>
                 <sml:identifier>
-                    <sml:Term definition="shortName">
+                    <sml:Term definition="http://mmisw.org/ont/ioos/definition/shortName">
                         <sml:label>Short Name</sml:label>
                         <sml:value><xsl:value-of select="//TheName" /></sml:value>
                     </sml:Term>
