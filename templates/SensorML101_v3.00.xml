@@ -305,58 +305,20 @@
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+SELECT '' AS ?phone '' AS ?addr ?email '' AS ?town '' AS ?country '' AS ?postcode ''AS ?homepage ?fullname ?l
 WHERE {
-  OPTIONAL {
-    <$search_param> foaf:phone ?phone .
-  }
   OPTIONAL {
     <$search_param> foaf:fullName ?fullname .
   }
   OPTIONAL {
     <$search_param> vcard:email ?email .
   }
-  OPTIONAL {
-    <$search_param> vcard:org ?b3 .
-    ?b3 foaf:homepage ?homepage .
-    ?b3 foaf:name ?l .
-  }
-
-  {
-    <$search_param> vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  } UNION {
-    ?b3 vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3 .
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+FILTER(lang(?l)='en')
 }
 LIMIT 1
                 ]]>
@@ -390,58 +352,20 @@ LIMIT 1
             <query>
                 <![CDATA[
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+SELECT '' AS ?phone '' AS ?addr ?email '' AS ?town '' AS ?country '' AS ?postcode ''AS ?homepage ?fullname ?l
 WHERE {
-  OPTIONAL {
-    <$search_param> foaf:phone ?phone .
-  }
   OPTIONAL {
     <$search_param> foaf:fullName ?fullname .
   }
   OPTIONAL {
     <$search_param> vcard:email ?email .
   }
-  OPTIONAL {
-    <$search_param> vcard:org ?b3 .
-    ?b3 foaf:homepage ?homepage .
-    ?b3 foaf:name ?l .
-  }
-  
-  {
-    <$search_param> vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  } UNION {
-    ?b3 vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3 .
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+FILTER(lang(?l)='en')
 }
 LIMIT 1
                         ]]>

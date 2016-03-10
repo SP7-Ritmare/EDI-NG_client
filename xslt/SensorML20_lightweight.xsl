@@ -14,7 +14,7 @@
         <sml:identification>
             <sml:IdentifierList>
                 <sml:identifier>
-                    <sml:Term definition="shortName">
+                    <sml:Term definition="http://mmisw.org/ont/ioos/definition/shortName">
                         <sml:label>Short Name</sml:label>
                         <sml:value><xsl:value-of select="//TheName" /></sml:value>
                     </sml:Term>
