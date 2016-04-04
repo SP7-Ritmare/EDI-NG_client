@@ -17,7 +17,7 @@
         <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>false</requiresValidation>
+        <requiresValidation>true</requiresValidation>
 
         <baseDocument>
             <![CDATA[
