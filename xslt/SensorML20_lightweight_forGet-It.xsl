@@ -47,8 +47,8 @@
     <!--<xsl:template match="sml:contact[@xlink:arcrole='http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact' and not(.//gmd:CI_ResponsibleParty/gmd:organizationName/gco:CharacterString) ]"/>-->
      
     <!-- sml:documentation -->
-    <xsl:template match="sml:documentation[@xlink:arcrole='datasheet' and not (./sml:DocumentList/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
-    <xsl:template match="sml:documentation[@xlink:arcrole='image' and not (./sml:DocumentList/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
+    <xsl:template match="sml:documentation[@xlink:arcrole='datasheet' and not (./sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
+    <xsl:template match="sml:documentation[@xlink:arcrole='image' and not (./sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
     
     <!-- sml:history -->
     <xsl:template match="sml:history[not (./sml:EventList/sml:event/sml:Event/sml:label) and not(./sml:EventList/sml:event/sml:Event/gml:description) and not(./sml:EventList/sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition)]"/>
@@ -92,7 +92,6 @@
     <!-- sml:position -->
     <xsl:template match="sml:position[not(.//swe:value)]" />
     
-    
     <!-- swes:observableProperty -->
     <xsl:template match="swes:observableProperty">
         <xsl:choose>
@@ -108,6 +107,14 @@
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    
+    <!-- sml:components -->
+    <xsl:template match="sml:component[@name]">
+        <sml:component name="{replace(replace(@name, '\{|\}|\[|\]|\(|\)|&gt;|&lt;|:|,|&amp;|&#163;|&#8356;|&#64;|&#44;| ', '_'), '__', '_')}">
+            <xsl:attribute name="xlink:href" select="./@xlink:href" />
+            <xsl:apply-templates select="*" />
+        </sml:component>
     </xsl:template>
     
     <!-- identity template -->

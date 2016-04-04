@@ -17,7 +17,7 @@
         <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
-        <requiresValidation>true</requiresValidation>
+        <requiresValidation>false</requiresValidation>
 
         <baseDocument>
             <![CDATA[
@@ -65,6 +65,14 @@
                 <format>application/sparql-results+json</format>
                 <save>display</save>
                 <fname>undefined</fname>
+            </parameters>
+        </endpointType>
+        <endpointType>
+            <id>fuseki</id>
+            <method>GET</method>
+            <queryParameter>query</queryParameter>
+            <parameters>
+                <output>json</output>
             </parameters>
         </endpointType>
     </endpointTypes>
@@ -131,10 +139,9 @@
             <triggerItem>output_param_1_uri</triggerItem>
             <type>sparql</type>
         </datasource>
-        <!--<datasource>
-            <id>sensortype</id>
-            <singleton>true</singleton>
-            <endpointType></endpointType>
+        <datasource>
+            <id>sensorType</id>
+            <singleton>false</singleton>
             <query>
                 <![CDATA[
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -156,8 +163,10 @@
                     ORDER BY ASC(?l) ASC(?a)
                     ]]>
             </query>
+            <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
+            <endpointType>fuseki</endpointType>
             <type>sparql</type>
-        </datasource>-->
+        </datasource>
         <datasource>
             <id>manufacturers</id>
             <singleton>true</singleton>
@@ -817,8 +826,12 @@
                 <item>
                     <hasIndex>3</hasIndex>
                     <hasPath>sml:classifier/sml:Term/sml:value</hasPath>
+                    <!--<isFixed>false</isFixed>
+                    <hasDatatype>string</hasDatatype>-->
                     <isFixed>false</isFixed>
-                    <hasDatatype>string</hasDatatype>
+                    <id>typeComponent</id>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>sensorType</datasource>
                 </item>
             </produces>
         </element>
@@ -2021,4 +2034,41 @@
     </group>
     <!--END Position Properties Group -->
     
+    <!--=============== -->
+    <!--Component Group -->
+    <!--=============== -->
+    <!-- VALID -->
+    <group>
+        <id>component_group</id>
+        <label xml:lang="en">Components of the system</label>
+        <label xml:lang="it">Componenti del sistema</label>
+        <element>
+            <id>name_comp</id>
+            <label xml:lang="en">Type of the component</label>
+            <label xml:lang="it">Tipo del componente</label>
+            <isMandatory>NA</isMandatory>
+            <isMultiple>true</isMultiple>
+            <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:components/sml:ComponentList</hasRoot>
+            <produces>
+                <item>
+                    <hasIndex>1</hasIndex>
+                    <hasPath>sml:component/@name</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>autoCompletion</hasDatatype>
+                    <datasource>sensorType</datasource>
+                </item>
+                <item>
+                    <hasIndex>2</hasIndex>
+                    <hasPath>sml:component/@xlink:href</hasPath>
+                    <isFixed>false</isFixed>
+                    <hasDatatype>URL</hasDatatype>
+                    <label xml:lang="it">Link alla descrizione del componente</label>
+                    <help xml:lang="it">Collegamento alla descrizione SensorML on-line sotto forma di URI (o URL). </help>
+                    <label xml:lang="en">Component description link</label>
+                    <help xml:lang="en">Link to reach on-line the SensorML (URI or URL)</help>
+                </item>
+            </produces>
+        </element>
+    </group>
+    <!--END Component Group -->
 </template>

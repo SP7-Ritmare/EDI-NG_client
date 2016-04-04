@@ -47,8 +47,8 @@
     <!--<xsl:template match="sml:contact[@xlink:arcrole='http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact' and not(.//gmd:CI_ResponsibleParty/gmd:organizationName/gco:CharacterString) ]"/>-->
      
     <!-- sml:documentation -->
-    <xsl:template match="sml:documentation[@xlink:arcrole='datasheet' and not (./sml:DocumentList/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
-    <xsl:template match="sml:documentation[@xlink:arcrole='image' and not (./sml:DocumentList/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
+    <xsl:template match="sml:documentation[@xlink:arcrole='datasheet' and not (./sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
+    <xsl:template match="sml:documentation[@xlink:arcrole='image' and not (./sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL) ]"/>
     
     <!-- sml:history -->
     <xsl:template match="sml:history[not (./sml:EventList/sml:event/sml:Event/sml:label) and not(./sml:EventList/sml:event/sml:Event/gml:description) and not(./sml:EventList/sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition)]"/>
@@ -101,6 +101,13 @@
     
     <!-- sml:position -->
     <xsl:template match="sml:position[not(.//swe:value)]" />
+    
+    <!-- sml:components -->
+    <xsl:template match="sml:components[@name]">
+        <sml:components name="{replace(@name, ' ', '_')}">
+            <xsl:apply-templates select="*" />
+        </sml:components>
+    </xsl:template>
     
     <!-- identity template -->
     <xsl:template match="@*|node()">
