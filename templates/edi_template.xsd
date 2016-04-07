@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-  xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="qualified"
-  vc:minVersion="1.1" attributeFormDefault="qualified">
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+           xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="qualified"
+           vc:minVersion="1.1" attributeFormDefault="qualified">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
-    schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+             schemaLocation="http://www.w3.org/2001/xml.xsd"/>
   <xs:element name="template">
     <xs:complexType>
       <xs:sequence>
@@ -14,7 +14,7 @@
         <xs:element maxOccurs="unbounded" ref="group"/>
       </xs:sequence>
     </xs:complexType>
-    
+
     <xs:key name="endpointTypePK">
       <xs:selector xpath="endpointTypes/endpointType"></xs:selector>
       <xs:field xpath="./@xml:id"></xs:field>
@@ -30,8 +30,8 @@
     <xs:keyref name="sparqlEndpointTypeFK" refer="endpointTypePK">
       <xs:selector xpath="datasources/sparql"></xs:selector>
       <xs:field xpath="./@endpointType"></xs:field>
-    </xs:keyref>    
-    
+    </xs:keyref>
+
     <xs:key name="datasourcePK">
       <xs:selector xpath="datasources/*"></xs:selector>
       <xs:field xpath="./@xml:id"></xs:field>
@@ -39,13 +39,13 @@
     <xs:keyref name="datasourceFK" refer="datasourcePK">
       <xs:selector xpath="group/element/produces/item"></xs:selector>
       <xs:field xpath="./@datasource"></xs:field>
-    </xs:keyref>    
-    
+    </xs:keyref>
+
     <xs:key name="elementPK">
       <xs:selector xpath="group/element"></xs:selector>
       <xs:field xpath="./@xml:id"></xs:field>
     </xs:key>
-    
+
   </xs:element>
   <xs:element name="settings">
     <xs:complexType>
@@ -182,7 +182,7 @@
       <xs:selector xpath="element"/>
       <xs:field xpath="@alternativeTo"/>
     </xs:keyref>
-    
+
   </xs:element>
   <xs:element name="element">
     <xs:complexType>
@@ -211,7 +211,7 @@
       <xs:selector xpath="item"></xs:selector>
       <xs:field xpath="./@hasIndex"></xs:field>
     </xs:key>
-    
+
   </xs:element>
   <xs:element name="item">
     <xs:complexType>
