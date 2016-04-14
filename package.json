@@ -1,0 +1,30 @@
+{
+  "name": "edi_ng_client",
+  "version": "1.0.0",
+  "description": "EDI-NG_client ============= EDI-NG is a configurable HTML form page generator. Its purpose is to provide advanced forms with validation features in order to create geo-metadata.",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabiopavesi/EDI-NG_client.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabiopavesi/EDI-NG_client/issues"
+  },
+  "homepage": "https://github.com/fabiopavesi/EDI-NG_client#readme",
+  "devDependencies": {
+    "grunt-bower-concat": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-tasks": "^3.5.0"
+  }
+}

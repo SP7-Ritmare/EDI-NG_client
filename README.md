@@ -128,3 +128,8 @@ Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as
 >      edi.loadTemplate("TEST", "1.00", onTemplateLoaded);
 >  });
 >```
+
+# Installation
+If you just need to run EDI-NG client, all you need to do is in the "dist" directory.
+
+If you need to customise it, on the other hand, you can do so by editing the bower.json file and then running bower update and grunt in sequence.

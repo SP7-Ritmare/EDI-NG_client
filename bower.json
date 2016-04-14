@@ -1,0 +1,28 @@
+{
+  "name": "EDI-NG_client",
+  "homepage": "https://github.com/fabiopavesi/EDI-NG_client",
+  "authors": [
+    "Fabio Pavesi <fabio@adamassoft.it>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "GPL v3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "EDI-NG_templates": "https://github.com/SP7-Ritmare/EDI-NG_templates.git",
+    "bootstrap": "3.3.6",
+    "bootstrap-datepicker": "bootstrap-3-datepicker#^1.6.0",
+    "openlayers3": "^3.0.0",
+    "jQuery": "1.12.3",
+    "jquery-dateFormat": "^1.0.2",
+    "jquery-dotstring": "https://github.com/stealthdave/jquery-dotstring.git"
+  }
+}
