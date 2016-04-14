@@ -28,7 +28,6 @@
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
           box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
-
 .btn-default.disabled,
 .btn-primary.disabled,
 .btn-success.disabled,
@@ -50,7 +49,6 @@ fieldset[disabled] .btn-danger {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-
 .btn-default .badge,
 .btn-primary .badge,
 .btn-success .badge,
@@ -85,7 +83,6 @@ fieldset[disabled] .btn-danger {
   background-color: #e0e0e0;
   border-color: #dbdbdb;
 }
-
 .btn-default.disabled,
 .btn-default[disabled],
 fieldset[disabled] .btn-default,
@@ -127,7 +124,6 @@ fieldset[disabled] .btn-default.active {
   background-color: #265a88;
   border-color: #245580;
 }
-
 .btn-primary.disabled,
 .btn-primary[disabled],
 fieldset[disabled] .btn-primary,
@@ -169,7 +165,6 @@ fieldset[disabled] .btn-primary.active {
   background-color: #419641;
   border-color: #3e8f3e;
 }
-
 .btn-success.disabled,
 .btn-success[disabled],
 fieldset[disabled] .btn-success,
@@ -211,7 +206,6 @@ fieldset[disabled] .btn-success.active {
   background-color: #2aabd2;
   border-color: #28a4c9;
 }
-
 .btn-info.disabled,
 .btn-info[disabled],
 fieldset[disabled] .btn-info,
@@ -253,7 +247,6 @@ fieldset[disabled] .btn-info.active {
   background-color: #eb9316;
   border-color: #e38d13;
 }
-
 .btn-warning.disabled,
 .btn-warning[disabled],
 fieldset[disabled] .btn-warning,
@@ -295,7 +288,6 @@ fieldset[disabled] .btn-warning.active {
   background-color: #c12e2a;
   border-color: #b92c28;
 }
-
 .btn-danger.disabled,
 .btn-danger[disabled],
 fieldset[disabled] .btn-danger,
@@ -355,7 +347,6 @@ fieldset[disabled] .btn-danger.active {
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
 }
-
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .active > a {
   background-image: -webkit-linear-gradient(top, #dbdbdb 0%, #e2e2e2 100%);
@@ -381,7 +372,6 @@ fieldset[disabled] .btn-danger.active {
   background-repeat: repeat-x;
   border-radius: 4px;
 }
-
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .active > a {
   background-image: -webkit-linear-gradient(top, #080808 0%, #0f0f0f 100%);
@@ -402,7 +392,6 @@ fieldset[disabled] .btn-danger.active {
 .navbar-fixed-bottom {
   border-radius: 0;
 }
-
 @media (max-width: 767px) {
   .navbar .navbar-nav .open .dropdown-menu > .active > a,
   .navbar .navbar-nav .open .dropdown-menu > .active > a:hover,
@@ -527,7 +516,6 @@ fieldset[disabled] .btn-danger.active {
   background-repeat: repeat-x;
   border-color: #2b669a;
 }
-
 .list-group-item.active .badge,
 .list-group-item.active:hover .badge,
 .list-group-item.active:focus .badge {

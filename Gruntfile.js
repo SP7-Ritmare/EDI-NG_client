@@ -58,10 +58,22 @@ module.exports = function (grunt) {
                 dest: 'js',
                 flatten: true
             },
+            olJsDist: {
+                expand: true,
+                src: 'bower_components/openlayers3/build/ol.js',
+                dest: 'dist/js',
+                flatten: true
+            },
             olCss: {
                 expand: true,
                 src: 'bower_components/openlayers3/build/*.css',
                 dest: 'css',
+                flatten: true
+            },
+            olCssDist: {
+                expand: true,
+                src: 'bower_components/openlayers3/build/ol.css',
+                dest: 'dist/css',
                 flatten: true
             },
             jquery: {
