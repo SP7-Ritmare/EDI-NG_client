@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Geoinformation Enabling ToolkIT starterkit">
+    <meta name="author" content="Get-It development team">
+    <link rel="shortcut icon" href="http://skmi.irea.cnr.it/static/geosk/img/favicon.ico">
+    <title>EDI metadata editor</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!--link href="justified-nav.css" rel="stylesheet"-->
+</head>
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["setDomains", ["*.edidemo.get-it.it"]]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+        var u = "//monitor.get-it.it/piwik/";
+        _paq.push(['setTrackerUrl', u + 'piwik.php']);
+        _paq.push(['setSiteId', 2]);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<noscript><p><img src="//monitor.get-it.it/piwik/piwik.php?idsite=2" style="border:0;" alt=""/></p></noscript>
+<!-- End Piwik Code -->
+
+<script src="cookieconsent.min.js"></script>
+
+<body>
+
+<div class="container">
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <h2>Geoinformation Enabling ToolkIT starterkit<sup>&REG;</sup></h2>
+
+        <h1>EDI metadata editor</h1>
+
+        <p class="lead">A template-driven metadata authoring tool that can be easily customized to any XML-based
+            metadata
+            format and to a specific workgroup, institute, or project. The tool is Free
+            Open Source Software (FOSS) and available under GNU GPL v3.</br>
+            Try the links below to EDIt one of the following metadata schema.
+        </p>
+
+        <p><a target="_blank" href="https://github.com/SP7-Ritmare/EDI-NG_client"><i class="fa fa-github"></i> Get EDI
+            code</a></p>
+        <!--p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p-->
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <h2>RNDT</h2>
+
+            <p>Template for Italian repository of territorial data (Repertorio Nazionale dei Dati Territoriali)</p>
+
+            <p>RDF sources:
+            <ul>
+                <li>Languages, data types, reference system codes, responsible party roles, and INSPIRE themes: <a target="_blank" href="http://inspire.ec.europa.eu/codelist/">INSPIRE codelists</a>
+                </li>
+                <li>Keywords: <a target="_blank" href="http://gcmd.nasa.gov/learn/keyword_list.html">Global Change Master Directory Science Keyword variables</a>, <a
+                        href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> NERC vocabulary and <a href="http://eurovoc.europa.eu/" target="_blank">EUROVOC</a>
+                </li>
+                <li>Responsible parties, points of contact, etc.: FOAF (Friends Of A Friend) graph. In this demo search for the Fellowship of
+                    the Ring characters.
+                </li>
+            </ul>
+            </p>
+
+            <p><a class="btn btn-success" href="dist/RNDT_dataset.html" role="button">Try it &raquo;</a></p>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <h2>INSPIRE</h2>
+
+            <p>Template for INSPIRE MD</p>
+
+            <p>RDF sources:
+            <ul>
+                <li>Languages, data types, reference system codes, responsible party roles, and INSPIRE themes: <a target="_blank" href="http://inspire.ec.europa.eu/codelist/">INSPIRE codelists</a>
+                </li>
+                <li>Keywords: <a target="_blank" href="http://gcmd.nasa.gov/learn/keyword_list.html">Global Change Master Directory Science Keyword variables</a>, <a
+                        href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> NERC vocabulary and <a href="http://eurovoc.europa.eu/" target="_blank">EUROVOC</a>
+                </li>
+                <li>Responsible parties, points of contact, etc.: FOAF (Friends Of A Friend) graph. In this demo search for the Fellowship of
+                    the Ring characters.
+                </li>
+            </ul>
+            </p>
+
+            <p><a class="btn btn-success" href="dist/INSPIRE_dataset.html" role="button">Try it &raquo;</a></p>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <h2>SensorML v1.0.1</h2>
+
+            <p>Template for SensorML v1.0.1</p>
+
+            <p>RDF sources:
+            <ul>
+                <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a> and <a
+                        href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> NERC vocabularies
+                </li>
+                <li>Units of measure: <a href="http://vocab.nerc.ac.uk/collection/P06/current" target="_blank">P06</a>
+                    NERC vocabulary
+                </li>
+                <li>Sensor types: <a href="http://vocab.nerc.ac.uk/collection/P07/current" target="_blank">P07</a> NERC
+                    vocabulary
+                </li>
+                <li>Manufacturers: FOAF (Friends Of A Friend) graph version of <a
+                        href="http://www.esonetyellowpages.com/" target="_blank">Esonet Yellow Pages</a>.
+                <li>Operators, and owners: FOAF (Friends Of A Friend) graph. In this demo search for the Fellowship of
+                    the Ring characters.
+                </li>
+            </ul>
+            </p>
+
+            <p><a class="btn btn-success" href="dist/SensorML101.html" role="button">Try it &raquo;</a></p>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <h2>SensorML v2.0.0</h2>
+
+            <p>Template for SensorML v2.0.0 SOS lightweight profile</p>
+
+            <p>RDF sources:
+            <ul>
+                <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a> and <a
+                        href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> NERC vocabularies
+                </li>
+                <li>Units of measure: <a href="http://vocab.nerc.ac.uk/collection/P06/current" target="_blank">P06</a>
+                    NERC vocabulary
+                </li>
+                <li>Manufacturers: FOAF (Friends Of A Friend) graph version of <a
+                        href="http://www.esonetyellowpages.com/" target="_blank">Esonet Yellow Pages</a>.
+                <li>Operators, and owners: FOAF (Friends Of A Friend) graph. In this demo search for the Fellowship of
+                    the Ring characters.
+                </li>
+            </ul>
+            </p>
+            <p><a class="btn btn-success" href="dist/SensorML20_lightweight.html" role="button">Try it &raquo;</a></p>
+        </div>
+    </div>
+
+    <!-- Site footer -->
+    <footer class="footer">
+        <hr>
+        <div class="col-lg-6">
+            <p>2015 <a href="http://www.get-it.it" target="_blank">Geoinformation Enabling ToolkIT
+                starterkit<sup>&REG;</sup></a></p>
+        </div>
+        <div class="col-lg-6">
+            <p>Icons by <a href="http://fontawesome.io/" target="_blank">Font Awesome</a></p>
+        </div>
+    </footer>
+
+</div>
+<!-- /container -->
+
+</body>
+</html>
