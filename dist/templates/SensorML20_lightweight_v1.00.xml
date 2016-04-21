@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template [
-        <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
-        <!ENTITY dct "http://purl.org/dc/terms/">
-        <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
-        <!ENTITY dcat "http://www.w3.org/ns/dcat#">
-        ]>
+    <!ENTITY odp "http://ec.europa.eu/open-data/ontologies/ec-odp#">
+    <!ENTITY dct "http://purl.org/dc/terms/">
+    <!ENTITY rndt "http://ritmare.it/rdfdata/rndt#">
+    <!ENTITY dcat "http://www.w3.org/ns/dcat#">
+]>
 
 <!-- SensorML for OGC LightWeight template -->
 
@@ -92,7 +92,7 @@
             <type>sparql</type>
         </datasource>
         <!-- END NERC Vocabulary datasources -->
-
+        
         <datasource>
             <id>languages</id>
             <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
@@ -124,7 +124,7 @@
                         ORDER BY ASC(?l) ASC(?a) 
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>keywordsS</id>
@@ -170,7 +170,7 @@
                         ORDER BY ASC(?l)                        
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>info_manufacturers</id>
@@ -223,7 +223,7 @@
                         ]]>
             </query>
             <triggerItem>manuf_name_3_uri</triggerItem>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>intended_applications</id>
@@ -252,7 +252,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>type_of_systems</id>
@@ -281,7 +281,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>uom</id>
@@ -311,7 +311,7 @@
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>owners</id>
@@ -330,7 +330,7 @@
                         ORDER BY ASC(?l)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>info_owner</id>
@@ -358,7 +358,7 @@ LIMIT 1
                 ]]>
             </query>
             <triggerItem>owner_1_uri</triggerItem>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>operators</id>
@@ -377,7 +377,7 @@ LIMIT 1
                         ORDER BY ASC(?l)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>info_operator</id>
@@ -405,7 +405,7 @@ LIMIT 1
                         ]]>
             </query>
             <triggerItem>operator_1_uri</triggerItem>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>parameters</id>
@@ -434,7 +434,7 @@ LIMIT 1
                         ORDER BY ASC(?l) ASC(?a)
                         ]]>
             </query>
-            <type>sparql</type>
+            <type> sparql </type>
         </datasource>
         <datasource>
             <id>items</id>
@@ -485,7 +485,7 @@ LIMIT 1
             <type>virtuosoCodelist</type>
         </datasource>
     </datasources>
-
+    
     <!-- GROUP -->
     <!-- =========== -->
     <!-- Description -->
@@ -501,13 +501,11 @@ LIMIT 1
             <label xml:lang="it">Nome del sistema di sensori</label>
             <label xml:lang="en">Physical system name</label>
             <help xml:lang="it">&#200; il nome con cui si identifica il sistema di sensori (es. piattaforma), deve
-                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome
+                essere breve, non ne &#232; la descrizione, e pu&#242; coincidere con il nome 
                 dato dal costruttore (es. Sensirion STH15, SBE 37-IM, MicroCAT,
-                CTP Recorder, ecc.).
-            </help>
+                CTP Recorder, ecc.).</help>
             <help xml:lang="en">Name assigned to identify the physical system. It should be short, while it is
-                not its description; it could coincide with the name given by the manufacturer.
-            </help>
+                not its description; it could coincide with the name given by the manufacturer.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem</hasRoot>
@@ -525,21 +523,15 @@ LIMIT 1
                     <hasPath>@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('ID_',
-                        translate(translate(TheName/text(),'`~!@#$%^*()-_=+[]{}\|;:°§£€¨„Ω®™æøåß∂ƒ∞∆ªº¬∑†©√∫˜µπ',''), '
-                        ', '_'))
-                    </hasValue>
+                    <hasValue>concat('ID_', translate(translate(TheName/text(),'`~!@#$%^*()-_=+[]{}\|;:°§£€¨„Ω®™æøåß∂ƒ∞∆ªº¬∑†©√∫˜µπ',''), ' ', '_'))</hasValue>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
                     <outIndex>1</outIndex>
                     <label xml:lang="it">Descrizione sistema di sensori</label>
-                    <help xml:lang="it">Contiene una descrizione testuale del sistema di sensori o della piattaforma nel
-                        suo complesso.
-                    </help>
+                    <help xml:lang="it">Contiene una descrizione testuale del sistema di sensori o della piattaforma nel suo complesso.</help>
                     <label xml:lang="en">Description of the physical system</label>
-                    <help xml:lang="en">Brief description of the sensor, of the system or of the platform as a whole.
-                    </help>
+                    <help xml:lang="en">Brief description of the sensor, of the system or of the platform as a whole.</help>
                     <hasPath>gml:description</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>text</hasDatatype>
@@ -585,11 +577,7 @@ LIMIT 1
         <element>
             <id>free_keywords</id>
             <label xml:lang="it">Parole chiave a campo libero</label>
-            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del
-                sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo
-                a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario
-                controllato.
-            </help>
+            <help xml:lang="it">Viene qui richiesto di indicare parole chiave che permettono una descrizione del sensore, del sistemadi sensori o della piattaforma, per permetterne il reperimento futuro. Questo campo a differenza del precedente è dedicato alle parole a testo libero e non riferite ad alcun vocabolario controllato.</help>
             <label xml:lang="en">Free keyword</label>
             <help xml:lang="en">Means of providing a list of keywords for quick discovery</help>
             <isMandatory>forAll</isMandatory>
@@ -619,15 +607,10 @@ LIMIT 1
         <element>
             <id>manuf_name</id>
             <label xml:lang="it">Denominazione del produttore</label>
-            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della
-                piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di
-                produttori.
-            </help>
+            <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
             <label xml:lang="en">Manufacturer name</label>
-            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three
-                letters
-                to obtain suggested autocompletion from a manufacturer list.
-            </help>
+            <help xml:lang="en">Name of the manufacturer of the sensor, system or platform. Start typing the first three letters 
+		to obtain suggested autocompletion from a manufacturer list.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
@@ -687,14 +670,12 @@ LIMIT 1
                     <hasDatatype>string</hasDatatype>
                 </item>
             </produces>
-        </element>
+        </element>        
         <!-- Model Number -->
         <element>
             <id>mod_number</id>
             <label xml:lang="it">Modello</label>
-            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della
-                piattaforma.
-            </help>
+            <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Model</label>
             <help xml:lang="en">Model, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
@@ -727,11 +708,9 @@ LIMIT 1
         <element>
             <id>serial_num</id>
             <label xml:lang="it">Numero seriale</label>
-            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della
-                piattaforma.
-            </help>
+            <help xml:lang="it">Indicare il numero seriale, se presente, del sensore, del sistema di sensori o della piattaforma.</help>
             <label xml:lang="en">Serial Number</label>
-            <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
+	        <help xml:lang="en">Serial number, if available, of the sensor, system or platform.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:identification/sml:IdentifierList</hasRoot>
@@ -888,7 +867,7 @@ LIMIT 1
         </element>
     </group>
     <!--END Characteristic Group -->
-
+    
     <!--================== -->
     <!-- System Capability -->
     <!--================== -->
@@ -902,8 +881,7 @@ LIMIT 1
             <id>status_capab</id>
             <label xml:lang="it">Stato del sistema</label>
             <help xml:lang="it">Viene indicato se il sistema &#232; attivo o disattivato.
-                Spuntare la casella nel caso di sistema attivo
-            </help>
+                Spuntare la casella nel caso di sistema attivo</help>
             <label xml:lang="en">Status</label>
             <help xml:lang="en">Tick the box if the system is on, otherwise it is off.</help>
             <isMandatory>NA</isMandatory>
@@ -931,8 +909,7 @@ LIMIT 1
             <id>mobility_capab</id>
             <label xml:lang="it">Caratteristiche di mobilit&#224;</label>
             <help xml:lang="it">Viene indicato se il sistema &#232; mobile o fisso. Spuntare la
-                casella nel caso si tratti di sistema mobile
-            </help>
+                casella nel caso si tratti di sistema mobile</help>
             <label xml:lang="en">Mobility Capabilities</label>
             <help xml:lang="en">Tick the box if the system is mobile, otherwise it is fixed.</help>
             <isMandatory>NA</isMandatory>
@@ -960,12 +937,9 @@ LIMIT 1
             <id>storage_type</id>
             <label xml:lang="it">Tipo di memoria</label>
             <help xml:lang="it">Indicare il tipo di memoria che viene utilizzato per archiviare le
-                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data logger)
-            </help>
+                osservazioni raccolte dal sistema o dal sensore o dalla piattaforma (es. data logger)</help>
             <label xml:lang="en">Storage Type</label>
-            <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform
-                (e.g. data logger)
-            </help>
+            <help xml:lang="en">The type of storage of the observations collected by the system, sensor, or platform (e.g. data logger)</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:capabilities/sml:CapabilityList/sml:capability[@name=&apos;OperationalCapabilities&apos;]/swe:DataRecord[@definition=&apos;OperationalCapabilities&apos;]/swe:field[@name=&apos;Storage_Type&apos;]/swe:Category[@definition=&apos;Storage_Type&apos;]</hasRoot>
@@ -995,15 +969,9 @@ LIMIT 1
         <element>
             <id>manufacturer</id>
             <label xml:lang="it">Informazioni sul produttore</label>
-            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del
-                sistema/sensore/piattaforma, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224;
-                utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).
-            </help>
+            <help xml:lang="it">Contatti del produttore; queste informazioni vengono autocompilate se il produttore del sistema/sensore/piattaforma, figura tra quelli presenti nelle liste di anagrafiche precompilate (gi&#224; utilizzate campo &#8216;Denominazione del produttore&#8217; nella sezione &#8216;Identificazione&#8217;).</help>
             <label xml:lang="en">Manufacturer</label>
-            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the
-                system (sensor or platform) is present in our repository (in this case has been already recognised in
-                the field &#8216;Manufacturer Name&#8217; in the &#8216;Identification of the system&#8217; section).
-            </help>
+            <help xml:lang="en">Manufacturer contact information; autocompletion is performed if the manufacturer of the system (sensor or platform) is present in our repository (in this case has been already recognised in the field &#8216;Manufacturer Name&#8217; in the  &#8216;Identification of the system&#8217; section).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList/sml:contact</hasRoot>
@@ -1038,9 +1006,7 @@ LIMIT 1
                     <help/>
                     <hasIndex>3</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:voice</id>
                     <hasDatatype>select</hasDatatype>
@@ -1051,9 +1017,7 @@ LIMIT 1
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:deliveryPoint</id>
                     <hasDatatype>select</hasDatatype>
@@ -1068,9 +1032,7 @@ LIMIT 1
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>5</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:city</id>
                     <hasDatatype>select</hasDatatype>
@@ -1085,9 +1047,7 @@ LIMIT 1
                 <item>
                     <hasIndex>6</hasIndex>
                     <outIndex>6</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:administrativeArea/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:administrativeArea/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:administrativeArea</id>
                     <hasDatatype>select</hasDatatype>
@@ -1102,9 +1062,7 @@ LIMIT 1
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>7</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:postalCode</id>
                     <hasDatatype>select</hasDatatype>
@@ -1119,9 +1077,7 @@ LIMIT 1
                 <item>
                     <hasIndex>8</hasIndex>
                     <outIndex>8</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:country</id>
                     <hasDatatype>select</hasDatatype>
@@ -1136,9 +1092,7 @@ LIMIT 1
                 <item>
                     <hasIndex>9</hasIndex>
                     <outIndex>9</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:electronicMailAddress</id>
                     <hasDatatype>select</hasDatatype>
@@ -1153,9 +1107,7 @@ LIMIT 1
                 <item>
                     <hasIndex>10</hasIndex>
                     <outIndex>10</outIndex>
-                    <hasPath>
-                        gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
-                    </hasPath>
+                    <hasPath>gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <id>sml:onlineResource</id>
                     <hasDatatype>select</hasDatatype>
@@ -1183,13 +1135,9 @@ LIMIT 1
         <element>
             <id>owner</id>
             <label xml:lang="it">Informazioni sul proprietario</label>
-            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il
-                proprietario figuri nel film The Lord of the Ring
-            </help>
+            <help xml:lang="it">Contatti del proprietario; queste informazioni vengono autocompilate qualora il proprietario figuri nel film The Lord of the Ring</help>
             <label xml:lang="en">Owner</label>
-            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the The
-                Lord of the Ring movie.
-            </help>
+            <help xml:lang="en">Owner contact information; autocompletion is performed if the owner appears in the The Lord of the Ring movie.</help>
             <help/>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
@@ -1202,9 +1150,7 @@ LIMIT 1
                     <help/>
                     <label xml:lang="en">Owner e-mail address</label>
                     <help/>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>electronicMailAddress</id>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1237,9 +1183,7 @@ LIMIT 1
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1253,9 +1197,7 @@ LIMIT 1
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1269,9 +1211,7 @@ LIMIT 1
                 <item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1285,9 +1225,7 @@ LIMIT 1
                 <item>
                     <hasIndex>8</hasIndex>
                     <outIndex>7</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1301,9 +1239,7 @@ LIMIT 1
                 <item>
                     <hasIndex>9</hasIndex>
                     <outIndex>8</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1317,9 +1253,7 @@ LIMIT 1
                 <item>
                     <hasIndex>10</hasIndex>
                     <outIndex>10</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_owner</datasource>
@@ -1336,9 +1270,7 @@ LIMIT 1
                     <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>URI</hasDatatype>
-                    <hasValue>
-                        http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode
-                    </hasValue>
+                    <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode</hasValue>
                 </item>
                 <item>
                     <hasIndex>12</hasIndex>
@@ -1347,8 +1279,7 @@ LIMIT 1
                     <isFixed>true</isFixed>
                     <datasource>roleCodes</datasource>
                     <hasDatatype>codelist</hasDatatype>
-                    <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/owner
-                    </defaultValue>
+                    <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/owner</defaultValue>
                     <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <item>
@@ -1367,13 +1298,9 @@ LIMIT 1
         <element>
             <id>operator</id>
             <label xml:lang="it">Informazioni sull&apos;operatore</label>
-            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore
-                figuri nel film The Lord of the Ring.
-            </help>
+            <help xml:lang="it">Contatti dell&apos;operatore; queste informazioni vengono autocompilate qualora l&apos;operatore figuri nel film The Lord of the Ring.</help>
             <label xml:lang="en">Operator</label>
-            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the
-                movie The Lord of the Ring.
-            </help>
+            <help xml:lang="en">Operator contact information; autocompletion is performed if the operator appears in the movie The Lord of the Ring.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
@@ -1381,9 +1308,7 @@ LIMIT 1
                 <item>
                     <hasIndex>1</hasIndex>
                     <outIndex>8</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <id>electronicMailAddress</id>
                     <hasDatatype>autoCompletion</hasDatatype>
@@ -1400,8 +1325,7 @@ LIMIT 1
                     <hasPath>sml:contact/@xlink:arcrole</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
-                    <hasValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact
-                    </hasValue>
+                    <hasValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact</hasValue>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
@@ -1421,9 +1345,7 @@ LIMIT 1
                 <item>
                     <hasIndex>4</hasIndex>
                     <outIndex>3</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1437,9 +1359,7 @@ LIMIT 1
                 <item>
                     <hasIndex>5</hasIndex>
                     <outIndex>4</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1453,9 +1373,7 @@ LIMIT 1
                 <item>
                     <hasIndex>6</hasIndex>
                     <outIndex>5</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1469,9 +1387,7 @@ LIMIT 1
                 <item>
                     <hasIndex>7</hasIndex>
                     <outIndex>6</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1485,9 +1401,7 @@ LIMIT 1
                 <item>
                     <hasIndex>8</hasIndex>
                     <outIndex>7</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1501,9 +1415,7 @@ LIMIT 1
                 <item>
                     <hasIndex>9</hasIndex>
                     <outIndex>9</outIndex>
-                    <hasPath>
-                        sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
-                    </hasPath>
+                    <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>select</hasDatatype>
                     <datasource>info_operator</datasource>
@@ -1520,9 +1432,7 @@ LIMIT 1
                     <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeList</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>URI</hasDatatype>
-                    <hasValue>
-                        http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode
-                    </hasValue>
+                    <hasValue>http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode</hasValue>
                 </item>
                 <item>
                     <hasIndex>11</hasIndex>
@@ -1531,8 +1441,7 @@ LIMIT 1
                     <isFixed>true</isFixed>
                     <datasource>roleCodes</datasource>
                     <hasDatatype>codelist</hasDatatype>
-                    <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact
-                    </defaultValue>
+                    <defaultValue>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/pointOfContact</defaultValue>
                     <isLanguageNeutral>true</isLanguageNeutral>
                 </item>
                 <item>
@@ -1561,13 +1470,10 @@ LIMIT 1
             <id>documentation</id>
             <label xml:lang="it">Documentazione</label>
             <help xml:lang="it">Documentazione che fornisca una descrizione di riferimento per il sistema
-                (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)
-            </help>
+                   (es. scheda tecnica, letteratura relativa agli algoritmi, etc.)</help>
             <label xml:lang="en">Documentation</label>
-            <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification
-                documentation,
-                peer-reviewed algorithm literature, etc.).
-            </help>
+            <help xml:lang="en">Documentation that provides a reference description of the system (e.g., specification documentation,
+		 peer-reviewed algorithm literature, etc.).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>NA</isMultiple>
             <hasRoot>/sml:PhysicalSystem</hasRoot>
@@ -1581,25 +1487,19 @@ LIMIT 1
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>
-                        sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
-                    </hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link al manuale utente</label>
-                    <help xml:lang="it">Collegamento alla documentazione on-line (scheda tecnica, pubblicazione, etc.)
-                        sotto forma di URI (o URL).
-                    </help>
+                    <help xml:lang="it">Collegamento alla documentazione on-line (scheda tecnica, pubblicazione, etc.) sotto forma di URI (o URL). </help>
                     <label xml:lang="en">User Manual link</label>
                     <help xml:lang="en">Link to reach on-line the documentation (URI or URL)</help>
                     <!--http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_SHT1x_Datasheet_V5.pdf -->
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>
-                        sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="datasheet"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>User Manual</hasValue>
@@ -1610,9 +1510,7 @@ LIMIT 1
         <element>
             <id>image</id>
             <label xml:lang="it">Link all'immagine</label>
-            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di sensori o alla
-                piattaforma
-            </help>
+            <help xml:lang="it">Inserire l'URL di una immagine riferita al sensore, al sistema di sensori o alla piattaforma</help>
             <label xml:lang="en">Image link</label>
             <help xml:lang="en">Link to reach on-line the image (URI or URL)</help>
             <isMandatory>NA</isMandatory>
@@ -1628,23 +1526,18 @@ LIMIT 1
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
-                    <hasPath>
-                        sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
-                    </hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</hasPath>
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <!--<hasValue>user-defined</hasValue>-->
                     <label xml:lang="it">Link ad una immagine del sistema</label>
-                    <help xml:lang="it">Collegamento ad una immagine on-line del sistema sotto forma di URI (o URL).
-                    </help>
+                    <help xml:lang="it">Collegamento ad una immagine on-line del sistema sotto forma di URI (o URL). </help>
                     <label xml:lang="en">Image link</label>
                     <help xml:lang="en">Link to reach on-line the image of the system (URI or URL)</help>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
-                    <hasPath>
-                        sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString
-                    </hasPath>
+                    <hasPath>sml:documentation[@xlink:arcrole="image"]/sml:DocumentList/sml:document/gmd:CI_OnlineResource/gmd:name/gco:CharacterString</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>text</hasDatatype>
                     <hasValue>Image</hasValue>
@@ -1661,9 +1554,7 @@ LIMIT 1
     <group>
         <id>hist</id>
         <label xml:lang="it">Storia del sistema</label>
-        <help xml:lang="it">Eventi cui il sistema &#232; andato incontro nel tempo (es. modifiche, ricalibrazione,
-            ecc.)
-        </help>
+        <help xml:lang="it">Eventi cui il sistema &#232; andato incontro nel tempo (es. modifiche, ricalibrazione, ecc.)</help>
         <label xml:lang="en">History</label>
         <help xml:lang="en">Events regarding the system in time (e.g., calibration, adjustments, etc.)</help>
         <element>
@@ -1680,12 +1571,9 @@ LIMIT 1
                     <isFixed>false</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <label xml:lang="it">Titolo dell'intervento</label>
-                    <help xml:lang="it">Dare un titolo all'intervento effettuata sul sistema (es. installazione,
-                        calibrazione, update, upgrade)
-                    </help>
+                    <help xml:lang="it">Dare un titolo all'intervento effettuata sul sistema (es. installazione, calibrazione, update, upgrade)</help>
                     <label xml:lang="en">Event</label>
-                    <help xml:lang="en">Add the label of event (eg. installation, calibration, update, upgrade etc.)
-                    </help>
+                    <help xml:lang="en">Add the label of event (eg. installation, calibration, update, upgrade etc.)</help>
                 </item>
                 <item>
                     <hasIndex>2</hasIndex>
@@ -1715,9 +1603,7 @@ LIMIT 1
                     <hasPath>sml:event/sml:Event/sml:time/gml:TimeInstant/@gml:id</hasPath>
                     <isFixed>true</isFixed>
                     <hasDatatype>function</hasDatatype>
-                    <hasValue>concat('event_',
-                        translate(sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition/text(), '-', ''))
-                    </hasValue>
+                    <hasValue>concat('event_', translate(sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition/text(), '-', ''))</hasValue>
                     <!--es event_20130705-->
                 </item>
             </produces>
@@ -1768,9 +1654,7 @@ LIMIT 1
     <group>
         <id>foi_sml</id>
         <label xml:lang="it">Zona di interesse</label>
-        <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web
-            geografico
-        </help>
+        <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web geografico</help>
         <label xml:lang="en">Feature Of Interest</label>
         <help xml:lang="en">The geometric sensor to which the system is associated. Add a URL of a WFS item</help>
         <element>
@@ -1778,9 +1662,7 @@ LIMIT 1
             <isMandatory>forAll</isMandatory>
             <isMultiple>false</isMultiple>
             <label xml:lang="it">Zona di interesse</label>
-            <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web
-                geografico
-            </help>
+            <help xml:lang="it">Zona geografica a cui il sensore è associato. Aggiungere URL di WFS di un servizio web geografico</help>
             <label xml:lang="en">Feature Of Interest</label>
             <help xml:lang="en">The geometric sensor to which the system is associated. Add a URL of a WFS item</help>
             <hasRoot>/sml:PhysicalSystem/sml:featuresOfInterest/sml:FeatureList</hasRoot>
@@ -1824,9 +1706,7 @@ LIMIT 1
         <element>
             <id>output_datatime</id>
             <label xml:lang="it">Data e ora dei parametri misurati</label>
-            <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora relative alla
-                osservazione.
-            </help>
+            <help xml:lang="it">Spuntare la casella se il sistema raccoglie anche data e ora relative alla osservazione.</help>
             <label xml:lang="en">Date and time of phenomena</label>
             <help xml:lang="en">Tick the box if the observation also contain the date and time.</help>
             <isMandatory>forAll</isMandatory>
@@ -1845,13 +1725,9 @@ LIMIT 1
         <element>
             <id>output_param</id>
             <label xml:lang="it">Parametro misurato</label>
-            <help xml:lang="it">Parametro misurato dal sensore, sistema o piattaforma e informazioni relative. Si
-                possono aggiungere pi&#249; parametri, cui associare le relative informazioni
-            </help>
+            <help xml:lang="it">Parametro misurato dal sensore, sistema o piattaforma e informazioni relative. Si possono aggiungere pi&#249; parametri, cui associare le relative informazioni</help>
             <label xml:lang="en">Output signals</label>
-            <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several
-                parameters, and related information, can be inserted.
-            </help>
+            <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
             <isMandatory>forAll</isMandatory>
             <isMultiple>true</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
@@ -1864,14 +1740,10 @@ LIMIT 1
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>keywords</datasource>
                     <label xml:lang="it">Nome parametro misurato</label>
-                    <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei
-                        suggerimenti da vocabolario controllato.
-                    </help>
+                    <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
                     <!--es CP -->
                     <label xml:lang="en">Output signal</label>
-                    <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested
-                        autocompletion from controlled vocabularies.
-                    </help>
+                    <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>3</hasIndex>
@@ -1891,13 +1763,9 @@ LIMIT 1
                     <hasDatatype>autoCompletion</hasDatatype>
                     <datasource>uom</datasource>
                     <label xml:lang="it">Unit&#224; di misura</label>
-                    <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a digitare tre lettere per
-                        ottenere dei suggerimenti da vocabolario controllato.
-                    </help>
+                    <help xml:lang="it">Unit&#224; di misura del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
                     <label xml:lang="en">Unit of measurement</label>
-                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters
-                        to obtain suggested autocompletion from controlled vocabularies.
-                    </help>
+                    <help xml:lang="en">Unit of measurement of the ouput parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
                 </item>
                 <item>
                     <hasIndex>5</hasIndex>
@@ -1923,7 +1791,7 @@ LIMIT 1
         </element>
     </group>
     <!--END Output Group -->
-
+    
     <!--=================== -->
     <!--Position Properties -->
     <!--=================== -->
@@ -1940,9 +1808,7 @@ LIMIT 1
             <label xml:lang="en">Reference system</label>
             <help xml:lang="en">Select from the list the reference system of the position property of the system.</help>
             <label xml:lang="it">Sistema di riferimento</label>
-            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del
-                sistema, sensore o piattaforma.
-            </help>
+            <help xml:lang="it">Selezionare dalla lista il sistema di riferimento della posizione geografica del sistema, sensore o piattaforma.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:position</hasRoot>
@@ -1969,20 +1835,16 @@ LIMIT 1
         <element>
             <id>easting</id>
             <label xml:lang="it">Longitudine (Est)</label>
-            <help xml:lang="it">Esprime i valori della longitudine (est) dell&apos;ultima posizione assunta dal sensore
-                o della
+            <help xml:lang="it">Esprime i valori della longitudine (est) dell&apos;ultima posizione assunta dal sensore o della
                 posizione usuale dove viene mantenuto il sensore quando non &#232; in
                 funzione (es. pu&#242; essere la posizione del proprietario del sensore).
                 Nel caso di sensori fissi sar&#224; indicata la posizione reale del
                 sensore. Deve essere espressa in gradi decimali (es. 12.337) nel sistema
-                di riferimento scelto
-            </help>
+                di riferimento scelto</help>
             <label xml:lang="en">Longitude (East)</label>
-            <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is
-                held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                refers to the actual position of the sensor. The value must be given in
-                the chosen reference system and in decimal degrees (ex. 12.337)
-            </help>
+            <help xml:lang="en">Longitude (East) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
+                refers to the actual position of the sensor. The value must be given in 
+                the chosen reference system and in decimal degrees (ex. 12.337) </help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
@@ -2021,7 +1883,7 @@ LIMIT 1
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-                </item>
+                </item> 
                 <item>
                     <hasIndex>6</hasIndex>
                     <hasPath>swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2036,20 +1898,16 @@ LIMIT 1
         <element>
             <id>northing</id>
             <label xml:lang="it">Latitudine (Nord)</label>
-            <help xml:lang="it">Esprime i valori della latitudine (nord) dell&apos;ultima posizione assunta dal sensore
-                o della
+            <help xml:lang="it">Esprime i valori della latitudine (nord) dell&apos;ultima posizione assunta dal sensore o della
                 posizione usuale dove viene mantenuto il sensore quando non &#232; in
                 funzione (es. pu&#242; essere la posizione del proprietario del sensore).
                 Nel caso di sensori fissi sar&#224; indicata la posizione reale del
                 sensore. Deve essere espressa in gradi decimali (es. 45.430) nel sistema
-                di riferimento scelto.
-            </help>
+                di riferimento scelto.</help>
             <label xml:lang="en">Latitude (North)</label>
-            <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is
-                held when not operating (e.g., the location of the owner). In the case of fixed sensors it
-                refers to the actual position of the sensor. The value must be given in
-                the chosen reference system and in decimal degrees (ex. 45.430).
-            </help>
+            <help xml:lang="en">Latitude (North) of the last position assumed by the sensor or the position where it is held when not operating (e.g., the location of the owner). In the case of fixed sensors it
+                refers to the actual position of the sensor. The value must be given in 
+                the chosen reference system and in decimal degrees (ex. 45.430).</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
@@ -2088,7 +1946,7 @@ LIMIT 1
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/UAAA/</hasValue>
-                </item>
+                </item> 
                 <item>
                     <hasIndex>6</hasIndex>
                     <hasPath>swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2104,15 +1962,11 @@ LIMIT 1
             <id>altitude</id>
             <label xml:lang="it">Altitudine</label>
             <help xml:lang="it">Inserire il valori in metri dell&apos;
-                sopra il livello del mare della altezza a cui si trova il sensore (es. 2013.13). Nel caso di sistemi
-                mobili si pu&#242;
+                sopra il livello del mare della altezza a cui si trova il sensore (es. 2013.13). Nel caso di sistemi mobili si pu&#242;
                 indicare la quota altimetrica del proprietario del sensore. Nel caso di
-                sensori fissi sar&#224; indicata l&apos;altezza reale del sensore.
-            </help>
-            <label xml:lang="en">Altitude</label>
-            <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can
-                coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.
-            </help>
+                sensori fissi sar&#224; indicata l&apos;altezza reale del sensore.</help>
+            <label xml:lang="en">Altitude </label>
+            <help xml:lang="en">Altitude value in meter above see level (e.g., 210.13 m)In case of mobile systems it can coincide with the owner position altitude; for fixed systems it refers to the actual position altitude.</help>
             <isMandatory>NA</isMandatory>
             <isMultiple>false</isMultiple>
             <hasRoot>/sml:PhysicalSystem/sml:position/swe:Vector</hasRoot>
@@ -2151,7 +2005,7 @@ LIMIT 1
                     <isFixed>true</isFixed>
                     <hasDatatype>string</hasDatatype>
                     <hasValue>http://vocab.nerc.ac.uk/collection/P06/current/ULAA/</hasValue>
-                </item>
+                </item> 
                 <item>
                     <hasIndex>6</hasIndex>
                     <hasPath>swe:coordinate/swe:Quantity/swe:value</hasPath>
@@ -2164,7 +2018,7 @@ LIMIT 1
         </element>
     </group>
     <!--END Position Properties Group -->
-
+    
     <!--=============== -->
     <!--Component Group -->
     <!--=============== -->
@@ -2195,8 +2049,7 @@ LIMIT 1
                     <isFixed>false</isFixed>
                     <hasDatatype>URL</hasDatatype>
                     <label xml:lang="it">Link alla descrizione del componente</label>
-                    <help xml:lang="it">Collegamento alla descrizione SensorML on-line sotto forma di URI (o URL).
-                    </help>
+                    <help xml:lang="it">Collegamento alla descrizione SensorML on-line sotto forma di URI (o URL). </help>
                     <label xml:lang="en">Component description link</label>
                     <help xml:lang="en">Link to reach on-line the SensorML (URI or URL)</help>
                 </item>

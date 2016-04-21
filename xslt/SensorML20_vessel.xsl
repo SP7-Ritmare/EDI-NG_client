@@ -19,6 +19,9 @@
     <!-- gml:identification -->
     <xsl:template match="sml:identifier[ not(./sml:Term/sml:value) ]" />
     <xsl:template match="sml:identification">
+        <xsl:if test="sml:identifier/sml:Term/sml:label/text()='Builder'">
+            <
+        </xsl:if>
         <sml:identification>
             <sml:IdentifierList>
                 <sml:identifier>
@@ -40,6 +43,20 @@
     <xsl:template match="sml:classifier[not(./sml:Term/sml:value)]" />
     
     <!-- sml:validTime -->
+    <xsl:template match="sml:validTime/gml:TimePeriod/gml:beginPosition">
+        <xsl:if test="text()='true'">
+            <gml:beginPosition>
+                <xsl:value-of select="current-dateTime()" />
+            </gml:beginPosition>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template match="sml:validTime/gml:TimePeriod/gml:endPosition">
+        <xsl:if test="text()='true'">
+            <gml:endPosition>
+                <xsl:attribute name="indeterminatePosition">now</xsl:attribute>
+            </gml:endPosition>
+        </xsl:if>
+    </xsl:template>
     <xsl:template match="sml:validTime[ not(./gml:TimePeriod[@gml:id='deploymentDates']/gml:beginPosition) and not(./gml:TimePeriod[@gml:id='deploymentDates']/gml:endPosition) ]" />
 
     <!-- sml:characteristics -->
