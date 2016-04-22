@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Edi-ng client : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Edi-ng client</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/SP7-Ritmare/EDI-NG_client">View on GitHub</a>
+
+          <h1 id="project_title">Edi-ng client</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/SP7-Ritmare/EDI-NG_client/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/SP7-Ritmare/EDI-NG_client/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>EDI-NG is a configurable HTML form page generator.
+Its purpose is to provide advanced forms with validation features in order to create geo-metadata.</p>
+
+<p>Form pages are defined using XML files called templates.
+Once the form is filled in, it gets posted to a back end (namely EDI-NG_server, <a href="https://github.com/SP7-Ritmare/EDI-NG_server">https://github.com/SP7-Ritmare/EDI-NG_server</a>), which will create a metadata XML file based on the rules defined in the XML template file.</p>
+
+<p>Following is a sample template file:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;<span class="pl-ent">template</span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">xsi</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="pl-pds">"</span></span> <span class="pl-e">xsi</span><span class="pl-e">:</span><span class="pl-e">noNamespaceSchemaLocation</span>=<span class="pl-s"><span class="pl-pds">"</span>edi_template.xsd<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">settings</span>&gt;
+        &lt;<span class="pl-ent">userInterfaceLanguage</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>/&gt;
+        &lt;<span class="pl-ent">metadataLanguage</span> <span class="pl-e">selectionItem</span>=<span class="pl-s"><span class="pl-pds">"</span>ling_md_1<span class="pl-pds">"</span></span>/&gt;
+        &lt;<span class="pl-ent">metadataEndpoint</span>&gt;http://sp7.irea.cnr.it/jboss/edi/&lt;/<span class="pl-ent">metadataEndpoint</span>&gt;
+        &lt;<span class="pl-ent">sparqlEndpoint</span>&gt;http://sp7.irea.cnr.it:8891/sparql&lt;/<span class="pl-ent">sparqlEndpoint</span>&gt;
+        &lt;<span class="pl-ent">requiresValidation</span>&gt;true&lt;/<span class="pl-ent">requiresValidation</span>&gt;
+        &lt;<span class="pl-ent">baseDocument</span>&gt;<span class="pl-s"><span class="pl-pds">&lt;![CDATA[</span></span>
+<span class="pl-s"></span>
+<span class="pl-s">        &lt;gmd:MD_Metadata</span>
+<span class="pl-s">            xsi:schemaLocation="http://www.isotc211.org/2005/gmd</span>
+<span class="pl-s">            http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"</span>
+<span class="pl-s">            xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"</span>
+<span class="pl-s">            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml"</span>
+<span class="pl-s">            xmlns:xlink="http://www.w3.org/1999/xlink"&gt;</span>
+<span class="pl-s"></span>
+<span class="pl-s">        &lt;/gmd:MD_Metadata&gt;</span>
+<span class="pl-s"></span>
+<span class="pl-s">    <span class="pl-pds">]]&gt;</span></span>&lt;/<span class="pl-ent">baseDocument</span>&gt;
+        &lt;<span class="pl-ent">xsltChain</span>&gt;
+            &lt;<span class="pl-ent">xslt</span>&gt;http://sp7.irea.cnr.it/jboss/MDService/rest/stylesheet_1.xsl?version=1.00&lt;/<span class="pl-ent">xslt</span>&gt;
+        &lt;/<span class="pl-ent">xsltChain</span>&gt;
+    &lt;/<span class="pl-ent">settings</span>&gt;
+    &lt;<span class="pl-ent">endpointTypes</span>&gt;
+        &lt;<span class="pl-ent">endpointType</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>virtuoso<span class="pl-pds">"</span></span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span> <span class="pl-e">queryParameter</span>=<span class="pl-s"><span class="pl-pds">"</span>query<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">parameters</span>&gt;
+                &lt;<span class="pl-ent">parameter</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>format<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>application/sparql-results+json<span class="pl-pds">"</span></span>/&gt;
+                &lt;<span class="pl-ent">parameter</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>save<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>display<span class="pl-pds">"</span></span>/&gt;
+                &lt;<span class="pl-ent">parameter</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>fname<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>undefined<span class="pl-pds">"</span></span>/&gt;
+            &lt;/<span class="pl-ent">parameters</span>&gt;
+        &lt;/<span class="pl-ent">endpointType</span>&gt;
+        &lt;<span class="pl-ent">endpointType</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sparqlCNR<span class="pl-pds">"</span></span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span> <span class="pl-e">queryParameter</span>=<span class="pl-s"><span class="pl-pds">"</span>query<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">parameters</span>&gt;
+                &lt;<span class="pl-ent">parameter</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>format<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>application/json<span class="pl-pds">"</span></span>/&gt;
+            &lt;/<span class="pl-ent">parameters</span>&gt;
+        &lt;/<span class="pl-ent">endpointType</span>&gt;
+        &lt;<span class="pl-ent">endpointType</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sparqlCSIRO<span class="pl-pds">"</span></span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span> <span class="pl-e">queryParameter</span>=<span class="pl-s"><span class="pl-pds">"</span>query<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">parameters</span>&gt;
+                &lt;<span class="pl-ent">parameter</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>format<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>application/json<span class="pl-pds">"</span></span>/&gt;
+            &lt;/<span class="pl-ent">parameters</span>&gt;
+        &lt;/<span class="pl-ent">endpointType</span>&gt;
+    &lt;/<span class="pl-ent">endpointTypes</span>&gt;
+    &lt;<span class="pl-ent">datasources</span>&gt;
+        &lt;<span class="pl-ent">codelist</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>languages<span class="pl-pds">"</span></span> <span class="pl-e">endpointType</span>=<span class="pl-s"><span class="pl-pds">"</span>virtuoso<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">uri</span>&gt;http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items&lt;/<span class="pl-ent">uri</span>&gt;
+        &lt;/<span class="pl-ent">codelist</span>&gt;
+        &lt;<span class="pl-ent">sparql</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>person<span class="pl-pds">"</span></span> <span class="pl-e">endpointType</span>=<span class="pl-s"><span class="pl-pds">"</span>virtuoso<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">query</span>&gt;<span class="pl-s"><span class="pl-pds">&lt;![CDATA[</span></span>
+<span class="pl-s"></span>
+<span class="pl-s">          PREFIX ns: &lt;http://www.w3.org/2006/vcard/ns#&gt;</span>
+<span class="pl-s">          SELECT DISTINCT ?c ?l</span>
+<span class="pl-s">          FROM &lt;http://ermes-fp7space.eu/rdfdata/project&gt;</span>
+<span class="pl-s">          WHERE {</span>
+<span class="pl-s">            ?c rdf:type foaf:Person .</span>
+<span class="pl-s">            ?c ns:email ?l .</span>
+<span class="pl-s">            ?c ns:org ?o .</span>
+<span class="pl-s">            FILTER( REGEX( STR(?l), "$search_param", "i") )</span>
+<span class="pl-s">          }</span>
+<span class="pl-s">          ORDER BY ASC(?l)</span>
+<span class="pl-s"></span>
+<span class="pl-s">      <span class="pl-pds">]]&gt;</span></span>&lt;/<span class="pl-ent">query</span>&gt;
+        &lt;/<span class="pl-ent">sparql</span>&gt;
+        &lt;<span class="pl-ent">singleton</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>personS<span class="pl-pds">"</span></span> <span class="pl-e">endpointType</span>=<span class="pl-s"><span class="pl-pds">"</span>virtuoso<span class="pl-pds">"</span></span> <span class="pl-e">triggerItem</span>=<span class="pl-s"><span class="pl-pds">"</span>md_resp_1_uri<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">query</span>&gt;<span class="pl-s"><span class="pl-pds">&lt;![CDATA[</span></span>
+<span class="pl-s"></span>
+<span class="pl-s">          PREFIX vcard: &lt;http://www.w3.org/2006/vcard/ns#&gt;</span>
+<span class="pl-s">          SELECT ?inst ?home ?phone</span>
+<span class="pl-s">          FROM &lt;http://ermes-fp7space.eu/rdfdata/project&gt;</span>
+<span class="pl-s">          WHERE {</span>
+<span class="pl-s">            &lt;$search_param&gt; vcard:org ?o.</span>
+<span class="pl-s">            ?o foaf:name ?inst .</span>
+<span class="pl-s">            &lt;$search_param&gt; foaf:phone ?phone.</span>
+<span class="pl-s">            # ?o foaf:homepage ?home .</span>
+<span class="pl-s">            # FILTER(LANG(?inst)='it')</span>
+<span class="pl-s">          }</span>
+<span class="pl-s"></span>
+<span class="pl-s">      <span class="pl-pds">]]&gt;</span></span>&lt;/<span class="pl-ent">query</span>&gt;
+        &lt;/<span class="pl-ent">singleton</span>&gt;
+    &lt;/<span class="pl-ent">datasources</span>&gt;
+    &lt;<span class="pl-ent">group</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>m_on_m<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">label</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>&gt;Information on metadata&lt;/<span class="pl-ent">label</span>&gt;
+        &lt;<span class="pl-ent">label</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>it<span class="pl-pds">"</span></span>&gt;Informazioni sui metadati&lt;/<span class="pl-ent">label</span>&gt;
+        &lt;<span class="pl-ent">element</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>id_md<span class="pl-pds">"</span></span> <span class="pl-e">isMandatory</span>=<span class="pl-s"><span class="pl-pds">"</span>false<span class="pl-pds">"</span></span> <span class="pl-e">isMultiple</span>=<span class="pl-s"><span class="pl-pds">"</span>false<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">label</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>&gt;File identifier&lt;/<span class="pl-ent">label</span>&gt;
+            &lt;<span class="pl-ent">label</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>it<span class="pl-pds">"</span></span>&gt;Identificatore del file&lt;/<span class="pl-ent">label</span>&gt;
+            &lt;<span class="pl-ent">help</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>&gt;This metadata item is not required by INSPIRE but is useful to draw the correspondence
+                between the metadata record and the resource itself.
+                It is therefore suggested that the workflow invoking EDI provides this piece of information as a request
+                parameter.
+            &lt;/<span class="pl-ent">help</span>&gt;
+            &lt;<span class="pl-ent">help</span> <span class="pl-e">xml</span><span class="pl-e">:</span><span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>it<span class="pl-pds">"</span></span>&gt;Questo metadato non è richiesto da INSPIRE ma è utile per tracciare la corrispondenza
+                tra il metadato e la risorsa corrispondente.
+                É quindi consigliato che EDI riceva questa informazione come parametro della richiesta.
+            &lt;/<span class="pl-ent">help</span>&gt;
+            &lt;<span class="pl-ent">hasRoot</span>&gt;/gmd:MD_Metadata/gmd:fileIdentifier&lt;/<span class="pl-ent">hasRoot</span>&gt;
+            &lt;<span class="pl-ent">produces</span>&gt;
+                &lt;<span class="pl-ent">item</span> <span class="pl-e">hasIndex</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> <span class="pl-e">outIndex</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-e">isFixed</span>=<span class="pl-s"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span> <span class="pl-e">hasDatatype</span>=<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>&gt;
+                    &lt;<span class="pl-ent">hasPath</span>&gt;/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString&lt;/<span class="pl-ent">hasPath</span>&gt;
+                &lt;/<span class="pl-ent">item</span>&gt;
+            &lt;/<span class="pl-ent">produces</span>&gt;
+        &lt;/<span class="pl-ent">element</span>&gt;
+  &lt;/<span class="pl-ent">group</span>&gt;
+&lt;/<span class="pl-ent">template</span>&gt;</pre></div>
+
+<p>Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as easy as using a javascript snippet like this inside a pure HTML page:</p>
+
+<div class="highlight highlight-source-js"><pre>  <span class="pl-en">$</span>(<span class="pl-c1">window</span>).<span class="pl-c1">load</span>(<span class="pl-k">function</span>() {
+      <span class="pl-smi">edi</span>.<span class="pl-en">loadLocalTemplate</span>(<span class="pl-s"><span class="pl-pds">"</span>TEST<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>1.00<span class="pl-pds">"</span></span>, onTemplateLoaded);
+  });</pre></div>
+
+<blockquote>
+<h1>
+<a id="warning" class="anchor" href="#warning" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warning</h1>
+
+<p>Due to CORS policies, some browsers might not allow loading from local files (i.e. local templates)
+In this case load templates from http(s) as in:</p>
+
+<div class="highlight highlight-source-js"><pre> <span class="pl-en">$</span>(<span class="pl-c1">window</span>).<span class="pl-c1">load</span>(<span class="pl-k">function</span>() {
+     <span class="pl-smi">edi</span>.<span class="pl-en">loadTemplate</span>(<span class="pl-s"><span class="pl-pds">"</span>TEST<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>1.00<span class="pl-pds">"</span></span>, onTemplateLoaded);
+ });</pre></div>
+</blockquote>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>If you just need to run EDI-NG client, all you need to do is in the "dist" directory.</p>
+
+<p>If you need to customise it, on the other hand, you can do so by editing the bower.json file and then running bower update and grunt in sequence.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Edi-ng client maintained by <a href="https://github.com/SP7-Ritmare">SP7-Ritmare</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
