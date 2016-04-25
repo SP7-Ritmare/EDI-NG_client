@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="edi_template.xsd">
+    xsi:noNamespaceSchemaLocation="edi_template.xsd">
     <settings>
         <userInterfaceLanguage xml:lang="en"/>
         <!--<metadataLanguage selectionItem="ling_md_1"/>-->
@@ -113,11 +113,9 @@
             <label xml:lang="en">Events</label>
             <label xml:lang="es">Eventos</label>
             <help xml:lang="it">Eventi cui la nave è andata incontro nel tempo (es. modifiche,
-                ricalibrazione, ecc.)
-            </help>
+                ricalibrazione, ecc.)</help>
             <help xml:lang="en">Events regarding the vessel in time (e.g., calibration, adjustments,
-                etc.)
-            </help>
+                etc.)</help>
             <help xml:lang="es">Eventos respecto al buque en el tiempo (por ejemplo, calibración, ajustes, etc.)</help>
             <hasRoot>/sml:EventList</hasRoot>
             <produces>
@@ -157,15 +155,15 @@
                     <hasPath>sml:event/sml:Event/sml:property/@xlink:title</hasPath>
                     <hasValue>link to instrument</hasValue>
                 </item>
-                <item hasIndex="5" xml:id="history_5" isFixed="false"
-                      hasDatatype="autoCompletion" datasource="devices">
+                <item hasIndex="5" xml:id="history_5" isFixed="false" 
+                    hasDatatype="autoCompletion" datasource="devices">
                     <label xml:lang="en">Device</label>
                     <label xml:lang="it">Dispositivo</label>
                     <label xml:lang="es">Dispositivo</label>
                     <hasPath>sml:event/sml:Event/sml:property/@xlink:role</hasPath>
-                </item>
+                </item>           
                 <item hasIndex="6" xml:id="history_6" isFixed="true"
-                      datasource="devices" hasDatatype="select" field="c">
+                    datasource="devices" hasDatatype="select" field="c">
                     <hasPath>sml:event/sml:Event/sml:property/@xlink:href</hasPath>
                 </item>
             </produces>
