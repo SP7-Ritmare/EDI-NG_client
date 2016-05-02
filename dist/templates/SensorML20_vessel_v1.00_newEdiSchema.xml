@@ -8,8 +8,8 @@
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresValidation>false</requiresValidation>
         <baseDocument><![CDATA[
-            
-       <sml:PhysicalSystem xmlns:sml="http://www.opengis.net/sensorml/2.0"
+        <?xml-stylesheet href="vessel2html.xsl" type="text/xsl"?>     
+        <sml:PhysicalSystem xmlns:sml="http://www.opengis.net/sensorml/2.0"
             xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
             xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
@@ -17,7 +17,7 @@
             xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:swes="http://www.opengis.net/swes/2.0"
             xsi:schemaLocation="http://www.opengis.net/sensorML/2.0 http://schemas.opengis.net/sensorML/2.0/sensorML.xsd http://www.opengis.net/samplingSpatial/2.0 http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd">
     
-       </sml:PhysicalSystem>
+        </sml:PhysicalSystem>
         
         ]]></baseDocument>
         <xsltChain>
@@ -119,19 +119,20 @@
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     SELECT ?c ?l ?a
-                    WHERE {
-                    ?c rdf:type skos:Concept.
-                    <http://vocab.nerc.ac.uk/collection/L06/current/> skos:member ?c.
-                    OPTIONAL {
-                    ?c skos:prefLabel ?l.
-                    FILTER( LANG(?l) = "en")
-                    }
-                    OPTIONAL {
-                    ?c skos:prefLabel ?a.
-                    FILTER( LANG(?a) = "it")
-                    }
-                    FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
-                    }
+                        WHERE {
+                            ?c rdf:type skos:Concept;
+                                skos:broader <http://vocab.nerc.ac.uk/collection/L06/current/3Z/>.
+                            <http://vocab.nerc.ac.uk/collection/L06/current/> skos:member ?c.
+                            OPTIONAL {
+                                ?c skos:prefLabel ?l.
+                                FILTER( LANG(?l) = "en")
+                            }
+                            OPTIONAL {
+                                ?c skos:prefLabel ?a.
+                                FILTER( LANG(?a) = "it")
+                            }
+                            FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
+                        }
                     ORDER BY ASC(?l) ASC(?a)
                     
             ]]></query>
@@ -671,7 +672,7 @@
     <group xml:id="temp_val">
         <label xml:lang="it">Validità dei metadati della nave</label>
         <label xml:lang="en">Temporal validity of vessel information</label>
-        <label xml:lang="es">Validez temporal de los barco</label>
+        <label xml:lang="es">Validez temporal de la información del barco</label>
         <element xml:id="valid_time" isMandatory="false" isMultiple="false">
             <!-- alternativeTo="valid_time_indPos"-->
             <hasRoot>/sml:PhysicalSystem/sml:validTime/gml:TimePeriod</hasRoot>
@@ -687,13 +688,13 @@
                     <start>
                         <label xml:lang="en">Begin date</label>
                         <label xml:lang="it">Data inizio</label>
-                        <label xml:lang="es">Comenzará fechas</label>
+                        <label xml:lang="es">Fecha de inicio</label>
                         <hasPath>gml:beginPosition</hasPath>
                     </start>
                     <end>
                         <label xml:lang="en">End date</label>
                         <label xml:lang="it">Data fine</label>
-                        <label xml:lang="es">Fechas de finalización</label>
+                        <label xml:lang="es">Fecha de fin</label>
                         <hasPath>gml:endPosition</hasPath>
                     </end>
                 </item>
@@ -731,7 +732,7 @@
     <group xml:id="caract">
         <label xml:lang="it">Caratteristiche generali</label>
         <label xml:lang="en">General characteristic</label>
-        <label xml:lang="es"/>
+        <label xml:lang="es">Características generales</label>
         <element isMandatory="false" isMultiple="false" xml:id="phyProp">
             <hasRoot>
                 /sml:PhysicalSystem/sml:characteristics[@name='generalProperties']/sml:CharacteristicList/sml:characteristic[@name='platform_physical_properties']/swe:DataRecord[@definition='platform_physical_properties']</hasRoot>
@@ -762,7 +763,7 @@
                 <item hasIndex="4" xml:id="phyPropLenght_4" isFixed="false" hasDatatype="string">
                     <label xml:lang="it">Lunghezza in metri</label>
                     <label xml:lang="en">Length in metre</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Eslora en metros</label>
                     <hasPath> swe:field[@name='Length']/swe:Quantity/swe:value </hasPath>
                 </item>
             </produces>
@@ -787,7 +788,7 @@
                 <item hasIndex="4" xml:id="phyPropBeam_4" isFixed="false" hasDatatype="string">
                     <label xml:lang="it">Luce in metri</label>
                     <label xml:lang="en">Beam in metre</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Manga en metros</label>
                     <hasPath> swe:field[@name='Beam']/swe:Quantity/swe:value </hasPath>
                 </item>
             </produces>
@@ -813,7 +814,7 @@
                     hasDatatype="string">
                     <label xml:lang="it">Design Draft in metri</label>
                     <label xml:lang="en">Design Draft in metre</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Diseño calado en metros</label>
                     <hasPath>swe:field[@name='Design_Draft']/swe:Quantity/swe:value</hasPath>
                 </item>
             </produces>
@@ -842,7 +843,7 @@
                     hasDatatype="string">
                     <label xml:lang="it">Tonnellaggio</label>
                     <label xml:lang="en">Gross Tonnage</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Tonelaje</label>
                     <hasPath>swe:field[@name='Gross_Tonnage']/swe:Quantity/swe:value</hasPath>
                 </item>
             </produces>
@@ -850,10 +851,10 @@
         <element xml:id="otherCaract" isMandatory="false" isMultiple="true">
             <label xml:lang="it">Altre caratteristiche</label>
             <label xml:lang="en">Other characteristics</label>
-            <label xml:lang="es"/>
+            <label xml:lang="es">Otras características</label>
             <help xml:lang="it">Aggiugere altre caratteristiche della nave</help>
             <help xml:lang="en">Add other characteristics of the vessel</help>
-            <help xml:lang="es"/>
+            <help xml:lang="es">Añadir otras características del barco</help>
             <hasRoot>
                 /sml:PhysicalSystem/sml:characteristics[@name='generalProperties']/sml:CharacteristicList/sml:characteristic[@name='platform_physical_properties']/swe:DataRecord[@definition='platform_physical_properties']/swe:field/swe:DataRecord
             </hasRoot>
@@ -862,12 +863,13 @@
                     hasDatatype="autoCompletion" datasource="typeVocabSwe">
                     <label xml:lang="it">Nome della caratteristica</label>
                     <label xml:lang="en">Name of the Characteristic</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Nombre de la característica</label>
                     <help xml:lang="it">Nome della caratteristica. Iniziare a digitare tre lettere
                         per ottenere dei suggerimenti da vocabolario controllato. </help>
                     <help xml:lang="en">Name of the Characteristic. Start typing the first three
                         letters to obtain suggested autocompletion from controlled vocabularies. </help>
-                    <help xml:lang="es"/>
+                    <help xml:lang="es">Nombre de la características. Escribe las tres primeras
+                        letras para obtener un autocompletado sugerido por el vocabulario controlado</help>
                     <hasPath>swe:field/@name</hasPath>
                 </item>
                 <item hasIndex="2" xml:id="otherCaract_2" field="c" isFixed="true"
@@ -879,13 +881,14 @@
                     hasDatatype="autoCompletion" datasource="uom">
                     <label xml:lang="it">Unità di misura</label>
                     <label xml:lang="en">Unit of measurement</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Unidad de medida</label>
                     <help xml:lang="it">Unità di misura della caratteristica. Iniziare a digitare
                         tre lettere per ottenere dei suggerimenti da vocabolario controllato. </help>
                     <help xml:lang="en">Unit of measurement of the characteristic. Start typing the
                         first three letters to obtain suggested autocompletion from controlled
                         vocabularies. </help>
-                    <help xml:lang="es"/>
+                    <help xml:lang="es">Unidad de medida de la característica. Escribe las tres primeras
+                        letras para obtener un autocompletado sugerido por el vocabulario controlado</help>
                     <hasPath>swe:field/swe:Quantity/swe:uom</hasPath>
                 </item>
                 <item hasIndex="4" xml:id="otherCaract_4" field="urn" isFixed="true"
@@ -901,7 +904,7 @@
                 <item hasIndex="6" xml:id="otherCaract_6" isFixed="false" hasDatatype="string">
                     <label xml:lang="it">Valore</label>
                     <label xml:lang="en">Value</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Valor</label>
                     <hasPath>swe:field/swe:Quantity/swe:value</hasPath>
                 </item>
             </produces>
@@ -917,7 +920,7 @@
         <element xml:id="generalCapab" isMandatory="true" isMultiple="false">
             <label xml:lang="it">Capacità generali della nave</label>
             <label xml:lang="en">General capabilities of the vessel</label>
-            <label xml:lang="es"/>
+            <label xml:lang="es">Características generales del barco</label>
             <hasRoot>
                  /sml:PhysicalSystem/sml:capabilities[@name='specification']/sml:CapabilityList/sml:capability[@name='Operational_res']/swe:DataRecord
              </hasRoot>
@@ -957,7 +960,7 @@
                     isFixed="false">
                     <label xml:lang="it">Autonomia in giorni</label>
                     <label xml:lang="en">Maximum endurance</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Autonomía en días</label>
                     <hasPath>swe:field[@name='Maximum_Endurance']/swe:Quantity/swe:value</hasPath>
                 </item>
             </produces>
@@ -991,7 +994,7 @@
                     isFixed="false">
                     <label xml:lang="it">Massima velocità di lavoro in nodi</label>
                     <label xml:lang="en">Maximum working speed in knots</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Velocidad máxima de trabajo en nudos</label>
                     <hasPath>swe:field[@name='Maximum_Working_Speed']/swe:Quantity/swe:value</hasPath>
                 </item>
             </produces>
@@ -999,10 +1002,10 @@
         <element xml:id="otherCapab" isMandatory="false" isMultiple="true">
             <label xml:lang="it">Altre capacità della nave</label>
             <label xml:lang="en">Other capabilities of the vessel</label>
-            <label xml:lang="es"/>
+            <label xml:lang="es">Otras características del barco</label>
             <help xml:lang="it">Add altre capacità della nave</help>
             <help xml:lang="en">Add other capabilities of the vessel</help>
-            <help xml:lang="es"/>
+            <help xml:lang="es">Añadir otras características del barco</help>
             <hasRoot>
                  /sml:PhysicalSystem/sml:capabilities[@name='specification']/sml:CapabilityList/sml:capability[@name='Operational_res']/swe:DataRecord
              </hasRoot>
@@ -1011,12 +1014,13 @@
                     hasDatatype="autoCompletion" datasource="typeVocabSwe">
                     <label xml:lang="it">Nome della capacità</label>
                     <label xml:lang="en">Name of the capability</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Nombre de la característica</label>
                     <help xml:lang="it">Nome della capacità. Iniziare a digitare tre lettere per
                         ottenere dei suggerimenti da vocabolario controllato. </help>
                     <help xml:lang="en">Name of the capability. Start typing the first three letters
                         to obtain suggested autocompletion from controlled vocabularies. </help>
-                    <help xml:lang="es"/>
+                    <help xml:lang="es">Nombre de la característica. Escribe las tres primeras letras
+                        para obtener un autocompletado sugerido del vocabulario controlado</help>
                     <hasPath>swe:field/@name</hasPath>
                 </item>
                 <item hasIndex="2" xml:id="otherCapab_2" field="c" isFixed="true"
@@ -1028,13 +1032,14 @@
                     hasDatatype="autoCompletion" datasource="uom">
                     <label xml:lang="it">Unità di misura</label>
                     <label xml:lang="en">Unit of measurement</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Unidad de medida</label>
                     <help xml:lang="it">Unità di misura della capacità. Iniziare a digitare tre
                         lettere per ottenere dei suggerimenti da vocabolario controllato. </help>
                     <help xml:lang="en">Unit of measurement of the capability. Start typing the
                         first three letters to obtain suggested autocompletion from controlled
                         vocabularies. </help>
-                    <help xml:lang="es"/>
+                    <help xml:lang="es">Unidad de medida de la característica. Escribe las tres
+                        primeras letras para obtener un autocompletado sugerido del vocabulario controlado.</help>
                     <hasPath>swe:field/swe:Quantity/swe:uom</hasPath>
                 </item>
                 <item hasIndex="4" xml:id="otherCapab_4" field="urn" isFixed="true"
@@ -1097,8 +1102,8 @@
                 <item hasIndex="3" xml:id="manufacturer_3" outIndex="3" field="phone"
                     isFixed="false" hasDatatype="select" datasource="info_manufacturers">
                     <label xml:lang="it">Telefono costrutture</label>
-                    <label xml:lang="en">Número de teléfono del constructor</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Número de teléfono del constructor</label>
+                    <label xml:lang="en">Builder phone number</label>
                     <hasPath>
                         gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
                     </hasPath>
@@ -1189,7 +1194,7 @@
                     hasDatatype="autoCompletion" datasource="owners">
                     <label xml:lang="it">e-mail proprietario</label>
                     <label xml:lang="en">Owner e-mail address</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">e-mail del construtor</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
                     </hasPath>
@@ -1202,14 +1207,14 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Organizzazione proprietario</label>
                     <label xml:lang="en">Owner organisation</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Organización del constructor</label>
                     <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
                 </item>
                 <item hasIndex="4" xml:id="owner_4" outIndex="3" field="phone" isFixed="false"
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Telefono proprietario</label>
                     <label xml:lang="en">Owner phone number</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Teléfono del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
                     </hasPath>
@@ -1218,7 +1223,7 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Indirizzo proprietario</label>
                     <label xml:lang="en">Owner address</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Dirección del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
                     </hasPath>
@@ -1227,7 +1232,7 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Città proprietario</label>
                     <label xml:lang="en">Owner city</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Ciudad del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString
                     </hasPath>
@@ -1236,7 +1241,7 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">CAP proprietario</label>
                     <label xml:lang="en">Owner Postal code</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">CP del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString
                     </hasPath>
@@ -1245,7 +1250,7 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Nazione proprietario</label>
                     <label xml:lang="en">Owner country</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Nacionalidad del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString
                     </hasPath>
@@ -1254,7 +1259,7 @@
                     hasDatatype="select" datasource="info_owner">
                     <label xml:lang="it">Sito web proprietario</label>
                     <label xml:lang="en">Owner web site</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Direción web del propietario</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
                     </hasPath>
@@ -1279,19 +1284,20 @@
         <element xml:id="operator" isMandatory="true" isMultiple="false">
             <label xml:lang="it">Informazioni sull'operatore</label>
             <label xml:lang="en">Operator</label>
-            <label xml:lang="es"/>
+            <label xml:lang="es">Información del operador</label>
             <help xml:lang="it">Contatti dell'operatore; queste informazioni vengono autocompilate
                 qualora l'operatore figuri nel film The Lord of the Ring. </help>
             <help xml:lang="en">Operator contact information; autocompletion is performed if the
                 operator appears in the movie The Lord of the Ring. </help>
-            <help xml:lang="es"/>
+            <help xml:lang="es">Información de contacto del operador; esta información será autocompletada
+                cuando el operador aparezca en la película El señor de los anillos</help>
             <hasRoot>/sml:PhysicalSystem/sml:contacts/sml:ContactList</hasRoot>
             <produces>
                 <item hasIndex="1" xml:id="operator_1" outIndex="8" isFixed="false"
                     hasDatatype="autoCompletion" datasource="operators">
                     <label xml:lang="it">e-mail operatore</label>
                     <label xml:lang="en">Operator e-mail address</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Dirección e-mail del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
                     </hasPath>
@@ -1306,14 +1312,14 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Nome operatore</label>
                     <label xml:lang="en">Operator name</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Nombre del operador</label>
                     <hasPath>sml:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</hasPath>
                 </item>
                 <item hasIndex="4" xml:id="operator_4" outIndex="3" field="phone" isFixed="false"
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Telefono operatore</label>
                     <label xml:lang="en">Operator phone number</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Teléfono del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString
                     </hasPath>
@@ -1322,7 +1328,7 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Indirizzo operatore</label>
                     <label xml:lang="en">Operator address</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Dirección del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
                     </hasPath>
@@ -1331,7 +1337,7 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Città operatore</label>
                     <label xml:lang="en">Operator city</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Ciudad del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString
                     </hasPath>
@@ -1340,7 +1346,7 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">CAP operatore</label>
                     <label xml:lang="en">Operator Postal code</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">CP del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString
                     </hasPath>
@@ -1349,7 +1355,7 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Nazione operatore</label>
                     <label xml:lang="en">Operator country</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Nacionalidad del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString
                     </hasPath>
@@ -1358,7 +1364,7 @@
                     hasDatatype="select" datasource="info_operator">
                     <label xml:lang="it">Sito web operatore</label>
                     <label xml:lang="en">Operator web site</label>
-                    <label xml:lang="es"/>
+                    <label xml:lang="es">Página web del operador</label>
                     <hasPath>
                         sml:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL
                     </hasPath>
@@ -1480,8 +1486,7 @@
                 <item hasDatatype="URL" hasIndex="2" xml:id="compoHistModif_2" isFixed="false">
                     <label xml:lang="it">Aggiungere link all'XML della composizione della
                         strumentazione di bordo </label>
-                    <label xml:lang="en">Add the link to the Composition Instrument History xml
-                        file</label>
+                    <label xml:lang="en">Add the link to the Composition Instrument History xml file</label>
                     <label xml:lang="es">Añadir enlaces a HTML de la composición de la
                         instrumentación bordo</label>
                     <hasPath>sml:history/@xlink:href</hasPath>
@@ -1552,7 +1557,7 @@
     <group xml:id="output">
         <label xml:lang="it">Posizione</label>
         <label xml:lang="en">Location</label>
-        <label xml:lang="es"/>
+        <label xml:lang="es">Posición</label>
         <!-- Location -->
         <element isMandatory="true" isMultiple="false" xml:id="location">
             <hasRoot>
@@ -1791,14 +1796,15 @@
         <element isMandatory="true" isMultiple="false" xml:id="positionUrl">
             <label xml:lang="it">Link ai dati di posizione</label>
             <label xml:lang="en">Link to the position data</label>
-            <label xml:lang="es"/>
+            <label xml:lang="es">Enlace a los datos de posición</label>
             <help xml:lang="it">Inserire un URL relativo al flusso dati della posizione in tempo
                 reale della nave (es.
                 http://www.utm.csic.es/SadoWS/DataQuery?BaseDatos=SADO_SDG_RT&amp;grupo=posicion&amp;servicio=ultimo)</help>
             <help xml:lang="en">URL of the endpoint for real time vessels position data streams
                 (e.g.
                 http://www.utm.csic.es/SadoWS/DataQuery?BaseDatos=SADO_SDG_RT&amp;grupo=posicion&amp;servicio=ultimo)</help>
-            <help xml:lang="es"/>
+            <help xml:lang="es">URL del posicionamiento en tiempo real del barco (p.e.
+                http://www.utm.csic.es/SadoWS/DataQuery?BaseDatos=SADO_SDG_RT&amp;grupo=posicion&amp;servicio=ultimo)</help>
             <hasRoot>/sml:PhysicalSystem/sml:outputs/sml:OutputList/sml:output[@name='location']/sml:DataInterface/sml:data/swe:DataStream[@id='id_location']</hasRoot>
             <produces>
                 <item hasDatatype="string" hasIndex="1" xml:id="positionUrl_1" isFixed="true">
@@ -1863,7 +1869,7 @@
     <group xml:id="component_group">
         <label xml:lang="en">Components of the vessel</label>
         <label xml:lang="it">Componenti della nave</label>
-        <label xml:lang="es">Componentes de las naves</label>
+        <label xml:lang="es">Componentes el barco</label>
         <element xml:id="name_comp" isMandatory="false" isMultiple="true">
             <label xml:lang="en">Type of the component</label>
             <label xml:lang="it">Tipo del componente</label>
@@ -1877,11 +1883,11 @@
                 <item hasIndex="2" xml:id="name_comp_2" isFixed="false" hasDatatype="URL">
                     <label xml:lang="it">Link alla descrizione del componente</label>
                     <label xml:lang="en">Component description link</label>
-                    <label xml:lang="es">Componente Descripción enlace</label>
+                    <label xml:lang="es">Enlace a la descripción del componente</label>
                     <help xml:lang="it">Collegamento alla descrizione SensorML on-line sotto forma
                         di URI (o URL). </help>
                     <help xml:lang="en">Link to reach on-line the SensorML (URI or URL)</help>
-                    <help xml:lang="es">Enlace a la línea alcanzar el SensorML (URI o URL)</help>
+                    <help xml:lang="es">Enlace on-line a la descripción SensorML del componente (URI o URL)</help>
                     <hasPath>sml:component/@xlink:href</hasPath>
                 </item>
             </produces>
