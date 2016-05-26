@@ -105,27 +105,29 @@
     </group>
     <!-- Event group -->
     <group xml:id="events">
-        <label xml:lang="it">Eventi</label>
-        <label xml:lang="en">Events</label>
-        <label xml:lang="es">Eventos</label>
+        <label xml:lang="it">Storia composizione strumentale</label>
+        <label xml:lang="en">Instrument Composition History</label>
+        <label xml:lang="es">Histórico de composición instrumental</label>
         <element xml:id="history" isMandatory="true" isMultiple="true">
-            <label xml:lang="it">Eventi</label>
-            <label xml:lang="en">Events</label>
-            <label xml:lang="es">Eventos</label>
-            <help xml:lang="it">Eventi cui la nave è andata incontro nel tempo (es. modifiche,
+            <label xml:lang="it">Strumentazione a bordo</label>
+            <label xml:lang="en">Instrument on board</label>
+            <label xml:lang="es">Embarque de instrumentación</label>
+            <help xml:lang="it">Strumentazione imbarco sulla nave nel tempo (es. modifiche,
                 ricalibrazione, ecc.)</help>
-            <help xml:lang="en">Events regarding the vessel in time (e.g., calibration, adjustments,
+            <help xml:lang="en">Instrument in a vessel in time (e.g., calibration, adjustments,
                 etc.)</help>
-            <help xml:lang="es">Eventos respecto al buque en el tiempo (por ejemplo, calibración, ajustes, etc.)</help>
+            <help xml:lang="es">Embarque de la instrumentación del buque en el tiempo (p.e, calibración, ajustes,
+                etc.)
+            </help>
             <hasRoot>/sml:EventList</hasRoot>
             <produces>
                 <item hasIndex="1" xml:id="history_1" isFixed="false" hasDatatype="text">
-                    <label xml:lang="it">Descrizione dell'intervento</label>
-                    <label xml:lang="en">Event description</label>
-                    <label xml:lang="es">Descripción del evento</label>
-                    <help xml:lang="it">Breve descrizione dell'intervento</help>
-                    <help xml:lang="en">Brief description of the event</help>
-                    <help xml:lang="es">Breve descripción del evento</help>
+                    <label xml:lang="it">Descrizione</label>
+                    <label xml:lang="en">Description</label>
+                    <label xml:lang="es">Descripción</label>
+                    <help xml:lang="it">Breve descrizione</help>
+                    <help xml:lang="en">Brief description</help>
+                    <help xml:lang="es">Breve descripción</help>
                     <hasPath>sml:event/sml:Event/swe:description</hasPath>
                 </item>
                 <!-- ISSUE: in this moment only date and not time -->
@@ -146,8 +148,7 @@
                         <hasPath>sml:event/sml:Event/sml:time/gml:TimePeriod/gml:endPosition</hasPath>
                     </end>
                 </item>
-                <!-- TO DO: incremental value -->
-                <item hasIndex="3" xml:id="history_3" isFixed="true" hasDatatype="string">
+                <item hasIndex="3" xml:id="history_3" isFixed="true" hasDatatype="autonumber">
                     <hasPath>sml:event/sml:Event/sml:time/gml:TimePeriod/@gml:id</hasPath>
                     <hasValue>operation_interval_</hasValue>
                 </item>

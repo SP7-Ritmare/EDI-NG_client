@@ -80,7 +80,7 @@ var testSuite = {
 				}
 				catch (e) {
 					test = true;
-				}
+			}
 				return test;
 			},
 			function () {
@@ -392,7 +392,7 @@ var testSuite = {
 				}
 				catch (e) {
 					test = true;
-				}
+			}
 				return test;
 			},
 			function () {

@@ -231,9 +231,9 @@
 						// Don't bring in undefined values
 					} else if (copy !== undefined) {
 						target[name] = copy;
-					}
 				}
 			}
+		}
 		}
 
 		// Return the modified object
@@ -303,8 +303,8 @@
 
 				// Not own constructor property must be Object
 				if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
-					return false;
-				}
+				return false;
+			}
 			} catch (e) {
 
 				// IE8,9 Will throw exceptions on certain host objects #9897
@@ -316,7 +316,7 @@
 			if (!support.ownFirst) {
 				for (key in obj) {
 					return hasOwn.call(obj, key);
-				}
+			}
 			}
 
 			// Own properties are enumerated firstly, so to speed up,
@@ -368,14 +368,14 @@
 				for (; i < length; i++) {
 					if (callback.call(obj[i], i, obj[i]) === false) {
 						break;
-					}
+				}
 				}
 			} else {
 				for (i in obj) {
 					if (callback.call(obj[i], i, obj[i]) === false) {
 						break;
-					}
 				}
+			}
 			}
 
 			return obj;
@@ -400,7 +400,7 @@
 					);
 				} else {
 					push.call(ret, arr);
-				}
+			}
 			}
 
 			return ret;
@@ -422,8 +422,8 @@
 					// Skip accessing in sparse arrays
 					if (i in arr && arr[i] === elem) {
 						return i;
-					}
 				}
+			}
 			}
 
 			return -1;
@@ -443,7 +443,7 @@
 			if (len !== len) {
 				while (second[j] !== undefined) {
 					first[i++] = second[j++];
-				}
+			}
 			}
 
 			first.length = i;
@@ -464,7 +464,7 @@
 				callbackInverse = !callback(elems[i], i);
 				if (callbackInverse !== callbackExpect) {
 					matches.push(elems[i]);
-				}
+			}
 			}
 
 			return matches;
@@ -484,7 +484,7 @@
 
 					if (value != null) {
 						ret.push(value);
-					}
+				}
 				}
 
 				// Go through every key on the object,
@@ -494,8 +494,8 @@
 
 					if (value != null) {
 						ret.push(value);
-					}
 				}
+			}
 			}
 
 			// Flatten any nested arrays
@@ -570,7 +570,7 @@
 
 		if (type === "function" || jQuery.isWindow(obj)) {
 			return false;
-		}
+	}
 
 		return type === "array" || length === 0 ||
 			typeof length === "number" && length > 0 && ( length - 1 ) in obj;
@@ -893,10 +893,10 @@
 								} finally {
 									if (nid === expando) {
 										context.removeAttribute("id");
-									}
-								}
-							}
 						}
+					}
+				}
+			}
 					}
 				}
 
@@ -991,7 +991,7 @@
 					while ((cur = cur.nextSibling)) {
 						if (cur === b) {
 							return -1;
-						}
+			}
 					}
 				}
 
@@ -1037,7 +1037,7 @@
 							if (seed[(j = matchIndexes[i])]) {
 								seed[j] = !(matches[j] = seed[j]);
 							}
-						}
+			}
 					});
 				});
 			}
@@ -1746,7 +1746,7 @@
 													node.nodeType === 1) {
 
 													return false;
-												}
+									}
 											}
 											// Reverse direction for :only-* (if we haven't yet done so)
 											start = dir = type === "only" && !start && "nextSibling";
@@ -1829,16 +1829,16 @@
 
 													if (node === elem) {
 														break;
-													}
-												}
-											}
 										}
 									}
+								}
+										}
+						}
 
 									// Incorporate the offset, then check against cycle size
 									diff -= last;
 									return diff === first || ( diff % first === 0 && diff / first >= 0 );
-								}
+					}
 							};
 					},
 
@@ -1900,7 +1900,7 @@
 								while (i--) {
 									if ((elem = unmatched[i])) {
 										seed[i] = !(matches[i] = elem);
-									}
+						}
 								}
 							}) :
 							function (elem, context, xml) {
@@ -2068,7 +2068,7 @@
 						var i = argument < 0 ? argument + length : argument;
 						for (; --i >= 0;) {
 							matchIndexes.push(i);
-						}
+			}
 						return matchIndexes;
 					}),
 
@@ -2076,7 +2076,7 @@
 						var i = argument < 0 ? argument + length : argument;
 						for (; ++i < length;) {
 							matchIndexes.push(i);
-						}
+			}
 						return matchIndexes;
 					})
 				}
@@ -2187,8 +2187,8 @@
 						while ((elem = elem[dir])) {
 							if (elem.nodeType === 1 || checkNonElements) {
 								return matcher(elem, context, xml);
-							}
-						}
+				}
+			}
 					} :
 
 					// Check against all ancestor/preceding elements
@@ -2202,7 +2202,7 @@
 								if (elem.nodeType === 1 || checkNonElements) {
 									if (matcher(elem, context, xml)) {
 										return true;
-									}
+						}
 								}
 							}
 						} else {
@@ -2219,18 +2219,18 @@
 
 										// Assign to newCache so results back-propagate to previous elements
 										return (newCache[2] = oldCache[2]);
-									} else {
+						} else {
 										// Reuse newcache so results back-propagate to previous elements
 										uniqueCache[dir] = newCache;
 
 										// A match means we're done; a fail means we have to keep checking
 										if ((newCache[2] = matcher(elem, context, xml))) {
 											return true;
-										}
-									}
-								}
 							}
 						}
+								}
+							}
+			}
 					};
 			}
 
@@ -2242,7 +2242,7 @@
 							if (!matchers[i](elem, context, xml)) {
 								return false;
 							}
-						}
+			}
 						return true;
 					} :
 					matchers[0];
@@ -2270,8 +2270,8 @@
 							newUnmatched.push(elem);
 							if (mapped) {
 								map.push(i);
-							}
-						}
+				}
+			}
 					}
 				}
 
@@ -2340,7 +2340,7 @@
 										// Restore matcherIn since elem is not yet a final match
 										temp.push((matcherIn[i] = elem));
 									}
-								}
+					}
 								postFinder(null, (matcherOut = []), temp, xml);
 							}
 
@@ -2351,7 +2351,7 @@
 									(temp = postFinder ? indexOf(seed, elem) : preMap[i]) > -1) {
 
 									seed[temp] = !(results[temp] = elem);
-								}
+					}
 							}
 						}
 
@@ -2408,7 +2408,7 @@
 							for (; j < len; j++) {
 								if (Expr.relative[tokens[j].type]) {
 									break;
-								}
+					}
 							}
 							return setMatcher(
 								i > 1 && elementMatcher(matchers),
@@ -2421,7 +2421,7 @@
 								j < len && matcherFromTokens((tokens = tokens.slice(j))),
 								j < len && toSelector(tokens)
 							);
-						}
+			}
 						matchers.push(matcher);
 					}
 				}
@@ -2463,12 +2463,12 @@
 									if (matcher(elem, context || document, xml)) {
 										results.push(elem);
 										break;
-									}
-								}
+						}
+					}
 								if (outermost) {
 									dirruns = dirrunsUnique;
 								}
-							}
+				}
 
 							// Track unmatched elements for set filters
 							if (bySet) {
@@ -2482,7 +2482,7 @@
 									unmatched.push(elem);
 								}
 							}
-						}
+			}
 
 						// `i` is now the count of elements visited above, and adding it to `matchedCount`
 						// makes the latter nonnegative.
@@ -2507,8 +2507,8 @@
 									while (i--) {
 										if (!(unmatched[i] || setMatched[i])) {
 											setMatched[i] = pop.call(results);
-										}
-									}
+							}
+						}
 								}
 
 								// Discard index placeholder values to get only actual matches
@@ -2558,7 +2558,7 @@
 							setMatchers.push(cached);
 						} else {
 							elementMatchers.push(cached);
-						}
+			}
 					}
 
 					// Cache the compiled function
@@ -2630,10 +2630,10 @@
 								if (!selector) {
 									push.apply(results, seed);
 									return results;
-								}
+					}
 
 								break;
-							}
+				}
 						}
 					}
 				}
@@ -2735,9 +2735,9 @@
 			if (elem.nodeType === 1) {
 				if (truncate && jQuery(elem).is(until)) {
 					break;
-				}
-				matched.push(elem);
 			}
+				matched.push(elem);
+		}
 		}
 		return matched;
 	};
@@ -2749,7 +2749,7 @@
 		for (; n; n = n.nextSibling) {
 			if (n.nodeType === 1 && n !== elem) {
 				matched.push(n);
-			}
+		}
 		}
 
 		return matched;
@@ -2783,10 +2783,10 @@
 		if (typeof qualifier === "string") {
 			if (risSimple.test(qualifier)) {
 				return jQuery.filter(qualifier, elements, not);
-			}
+		}
 
 			qualifier = jQuery.filter(qualifier, elements);
-		}
+	}
 
 		return jQuery.grep(elements, function (elem) {
 			return ( jQuery.inArray(elem, qualifier) > -1 ) !== not;
@@ -2819,7 +2819,7 @@
 					for (i = 0; i < len; i++) {
 						if (jQuery.contains(self[i], this)) {
 							return true;
-						}
+					}
 					}
 				}));
 			}
@@ -2916,8 +2916,8 @@
 									// ...and otherwise set as attributes
 								} else {
 									this.attr(match, context[match]);
-								}
 							}
+						}
 						}
 
 						return this;
@@ -2934,17 +2934,17 @@
 							// by name instead of ID
 							if (elem.id !== match[2]) {
 								return rootjQuery.find(selector);
-							}
+						}
 
 							// Otherwise, we inject the element directly into the jQuery object
 							this.length = 1;
 							this[0] = elem;
-						}
+					}
 
 						this.context = document;
 						this.selector = selector;
 						return this;
-					}
+				}
 
 					// HANDLE: $(expr, $(...))
 				} else if (!context || context.jquery) {
@@ -2954,7 +2954,7 @@
 					// (which is just equivalent to: $(context).find(expr)
 				} else {
 					return this.constructor(context).find(selector);
-				}
+			}
 
 				// HANDLE: $(DOMElement)
 			} else if (selector.nodeType) {
@@ -3007,7 +3007,7 @@
 				for (i = 0; i < len; i++) {
 					if (jQuery.contains(this, targets[i])) {
 						return true;
-					}
+				}
 				}
 			});
 		},
@@ -3034,8 +3034,8 @@
 
 						matched.push(cur);
 						break;
-					}
 				}
+			}
 			}
 
 			return this.pushStack(matched.length > 1 ? jQuery.uniqueSort(matched) : matched);
@@ -3073,7 +3073,7 @@
 			return this.add(selector == null ?
 				this.prevObject : this.prevObject.filter(selector)
 			);
-		}
+	}
 	});
 
 	function sibling(cur, dir) {
@@ -3130,7 +3130,7 @@
 
 			if (name.slice(-5) !== "Until") {
 				selector = until;
-			}
+		}
 
 			if (selector && typeof selector === "string") {
 				ret = jQuery.filter(selector, ret);
@@ -3141,18 +3141,19 @@
 				// Remove duplicates
 				if (!guaranteedUnique[name]) {
 					ret = jQuery.uniqueSort(ret);
-				}
+			}
 
 				// Reverse order for parents* and prev-derivatives
 				if (rparentsprev.test(name)) {
 					ret = ret.reverse();
-				}
+			}
 			}
 
 			return this.pushStack(ret);
 		};
 	});
 	var rnotwhite = ( /\S+/g );
+
 
 
 // Convert String-formatted options into Object-formatted ones
@@ -3235,8 +3236,8 @@
 							// Jump to end and forget the data so .add doesn't re-fire
 							firingIndex = list.length;
 							memory = false;
-						}
 					}
+				}
 				}
 
 				// Forget the data if we're done with it
@@ -3256,7 +3257,7 @@
 						// Otherwise, this object is spent
 					} else {
 						list = "";
-					}
+				}
 				}
 			},
 
@@ -3278,7 +3279,7 @@
 								if (jQuery.isFunction(arg)) {
 									if (!options.unique || !self.has(arg)) {
 										list.push(arg);
-									}
+								}
 								} else if (arg && arg.length && jQuery.type(arg) !== "string") {
 
 									// Inspect recursively
@@ -3289,7 +3290,7 @@
 
 						if (memory && !firing) {
 							fire();
-						}
+					}
 					}
 					return this;
 				},
@@ -3304,7 +3305,7 @@
 							// Handle firing indexes
 							if (index <= firingIndex) {
 								firingIndex--;
-							}
+						}
 						}
 					});
 					return this;
@@ -3360,8 +3361,8 @@
 						queue.push(args);
 						if (!firing) {
 							fire();
-						}
 					}
+				}
 					return this;
 				},
 
@@ -3395,7 +3396,7 @@
 				promise = {
 					state: function () {
 						return state;
-					},
+				},
 					always: function () {
 						deferred.done(arguments).fail(arguments);
 						return this;
@@ -3454,7 +3455,7 @@
 
 						// [ reject_list | resolve_list ].disable; progress_list.lock
 					}, tuples[i ^ 1][2].disable, tuples[2][2].lock);
-				}
+			}
 
 				// deferred[ resolve | reject | notify ]
 				deferred[tuple[0]] = function () {
@@ -3519,14 +3520,14 @@
 							.fail(deferred.reject);
 					} else {
 						--remaining;
-					}
 				}
+			}
 			}
 
 			// if we're not waiting on anything, resolve the master
 			if (!remaining) {
 				deferred.resolveWith(resolveContexts, resolveValues);
-			}
+		}
 
 			return deferred.promise();
 		}
@@ -3585,7 +3586,7 @@
 			if (jQuery.fn.triggerHandler) {
 				jQuery(document).triggerHandler("ready");
 				jQuery(document).off("ready");
-			}
+		}
 		}
 	});
 
@@ -3600,7 +3601,7 @@
 		} else {
 			document.detachEvent("onreadystatechange", completed);
 			window.detachEvent("onload", completed);
-		}
+	}
 	}
 
 	/**
@@ -3615,7 +3616,7 @@
 
 			detach();
 			jQuery.ready();
-		}
+	}
 	}
 
 	jQuery.ready.promise = function (obj) {
@@ -3680,8 +3681,8 @@
 							jQuery.ready();
 						}
 					})();
-				}
 			}
+		}
 		}
 		return readyList.promise(obj);
 	};
@@ -3736,7 +3737,7 @@
 				// Prevent IE from shrinking the body in IE 7 mode #12869
 				// Support: IE<8
 				body.style.zoom = 1;
-			}
+		}
 		}
 
 		body.removeChild(container);
@@ -3802,7 +3803,7 @@
 			} else {
 				data = undefined;
 			}
-		}
+	}
 
 		return data;
 	}
@@ -3815,11 +3816,11 @@
 			// if the public data object is empty, the private is still empty
 			if (name === "data" && jQuery.isEmptyObject(obj[name])) {
 				continue;
-			}
+		}
 			if (name !== "toJSON") {
 				return false;
 			}
-		}
+	}
 
 		return true;
 	}
@@ -3859,7 +3860,7 @@
 				id = elem[internalKey] = deletedIds.pop() || jQuery.guid++;
 			} else {
 				id = internalKey;
-			}
+		}
 		}
 
 		if (!cache[id]) {
@@ -3876,7 +3877,7 @@
 				cache[id] = jQuery.extend(cache[id], name);
 			} else {
 				cache[id].data = jQuery.extend(cache[id].data, name);
-			}
+		}
 		}
 
 		thisCache = cache[id];
@@ -3887,7 +3888,7 @@
 		if (!pvt) {
 			if (!thisCache.data) {
 				thisCache.data = {};
-			}
+		}
 
 			thisCache = thisCache.data;
 		}
@@ -3911,7 +3912,7 @@
 			}
 		} else {
 			ret = thisCache;
-		}
+	}
 
 		return ret;
 	}
@@ -3946,7 +3947,7 @@
 					// try the string as a key before any manipulation
 					if (name in thisCache) {
 						name = [name];
-					} else {
+				} else {
 
 						// split the camel cased version by spaces unless a key with the spaces exists
 						name = jQuery.camelCase(name);
@@ -3955,7 +3956,7 @@
 						} else {
 							name = name.split(" ");
 						}
-					}
+				}
 				} else {
 
 					// If "name" is an array of keys...
@@ -3970,14 +3971,14 @@
 				i = name.length;
 				while (i--) {
 					delete thisCache[name[i]];
-				}
+			}
 
 				// If there is no data left in the cache, we want to continue
 				// and let the cache object itself get destroyed
 				if (pvt ? !isEmptyDataObject(thisCache) : !jQuery.isEmptyObject(thisCache)) {
-					return;
-				}
+				return;
 			}
+		}
 		}
 
 		// See jQuery.data for more information
@@ -3988,8 +3989,8 @@
 			// had been the only thing left in it
 			if (!isEmptyDataObject(cache[id])) {
 				return;
-			}
 		}
+	}
 
 		// Destroy the cache
 		if (isNode) {
@@ -4068,12 +4069,12 @@
 								if (name.indexOf("data-") === 0) {
 									name = jQuery.camelCase(name.slice(5));
 									dataAttr(elem, name, data[name]);
-								}
 							}
 						}
-						jQuery._data(elem, "parsedAttrs", true);
 					}
+						jQuery._data(elem, "parsedAttrs", true);
 				}
+			}
 
 				return data;
 			}
@@ -4119,8 +4120,8 @@
 						queue = jQuery._data(elem, type, jQuery.makeArray(data));
 					} else {
 						queue.push(data);
-					}
 				}
+			}
 				return queue || [];
 			}
 		},
@@ -4148,7 +4149,7 @@
 				// automatically dequeued
 				if (type === "fx") {
 					queue.unshift("inprogress");
-				}
+			}
 
 				// clear up the last queue stop function
 				delete hooks.stop;
@@ -4157,7 +4158,7 @@
 
 			if (!startLength && hooks) {
 				hooks.empty.fire();
-			}
+		}
 		},
 
 		// not intended for public consumption - generates a queueHooks object,
@@ -4220,7 +4221,7 @@
 				resolve = function () {
 					if (!( --count )) {
 						defer.resolveWith(elements, [elements]);
-					}
+				}
 				};
 
 			if (typeof type !== "string") {
@@ -4234,8 +4235,8 @@
 				if (tmp && tmp.empty) {
 					count++;
 					tmp.empty.add(resolve);
-				}
 			}
+		}
 			resolve();
 			return defer.promise(obj);
 		}
@@ -4364,8 +4365,8 @@
 				tween.unit = unit;
 				tween.start = initialInUnit;
 				tween.end = adjusted;
-			}
 		}
+	}
 		return adjusted;
 	}
 
@@ -4405,7 +4406,7 @@
 					fn = function (elem, key, value) {
 						return bulk.call(jQuery(elem), value);
 					};
-				}
+			}
 			}
 
 			if (fn) {
@@ -4415,8 +4416,8 @@
 						key,
 						raw ? value : value.call(elems[i], i, fn(elems[i], key))
 					);
-				}
 			}
+		}
 		}
 
 		return chainable ?
@@ -4449,8 +4450,8 @@
 				safeFrag.createElement(
 					list.pop()
 				);
-			}
 		}
+	}
 		return safeFrag;
 	}
 
@@ -4562,9 +4563,9 @@
 					found.push(elem);
 				} else {
 					jQuery.merge(found, getAll(elem, tag));
-				}
 			}
 		}
+	}
 
 		return tag === undefined || tag && jQuery.nodeName(context, tag) ?
 			jQuery.merge([context], found) :
@@ -4582,7 +4583,7 @@
 				"globalEval",
 				!refElements || jQuery._data(refElements[i], "globalEval")
 			);
-		}
+	}
 	}
 
 
@@ -4592,7 +4593,7 @@
 	function fixDefaultChecked(elem) {
 		if (rcheckableType.test(elem.type)) {
 			elem.defaultChecked = elem.checked;
-		}
+	}
 	}
 
 	function buildFragment(elems, context, scripts, selection, ignored) {
@@ -4657,8 +4658,8 @@
 							if (jQuery.nodeName(( tbody = elem.childNodes[j] ), "tbody") && !tbody.childNodes.length) {
 
 								elem.removeChild(tbody);
-							}
 						}
+					}
 					}
 
 					jQuery.merge(nodes, tmp.childNodes);
@@ -4669,12 +4670,12 @@
 					// Fix #12392 for oldIE
 					while (tmp.firstChild) {
 						tmp.removeChild(tmp.firstChild);
-					}
+				}
 
 					// Remember the top-level container for proper cleanup
 					tmp = safe.lastChild;
-				}
 			}
+		}
 		}
 
 		// Fix #11356: Clear elements from fragment
@@ -4695,7 +4696,7 @@
 			if (selection && jQuery.inArray(elem, selection) > -1) {
 				if (ignored) {
 					ignored.push(elem);
-				}
+			}
 
 				continue;
 			}
@@ -4716,9 +4717,9 @@
 				while (( elem = tmp[j++] )) {
 					if (rscriptType.test(elem.type || "")) {
 						scripts.push(elem);
-					}
 				}
 			}
+		}
 		}
 
 		tmp = null;
@@ -4740,7 +4741,7 @@
 				// Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
 				div.setAttribute(eventName, "t");
 				support[i] = div.attributes[eventName].expando === false;
-			}
+		}
 		}
 
 		// Null elements to avoid leaks in IE.
@@ -4783,7 +4784,7 @@
 				// ( types-Object, data )
 				data = data || selector;
 				selector = undefined;
-			}
+		}
 			for (type in types) {
 				on(elem, type, selector, data, types[type], one);
 			}
@@ -4807,7 +4808,7 @@
 				fn = data;
 				data = selector;
 				selector = undefined;
-			}
+		}
 		}
 		if (fn === false) {
 			fn = returnFalse;
@@ -4826,7 +4827,7 @@
 
 			// Use same guid so caller can remove using origFn
 			fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
-		}
+	}
 		return elem.each(function () {
 			jQuery.event.add(this, types, fn, data, selector);
 		});
@@ -4932,8 +4933,8 @@
 
 						} else if (elem.attachEvent) {
 							elem.attachEvent("on" + type, eventHandle);
-						}
 					}
+				}
 				}
 
 				if (special.add) {
@@ -4941,7 +4942,7 @@
 
 					if (!handleObj.handler.guid) {
 						handleObj.handler.guid = handler.guid;
-					}
+				}
 				}
 
 				// Add to the element's handler list, delegates in front
@@ -4949,7 +4950,7 @@
 					handlers.splice(handlers.delegateCount++, 0, handleObj);
 				} else {
 					handlers.push(handleObj);
-				}
+			}
 
 				// Keep track of which events have ever been used, for event optimization
 				jQuery.event.global[type] = true;
@@ -4983,7 +4984,7 @@
 				if (!type) {
 					for (type in events) {
 						jQuery.event.remove(elem, type + types[t], handler, selector, true);
-					}
+				}
 					continue;
 				}
 
@@ -5007,11 +5008,11 @@
 
 						if (handleObj.selector) {
 							handlers.delegateCount--;
-						}
+					}
 						if (special.remove) {
 							special.remove.call(elem, handleObj);
 						}
-					}
+				}
 				}
 
 				// Remove generic event handler if we removed something and no more handlers exist
@@ -5021,10 +5022,10 @@
 						special.teardown.call(elem, namespaces, elemData.handle) === false) {
 
 						jQuery.removeEvent(elem, type, elemData.handle);
-					}
+				}
 
 					delete events[type];
-				}
+			}
 			}
 
 			// Remove the expando if it's no longer used
@@ -5110,7 +5111,7 @@
 				// Only add window if we got to document (e.g., not plain obj or detached DOM)
 				if (tmp === ( elem.ownerDocument || document )) {
 					eventPath.push(tmp.defaultView || tmp.parentWindow || window);
-				}
+			}
 			}
 
 			// Fire handlers on the event path
@@ -5135,8 +5136,8 @@
 					event.result = handle.apply(cur, data);
 					if (event.result === false) {
 						event.preventDefault();
-					}
 				}
+			}
 			}
 			event.type = type;
 
@@ -5174,9 +5175,9 @@
 
 						if (tmp) {
 							elem[ontype] = tmp;
-						}
 					}
 				}
+			}
 			}
 
 			return event.result;
@@ -5227,10 +5228,10 @@
 							if (( event.result = ret ) === false) {
 								event.preventDefault();
 								event.stopPropagation();
-							}
 						}
 					}
 				}
+			}
 			}
 
 			// Call the postDispatch hook for the mapped type
@@ -5274,16 +5275,16 @@
 								matches[sel] = handleObj.needsContext ?
 								jQuery(sel, this).index(cur) > -1 :
 									jQuery.find(sel, this, null, [cur]).length;
-							}
+						}
 							if (matches[sel]) {
 								matches.push(handleObj);
-							}
 						}
+					}
 						if (matches.length) {
 							handlerQueue.push({elem: cur, handlers: matches});
 						}
-					}
 				}
+			}
 			}
 
 			// Add the remaining (directly-bound) handlers
@@ -5353,7 +5354,7 @@
 				// Add which for key events
 				if (event.which == null) {
 					event.which = original.charCode != null ? original.charCode : original.keyCode;
-				}
+			}
 
 				return event;
 			}
@@ -5392,7 +5393,7 @@
 				// Note: button is not normalized, so don't use it
 				if (!event.which && button !== undefined) {
 					event.which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
-				}
+			}
 
 				return event;
 			}
@@ -5411,15 +5412,15 @@
 					if (this !== safeActiveElement() && this.focus) {
 						try {
 							this.focus();
-							return false;
+						return false;
 						} catch (e) {
 
 							// Support: IE<9
 							// If we error on focus to hidden element (#1486, #12518),
 							// let .trigger() run the handlers
-						}
 					}
-				},
+				}
+			},
 				delegateType: "focusin"
 			},
 			blur: {
@@ -5438,14 +5439,14 @@
 					if (jQuery.nodeName(this, "input") && this.type === "checkbox" && this.click) {
 						this.click();
 						return false;
-					}
+				}
 				},
 
 				// For cross-browser consistency, don't fire native .click() on links
 				_default: function (event) {
 					return jQuery.nodeName(event.target, "a");
-				}
-			},
+			}
+		},
 
 			beforeunload: {
 				postDispatch: function (event) {
@@ -5454,9 +5455,9 @@
 					// Firefox doesn't alert if the returnValue field is not set.
 					if (event.result !== undefined && event.originalEvent) {
 						event.originalEvent.returnValue = event.result;
-					}
 				}
 			}
+		}
 		},
 
 		// Piggyback on a donor event to simulate a different one
@@ -5476,7 +5477,7 @@
 					// Guard for simulated events was moved to jQuery.event.stopPropagation function
 					// since `originalEvent` should point to the original event for the
 					// constancy with other events and for more focused logic
-				}
+			}
 			);
 
 			jQuery.event.trigger(e, null, elem);
@@ -5508,7 +5509,7 @@
 				}
 
 				elem.detachEvent(name, handle);
-			}
+		}
 		};
 
 	jQuery.Event = function (src, props) {
@@ -5601,7 +5602,7 @@
 
 			if (e && e.stopImmediatePropagation) {
 				e.stopImmediatePropagation();
-			}
+		}
 
 			this.stopPropagation();
 		}
@@ -5637,7 +5638,7 @@
 					event.type = handleObj.origType;
 					ret = handleObj.handler.apply(this, arguments);
 					event.type = fix;
-				}
+			}
 				return ret;
 			}
 		};
@@ -5686,7 +5687,7 @@
 					delete event._submitBubble;
 					if (this.parentNode && !event.isTrigger) {
 						jQuery.event.simulate("submit", this.parentNode, event);
-					}
+				}
 				}
 			},
 
@@ -5695,7 +5696,7 @@
 				// Only need this for delegated form submit events
 				if (jQuery.nodeName(this, "form")) {
 					return false;
-				}
+			}
 
 				// Remove delegated handlers; cleanData eventually reaps submit handlers attached above
 				jQuery.event.remove(this, "._submit");
@@ -5729,7 +5730,7 @@
 							// Allow triggered, simulated change events (#11500)
 							jQuery.event.simulate("change", this, event);
 						});
-					}
+				}
 					return false;
 				}
 
@@ -5802,7 +5803,7 @@
 						jQuery._removeData(doc, fix);
 					} else {
 						jQuery._data(doc, fix, attaches);
-					}
+				}
 				}
 			};
 		});
@@ -5836,7 +5837,7 @@
 				// ( types-object [, selector] )
 				for (type in types) {
 					this.off(type, selector, types[type]);
-				}
+			}
 				return this;
 			}
 			if (selector === false || typeof selector === "function") {
@@ -5862,7 +5863,7 @@
 			var elem = this[0];
 			if (elem) {
 				return jQuery.event.trigger(type, data, elem, true);
-			}
+		}
 		}
 	});
 
@@ -5906,14 +5907,14 @@
 			elem.type = match[1];
 		} else {
 			elem.removeAttribute("type");
-		}
+	}
 		return elem;
 	}
 
 	function cloneCopyEvent(src, dest) {
 		if (dest.nodeType !== 1 || !jQuery.hasData(src)) {
 			return;
-		}
+	}
 
 		var type, i, l,
 			oldData = jQuery._data(src),
@@ -5927,14 +5928,14 @@
 			for (type in events) {
 				for (i = 0, l = events[type].length; i < l; i++) {
 					jQuery.event.add(dest, type, events[type][i]);
-				}
 			}
+		}
 		}
 
 		// make the cloned public data object a copy from the original
 		if (curData.data) {
 			curData.data = jQuery.extend({}, curData.data);
-		}
+	}
 	}
 
 	function fixCloneNodeIssues(src, dest) {
@@ -5953,7 +5954,7 @@
 
 			for (e in data.events) {
 				jQuery.removeEvent(dest, e, data.handle);
-			}
+		}
 
 			// Event data gets referenced instead of copied if the expando gets copied too
 			dest.removeAttribute(jQuery.expando);
@@ -5991,7 +5992,7 @@
 			// checkbox/radio button to an empty string instead of "on"
 			if (dest.value !== src.value) {
 				dest.value = src.value;
-			}
+		}
 
 			// IE6-8 fails to return the selected option to the default selected
 			// state when cloning options
@@ -6025,7 +6026,7 @@
 				var self = collection.eq(index);
 				if (isFunction) {
 					args[0] = value.call(this, index, self.html());
-				}
+			}
 				domManip(self, args, callback, ignored);
 			});
 		}
@@ -6059,7 +6060,7 @@
 							// push.apply(_, arraylike) throws on ancient WebKit
 							jQuery.merge(scripts, getAll(node, "script"));
 						}
-					}
+				}
 
 					callback.call(collection[i], node, i);
 				}
@@ -6081,21 +6082,21 @@
 								// Optional AJAX dependency, but won't run scripts if not present
 								if (jQuery._evalUrl) {
 									jQuery._evalUrl(node.src);
-								}
+							}
 							} else {
 								jQuery.globalEval(
 									( node.text || node.textContent || node.innerHTML || "" )
 										.replace(rcleanScript, "")
 								);
-							}
 						}
 					}
 				}
+			}
 
 				// Fix #11809: Avoid leaking memory
 				fragment = first = null;
 			}
-		}
+	}
 
 		return collection;
 	}
@@ -6109,7 +6110,7 @@
 
 			if (!keepData && node.nodeType === 1) {
 				jQuery.cleanData(getAll(node));
-			}
+		}
 
 			if (node.parentNode) {
 				if (keepData && jQuery.contains(node.ownerDocument, node)) {
@@ -6117,7 +6118,7 @@
 				}
 				node.parentNode.removeChild(node);
 			}
-		}
+	}
 
 		return elem;
 	}
@@ -6154,8 +6155,8 @@
 					// Ensure that the destination node is not null; Fixes #9587
 					if (destElements[i]) {
 						fixCloneNodeIssues(node, destElements[i]);
-					}
 				}
+			}
 			}
 
 			// Copy the events from the original to the clone
@@ -6166,10 +6167,10 @@
 
 					for (i = 0; ( node = srcElements[i] ) != null; i++) {
 						cloneCopyEvent(node, destElements[i]);
-					}
+				}
 				} else {
 					cloneCopyEvent(elem, clone);
-				}
+			}
 			}
 
 			// Preserve script evaluation history
@@ -6207,8 +6208,8 @@
 									// This is a shortcut to avoid jQuery.event.remove's overhead
 								} else {
 									jQuery.removeEvent(elem, type, data.handle);
-								}
 							}
+						}
 						}
 
 						// Remove cache only if it was not already removed by jQuery.event.remove
@@ -6228,13 +6229,13 @@
 								// https://code.google.com/p/chromium/issues/detail?id=378607
 							} else {
 								elem[internalKey] = undefined;
-							}
+						}
 
 							deletedIds.push(id);
-						}
 					}
 				}
 			}
+		}
 		}
 	});
 
@@ -6315,7 +6316,7 @@
 				// Support: IE<9
 				if (elem.options && jQuery.nodeName(elem, "select")) {
 					elem.options.length = 0;
-				}
+			}
 			}
 
 			return this;
@@ -6357,7 +6358,7 @@
 							if (elem.nodeType === 1) {
 								jQuery.cleanData(getAll(elem, false));
 								elem.innerHTML = value;
-							}
+						}
 						}
 
 						elem = 0;
@@ -6384,7 +6385,7 @@
 					jQuery.cleanData(getAll(this));
 					if (parent) {
 						parent.replaceChild(elem, this);
-					}
+				}
 				}
 
 				// Force callback invocation
@@ -6474,11 +6475,11 @@
 
 				display = actualDisplay(nodeName, doc);
 				iframe.detach();
-			}
+		}
 
 			// Store the correct default display
 			elemdisplay[nodeName] = display;
-		}
+	}
 
 		return display;
 	}
@@ -6595,7 +6596,7 @@
 				// Support: IE <=8 only, Android 4.0 - 4.3 only, Firefox <=3 - 37
 				if (pixelPositionVal == null) {
 					computeStyleTests();
-				}
+			}
 				return reliableMarginLeftVal;
 			}
 		});
@@ -6674,8 +6675,8 @@
 					contents[0].style.display = "";
 					contents[1].style.display = "none";
 					reliableHiddenOffsetsVal = contents[0].offsetHeight === 0;
-				}
 			}
+		}
 
 			// Teardown
 			documentElement.removeChild(container);
@@ -6742,7 +6743,7 @@
 					style.width = width;
 					style.minWidth = minWidth;
 					style.maxWidth = maxWidth;
-				}
+			}
 			}
 
 			// Support: IE
@@ -6796,7 +6797,7 @@
 				style.left = left;
 				if (rsLeft) {
 					rs.left = rsLeft;
-				}
+			}
 			}
 
 			// Support: IE
@@ -6819,7 +6820,7 @@
 					// to missing dependency), remove it.
 					delete this.get;
 					return;
-				}
+			}
 
 				// Hook needed; redefine it so that the support test is not executed again.
 				return ( this.get = hookFn ).apply(this, arguments);
@@ -6865,8 +6866,8 @@
 		while (i--) {
 			name = cssPrefixes[i] + capName;
 			if (name in emptyStyle) {
-				return name;
-			}
+			return name;
+		}
 		}
 	}
 
@@ -6880,7 +6881,7 @@
 			elem = elements[index];
 			if (!elem.style) {
 				continue;
-			}
+		}
 
 			values[index] = jQuery._data(elem, "olddisplay");
 			display = elem.style.display;
@@ -6890,7 +6891,7 @@
 				// being hidden by cascaded rules or not
 				if (!values[index] && display === "none") {
 					elem.style.display = "";
-				}
+			}
 
 				// Set elements which have been overridden with display: none
 				// in a stylesheet to whatever the default browser style is
@@ -6898,7 +6899,7 @@
 				if (elem.style.display === "" && isHidden(elem)) {
 					values[index] =
 						jQuery._data(elem, "olddisplay", defaultDisplay(elem.nodeName));
-				}
+			}
 			} else {
 				hidden = isHidden(elem);
 
@@ -6908,8 +6909,8 @@
 						"olddisplay",
 						hidden ? display : jQuery.css(elem, "display")
 					);
-				}
 			}
+		}
 		}
 
 		// Set the display of most of the elements in a second loop
@@ -6922,7 +6923,7 @@
 			if (!show || elem.style.display === "none" || elem.style.display === "") {
 				elem.style.display = show ? values[index] || "" : "none";
 			}
-		}
+	}
 
 		return elements;
 	}
@@ -6973,9 +6974,9 @@
 				// at this point, extra isn't content nor padding, so add border
 				if (extra !== "padding") {
 					val += jQuery.css(elem, "border" + cssExpand[i] + "Width", true, styles);
-				}
 			}
 		}
+	}
 
 		return val;
 	}
@@ -6999,7 +7000,7 @@
 			// in IE throws an error.
 			if (elem.getClientRects().length) {
 				val = Math.round(elem.getBoundingClientRect()[name] * 100);
-			}
+		}
 		}
 
 		// some non-html elements return undefined for offsetWidth, so check for null/undefined
@@ -7016,7 +7017,7 @@
 			// Computed unit is not pixels. Stop here and return.
 			if (rnumnonpx.test(val)) {
 				return val;
-			}
+		}
 
 			// we need the check for style in case a browser which returns unreliable values
 			// for getComputedStyle silently falls back to the reliable elem.style
@@ -7025,7 +7026,7 @@
 
 			// Normalize "", auto, and prepare for extra
 			val = parseFloat(val) || 0;
-		}
+	}
 
 		// use the active box-sizing model to add/subtract irrelevant styles
 		return ( val +
@@ -7051,8 +7052,8 @@
 						// We should always get a number back from opacity
 						var ret = curCSS(elem, "opacity");
 						return ret === "" ? "1" : ret;
-					}
 				}
+			}
 			}
 		},
 
@@ -7149,7 +7150,7 @@
 					( ret = hooks.get(elem, false, extra) ) !== undefined) {
 
 					return ret;
-				}
+			}
 
 				// Otherwise just get the value from the style object
 				return style[name];
@@ -7181,7 +7182,7 @@
 			//convert "normal" to computed value
 			if (val === "normal" && name in cssNormalTransform) {
 				val = cssNormalTransform[name];
-			}
+		}
 
 			// Return, converting to number if forced or a qualifier was provided and val looks numeric
 			if (extra === "" || extra) {
@@ -7205,7 +7206,7 @@
 							return getWidthOrHeight(elem, name, extra);
 						}) :
 						getWidthOrHeight(elem, name, extra);
-				}
+			}
 			},
 
 			set: function (elem, value, extra) {
@@ -7262,7 +7263,7 @@
 					// or unset inline opacity, we are done
 					if (value === "" || currentStyle && !currentStyle.filter) {
 						return;
-					}
+				}
 				}
 
 				// otherwise, set new filter values
@@ -7278,7 +7279,7 @@
 			if (computed) {
 				return swap(elem, {"display": "inline-block"},
 					curCSS, [elem, "marginRight"]);
-			}
+		}
 		}
 	);
 
@@ -7300,7 +7301,7 @@
 								0
 						)
 					) + "px";
-			}
+		}
 		}
 	);
 
@@ -7321,10 +7322,10 @@
 				for (; i < 4; i++) {
 					expanded[prefix + cssExpand[i] + suffix] =
 						parts[i] || parts[i - 2] || parts[0];
-				}
+			}
 
 				return expanded;
-			}
+		}
 		};
 
 		if (!rmargin.test(prefix)) {
@@ -7345,10 +7346,10 @@
 
 					for (; i < len; i++) {
 						map[name[i]] = jQuery.css(elem, name[i], false, styles);
-					}
+				}
 
 					return map;
-				}
+			}
 
 				return value !== undefined ?
 					jQuery.style(elem, name, value) :
@@ -7364,7 +7365,7 @@
 		toggle: function (state) {
 			if (typeof state === "boolean") {
 				return state ? this.show() : this.hide();
-			}
+		}
 
 			return this.each(function () {
 				if (isHidden(this)) {
@@ -7373,7 +7374,7 @@
 					jQuery(this).hide();
 				}
 			});
-		}
+	}
 	});
 
 
@@ -7416,7 +7417,7 @@
 
 			if (this.options.step) {
 				this.options.step.call(this.elem, this.now, this);
-			}
+		}
 
 			if (hooks && hooks.set) {
 				hooks.set(this);
@@ -7462,8 +7463,8 @@
 					jQuery.style(tween.elem, tween.prop, tween.now + tween.unit);
 				} else {
 					tween.elem[tween.prop] = tween.now;
-				}
 			}
+		}
 		}
 	};
 
@@ -7474,7 +7475,7 @@
 		set: function (tween) {
 			if (tween.elem.nodeType && tween.elem.parentNode) {
 				tween.elem[tween.prop] = tween.now;
-			}
+		}
 		}
 	};
 
@@ -7523,7 +7524,7 @@
 
 		if (includeWidth) {
 			attrs.opacity = attrs.width = type;
-		}
+	}
 
 		return attrs;
 	}
@@ -7538,8 +7539,8 @@
 
 				// we're done with this property
 				return tween;
-			}
 		}
+	}
 	}
 
 	function defaultPrefilter(elem, props, opts) {
@@ -7603,8 +7604,8 @@
 					style.display = "inline-block";
 				} else {
 					style.zoom = 1;
-				}
 			}
+		}
 		}
 
 		if (opts.overflow) {
@@ -7615,7 +7616,7 @@
 					style.overflowX = opts.overflow[1];
 					style.overflowY = opts.overflow[2];
 				});
-			}
+		}
 		}
 
 		// show/hide pass
@@ -7632,21 +7633,21 @@
 						hidden = true;
 					} else {
 						continue;
-					}
 				}
+			}
 				orig[prop] = dataShow && dataShow[prop] || jQuery.style(elem, prop);
 
 				// Any non-fx value stops us from restoring the original display value
 			} else {
 				display = undefined;
-			}
+		}
 		}
 
 		if (!jQuery.isEmptyObject(orig)) {
 			if (dataShow) {
 				if ("hidden" in dataShow) {
 					hidden = dataShow.hidden;
-				}
+			}
 			} else {
 				dataShow = jQuery._data(elem, "fxshow", {});
 			}
@@ -7667,7 +7668,7 @@
 				jQuery._removeData(elem, "fxshow");
 				for (prop in orig) {
 					jQuery.style(elem, prop, orig[prop]);
-				}
+			}
 			});
 			for (prop in orig) {
 				tween = createTween(hidden ? dataShow[prop] : 0, prop, anim);
@@ -7677,14 +7678,14 @@
 					if (hidden) {
 						tween.end = tween.start;
 						tween.start = prop === "width" || prop === "height" ? 1 : 0;
-					}
 				}
 			}
+		}
 
 			// If this is a noop like .hide().hide(), restore an overwritten display value
 		} else if (( display === "none" ? defaultDisplay(elem.nodeName) : display ) === "inline") {
 			style.display = display;
-		}
+	}
 	}
 
 	function propFilter(props, specialEasing) {
@@ -7716,12 +7717,12 @@
 					if (!( index in props )) {
 						props[index] = value[index];
 						specialEasing[index] = easing;
-					}
 				}
+			}
 			} else {
 				specialEasing[name] = easing;
-			}
 		}
+	}
 	}
 
 	function Animation(elem, properties, options) {
@@ -7778,7 +7779,7 @@
 						animation.opts.specialEasing[prop] || animation.opts.easing);
 					animation.tweens.push(tween);
 					return tween;
-				},
+			},
 				stop: function (gotoEnd) {
 					var index = 0,
 
@@ -7786,8 +7787,8 @@
 					// otherwise we skip this part
 						length = gotoEnd ? animation.tweens.length : 0;
 					if (stopped) {
-						return this;
-					}
+					return this;
+				}
 					stopped = true;
 					for (; index < length; index++) {
 						animation.tweens[index].run(1);
@@ -7800,9 +7801,9 @@
 						deferred.resolveWith(elem, [animation, gotoEnd]);
 					} else {
 						deferred.rejectWith(elem, [animation, gotoEnd]);
-					}
-					return this;
 				}
+					return this;
+			}
 			}),
 			props = animation.props;
 
@@ -7816,14 +7817,14 @@
 						jQuery.proxy(result.stop, result);
 				}
 				return result;
-			}
+		}
 		}
 
 		jQuery.map(props, createTween, animation);
 
 		if (jQuery.isFunction(animation.opts.start)) {
 			animation.opts.start.call(elem, animation);
-		}
+	}
 
 		jQuery.fx.timer(
 			jQuery.extend(tick, {
@@ -7866,7 +7867,7 @@
 				prop = props[index];
 				Animation.tweeners[prop] = Animation.tweeners[prop] || [];
 				Animation.tweeners[prop].unshift(callback);
-			}
+		}
 		},
 
 		prefilters: [defaultPrefilter],
@@ -7876,7 +7877,7 @@
 				Animation.prefilters.unshift(callback);
 			} else {
 				Animation.prefilters.push(callback);
-			}
+		}
 		}
 	});
 
@@ -7908,7 +7909,7 @@
 			if (opt.queue) {
 				jQuery.dequeue(this, opt.queue);
 			}
-		};
+	};
 
 		return opt;
 	};
@@ -7934,7 +7935,7 @@
 					if (empty || jQuery._data(this, "finish")) {
 						anim.stop(true);
 					}
-				};
+			};
 			doAnimation.finish = doAnimation;
 
 			return empty || optall.queue === false ?
@@ -7971,8 +7972,8 @@
 					for (index in data) {
 						if (data[index] && data[index].stop && rrun.test(index)) {
 							stopQueue(data[index]);
-						}
 					}
+				}
 				}
 
 				for (index = timers.length; index--;) {
@@ -7982,7 +7983,7 @@
 						timers[index].anim.stop(gotoEnd);
 						dequeue = false;
 						timers.splice(index, 1);
-					}
+				}
 				}
 
 				// start the next in the queue if the last step wasn't forced
@@ -7990,7 +7991,7 @@
 				// but only if they were gotoEnd
 				if (dequeue || !gotoEnd) {
 					jQuery.dequeue(this, type);
-				}
+			}
 			});
 		},
 		finish: function (type) {
@@ -8020,14 +8021,14 @@
 					if (timers[index].elem === this && timers[index].queue === type) {
 						timers[index].anim.stop(true);
 						timers.splice(index, 1);
-					}
+				}
 				}
 
 				// look for any animations in the old queue and finish them
 				for (index = 0; index < length; index++) {
 					if (queue[index] && queue[index].finish) {
 						queue[index].finish.call(this);
-					}
+				}
 				}
 
 				// turn off finishing flag
@@ -8073,7 +8074,7 @@
 			// Checks the timer has not already been removed
 			if (!timer() && timers[i] === timer) {
 				timers.splice(i--, 1);
-			}
+		}
 		}
 
 		if (!timers.length) {
@@ -8221,7 +8222,7 @@
 
 						// handle cases where value is null/undef or number
 						ret == null ? "" : ret;
-				}
+			}
 
 				return;
 			}
@@ -8308,11 +8309,11 @@
 							// We don't need an array for one selects
 							if (one) {
 								return value;
-							}
+						}
 
 							// Multi-Selects return an array
 							values.push(value);
-						}
+					}
 					}
 
 					return values;
@@ -8340,21 +8341,21 @@
 
 								// Will be executed only in IE6
 								option.scrollHeight;
-							}
+						}
 
 						} else {
 							option.selected = false;
-						}
+					}
 					}
 
 					// Force browsers to behave consistently when non-matching value is set
 					if (!optionSet) {
 						elem.selectedIndex = -1;
-					}
+				}
 
 					return options;
-				}
 			}
+		}
 		}
 	});
 
@@ -8364,8 +8365,8 @@
 			set: function (elem, value) {
 				if (jQuery.isArray(value)) {
 					return ( elem.checked = jQuery.inArray(jQuery(elem).val(), value) > -1 );
-				}
 			}
+		}
 		};
 		if (!support.checkOn) {
 			jQuery.valHooks[this].get = function (elem) {
@@ -8420,12 +8421,12 @@
 				if (value === null) {
 					jQuery.removeAttr(elem, name);
 					return;
-				}
+			}
 
 				if (hooks && "set" in hooks &&
 					( ret = hooks.set(elem, value, name) ) !== undefined) {
-					return ret;
-				}
+				return ret;
+			}
 
 				elem.setAttribute(name, value + "");
 				return value;
@@ -8453,10 +8454,10 @@
 						elem.setAttribute("type", value);
 						if (val) {
 							elem.value = val;
-						}
-						return value;
 					}
+						return value;
 				}
+			}
 			}
 		},
 
@@ -8478,19 +8479,19 @@
 
 							// Support: IE<9
 							// Also clear defaultChecked/defaultSelected (if appropriate)
-						} else {
+					} else {
 							elem[jQuery.camelCase("default-" + name)] =
 								elem[propName] = false;
-						}
+					}
 
 						// See #9699 for explanation of this approach (setting first, then removal)
 					} else {
 						jQuery.attr(elem, name, "");
-					}
+				}
 
 					elem.removeAttribute(getSetAttribute ? name : propName);
-				}
 			}
+		}
 		}
 	});
 
@@ -8511,7 +8512,7 @@
 				// Support: IE<9
 				// Use defaultChecked and defaultSelected for oldIE
 				elem[jQuery.camelCase("default-" + name)] = elem[name] = true;
-			}
+		}
 			return name;
 		}
 	};
@@ -8557,7 +8558,7 @@
 
 					// Use nodeHook if defined (#1954); otherwise setAttribute is fine
 					return nodeHook && nodeHook.set(elem, value, name);
-				}
+			}
 			}
 		};
 	}
@@ -8583,7 +8584,7 @@
 				// Break association with cloned elements by also using setAttribute (#9646)
 				if (name === "value" || value === elem.getAttribute(name)) {
 					return value;
-				}
+			}
 			}
 		};
 
@@ -8596,7 +8597,7 @@
 						ret.value :
 						null;
 				}
-			};
+		};
 
 		// Fixing value retrieval on a button requires this module
 		jQuery.valHooks.button = {
@@ -8604,7 +8605,7 @@
 				var ret = elem.getAttributeNode(name);
 				if (ret && ret.specified) {
 					return ret.value;
-				}
+			}
 			},
 			set: nodeHook.set
 		};
@@ -8626,8 +8627,8 @@
 						elem.setAttribute(name, "auto");
 						return value;
 					}
-				}
-			};
+			}
+		};
 		});
 	}
 
@@ -8639,7 +8640,7 @@
 				// Note: IE uppercases css property names, but if we were to .toLowerCase()
 				// .cssText, that would destroy case sensitivity in URL's, like in "background"
 				return elem.style.cssText || undefined;
-			},
+		},
 			set: function (elem, value) {
 				return ( elem.style.cssText = value + "" );
 			}
@@ -8689,8 +8690,8 @@
 			if (value !== undefined) {
 				if (hooks && "set" in hooks &&
 					( ret = hooks.set(elem, value, name) ) !== undefined) {
-					return ret;
-				}
+				return ret;
+			}
 
 				return ( elem[name] = value );
 			}
@@ -8718,8 +8719,8 @@
 						rclickable.test(elem.nodeName) && elem.href ?
 							0 :
 							-1;
-				}
 			}
+		}
 		},
 
 		propFix: {
@@ -8759,7 +8760,7 @@
 					// Make sure that it also works with optgroups, see #5701
 					if (parent.parentNode) {
 						parent.parentNode.selectedIndex;
-					}
+				}
 				}
 				return null;
 			},
@@ -8770,8 +8771,8 @@
 
 					if (parent.parentNode) {
 						parent.parentNode.selectedIndex;
-					}
 				}
+			}
 			}
 		};
 	}
@@ -8827,16 +8828,16 @@
 						while (( clazz = classes[j++] )) {
 							if (cur.indexOf(" " + clazz + " ") < 0) {
 								cur += clazz + " ";
-							}
 						}
+					}
 
 						// only assign if different to avoid unneeded rendering.
 						finalValue = jQuery.trim(cur);
 						if (curValue !== finalValue) {
 							jQuery.attr(elem, "class", finalValue);
 						}
-					}
 				}
+			}
 			}
 
 			return this;
@@ -8873,16 +8874,16 @@
 							// Remove *all* instances
 							while (cur.indexOf(" " + clazz + " ") > -1) {
 								cur = cur.replace(" " + clazz + " ", " ");
-							}
+						}
 						}
 
 						// Only assign if different to avoid unneeded rendering.
 						finalValue = jQuery.trim(cur);
 						if (curValue !== finalValue) {
 							jQuery.attr(elem, "class", finalValue);
-						}
 					}
 				}
+			}
 			}
 
 			return this;
@@ -8921,8 +8922,8 @@
 							self.removeClass(className);
 						} else {
 							self.addClass(className);
-						}
 					}
+				}
 
 					// Toggle whole class name
 				} else if (value === undefined || type === "boolean") {
@@ -8931,7 +8932,7 @@
 
 						// store className if set
 						jQuery._data(this, "__className__", className);
-					}
+				}
 
 					// If the element has a class name or if we're passed "false",
 					// then remove the whole classname (if there was one, the above saved it).
@@ -8942,7 +8943,7 @@
 							"" :
 						jQuery._data(this, "__className__") || ""
 					);
-				}
+			}
 			});
 		},
 
@@ -8958,7 +8959,7 @@
 				) {
 					return true;
 				}
-			}
+		}
 
 			return false;
 		}
@@ -9056,7 +9057,7 @@
 				xml = new window.ActiveXObject("Microsoft.XMLDOM");
 				xml.async = "false";
 				xml.loadXML(data);
-			}
+		}
 		} catch (e) {
 			xml = undefined;
 		}
@@ -9135,8 +9136,8 @@
 						// Otherwise append
 					} else {
 						( structure[dataType] = structure[dataType] || [] ).push(func);
-					}
 				}
+			}
 			}
 		};
 	}
@@ -9162,7 +9163,7 @@
 				}
 			});
 			return selected;
-		}
+	}
 
 		return inspect(options.dataTypes[0]) || !inspected["*"] && inspect("*");
 	}
@@ -9177,8 +9178,8 @@
 		for (key in src) {
 			if (src[key] !== undefined) {
 				( flatOptions[key] ? target : ( deep || ( deep = {} ) ) )[key] = src[key];
-			}
 		}
+	}
 		if (deep) {
 			jQuery.extend(true, target, deep);
 		}
@@ -9200,7 +9201,7 @@
 			dataTypes.shift();
 			if (ct === undefined) {
 				ct = s.mimeType || jqXHR.getResponseHeader("Content-Type");
-			}
+		}
 		}
 
 		// Check if we're dealing with a known content-type
@@ -9209,8 +9210,8 @@
 				if (contents[type] && contents[type].test(ct)) {
 					dataTypes.unshift(type);
 					break;
-				}
 			}
+		}
 		}
 
 		// Check to see if we have a response for the expected dataType
@@ -9223,11 +9224,11 @@
 				if (!dataTypes[0] || s.converters[type + " " + dataTypes[0]]) {
 					finalDataType = type;
 					break;
-				}
+			}
 				if (!firstDataType) {
 					firstDataType = type;
 				}
-			}
+		}
 
 			// Or just use first one
 			finalDataType = finalDataType || firstDataType;
@@ -9239,9 +9240,9 @@
 		if (finalDataType) {
 			if (finalDataType !== dataTypes[0]) {
 				dataTypes.unshift(finalDataType);
-			}
-			return responses[finalDataType];
 		}
+			return responses[finalDataType];
+	}
 	}
 
 	/* Chain conversions given the request and the original response
@@ -9258,7 +9259,7 @@
 		if (dataTypes[1]) {
 			for (conv in s.converters) {
 				converters[conv.toLowerCase()] = s.converters[conv];
-			}
+		}
 		}
 
 		current = dataTypes.shift();
@@ -9312,11 +9313,11 @@
 									} else if (converters[conv2] !== true) {
 										current = tmp[0];
 										dataTypes.unshift(tmp[1]);
-									}
-									break;
 								}
+									break;
 							}
 						}
+					}
 					}
 
 					// Apply converter (if not an equivalence)
@@ -9333,12 +9334,12 @@
 									state: "parsererror",
 									error: conv ? e : "No conversion from " + prev + " to " + current
 								};
-							}
 						}
 					}
 				}
 			}
 		}
+	}
 
 		return {state: "success", data: response};
 	}
@@ -9407,7 +9408,7 @@
 
 				// Parse text as xml
 				"text xml": jQuery.parseXML
-			},
+		},
 
 			// For options that shouldn't be deep extended:
 			// you can add your own custom options here if
@@ -9513,8 +9514,8 @@
 								responseHeaders = {};
 								while (( match = rheaders.exec(responseHeadersString) )) {
 									responseHeaders[match[1].toLowerCase()] = match[2];
-								}
 							}
+						}
 							match = responseHeaders[key.toLowerCase()];
 						}
 						return match == null ? null : match;
@@ -9552,13 +9553,13 @@
 
 									// Lazy-add the new callback in a way that preserves old ones
 									statusCode[code] = [statusCode[code], map[code]];
-								}
+							}
 							} else {
 
 								// Execute the appropriate callbacks
 								jqXHR.always(map[jqXHR.status]);
-							}
 						}
+					}
 						return this;
 					},
 
@@ -9654,17 +9655,17 @@
 
 						// Otherwise add one to the end
 					cacheURL + ( rquery.test(cacheURL) ? "&" : "?" ) + "_=" + nonce++;
-				}
+			}
 			}
 
 			// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 			if (s.ifModified) {
 				if (jQuery.lastModified[cacheURL]) {
 					jqXHR.setRequestHeader("If-Modified-Since", jQuery.lastModified[cacheURL]);
-				}
+			}
 				if (jQuery.etag[cacheURL]) {
 					jqXHR.setRequestHeader("If-None-Match", jQuery.etag[cacheURL]);
-				}
+			}
 			}
 
 			// Set the correct header, if data is being sent
@@ -9726,7 +9727,7 @@
 					timeoutTimer = window.setTimeout(function () {
 						jqXHR.abort("timeout");
 					}, s.timeout);
-				}
+			}
 
 				try {
 					state = 1;
@@ -9740,7 +9741,7 @@
 						// Simply rethrow otherwise
 					} else {
 						throw e;
-					}
+				}
 				}
 			}
 
@@ -9791,12 +9792,12 @@
 						modified = jqXHR.getResponseHeader("Last-Modified");
 						if (modified) {
 							jQuery.lastModified[cacheURL] = modified;
-						}
+					}
 						modified = jqXHR.getResponseHeader("etag");
 						if (modified) {
 							jQuery.etag[cacheURL] = modified;
 						}
-					}
+				}
 
 					// if no content
 					if (status === 204 || s.type === "HEAD") {
@@ -9807,12 +9808,12 @@
 						statusText = "notmodified";
 
 						// If we have data, let's convert it
-					} else {
+				} else {
 						statusText = response.state;
 						success = response.data;
 						error = response.error;
 						isSuccess = !error;
-					}
+				}
 				} else {
 
 					// We extract error from statusText
@@ -9823,7 +9824,7 @@
 						if (status < 0) {
 							status = 0;
 						}
-					}
+				}
 				}
 
 				// Set data for the fake xhr object
@@ -9844,7 +9845,7 @@
 				if (fireGlobals) {
 					globalEventContext.trigger(isSuccess ? "ajaxSuccess" : "ajaxError",
 						[jqXHR, s, isSuccess ? success : error]);
-				}
+			}
 
 				// Complete
 				completeDeferred.fireWith(callbackContext, [jqXHR, statusText]);
@@ -9857,7 +9858,7 @@
 						jQuery.event.trigger("ajaxStop");
 					}
 				}
-			}
+		}
 
 			return jqXHR;
 		},
@@ -9889,7 +9890,7 @@
 				data: data,
 				success: callback
 			}, jQuery.isPlainObject(url) && url));
-		};
+	};
 	});
 
 
@@ -9923,7 +9924,7 @@
 
 				if (this[0].parentNode) {
 					wrap.insertBefore(this[0]);
-				}
+			}
 
 				wrap.map(function () {
 					var elem = this;
@@ -9971,7 +9972,7 @@
 			return this.parent().each(function () {
 				if (!jQuery.nodeName(this, "body")) {
 					jQuery(this).replaceWith(this.childNodes);
-				}
+			}
 			}).end();
 		}
 	});
@@ -9985,9 +9986,9 @@
 		while (elem && elem.nodeType === 1) {
 			if (getDisplay(elem) === "none" || elem.type === "hidden") {
 				return true;
-			}
-			elem = elem.parentNode;
 		}
+			elem = elem.parentNode;
+	}
 		return false;
 	}
 
@@ -10032,7 +10033,7 @@
 						traditional,
 						add
 					);
-				}
+			}
 			});
 
 		} else if (!traditional && jQuery.type(obj) === "object") {
@@ -10040,13 +10041,13 @@
 			// Serialize object item.
 			for (name in obj) {
 				buildParams(prefix + "[" + name + "]", obj[name], traditional, add);
-			}
+		}
 
 		} else {
 
 			// Serialize scalar item.
 			add(prefix, obj);
-		}
+	}
 	}
 
 // Serialize an array of form elements or a set of
@@ -10080,7 +10081,7 @@
 			// did it), otherwise encode params recursively.
 			for (prefix in a) {
 				buildParams(prefix, a[prefix], traditional, add);
-			}
+		}
 		}
 
 		// Return the resulting serialization
@@ -10204,7 +10205,7 @@
 						if (options.xhrFields) {
 							for (i in options.xhrFields) {
 								xhr[i] = options.xhrFields[i];
-							}
+						}
 						}
 
 						// Override mime type if needed
@@ -10232,7 +10233,7 @@
 							// to string and ignore `undefined`.
 							if (headers[i] !== undefined) {
 								xhr.setRequestHeader(i, headers[i] + "");
-							}
+						}
 						}
 
 						// Do send the request
@@ -10289,8 +10290,8 @@
 										// IE - #1450: sometimes returns 1223 when it should be 204
 									} else if (status === 1223) {
 										status = 204;
-									}
 								}
+							}
 							}
 
 							// Call complete if needed
@@ -10322,7 +10323,7 @@
 					abort: function () {
 						if (callback) {
 							callback(undefined, true);
-						}
+					}
 					}
 				};
 			}
@@ -10365,7 +10366,7 @@
 			"text script": function (text) {
 				jQuery.globalEval(text);
 				return text;
-			}
+		}
 		}
 	});
 
@@ -10422,7 +10423,7 @@
 							// Callback if not abort
 							if (!isAbort) {
 								callback(200, "success");
-							}
+						}
 						}
 					};
 
@@ -10434,7 +10435,7 @@
 				abort: function () {
 					if (script) {
 						script.onload(undefined, true);
-					}
+				}
 				}
 			};
 		}
@@ -10485,7 +10486,7 @@
 			s.converters["script json"] = function () {
 				if (!responseContainer) {
 					jQuery.error(callbackName + " was not called");
-				}
+			}
 				return responseContainer[0];
 			};
 
@@ -10532,6 +10533,8 @@
 			return "script";
 		}
 	});
+
+
 
 
 // data: string of html
@@ -10648,7 +10651,7 @@
 	], function (i, type) {
 		jQuery.fn[type] = function (fn) {
 			return this.on(type, fn);
-		};
+	};
 	});
 
 
@@ -10680,7 +10683,7 @@
 			// set position first, in-case top/left are set even on static elem
 			if (position === "static") {
 				elem.style.position = "relative";
-			}
+		}
 
 			curOffset = curElem.offset();
 			curCSSTop = jQuery.css(elem, "top");
@@ -10787,7 +10790,7 @@
 				// Add offsetParent borders
 				parentOffset.top += jQuery.css(offsetParent[0], "borderTopWidth", true);
 				parentOffset.left += jQuery.css(offsetParent[0], "borderLeftWidth", true);
-			}
+		}
 
 			// Subtract parent offsets and element margins
 			// note: when an element has margin: auto the offsetLeft and marginLeft
@@ -10853,7 +10856,7 @@
 					return rnumnonpx.test(computed) ?
 					jQuery(elem).position()[prop] + "px" :
 						computed;
-				}
+			}
 			}
 		);
 	});

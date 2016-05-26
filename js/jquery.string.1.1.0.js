@@ -364,7 +364,7 @@
 			 * Parses a URI-like query string and returns an object composed of parameter/value pairs.
 			 * This method is mainly targeted at parsing query strings (hence the default value of '&'
 			 * for the seperator argument). For this reason, it does not consider anything that is either
-			 * before a question mark (which signals the beginning of a query string) or beyond the hash
+			 * before a question mark (which signals the beginning of a query string) or beyond the hash 
 			 * symbol ("#"), and runs decodeURIComponent() on each parameter/value pair.
 			 * @param {Object} separator string to separate parameters (default = '&')
 			 * @param {Object} s

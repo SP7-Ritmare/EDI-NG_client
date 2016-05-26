@@ -97,7 +97,6 @@
                     <xsl:value-of select="@triggerItem" />
                 </triggerItem>
             </xsl:if>
-
         </datasource>
     </xsl:template>
 

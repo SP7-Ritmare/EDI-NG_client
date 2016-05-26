@@ -251,7 +251,7 @@ goog.provide = function (name) {
         // JS--even when the raw JS uses goog.provide incorrectly.
         if (goog.isProvided_(name)) {
             throw Error('Namespace "' + name + '" already declared.');
-        }
+    }
         delete goog.implicitNamespaces_[name];
 
         var namespace = name;
@@ -399,7 +399,7 @@ goog.addDependency = function (relPath, provides, requires) {
                 deps.requires[path] = {};
             }
             deps.requires[path][require] = true;
-        }
+    }
     }
 };
 
@@ -1121,7 +1121,7 @@ goog.cloneObject = function (obj) {
         var clone = type == 'array' ? [] : {};
         for (var key in obj) {
             clone[key] = goog.cloneObject(obj[key]);
-        }
+    }
         return clone;
     }
 
@@ -1299,7 +1299,7 @@ goog.globalEval = function (script) {
             } else {
                 goog.evalWorksForGlobals_ = false;
             }
-        }
+    }
 
         if (goog.evalWorksForGlobals_) {
             goog.global.eval(script);
@@ -1403,7 +1403,7 @@ goog.getCssName = function (className, opt_modifier) {
     } else {
         rename = function (a) {
             return a;
-        };
+    };
     }
 
     if (opt_modifier) {
@@ -2531,7 +2531,7 @@ goog.string.htmlEscape = function (str, opt_isLikelyToContainHtmlChars) {
     }
         if (str.indexOf('<') != -1) {
             str = str.replace(goog.string.LT_RE_, '&lt;');
-        }
+    }
         if (str.indexOf('>') != -1) {
             str = str.replace(goog.string.GT_RE_, '&gt;');
         }
@@ -2691,7 +2691,7 @@ goog.string.unescapeEntitiesUsingDom_ = function (str, opt_document) {
             if (!isNaN(n)) {
                 value = String.fromCharCode(n);
             }
-        }
+    }
         // Fall back to innerHTML otherwise.
         if (!value) {
             // Append a non-entity character to avoid a bug in Webkit that parses
@@ -4904,7 +4904,7 @@ goog.array.binarySearch_ = function (arr, compareFn, isEvaluator, opt_target,
             compareResult = compareFn.call(opt_selfObj, arr[middle], middle, arr);
         } else {
             compareResult = compareFn(opt_target, arr[middle]);
-        }
+    }
         if (compareResult > 0) {
             left = middle + 1;
         } else {
@@ -5245,7 +5245,7 @@ goog.array.range = function (startOrEnd, opt_end, opt_step) {
     } else {
         for (var i = start; i > end; i += step) {
             array.push(i);
-        }
+    }
     }
     return array;
 };
@@ -9990,7 +9990,7 @@ goog.object.unsafeClone = function (obj) {
         var clone = type == 'array' ? [] : {};
         for (var key in obj) {
             clone[key] = goog.object.unsafeClone(obj[key]);
-        }
+    }
         return clone;
     }
 
@@ -10053,7 +10053,7 @@ goog.object.extend = function (target, var_args) {
         source = arguments[i];
         for (key in source) {
             target[key] = source[key];
-        }
+    }
 
         // For IE the for-in-loop does not contain any properties that are not
         // enumerable on the prototype object (for example isPrototypeOf from
@@ -10300,7 +10300,7 @@ goog.events.ListenerMap.prototype.remove = function (type, listener, opt_useCapt
         if (listenerArray.length == 0) {
             delete this.listeners[typeStr];
             this.typeCount_--;
-        }
+    }
         return true;
     }
     return false;
@@ -10859,7 +10859,7 @@ goog.events.unlisten = function (src, type, listener, opt_capt, opt_handler) {
             listener, capture, opt_handler);
         if (listenerObj) {
             return goog.events.unlistenByKey(listenerObj);
-        }
+    }
     }
 
     return false;
@@ -11753,7 +11753,7 @@ goog.functions.cacheReturnValue = function (fn) {
     return function () {
         if (!goog.functions.CACHE_RETURN_VALUE) {
             return fn();
-        }
+    }
 
         if (!called) {
             value = fn();
@@ -12648,7 +12648,7 @@ ol.Object.prototype.getKeys = function () {
             return [];
     } else {
             keysObject = accessors;
-        }
+    }
     } else {
         if (goog.object.isEmpty(accessors)) {
             keysObject = this.values_;
@@ -16882,7 +16882,7 @@ ol.extent.getIntersection = function (extent1, extent2, opt_extent) {
             intersection[0] = extent1[0];
         } else {
             intersection[0] = extent2[0];
-        }
+    }
         if (extent1[1] > extent2[1]) {
             intersection[1] = extent1[1];
         } else {
@@ -19307,7 +19307,7 @@ ol.tilecoord.quadKey = function (tileCoord) {
     }
         if (tileCoord[2] & mask) {
             charCode += 2;
-        }
+    }
         digits[i] = String.fromCharCode(charCode);
         mask >>= 1;
     }
@@ -19574,7 +19574,7 @@ ol.Attribution.prototype.intersectsAnyTileRange = function (tileRanges) {
     for (z in tileRanges) {
         if (!(z in this.tileRanges_)) {
             continue;
-        }
+    }
         tileRange = tileRanges[z];
         for (i = 0, ii = this.tileRanges_[z].length; i < ii; ++i) {
             if (this.tileRanges_[z][i].intersects(tileRange)) {
@@ -20603,7 +20603,7 @@ goog.dom.getElementsByTagNameAndClass_ = function (doc, opt_tag, opt_class,
             return arrayLike;
     } else {
             return els;
-        }
+    }
     }
 
     var els = parent.getElementsByTagName(tagName || '*');
@@ -20815,7 +20815,7 @@ goog.dom.getDocumentHeight_ = function (win) {
         var docEl = doc.documentElement;
         if (!body && !docEl) {
             return 0;
-        }
+    }
 
         // Get the height of the viewport
         var vh = goog.dom.getViewportSize_(win).height;
@@ -21665,7 +21665,7 @@ goog.dom.compareNodeOrder = function (node1, node2) {
     }
         if (node2.nodeType == goog.dom.NodeType.DOCUMENT) {
             return 1;
-        }
+    }
     }
 
     // Process in IE using sourceIndex - we check to see if the first node has
@@ -22180,7 +22180,7 @@ goog.dom.getTextContent_ = function (node, buf, normalizeWhitespace) {
             buf.push(String(node.nodeValue).replace(/(\r\n|\r|\n)/g, ''));
     } else {
             buf.push(node.nodeValue);
-        }
+    }
     } else if (node.nodeName in goog.dom.PREDEFINED_TAG_VALUES_) {
         buf.push(goog.dom.PREDEFINED_TAG_VALUES_[node.nodeName]);
     } else {
@@ -24914,7 +24914,7 @@ goog.style.getPageOffset = function (el) {
             if (!goog.userAgent.OPERA || parent.tagName != 'TR') {
                 pos.y -= parent.scrollTop;
             }
-        }
+    }
     }
 
     return pos;
@@ -25694,7 +25694,7 @@ goog.style.setUnselectable = function (el, unselectable, opt_noRecurse) {
             for (var i = 0, descendant; descendant = descendants[i]; i++) {
                 descendant.setAttribute('unselectable', value);
             }
-        }
+    }
     }
 };
 
@@ -27642,7 +27642,7 @@ goog.color.rgbToHsl = function (r, g, b) {
             h = 60 * (normB - normR) / (max - min) + 120;
         } else if (max == normB) {
             h = 60 * (normR - normG) / (max - min) + 240;
-        }
+    }
 
         if (0 < l && l <= 0.5) {
             s = (max - min) / (2 * l);
@@ -27880,7 +27880,7 @@ goog.color.hsvToRgb = function (h, s, brightness) {
                 break;
             case 2:
                 red = val1;
-                green = brightness;
+        green = brightness;
                 blue = val3;
                 break;
             case 3:
@@ -27942,7 +27942,7 @@ goog.color.rgbToHsv = function (red, green, blue) {
         hue *= 60;
         if (hue < 0) {
             hue += 360;
-        }
+    }
         if (hue > 360) {
             hue -= 360;
     }
@@ -30452,7 +30452,7 @@ ol.pointer.TouchSource.prototype.vacuumTouches_ = function (inEvent) {
     }
         for (i = 0; i < d.length; ++i) {
             this.cancelOut_(inEvent, d[i]);
-        }
+    }
     }
 };
 
@@ -31290,7 +31290,7 @@ ol.control.Attribution.prototype.getSourceAttributions = function (frameState) {
         sourceAttributions = source.getAttributions();
         if (goog.isNull(sourceAttributions)) {
             continue;
-        }
+    }
         for (j = 0, jj = sourceAttributions.length; j < jj; j++) {
             sourceAttribution = sourceAttributions[j];
             sourceAttributionKey = goog.getUid(sourceAttribution).toString();
@@ -31302,7 +31302,7 @@ ol.control.Attribution.prototype.getSourceAttributions = function (frameState) {
                 sourceAttribution.intersectsAnyTileRange(tileRanges)) {
                 if (sourceAttributionKey in hiddenAttributions) {
                     delete hiddenAttributions[sourceAttributionKey];
-        }
+                }
                 attributions[sourceAttributionKey] = sourceAttribution;
             }
             else {
@@ -31364,7 +31364,7 @@ ol.control.Attribution.prototype.updateElement_ = function (frameState) {
             goog.dom.removeNode(this.attributionElements_[attributionKey]);
             delete this.attributionElements_[attributionKey];
             delete this.attributionElementRenderedVisible_[attributionKey];
-        }
+    }
     }
     for (attributionKey in visibleAttributions) {
         attributionElement = goog.dom.createElement(goog.dom.TagName.LI);
@@ -32709,7 +32709,7 @@ ol.control.ScaleLine.prototype.updateElement_ = function () {
         var radius = ol.sphere.NORMAL.radius;
         if (projectionUnits == ol.proj.Units.FEET) {
             radius /= 0.3048;
-        }
+    }
         pointResolution *= 180 / (Math.PI * cosLatitude * radius);
         projectionUnits = ol.proj.Units.DEGREES;
 
@@ -32769,7 +32769,7 @@ ol.control.ScaleLine.prototype.updateElement_ = function () {
         } else if (nominalCount < 1609.344) {
             suffix = 'ft';
             pointResolution /= 0.30480061;
-        } else {
+    } else {
             suffix = 'mi';
             pointResolution /= 1609.3472;
     }
@@ -33085,7 +33085,7 @@ goog.events.EventHandler.prototype.listenOnce_ = function (src, type, opt_fn, op
             // (goog.events.CaptureSimulationMode) in IE8-, it will return null
             // value.
             return this;
-        }
+    }
 
         var key = listenerObj.key;
         this.keys_[key] = listenerObj;
@@ -34073,7 +34073,7 @@ goog.fx.Dragger.prototype.handleMove_ = function (e) {
                     return;
         }
             }
-        }
+    }
 
         var pos = this.calculatePosition_(dx, dy);
         var x = pos.x;
@@ -38398,7 +38398,7 @@ ol.geom.GeometryCollection.prototype.containsXY = function (x, y) {
     for (i = 0, ii = geometries.length; i < ii; ++i) {
         if (geometries[i].containsXY(x, y)) {
             return true;
-        }
+    }
     }
     return false;
 };
@@ -38810,7 +38810,7 @@ ol.geom.flat.closest.getClosestPoint = function (flatCoordinates, offset, end,
             return squaredDistance;
         } else {
             return minSquaredDistance;
-        }
+    }
     }
     goog.asserts.assert(maxDelta > 0);
     var tmpPoint = goog.isDef(opt_tmpPoint) ? opt_tmpPoint : [NaN, NaN];
@@ -38840,7 +38840,7 @@ ol.geom.flat.closest.getClosestPoint = function (flatCoordinates, offset, end,
             index += stride * Math.max(
                     ((Math.sqrt(squaredDistance) -
                     Math.sqrt(minSquaredDistance)) / maxDelta) | 0, 1);
-        }
+    }
     }
     if (isRing) {
         // Check the closing segment.
@@ -38853,7 +38853,7 @@ ol.geom.flat.closest.getClosestPoint = function (flatCoordinates, offset, end,
                 closestPoint[i] = tmpPoint[i];
             }
             closestPoint.length = stride;
-        }
+    }
     }
     return minSquaredDistance;
 };
@@ -39306,7 +39306,7 @@ ol.geom.flat.simplify.douglasPeucker = function (flatCoordinates, offset, end,
             simplifiedFlatCoordinates[simplifiedOffset++] =
                 flatCoordinates[offset + 1];
     }
-    return simplifiedOffset;
+        return simplifiedOffset;
     }
     /** @type {Array.<number>} */
     var markers = new Array(n);
@@ -39375,7 +39375,7 @@ ol.geom.flat.simplify.douglasPeuckers = function (flatCoordinates, offset,
     for (i = 0, ii = ends.length; i < ii; ++i) {
         var end = ends[i];
         simplifiedOffset = ol.geom.flat.simplify.douglasPeucker(
-            flatCoordinates, offset, end, stride, squaredTolerance,
+        flatCoordinates, offset, end, stride, squaredTolerance,
             simplifiedFlatCoordinates, simplifiedOffset);
         simplifiedEnds.push(simplifiedOffset);
         offset = end;
@@ -39450,7 +39450,7 @@ ol.geom.flat.simplify.radialDistance = function (flatCoordinates, offset, end,
             simplifiedFlatCoordinates[simplifiedOffset++] = y2;
             x1 = x2;
             y1 = y2;
-        }
+    }
     }
     if (x2 != x1 || y2 != y1) {
         // copy last point
@@ -39494,7 +39494,7 @@ ol.geom.flat.simplify.quantize = function (flatCoordinates, offset, end, stride,
                                            tolerance, simplifiedFlatCoordinates, simplifiedOffset) {
     // do nothing if the line is empty
     if (offset == end) {
-        return simplifiedOffset;
+    return simplifiedOffset;
     }
     // snap the first coordinate (P1)
     var x1 = ol.geom.flat.simplify.snap(flatCoordinates[offset], tolerance);
@@ -39510,26 +39510,26 @@ ol.geom.flat.simplify.quantize = function (flatCoordinates, offset, end, stride,
         x2 = ol.geom.flat.simplify.snap(flatCoordinates[offset], tolerance);
         y2 = ol.geom.flat.simplify.snap(flatCoordinates[offset + 1], tolerance);
         offset += stride;
-    if (offset == end) {
-        // all coordinates snap to the same value, the line collapses to a point
-        // push the last snapped value anyway to ensure that the output contains
-        // at least two points
-        // FIXME should we really return at least two points anyway?
-        simplifiedFlatCoordinates[simplifiedOffset++] = x2;
-        simplifiedFlatCoordinates[simplifiedOffset++] = y2;
-        return simplifiedOffset;
-    }
+        if (offset == end) {
+            // all coordinates snap to the same value, the line collapses to a point
+            // push the last snapped value anyway to ensure that the output contains
+            // at least two points
+            // FIXME should we really return at least two points anyway?
+            simplifiedFlatCoordinates[simplifiedOffset++] = x2;
+            simplifiedFlatCoordinates[simplifiedOffset++] = y2;
+            return simplifiedOffset;
+        }
     } while (x2 == x1 && y2 == y1);
     while (offset < end) {
         var x3, y3;
         // snap the next coordinate (P3)
         x3 = ol.geom.flat.simplify.snap(flatCoordinates[offset], tolerance);
         y3 = ol.geom.flat.simplify.snap(flatCoordinates[offset + 1], tolerance);
-    offset += stride;
+        offset += stride;
         // skip P3 if it is equal to P2
         if (x3 == x2 && y3 == y2) {
             continue;
-    }
+        }
         // calculate the delta between P1 and P2
         var dx1 = x2 - x1;
         var dy1 = y2 - y1;
@@ -39550,8 +39550,8 @@ ol.geom.flat.simplify.quantize = function (flatCoordinates, offset, end, stride,
         // either P1, P2, and P3 are not colinear, or they are colinear but P3 is
         // between P3 and P1 or on the opposite half of the line to P2.  add P2,
         // and continue with P1 = P2 and P2 = P3
-    simplifiedFlatCoordinates[simplifiedOffset++] = x2;
-    simplifiedFlatCoordinates[simplifiedOffset++] = y2;
+        simplifiedFlatCoordinates[simplifiedOffset++] = x2;
+        simplifiedFlatCoordinates[simplifiedOffset++] = y2;
         x1 = x2;
         y1 = y2;
         x2 = x3;
@@ -41753,7 +41753,7 @@ ol.geom.MultiPolygon.prototype.setPolygons = function (polygons) {
         } else {
             // FIXME better handle the case of non-matching layouts
             goog.asserts.assert(polygon.getLayout() == layout);
-        }
+    }
         var offset = flatCoordinates.length;
         ends = polygon.getEnds();
         var j, jj;
@@ -42253,10 +42253,10 @@ ol.FeatureOverlay = function (opt_options) {
     if (goog.isDef(options.features)) {
         if (goog.isArray(options.features)) {
             this.setFeatures(new ol.Collection(goog.array.clone(options.features)));
-        } else {
+    } else {
             goog.asserts.assertInstanceof(options.features, ol.Collection);
             this.setFeatures(options.features);
-        }
+    }
     } else {
         this.setFeatures(new ol.Collection());
     }
@@ -42355,13 +42355,13 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function (event) {
         styles = styleFunction(feature, resolution);
         if (!goog.isDefAndNotNull(styles)) {
             return;
-        }
+    }
         ii = styles.length;
         for (i = 0; i < ii; ++i) {
             ol.renderer.vector.renderFeature(replayGroup, feature, styles[i],
                 ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
                 feature, this.handleImageChange_, this);
-        }
+    }
     }, this);
 };
 
@@ -44033,7 +44033,7 @@ goog.dom.xml.selectNodes = function (node, path) {
         var count = nodes.snapshotLength;
         for (var i = 0; i < count; i++) {
             results.push(nodes.snapshotItem(i));
-        }
+    }
         return results;
     } else {
         return [];
@@ -44194,7 +44194,7 @@ ol.xml.getAllTextContent_ = function (node, normalizeWhitespace, accumulator) {
         var n;
         for (n = node.firstChild; !goog.isNull(n); n = n.nextSibling) {
             ol.xml.getAllTextContent_(n, normalizeWhitespace, accumulator);
-        }
+    }
     }
     return accumulator;
 };
@@ -44654,7 +44654,7 @@ ol.xml.makeSimpleNodeFactory = function (opt_nodeName, opt_namespaceURI) {
             var namespaceURI = opt_namespaceURI;
             if (!goog.isDef(opt_namespaceURI)) {
                 namespaceURI = node.namespaceURI;
-            }
+        }
             goog.asserts.assert(goog.isDef(nodeName));
             return ol.xml.createElementNS(namespaceURI, nodeName);
         }
@@ -47490,7 +47490,7 @@ ol.format.GPX.prototype.readFeaturesFromNode = function (node, opt_options) {
             return features;
         } else {
             return [];
-        }
+    }
     }
     return [];
 };
@@ -48683,7 +48683,7 @@ goog.structs.filter = function (col, f, opt_obj) {
             if (f.call(opt_obj, values[i], undefined, col)) {
                 rv.push(values[i]);
             }
-        }
+    }
     }
     return rv;
 };
@@ -48729,7 +48729,7 @@ goog.structs.map = function (col, f, opt_obj) {
         rv = [];
         for (var i = 0; i < l; i++) {
             rv[i] = f.call(opt_obj, values[i], undefined, col);
-        }
+    }
     }
     return rv;
 };
@@ -48967,7 +48967,7 @@ goog.iter.forEach = function (iterable, f, opt_obj) {
             if (ex !== goog.iter.StopIteration) {
                 throw ex;
             }
-        }
+    }
     } else {
         iterable = goog.iter.toIterator(iterable);
         /** @preserveTry */
@@ -49179,7 +49179,7 @@ goog.iter.some = function (iterable, f, opt_obj) {
     } catch (ex) {
         if (ex !== goog.iter.StopIteration) {
             throw ex;
-        }
+    }
     }
     return false;
 };
@@ -49213,7 +49213,7 @@ goog.iter.every = function (iterable, f, opt_obj) {
     } catch (ex) {
         if (ex !== goog.iter.StopIteration) {
             throw ex;
-        }
+    }
     }
     return true;
 };
@@ -49507,7 +49507,7 @@ goog.iter.cycle = function (iterable) {
                 // throw an exception
                 if (e != goog.iter.StopIteration || goog.array.isEmpty(cache)) {
                     throw e;
-                }
+        }
                 // set useCache to true after we know that a 'StopIteration' exception
                 // was thrown and the cache is not empty (to handle the 'empty iterable'
                 // use case)
@@ -50201,7 +50201,7 @@ goog.structs.Map = function (opt_map, var_args) {
     if (argLength > 1) {
         if (argLength % 2) {
             throw Error('Uneven number of arguments');
-        }
+    }
         for (var i = 0; i < argLength; i += 2) {
             this.set(arguments[i], arguments[i + 1]);
     }
@@ -50294,7 +50294,7 @@ goog.structs.Map.prototype.equals = function (otherMap, opt_equalityFn) {
     for (var key, i = 0; key = this.keys_[i]; i++) {
         if (!equalityFn(this.get(key), otherMap.get(key))) {
             return false;
-        }
+    }
     }
 
     return true;
@@ -51203,7 +51203,7 @@ goog.uri.utils.appendQueryData_ = function (buffer) {
             // Question mark is the very last character of the existing URI, so don't
             // append an additional delimiter.
             buffer[1] = undefined;
-        }
+    }
     }
 
     return buffer.join('');
@@ -52941,7 +52941,7 @@ goog.Uri.QueryData.prototype.getValues = function (opt_key) {
         var values = /** @type {Array.<Array|*>} */ (this.keyMap_.getValues());
         for (var i = 0; i < values.length; i++) {
             rv = goog.array.concat(rv, values[i]);
-        }
+    }
     }
     return rv;
 };
@@ -53352,11 +53352,11 @@ ol.style.Icon.prototype.getAnchor = function () {
         this.anchorYUnits_ == ol.style.IconAnchorUnits.FRACTION) {
         if (goog.isNull(size)) {
             return null;
-        }
+    }
         anchor = this.anchor_.slice();
         if (this.anchorXUnits_ == ol.style.IconAnchorUnits.FRACTION) {
             anchor[0] *= size[0];
-        }
+    }
         if (this.anchorYUnits_ == ol.style.IconAnchorUnits.FRACTION) {
             anchor[1] *= size[1];
         }
@@ -53365,7 +53365,7 @@ ol.style.Icon.prototype.getAnchor = function () {
     if (this.anchorOrigin_ != ol.style.IconOrigin.TOP_LEFT) {
         if (goog.isNull(size)) {
             return null;
-        }
+    }
         if (anchor === this.anchor_) {
             anchor = this.anchor_.slice();
         }
@@ -53432,7 +53432,7 @@ ol.style.Icon.prototype.getOrigin = function () {
         var iconImageSize = this.iconImage_.getSize();
         if (goog.isNull(size) || goog.isNull(iconImageSize)) {
             return null;
-        }
+    }
         offset = offset.slice();
         if (this.offsetOrigin_ == ol.style.IconOrigin.TOP_RIGHT ||
             this.offsetOrigin_ == ol.style.IconOrigin.BOTTOM_RIGHT) {
@@ -55520,7 +55520,7 @@ ol.format.KML.prototype.readFeaturesFromNode = function (node, opt_options) {
             node, [this.getReadOptions(node, opt_options)]);
         if (goog.isDef(features)) {
             return features;
-        } else {
+    } else {
             return [];
     }
     } else if (localName == 'Placemark') {
@@ -58031,7 +58031,7 @@ ol.format.TopoJSON.prototype.readFeaturesFromObject = function (object, opt_opti
         var arcs = topoJSONTopology.arcs;
         if (goog.isDef(transform)) {
             ol.format.TopoJSON.transformArcs_(arcs, scale, translate);
-        }
+    }
         /** @type {Array.<ol.Feature>} */
         var features = [];
         var topoJSONFeatures = goog.object.getValues(topoJSONTopology.objects);
@@ -58758,7 +58758,7 @@ ol.format.WFS.prototype.writeGetFeature = function (options) {
     }
         if (goog.isDef(options.outputFormat)) {
             node.setAttribute('outputFormat', options.outputFormat);
-        }
+    }
         if (goog.isDef(options.maxFeatures)) {
             node.setAttribute('maxFeatures', options.maxFeatures);
         }
@@ -59599,7 +59599,7 @@ ol.format.WKT.Parser.prototype.parseMultiPointText_ = function () {
     }
         if (this.match(ol.format.WKT.TokenType.RIGHT_PAREN)) {
             return coordinates;
-        }
+    }
     } else if (this.isEmptyGeometry_()) {
         return [];
     }
@@ -63021,7 +63021,7 @@ goog.debug.expose = function (obj, opt_showFn) {
     for (var x in obj) {
         if (!opt_showFn && goog.isFunction(obj[x])) {
             continue;
-        }
+    }
         var s = x + ' = ';
         /** @preserveTry */
         try {
@@ -63055,7 +63055,7 @@ goog.debug.deepExpose = function (obj, opt_showFn) {
 
         var indentMultiline = function (str) {
             return str.replace(/\n/g, '\n' + space);
-        };
+    };
 
         /** @preserveTry */
         try {
@@ -63076,14 +63076,14 @@ goog.debug.deepExpose = function (obj, opt_showFn) {
                     for (var x in obj) {
                         if (!opt_showFn && goog.isFunction(obj[x])) {
                             continue;
-            }
+                        }
                         str.push('\n');
                         str.push(nestspace);
                         str.push(x + ' = ');
                         helper(obj[x], nestspace, seen);
                     }
                     str.push('\n' + space + '}');
-        }
+                }
             } else {
                 str.push(obj);
             }
@@ -63311,7 +63311,7 @@ goog.debug.getNativeStackTrace_ = function (fn) {
         var stack = tempErr.stack;
         if (stack) {
             return String(stack);
-        }
+    }
     }
     return null;
 };
@@ -63409,7 +63409,7 @@ goog.debug.getStacktraceHelper_ = function (fn, visited) {
             sb.push(goog.debug.getStacktraceHelper_(fn.caller, visited));
         } catch (e) {
             sb.push('[exception trying to get caller]\n');
-        }
+    }
 
     } else if (fn) {
         sb.push('[...long stack...]');
@@ -64643,7 +64643,7 @@ goog.debug.Logger.prototype.doLogRecord_ = function (logRecord) {
     } else {
         for (var i = 0, handler; handler = goog.debug.Logger.rootHandlers_[i++];) {
             handler(logRecord);
-        }
+    }
     }
 };
 
@@ -65473,7 +65473,7 @@ goog.async.nextTick.getSetImmediateEmulator_ = function () {
                     win.postMessage(message, origin);
                 }
             };
-        };
+    };
     }
     if (typeof Channel !== 'undefined') {
         var channel = new Channel();
@@ -66517,7 +66517,7 @@ goog.Promise.prototype.tryThen_ = function (thenable, then) {
         if (!called) {
             called = true;
             promise.unblockAndFulfill_(value);
-        }
+    }
     };
 
     var reject = function (reason) {
@@ -66667,7 +66667,7 @@ goog.Promise.prototype.removeUnhandledRejection_ = function () {
     } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
         for (var p = this; p && p.hadUnhandledRejection_; p = p.parent_) {
             p.hadUnhandledRejection_ = false;
-        }
+    }
     }
 };
 
@@ -67016,9 +67016,9 @@ goog.async.Deferred.prototype.cancel = function (opt_deepCancel) {
             this.onCancelFunction_.call(this.defaultScope_, this);
         } else {
             this.silentlyCanceled_ = true;
-        }
-    if (!this.hasFired()) {
-        this.errback(new goog.async.Deferred.CanceledError(this));
+    }
+        if (!this.hasFired()) {
+            this.errback(new goog.async.Deferred.CanceledError(this));
     }
     } else if (this.result_ instanceof goog.async.Deferred) {
         this.result_.cancel();
@@ -69264,7 +69264,7 @@ ol.interaction.DragPan.prototype.handlePointerUp = function (mapBrowserEvent) {
             ]);
             dest = view.constrainCenter(dest);
             view.setCenter(dest);
-        }
+    }
         view.setHint(ol.ViewHint.INTERACTING, -1);
         map.render();
         return false;
@@ -69285,16 +69285,16 @@ ol.interaction.DragPan.prototype.handlePointerDown = function (mapBrowserEvent) 
         this.lastCentroid = null;
         if (!this.handlingDownUpSequence) {
             view.setHint(ol.ViewHint.INTERACTING, 1);
-        }
+    }
         map.render();
         if (!goog.isNull(this.kineticPreRenderFn_) &&
             map.removePreRenderFunction(this.kineticPreRenderFn_)) {
             view.setCenter(mapBrowserEvent.frameState.viewState.center);
             this.kineticPreRenderFn_ = null;
-        }
-    if (this.kinetic_) {
-        this.kinetic_.begin();
     }
+        if (this.kinetic_) {
+            this.kinetic_.begin();
+        }
         // No kinetic as soon as more than one pointer on the screen is
         // detected. This is to prevent nasty pans after pinch.
         this.noKinetic_ = this.targetPointers.length > 1;
@@ -71271,21 +71271,21 @@ goog.events.KeyCodes.firesKeyPressEvent = function (keyCode, opt_heldKeyCode,
 
     // Some keys with Ctrl/Shift do not issue keypress in WEBKIT.
     if (goog.userAgent.WEBKIT && opt_ctrlKey && opt_shiftKey) {
-        switch (keyCode) {
-            case goog.events.KeyCodes.BACKSLASH:
-            case goog.events.KeyCodes.OPEN_SQUARE_BRACKET:
-            case goog.events.KeyCodes.CLOSE_SQUARE_BRACKET:
-            case goog.events.KeyCodes.TILDE:
-            case goog.events.KeyCodes.SEMICOLON:
-            case goog.events.KeyCodes.DASH:
-            case goog.events.KeyCodes.EQUALS:
-            case goog.events.KeyCodes.COMMA:
-            case goog.events.KeyCodes.PERIOD:
-            case goog.events.KeyCodes.SLASH:
-            case goog.events.KeyCodes.APOSTROPHE:
-            case goog.events.KeyCodes.SINGLE_QUOTE:
-                return false;
-        }
+    switch (keyCode) {
+        case goog.events.KeyCodes.BACKSLASH:
+        case goog.events.KeyCodes.OPEN_SQUARE_BRACKET:
+        case goog.events.KeyCodes.CLOSE_SQUARE_BRACKET:
+        case goog.events.KeyCodes.TILDE:
+        case goog.events.KeyCodes.SEMICOLON:
+        case goog.events.KeyCodes.DASH:
+        case goog.events.KeyCodes.EQUALS:
+        case goog.events.KeyCodes.COMMA:
+        case goog.events.KeyCodes.PERIOD:
+        case goog.events.KeyCodes.SLASH:
+        case goog.events.KeyCodes.APOSTROPHE:
+        case goog.events.KeyCodes.SINGLE_QUOTE:
+            return false;
+    }
     }
 
     // When Ctrl+<somekey> is held in IE, it only fires a keypress once, but it
@@ -71815,7 +71815,7 @@ goog.events.KeyHandler.prototype.handleEvent = function (e) {
         charCode = be.charCode || 0;
         if (goog.events.KeyHandler.SAVE_ALT_FOR_KEYPRESS_) {
             altKey = this.altKey_;
-        }
+    }
         // On the Mac, shift-/ triggers a question mark char code and no key code
         // (normalized to WIN_KEY), so we synthesize the latter.
         if (goog.userAgent.MAC &&
@@ -74209,7 +74209,7 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
                 });
             if (result) {
                 return result;
-            }
+    }
         }
         var layerStates = this.map_.getLayerGroup().getLayerStatesArray();
         var numLayers = layerStates.length;
@@ -74225,7 +74225,7 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
                 if (result) {
                     return result;
                 }
-    }
+            }
         }
         return undefined;
 };
@@ -77036,7 +77036,7 @@ ol.render.canvas.Immediate.prototype.setFillStrokeStyle =
                     strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit,
                 strokeStyle: ol.color.asString(!goog.isNull(strokeStyleColor) ?
                     strokeStyleColor : ol.render.canvas.defaultStrokeStyle)
-            };
+    };
         }
     };
 
@@ -77097,11 +77097,11 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function (textStyle) {
                 fillStyle: ol.color.asString(!goog.isNull(textFillStyleColor) ?
                     textFillStyleColor : ol.render.canvas.defaultFillStyle)
             };
-    }
+        }
         var textStrokeStyle = textStyle.getStroke();
         if (goog.isNull(textStrokeStyle)) {
             this.textStrokeState_ = null;
-        } else {
+    } else {
             var textStrokeStyleColor = textStrokeStyle.getColor();
             var textStrokeStyleLineCap = textStrokeStyle.getLineCap();
             var textStrokeStyleLineDash = textStrokeStyle.getLineDash();
@@ -77122,7 +77122,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function (textStyle) {
                 strokeStyle: ol.color.asString(!goog.isNull(textStrokeStyleColor) ?
                     textStrokeStyleColor : ol.render.canvas.defaultStrokeStyle)
             };
-        }
+    }
         var textFont = textStyle.getFont();
         var textOffsetX = textStyle.getOffsetX();
         var textOffsetY = textStyle.getOffsetY();
@@ -78899,7 +78899,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function (textStyle) {
         var textStrokeStyle = textStyle.getStroke();
         if (goog.isNull(textStrokeStyle)) {
             this.textStrokeState_ = null;
-        } else {
+    } else {
             var textStrokeStyleColor = textStrokeStyle.getColor();
             var textStrokeStyleLineCap = textStrokeStyle.getLineCap();
             var textStrokeStyleLineDash = textStrokeStyle.getLineDash();
@@ -78936,7 +78936,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function (textStyle) {
                 textStrokeState.miterLimit = miterLimit;
                 textStrokeState.strokeStyle = strokeStyle;
             }
-        }
+    }
         var textFont = textStyle.getFont();
         var textOffsetX = textStyle.getOffsetX();
         var textOffsetY = textStyle.getOffsetY();
@@ -80073,7 +80073,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
                         context.drawImage(tile.getImage(),
                             tileGutter, tileGutter, tilePixelSize, tilePixelSize,
                             x, y, width, height);
-                    }
+        }
                     interimTileRange =
                         tileGrid.getTileRangeForExtentAndZ(tileExtent, z, tmpTileRange);
                     minX = Math.max(interimTileRange.minX, canvasTileRange.minX);
@@ -80606,7 +80606,7 @@ ol.structs.RBush.prototype.forEachInExtent_ =
                     result = this.forEach_(node, callback, opt_this);
                     if (result) {
                         return result;
-                    }
+        }
                 } else {
                     toVisit.push.apply(toVisit, node.children);
                 }
@@ -80633,7 +80633,7 @@ ol.structs.RBush.prototype.forEachNode = function (callback, opt_this) {
     }
         if (!node.isLeaf()) {
             toVisit.push.apply(toVisit, node.children);
-        }
+    }
     }
     return undefined;
 };
@@ -80726,7 +80726,7 @@ ol.structs.RBush.prototype.insert_ = function (extent, value, level) {
             this.split_(path, i);
         } else {
             break;
-        }
+    }
     }
     for (; i >= 0; --i) {
         ol.extent.extend(path[i].extent, extent);
@@ -81229,16 +81229,16 @@ ol.source.Vector.prototype.handleFeatureChange_ = function (event) {
                     'Expected feature to be removed from index');
                 this.idIndex_[sid] = feature;
             }
-        }
+    }
     } else {
         if (!(featureKey in this.undefIdIndex_)) {
             removed = this.removeFromIdIndex_(feature);
             goog.asserts.assert(removed,
                 'Expected feature to be removed from index');
             this.undefIdIndex_[featureKey] = feature;
-        } else {
+    } else {
             goog.asserts.assert(this.undefIdIndex_[featureKey] === feature);
-        }
+    }
     }
     this.dispatchChangeEvent();
 };
@@ -81792,7 +81792,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function (frameState) {
         if (this.renderedVisible_) {
             goog.style.setElementShown(this.canvas_, false);
             this.renderedVisible_ = false;
-        }
+    }
         return;
     }
 
@@ -86930,7 +86930,7 @@ ol.structs.LRUCache.prototype.assertValid = function () {
             goog.asserts.assert(entry.newer === newer);
             newer = entry;
             ++i;
-        }
+    }
         goog.asserts.assert(i == this.count_);
     }
 };
@@ -87253,7 +87253,7 @@ ol.webgl.Context.prototype.disposeInternal = function () {
     });
         goog.object.forEach(this.programCache_, function (program) {
             gl.deleteProgram(program);
-        });
+    });
         goog.object.forEach(this.shaderCache_, function (shader) {
             gl.deleteShader(shader);
         });
@@ -89766,7 +89766,7 @@ ol.interaction.Draw.prototype.atFinish_ = function (event) {
                 this.minPointsPerRing_;
             potentiallyFinishCoordinates = [this.sketchPolygonCoords_[0][0],
                 this.sketchPolygonCoords_[0][this.sketchPolygonCoords_[0].length - 2]];
-        }
+    }
         if (potentiallyDone) {
             var map = event.map;
             for (var i = 0, ii = potentiallyFinishCoordinates.length; i < ii; i++) {
@@ -89779,7 +89779,7 @@ ol.interaction.Draw.prototype.atFinish_ = function (event) {
                 if (at) {
                     this.finishCoordinate_ = finishCoordinate;
                     break;
-        }
+                }
             }
     }
     }
@@ -89863,7 +89863,7 @@ ol.interaction.Draw.prototype.modifyDrawing_ = function (event) {
         if (this.atFinish_(event)) {
             // snap to finish
             coordinate = this.finishCoordinate_.slice();
-        }
+    }
         var sketchPointGeom = this.sketchPoint_.getGeometry();
         goog.asserts.assertInstanceof(sketchPointGeom, ol.geom.Point);
         sketchPointGeom.setCoordinates(coordinate);
@@ -90450,7 +90450,7 @@ ol.interaction.Modify.prototype.handlePointerDown = function (evt) {
     }
         for (i = insertVertices.length - 1; i >= 0; --i) {
             this.insertVertex_.apply(this, insertVertices[i]);
-        }
+    }
     }
     return !goog.isNull(this.vertexFeature_);
 };
@@ -90744,7 +90744,7 @@ ol.interaction.Modify.prototype.removeVertex_ = function () {
                             component.pop();
                             component.push(component[0]);
                             newIndex = component.length - 1;
-                        }
+            }
                     }
                     break;
             }
@@ -91761,18 +91761,18 @@ ol.Overlay.prototype.updatePixelPosition_ = function () {
             positioning == ol.OverlayPositioning.CENTER_CENTER ||
             positioning == ol.OverlayPositioning.TOP_CENTER) {
             offsetX -= goog.style.getSize(this.element_).width / 2;
-        }
+    }
         var left = Math.round(pixel[0] + offsetX) + 'px';
         if (this.rendered_.left_ != left) {
             this.rendered_.left_ = style.left = left;
-        }
+    }
     }
     if (positioning == ol.OverlayPositioning.BOTTOM_LEFT ||
         positioning == ol.OverlayPositioning.BOTTOM_CENTER ||
         positioning == ol.OverlayPositioning.BOTTOM_RIGHT) {
         if (this.rendered_.top_ !== '') {
             this.rendered_.top_ = style.top = '';
-        }
+    }
         var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
         if (this.rendered_.bottom_ != bottom) {
             this.rendered_.bottom_ = style.bottom = bottom;
@@ -92386,7 +92386,7 @@ goog.net.Jsonp.prototype.cancel = function (request) {
     }
         if (request.id_) {
             goog.net.Jsonp.cleanup_(request.id_, false);
-        }
+    }
     }
 };
 
@@ -95303,7 +95303,7 @@ goog.net.XhrIo.prototype.cleanUpXhr_ = function (opt_fromDispose) {
 
         if (!opt_fromDispose) {
             this.dispatchEvent(goog.net.EventType.READY);
-        }
+    }
 
         try {
             // NOTE(user): Not nullifying in FireFox can still leak if the callbacks
@@ -95559,10 +95559,10 @@ goog.net.XhrIo.prototype.getResponse = function () {
     try {
         if (!this.xhr_) {
             return null;
-        }
+    }
         if ('response' in this.xhr_) {
             return this.xhr_.response;
-        }
+    }
         switch (this.responseType_) {
             case goog.net.XhrIo.ResponseType.DEFAULT:
             case goog.net.XhrIo.ResponseType.TEXT:
@@ -95575,8 +95575,8 @@ goog.net.XhrIo.prototype.getResponse = function () {
             case goog.net.XhrIo.ResponseType.ARRAY_BUFFER:
                 if ('mozResponseArrayBuffer' in this.xhr_) {
                     return this.xhr_.mozResponseArrayBuffer;
+                }
         }
-    }
         // Fell through to a response type that is not supported on this browser.
         goog.log.error(this.logger_,
             'Response type ' + this.responseType_ + ' is not ' +
@@ -95632,7 +95632,7 @@ goog.net.XhrIo.prototype.getResponseHeaders = function () {
     for (var i = 0; i < headersArray.length; i++) {
         if (goog.string.isEmpty(headersArray[i])) {
             continue;
-        }
+    }
         var keyValue = goog.string.splitLimit(headersArray[i], ': ', 2);
         if (headersObject[keyValue[0]]) {
             headersObject[keyValue[0]] += ', ' + keyValue[1];
@@ -95865,7 +95865,7 @@ ol.source.StaticVector = function (options) {
         this.setState(ol.source.State.LOADING);
         if (goog.isDef(options.url)) {
             this.loadFeaturesFromURL(options.url, this.onFeaturesLoaded_, this);
-        }
+    }
         if (goog.isDef(options.urls)) {
             var urls = options.urls;
             var i, ii;
@@ -96979,6 +96979,7 @@ goog.require('ol.format.KML');
 goog.require('ol.source.StaticVector');
 
 
+
 /**
  * @classdesc
  * Static vector source in KML format
@@ -97017,6 +97018,7 @@ goog.require('ol.Attribution');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.source.TileImage');
 goog.require('ol.tilegrid.XYZ');
+
 
 
 /**
@@ -97103,6 +97105,7 @@ goog.require('ol.Attribution');
 goog.require('ol.source.XYZ');
 
 
+
 /**
  * @classdesc
  * Layer source for the OpenStreetMap tile server.
@@ -97187,6 +97190,7 @@ goog.require('ol.source.OSM');
 goog.require('ol.source.XYZ');
 
 
+
 /**
  * @classdesc
  * Layer source for the MapQuest tile server.
@@ -97267,6 +97271,7 @@ goog.require('ol.format.OSMXML');
 goog.require('ol.source.StaticVector');
 
 
+
 /**
  * @classdesc
  * Static vector source in OSMXML format
@@ -97306,6 +97311,7 @@ goog.require('ol.extent');
 goog.require('ol.loadingstrategy');
 goog.require('ol.source.FormatVector');
 goog.require('ol.structs.RBush');
+
 
 
 /**
@@ -97501,6 +97507,7 @@ ol.source.StamenProviderConfig = {
 };
 
 
+
 /**
  * @classdesc
  * Layer source for the Stamen tile server.
@@ -97565,6 +97572,7 @@ goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
 
 
+
 /**
  * @constructor
  * @extends {ol.Tile}
@@ -97619,6 +97627,7 @@ ol.DebugTile_.prototype.getImage = function (opt_context) {
 
     }
 };
+
 
 
 /**
@@ -97702,6 +97711,7 @@ goog.require('ol.proj');
 goog.require('ol.source.State');
 goog.require('ol.source.TileImage');
 goog.require('ol.tilegrid.XYZ');
+
 
 
 /**
@@ -97795,6 +97805,7 @@ goog.require('ol.TileUrlFunction');
 goog.require('ol.source.FormatVector');
 goog.require('ol.source.State');
 goog.require('ol.tilegrid.TileGrid');
+
 
 
 /**
@@ -98051,6 +98062,7 @@ goog.require('ol.source.TileImage');
 goog.require('ol.source.wms');
 goog.require('ol.source.wms.ServerType');
 goog.require('ol.tilecoord');
+
 
 
 /**
@@ -98457,6 +98469,7 @@ goog.require('ol.format.TopoJSON');
 goog.require('ol.source.StaticVector');
 
 
+
 /**
  * @classdesc
  * Static vector source in TopoJSON format
@@ -98493,6 +98506,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.proj');
 goog.require('ol.tilegrid.TileGrid');
+
 
 
 /**
@@ -98628,6 +98642,7 @@ ol.source.WMTSRequestEncoding = {
 };
 
 
+
 /**
  * @classdesc
  * Layer source for tile data from WMTS servers.
@@ -98720,7 +98735,7 @@ ol.source.WMTS = function (options) {
                 var url = template;
                 if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
                     url = goog.uri.utils.appendParamsFromMap(url, localContext);
-                } else {
+            } else {
                     url = url.replace(/\{(\w+?)\}/g, function (m, p) {
                         return localContext[p];
                     });
@@ -98945,6 +98960,7 @@ goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
 
 
+
 /**
  * @classdesc
  * Set the grid pattern for sources accessing Zoomify tiled-image servers.
@@ -99036,6 +99052,7 @@ ol.source.ZoomifyTierSizeCalculation = {
     DEFAULT: 'default',
     TRUNCATED: 'truncated'
 };
+
 
 
 /**
