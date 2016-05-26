@@ -7,6 +7,9 @@
  * @namespace
  *
  */
+function prettyPrint() {
+
+}
 
 var edi = (function () {
     var version = "1.0.0";
