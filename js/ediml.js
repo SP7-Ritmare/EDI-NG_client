@@ -315,26 +315,46 @@ var ediml = (function () {
 
     function saveFileAs(uri, filename) {
         var link = document.createElement('a');
-        if (typeof link.download === 'string') {
+        if (true || typeof link.download === 'string') {
             document.body.appendChild(link); //Firefox requires the link to be in the body
-            link.download = filename;
+            if ( !isSafari ) {
+                link.download = filename;
+            } else {
+//                link.target = "_blank";
+            }
             link.href = uri;
             link.click();
             document.body.removeChild(link); //remove the link when done
         } else {
-            location.replace(uri);
+            location.href = uri;
         }
     }
 
+    var isSafari = navigator.userAgent.indexOf("Safari") > -1;
+
     function downloadMetadata() {
-        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(edi.getGeneratedXml()), "generated_" + content.elements.fileId + ".xml");
+        if ( isSafari ) {
+            var newWindow1 = saveFileAs(metadataEndpoint + "rest/xml/" + content.elements.fileId + ".xml", "generated_" + content.elements.fileId + ".xml");
+        } else {
+            var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(edi.getGeneratedXml()), "generated_" + content.elements.fileId + ".xml");
+        }
+        // var newWindow1 = saveFileAs("data:application/octet-stream," + encodeURIComponent(edi.getGeneratedXml()), "generated_" + content.elements.fileId + ".xml");
+
+        /*
+        var file = new File([edi.getGeneratedXml()], "generated_" + content.elements.fileId + ".xml", {type: "application/octet-stream"});
+         saveAs(file);
+         */
     }
 
     function downloadEDIML() {
         var x2js = new X2JS();
         var xml = /* '<?xml version="1.0" encoding="UTF-8"?>' + */ (x2js.json2xml_str(content));
 
-        var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(xml), "ediml_" + content.elements.fileId + ".xml");
+        if ( isSafari ) {
+            var newWindow1 = saveFileAs(metadataEndpoint + "rest/edimlFile/" + content.elements.fileId + ".xml", "ediml_" + content.elements.fileId + ".xml");
+        } else {
+            var newWindow1 = saveFileAs("data:text/xml;charset=utf-8," + encodeURIComponent(xml), "ediml_" + content.elements.fileId + ".xml");
+        }
     }
 
     /**

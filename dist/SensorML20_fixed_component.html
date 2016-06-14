@@ -21,7 +21,7 @@
                 alert("eccomi");
                 console.log(data);
             }
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // ediml.setPostCallbackError(pippo);
                 edi.loadLocalTemplate("SensorML20_fixed_component", "1.00", onTemplateLoaded);
                 $("#ediml").hide();
@@ -40,7 +40,7 @@
             }
             function toggleEDIML(which) {
                 $('#ediml').toggle();
-                if ($("#ediml").is(":visible")) {
+                if ( $("#ediml").is(":visible") ) {
                     $(which).text("hide EDIML");
                     edi.edimlOutput();
                 } else {

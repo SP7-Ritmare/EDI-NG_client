@@ -34,6 +34,12 @@ module.exports = function (grunt) {
                 dest: 'dist',
                 flatten: false
             },
+            FileSaver: {
+                expand: true,
+                src: 'bower_components/file-saver/FileSaver.js',
+                dest: 'js',
+                flatten: true
+            },
             bootstrapJs: {
                 expand: true,
                 src: 'bower_components/bootstrap/dist/js/*.js',
@@ -188,6 +194,7 @@ module.exports = function (grunt) {
                     "js/renderers/bounding_box.js",
                     "js/jquery-dateFormat.js",
                     "js/jquery.string.1.1.0.js",
+                    "js/FileSaver.js",
                     "js/bootstrap.js",
                     "js/bootstrap-datepicker.js",
                     "js/langs.js",

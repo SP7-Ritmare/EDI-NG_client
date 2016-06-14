@@ -23,6 +23,7 @@
     "openlayers3": "^3.0.0",
     "jQuery": "1.12.2",
     "jquery-dateFormat": "^1.0.2",
-    "jquery-dotstring": "https://github.com/stealthdave/jquery-dotstring.git"
+    "jquery-dotstring": "https://github.com/stealthdave/jquery-dotstring.git",
+    "file-saver": "FileSaver#^1.3.1"
   }
 }

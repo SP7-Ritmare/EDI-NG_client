@@ -17,7 +17,7 @@
         function onTemplateLoaded(data) {
             console.log("fatto");
         }
-        $(document).ready(function () {
+        $(document).ready(function() {
             edi.loadLocalTemplate("RNDT_dataset", "4.00_forRITMARE", onTemplateLoaded);
 
             $("#ediml").hide();
@@ -40,7 +40,7 @@
 
         function toggleEDIML(which) {
             $('#ediml').toggle();
-            if ($("#ediml").is(":visible")) {
+            if ( $("#ediml").is(":visible") ) {
                 $(which).text("hide EDIML");
                 edi.edimlOutput();
             } else {

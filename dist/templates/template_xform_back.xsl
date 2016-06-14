@@ -92,11 +92,7 @@
                     <xsl:value-of select="query" />
                 </query>
             </xsl:if>
-            <xsl:if test="@triggerItem">
-                <triggerItem>
-                    <xsl:value-of select="@triggerItem" />
-                </triggerItem>
-            </xsl:if>
+
         </datasource>
     </xsl:template>
 

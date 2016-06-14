@@ -17,7 +17,7 @@
         function onTemplateLoaded(data) {
             console.log("fatto");
         }
-        $(document).ready(function () {
+        $(document).ready(function() {
             edi.loadLocalTemplate("FOAF", "2.00", onTemplateLoaded);
 
             $("#ediml").hide();
@@ -40,7 +40,7 @@
 
         function toggleEDIML(which) {
             $('#ediml').toggle();
-            if ($("#ediml").is(":visible")) {
+            if ( $("#ediml").is(":visible") ) {
                 $(which).text("hide EDIML");
                 edi.edimlOutput();
             } else {
@@ -70,13 +70,9 @@
                     <br>
                     <button class="btn btn-danger" onclick="ediml.load('pippo');">load EDIML</button>
                     <br>
-                    <button class="btn btn-danger" style="display: none;" id="EDIMLDownload"
-                            onclick="ediml.downloadEDIML();">download EDIML
-                    </button>
+                    <button class="btn btn-danger" style="display: none;" id="EDIMLDownload" onclick="ediml.downloadEDIML();">download EDIML</button>
                     <br>
-                    <button class="btn btn-danger" style="display: none;" id="MDDownload"
-                            onclick="ediml.downloadMetadata();">download generated XML
-                    </button>
+                    <button class="btn btn-danger" style="display: none;" id="MDDownload" onclick="ediml.downloadMetadata();">download generated XML</button>
                     <br>
                     <button class="btn btn-primary" id="sendMetadata">send metadata</button>
                     <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
