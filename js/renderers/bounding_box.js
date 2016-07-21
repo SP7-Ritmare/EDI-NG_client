@@ -224,11 +224,15 @@ var BoundingBox = (function() {
                     ]),
                     layers: [
 
-
                         new ol.layer.Tile({
-                            source: new ol.source.MapQuest({layer: 'osm'})
+                            source: new ol.source.OSM(),
+                            opacity: 1.0
                         }),
+
                         /*
+                         new ol.layer.Tile({
+                         source: new ol.source.MapQuest({layer: 'osm'})
+                         }),
                         new ol.layer.Tile({
                              source: new ol.source.BingMaps({
                              key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
@@ -238,10 +242,6 @@ var BoundingBox = (function() {
                              // maxZoom: 19
                              })
                         }),
-                         new ol.layer.Tile({
-                            source: new ol.source.OSM(),
-                             opacity: 1.0
-                         }),
                          */
                         vector
                     ],
