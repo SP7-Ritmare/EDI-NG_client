@@ -33,7 +33,9 @@ You can then deploy directory contents to a Web Server of your choice, or access
 ```xml
 <metadataEndpoint>...</metadataEndpoint>
 ```
-tag. E.g., replace 
+tag. 
+
+E.g., replace 
 ```xml
 <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
 ```
