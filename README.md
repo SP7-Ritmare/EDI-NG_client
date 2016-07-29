@@ -8,7 +8,7 @@ Once the form is filled in, it gets posted to a back end (namely EDI-NG_server, 
 
 You can find plenty of template samples in the [dist/templates](https://github.com/SP7-Ritmare/EDI-NG_client/tree/master/dist/templates) directory.
 These template files are meant both as an example and as part of projects we are working at.
-> Please note that the ***metadataEndpoint***s and ***datasource*** URIs point to our own endpoints, so you will need to customise them based on your own overall architecture
+> Please note that the ***metadataEndpoint***s ***sparqlEndpoint***s and ***datasource*** URIs point to our own endpoints, so you will need to customise them based on your own overall architecture
 
 Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as easy as using a javascript snippet like this inside a pure HTML page:
 ```javascript
@@ -26,7 +26,9 @@ Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as
 >```
 
 # Quick Start
-If you just need to run EDI-NG client, all you need to do is in the [dist](https://github.com/SP7-Ritmare/EDI-NG_client/tree/master/dist) directory.
+The easiest way for a hands-on trial of EDI-NG is to download the demo standalone JAR [here](https://github.com/SP7-Ritmare/EDI-NG_server/releases/download/v1.2/edi.zip). It includes both a demo client and server, and it requires JAVA 7+.
+
+If you just want to run EDI-NG client, all you need to do is in the [dist](https://github.com/SP7-Ritmare/EDI-NG_client/tree/master/dist) directory.
 You can then deploy directory contents to a Web Server of your choice, or access it via the filesystem.
 > The "templates" directory contains a few sample templates: you should customise them to point to your own [EDI-NG_server](https://github.com/SP7-Ritmare/EDI-NG_server.git) installation.
 > To do that, replace content of the 
@@ -41,9 +43,24 @@ E.g., replace
 ```
 with
 ```xml
-<metadataEndpoint>http://localhost:8080/edi</metadataEndpoint>
+<metadataEndpoint>http://localhost:8080/</metadataEndpoint>
 ```
-if you are running your own EDI-NG_Server on your local machine's Tomcat installation.
+if you are running your own EDI-NG_Server on your local machine.
+
+All included templates have mainly two purposes:
+* serving for our own projects
+* serving as an example to make your own templates
+
+In particular, you can prepare your own SPARQL endpoints to feed your templates' combo boxes or autocompletion fields.
+That is why you can assign a specific SPARQL endpoint to datasources in your templates and even have a default SPARQL endpoint for them.
+E.g., you can replace our SPARQL endpoint
+```xml
+<sparqlEndpoint>http://sp7.irea.cnr.it:8891/sparql</sparqlEndpoint>
+```
+with
+```xml
+<sparqlEndpoint>http://url.to.your.sparql.endpoint/</sparqlEndpoint>
+```
 
 The sample pages, meant to illustrate sample templates, have sample buttons on the upper left part of the page:
 
