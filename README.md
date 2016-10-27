@@ -25,6 +25,12 @@ Creating a form based on a template file saved locally as "TEST_v1.00.xml" is as
 >  });
 >```
 
+How to Cite
+===========
+Please, when you use EDI-NG_client cite as:
+
+Pavesi, F., A. Basoni, C. Fugazza, S. Menegon, A. Oggioni, M. Pepe, P. Tagliolato, and P. Carrara. “EDI – A Template-Driven Metadata Editor for Research Data.” Journal of Open Research Software - JORS 4 (October 25, 2016). doi: [10.5334/jors.106](http://dx.doi.org/10.5334/jors.106).
+
 # Quick Start
 The easiest way for a hands-on trial of EDI-NG is to download the demo standalone JAR [here](https://github.com/SP7-Ritmare/EDI-NG_server/releases/download/v1.2/edi.zip). It includes both a demo client and server, and it requires JAVA 7+.
 
