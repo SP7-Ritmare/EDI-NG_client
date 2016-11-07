@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uuid="java.util.UUID"
+    xsi:noNamespaceSchemaLocation="edi_template.xsd">
+    <settings>
+        <userInterfaceLanguage xml:lang="en"/>
+        <metadataEndpoint>http://edidemo.get-it.it/edi/</metadataEndpoint>
+        <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
+        <requiresValidation>true</requiresValidation>
+        <baseDocument><![CDATA[
+            <dwr:SimpleDarwinRecordSet xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:dwr="http://rs.tdwg.org/dwc/xsd/simpledarwincore/"
+                xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+                xmlns:dcelem="http://purl.org/dc/elements/1.1/"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:dc="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:uuid="java.util.UUID"
+                xsi:schemaLocation="http://rs.tdwg.org/dwc/xsd/simpledarwincore/ http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd">    
+                <dwr:SimpleDarwinRecord>
+                
+                </dwr:SimpleDarwinRecord>
+            </dwr:SimpleDarwinRecordSet>
+        ]]></baseDocument>
+        <xsltChain>
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/DwC.xsl?version=1.00</xslt>
+        </xsltChain>
+    </settings>
+
+    <endpointTypes>
+        <endpointType xml:id="virtuoso" method="GET" queryParameter="query">
+            <parameters>
+                <parameter name="format" value="application/sparql-results+json"/>
+                <parameter name="save" value="display"/>
+                <parameter name="fname" value="undefined"/>
+            </parameters>
+        </endpointType>
+        <!--<endpointType xml:id="lustre" method="GET" queryParameter="query">
+            <parameters>
+                <parameter name="format" value="application/sparql-results+json"/>
+                <parameter name="save" value="display"/>
+                <parameter name="fname" value="undefined"/>
+            </parameters>
+        </endpointType>
+        <endpointType xml:id="envthes" method="GET" queryParameter="query">
+            <parameters>
+                <parameter name="format" value="application/sparql-results+json"/>
+                <parameter name="save" value="display"/>
+                <parameter name="fname" value="undefined"/>
+            </parameters>
+        </endpointType>-->
+        <endpointType xml:id="fuseki" method="GET" queryParameter="query">
+            <parameters>
+                <!--<parameter name="output" value="json"/>-->
+                <parameter name="format" value="application/sparql-results+json"/>
+                <parameter name="save" value="display"/>
+                <parameter name="fname" value="undefined"/>
+            </parameters>
+        </endpointType>
+    </endpointTypes>
+
+    <datasources>
+        <sparql endpointType="fuseki" xml:id="aaaa">
+            <query></query>
+        </sparql>
+        <singleton endpointType="fuseki" xml:id="bbbb">
+            <query></query>
+        </singleton>
+        <codelist endpointType="fuseki" xml:id="ccc">
+            <uri></uri>
+        </codelist>
+        <sparql xml:id="geoname" endpointType="fuseki">
+            <query><![CDATA[
+            ]]></query>
+        </sparql>
+        <sparql xml:id="institution" endpointType="virtuoso">
+            <query><![CDATA[
+
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT DISTINCT ?c ?l
+                        FROM <http://ritmare.it/rdfdata/lotrx>
+                        WHERE {
+                          ?c rdf:type foaf:Person .
+                          ?c foaf:name ?l .
+                          ?c vcard:org ?o .
+                          FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+
+            ]]></query>
+        </sparql>
+        <!--<singleton xml:id="info_operator" endpointType="virtuoso" triggerItem="operator_1_uri">
+            <query><![CDATA[
+                PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
+                WHERE {
+                  OPTIONAL {
+                    <$search_param> foaf:phone ?phone .
+                  }
+                  OPTIONAL {
+                    <$search_param> foaf:fullName ?fullname .
+                  }
+                  OPTIONAL {
+                    <$search_param> vcard:email ?email .
+                  }
+                  OPTIONAL {
+                    <$search_param> vcard:org ?b3 .
+                    ?b3 foaf:homepage ?homepage .
+                    ?b3 foaf:name ?l .
+                  }
+                
+                  {
+                    <$search_param> vcard:hasAddress ?b1 .
+                    OPTIONAL {
+                      ?b1 vcard:street-address ?addr .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:locality ?town .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:postal-code ?postcode .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:country-name ?b2 .
+                    }
+                    OPTIONAL {
+                      ?b2 foaf:name ?country .
+                    }
+                  } UNION {
+                    ?b3 vcard:hasAddress ?b1 .
+                    OPTIONAL {
+                      ?b1 vcard:street-address ?addr .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:locality ?town .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:postal-code ?postcode .
+                    }
+                    OPTIONAL {
+                      ?b1 vcard:country-name ?b2 .
+                    }
+                    OPTIONAL {
+                      ?b2 foaf:name ?country .
+                    }
+                  }
+                }
+                LIMIT 1
+            ]]></query>
+        </singleton>-->
+        <!--<codelist xml:id="EPSG" endpointType="virtuoso">
+            <uri>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</uri>
+        </codelist>-->
+        <!--<codelist endpointType="virtuoso" xml:id="languages">
+            <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
+            <url>http://sparql.get-it.it</url>
+        </codelist>-->
+        <sparql endpointType="fuseki" xml:id="licence">
+            <query>
+                <![CDATA[
+                PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX dct:<http://purl.org/dc/terms/>
+                PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
+                    SELECT DISTINCT (<http://publications.europa.eu/resource/authority/licence> AS ?uri) ?c ?l ?a ?z WHERE 
+                                {
+                                { 
+                                ?c rdf:type skos:Concept.
+                                ?c skos:inScheme <http://publications.europa.eu/resource/authority/licence>.
+                                    OPTIONAL
+                                    {
+                                    ?c skos:prefLabel ?l.
+                                    FILTER ( LANG(?l) = "en" )
+                                    }
+                                    } OPTIONAL { 
+                                    ?c skos:prefLabel ?z.
+                                    FILTER ( LANG(?z) = "zxx" )
+                                    } OPTIONAL {
+                                    ?c skos:prefLabel ?a.
+                                    FILTER ( LANG(?a) = "en" )
+                                    }
+                                    } ORDER BY ASC(?a) ASC(?l)
+                ]]>
+            </query>
+            <url>http://fuseki1.get-it.it/CCLicenses/query</url>
+        </sparql>
+    </datasources>
+
+    <!-- collectionElements -->
+    <group xml:id="collEle">
+        <label xml:lang="en">Collection elements</label>
+        <label xml:lang="it">Collection elements</label>
+        <element isMandatory="true" isMultiple="false" xml:id="oID">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="string" hasIndex="1" xml:id="oID_1" isFixed="false">
+                    <label xml:lang="en">Occurence ID</label>
+                    <help xml:lang="en">An identifier for the Occurrence (as opposed to a particular digital record of the occurrence). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the occurrenceID globally unique (e.g. http://asa.archiviostudiadriatici.it/islandora/object/minio). </help>
+                    <hasPath>dwc:occurrenceID</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="institutionCode">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="institutionCode_1" isFixed="false" datasource="institution">
+                    <label xml:lang="en">Institution code</label>
+                    <help xml:lang="en">The name (or acronym) in use by the institution having custody of the object(s) or information referred to in the record (e.g. ISMAR)</help>
+                    <hasPath>dwc:institutionCode</hasPath>
+                </item>
+            </produces>
+        </element>
+        <!--<element isMandatory="false" isMultiple="false" xml:id="institutionID">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="select" hasIndex="1" xml:id="institutionID_1" isFixed="false" field="l" datasource="info_owner">
+                    <hasPath>dwc:institutionID</hasPath>
+                </item>
+            </produces>
+        </element>-->
+        <!-- TODO: ??? Come fare -->
+        <!--<element isMandatory="true" isMultiple="false" xml:id="recordNumber">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="recordNumber_1" isFixed="false">
+                    <label xml:lang="en">Record number</label>
+                    <help xml:lang="en">An identifier given to the Occurrence at the time it was recorded. Often serves as a link between field notes and an Occurrence record, such as a specimen collector's number (e.g. ISMAR0357)</help>
+                    <hasPath>dwr:recordNumber</hasPath>
+                </item>
+            </produces>
+        </element>-->
+        <!--<element isMandatory="false" isMultiple="false" xml:id="collectionCode">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="collectionCode_1" isFixed="false">
+                    <label xml:lang="en">Collection code</label>
+                    <help xml:lang="en">The name, acronym, coden, or initialism identifying the collection or data set from which the record was derived.</help>
+                    <hasPath>dwc:collectionCode</hasPath>
+                </item>
+            </produces>
+        </element>-->
+    </group>
+
+    <!-- metaElements -->
+    <group xml:id="metaEle">
+        <label xml:lang="en">Meta elements</label>
+        <label xml:lang="it">Meta elements</label>
+        <element isMandatory="false" isMultiple="false" xml:id="rightsHolder">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="rightsHolder_1" isFixed="false">
+                    <label xml:lang="en">Rights holder</label>
+                    <help xml:lang="en">A person or organization owning or managing rights over the
+                        resource.</help>
+                    <hasPath>dcterms:rightsHolder</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="true" isMultiple="false" xml:id="accessRights">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="codelist" hasIndex="1" xml:id="accessRights_1" isFixed="false"
+                    datasource="licence">
+                    <label xml:lang="en">Access rights</label>
+                    <help xml:lang="en">Information about who can access the resource or an
+                        indication of its security status. Access Rights may include information
+                        regarding access or restrictions based on privacy, security, or other
+                        policies.</help>
+                    <hasPath>dcterms:accessRights</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="bibliographicCitation">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="bibliographicCitation_1"
+                    isFixed="false">
+                    <label xml:lang="en">Bibliographic citation</label>
+                    <help xml:lang="en">A bibliographic reference for the resource as a statement
+                        indicating how this record should be cited (attributed) when used.
+                        Recommended practice is to include sufficient bibliographic detail to
+                        identify the resource as unambiguously as possible.</help>
+                    <hasPath>dcterms:bibliographicCitation</hasPath>
+                </item>
+            </produces>
+        </element>
+    </group>
+
+    <!-- taxonomicElements -->
+    <group xml:id="taxoEle">
+        <label xml:lang="en">Taxonomic elements</label>
+        <label xml:lang="it">Taxonomic elements</label>
+        <element isMandatory="false" isMultiple="false" xml:id="taxonID">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="URL" hasIndex="1" xml:id="taxonID_1" isFixed="false">
+                    <label xml:lang="en">Taxon ID</label>
+                    <help xml:lang="en">An identifier for the set of taxon information (data associated with the Taxon class). May be a global unique identifier or an identifier specific to the data set.</help>
+                    <hasPath>dwc:taxonID</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="originalNameUsageID">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <!-- TODO: cosa mettere??? -->
+                <item hasDatatype="string" hasIndex="1" xml:id="originalNameUsageID_1" isFixed="false">
+                    <label xml:lang="en">Original name usage ID</label>
+                    <help xml:lang="en">An identifier for the name usage (documented meaning of the name according to a source) in which the terminal element of the scientificName was originally established under the rules of the associated nomenclaturalCode.</help>
+                    <hasPath>dwc:originalNameUsageID</hasPath>
+                </item>
+            </produces>
+        </element>
+        <!--<element isMandatory="false" isMultiple="false" xml:id="phylum">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <!-\- TODO: codelist ??? -\->
+                <item hasDatatype="string" hasIndex="1" xml:id="phylum_1" isFixed="false">
+                    <label xml:lang="en">Phylum</label>
+                    <help xml:lang="en">The full scientific name of the phylum or division in which the taxon is classified.</help>
+                    <hasPath>dwc:phylum</hasPath>
+                </item>
+            </produces>
+        </element>-->
+        <element isMandatory="false" isMultiple="false" xml:id="order">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <!-- TODO: codelist ??? -->
+                <item hasDatatype="string" hasIndex="1" xml:id="order_1" isFixed="false">
+                    <label xml:lang="en">Order</label>
+                    <help xml:lang="en">The full scientific name of the order in which the taxon is classified.</help>
+                    <hasPath>dwc:order</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="true" isMultiple="false" xml:id="scientificName">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <!-- TODO: codelist ??? -->
+                <item hasDatatype="string" hasIndex="1" xml:id="scientificName_1" isFixed="false">
+                    <label xml:lang="en">Scientific name</label>
+                    <help xml:lang="en">The full scientific name, with authorship and date information if known. When forming part of an Identification, this should be the name in lowest level taxonomic rank that can be determined. This term should not contain identification qualifications, which should instead be supplied in the identificationQualifier term.</help>
+                    <hasPath>dwc:scientificName</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="acceptedNameUsage">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <!-- TODO: codelist ??? -->
+                <item hasDatatype="string" hasIndex="1" xml:id="acceptedNameUsage_1" isFixed="false">
+                    <label xml:lang="en">Accepted name usage</label>
+                    <help xml:lang="en">The full name, with authorship and date information if known, of the currently valid (zoological) or accepted (botanical) taxon.</help>
+                    <hasPath>dwc:acceptedNameUsage</hasPath>
+                </item>
+            </produces>
+        </element>
+    </group>
+
+    <!-- locationElements -->
+    <group xml:id="locaEle">
+        <label xml:lang="en">Location elements</label>
+        <label xml:lang="it">Location elements</label>
+        <element isMandatory="true" isMultiple="false" xml:id="higherGeography">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="higherGeography_1" isFixed="false" datasource="geoname">
+                    <label xml:lang="en">Higher geography</label>
+                    <help xml:lang="en">A list (concatenated and separated) of geographic names less specific than the information captured in the locality term.</help>
+                    <hasPath>dwc:higherGeography</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="2" xml:id="higherGeography_2" isFixed="true" datasource="geoname" field="a">
+                    <hasPath>dwc:higherGeographyID</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="locality">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="locality_1" isFixed="false">
+                    <label xml:lang="en">Locality</label>
+                    <help xml:lang="en">The specific description of the place. Less specific geographic information can be provided in other geographic terms (higherGeography, continent, country, stateProvince, county, municipality, waterBody, island, islandGroup). This term may contain information modified from the original to correct perceived errors or standardize the description.</help>
+                    <hasPath>dwc:locality</hasPath>
+                </item>
+            </produces>
+        </element>
+        <!-- TODO: map with point ?? -->
+        <element isMandatory="false" isMultiple="false" xml:id="decimalLatLon">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="string" hasIndex="1" xml:id="decimalLatLon_1" isFixed="false">
+                    <label xml:lang="en">Decimal latitude</label>
+                    <help xml:lang="en">The geographic latitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are north of the Equator, negative values are south of it. Legal values lie between -90 and 90, inclusive.</help>
+                    <hasPath>dwc:decimalLatitude</hasPath>
+                </item>
+                <item hasDatatype="string" hasIndex="2" xml:id="decimalLatLon_2" isFixed="false">
+                    <label xml:lang="en">Decimal longitude</label>
+                    <help xml:lang="en">The geographic longitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are east of the Greenwich Meridian, negative values are west of it. Legal values lie between -180 and 180, inclusive.</help>
+                    <hasPath>dwc:decimalLongitude</hasPath>
+                </item>
+            </produces>
+        </element>
+    </group>
+
+    <!-- timeElements -->
+    <group xml:id="timeEle">
+        <label xml:lang="en">Time elements</label>
+        <label xml:lang="it">Time elements</label>
+        <element isMandatory="false" isMultiple="false" xml:id="verbatimEventDate">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="date" hasIndex="1" xml:id="verbatimEventDate_1" isFixed="false">
+                    <label xml:lang="en">Verbatim event date</label>
+                    <help xml:lang="en">The verbatim original representation of the date and time information for an Event.</help>
+                    <hasPath>dwc:verbatimEventDate</hasPath>
+                </item>
+            </produces>
+        </element>
+    </group>
+
+    <!-- otherElements -->
+    <group xml:id="otheEle">
+        <label xml:lang="en">Other elements</label>
+        <label xml:lang="it">Other elements</label>
+        <element isMandatory="false" isMultiple="false" xml:id="associatedMedia">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="URL" hasIndex="1" xml:id="associatedMedia_1" isFixed="false">
+                    <label xml:lang="en">Associated media</label>
+                    <help xml:lang="en">A list (concatenated and separated) of identifiers (publication, global unique identifier, URI) of media associated with the Occurrence.</help>
+                    <hasPath>dwc:associatedMedia</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="associatedReferences">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="text" hasIndex="1" xml:id="associatedReferences_1" isFixed="false">
+                    <label xml:lang="en">Associated references</label>
+                    <help xml:lang="en">A list (concatenated and separated) of identifiers (publication, bibliographic reference, global unique identifier, URI) of literature associated with the Occurrence</help>
+                    <hasPath>dwr:associatedReferences</hasPath>
+                </item>
+            </produces>
+        </element>
+    </group>
+</template>
