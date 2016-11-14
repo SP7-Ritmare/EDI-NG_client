@@ -70,6 +70,47 @@
         </codelist>
         <sparql xml:id="geoname" endpointType="fuseki">
             <query><![CDATA[
+
+                      PREFIX cc:    <http://creativecommons.org/ns#>
+                      PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                      PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+                      PREFIX gn:    <http://www.geonames.org/ontology#>
+                      PREFIX dcterms: <http://purl.org/dc/terms/>
+                      PREFIX wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                      PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+                      PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+                      PREFIX dc:  <http://purl.org/dc/terms/>
+                      PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+
+                      select *
+                      WHERE{
+                       BIND('EPSG:4326' as ?geodeticDatum).
+                          ?locationID
+                              a gn:Feature;
+                              skos:inScheme ?scheme;
+                              gn:name ?locality;
+                              rdfs:label ?label;
+                              gn:countryCode ?country;
+                              gn:featureCode ?featureCode; #these featureCodes are IGM fc that in the future should be linked to gn:featureCodes and classes
+                              dc:create ?dateCreated;
+                              dc:source ?sourceTavoletta;
+                              gn:parentADM3 ?higherGeographyID;
+                              wgs84_pos:lat ?lat;
+                              wgs84_pos:long ?long.
+                          # query the ISPRA endpoint for additional info about higher geographies
+                          SERVICE <http://dati.isprambiente.it/sparql>
+                              {
+                                  ?higherGeographyID  gn:name ?nomeComune;
+                                  gn:parentADM2 ?higherA2;
+                                  gn:parentADM1 ?higherA1.
+                                  ?higherA2 gn:name ?nomeProvincia.
+                                  ?higherA1 gn:name ?nomeRegione.
+                              }
+                          BIND(concat("Europe | Italy | ",?nomeRegione," | ",?nomeProvincia," | ",?nomeComune) AS ?higherGeography)
+                          OPTIONAL {?locationID gn:alternateName ?altName.}
+                        FILTER(regex(str(?locality),"?search_param","i"))
+                      }
+
             ]]></query>
         </sparql>
         <sparql xml:id="institution" endpointType="virtuoso">
