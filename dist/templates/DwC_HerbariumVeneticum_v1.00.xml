@@ -75,13 +75,12 @@
         <sparql xml:id="institution" endpointType="virtuoso">
             <query><![CDATA[
 
-                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        SELECT DISTINCT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/lotrx>
-                        WHERE {
-                          ?c rdf:type foaf:Person .
-                          ?c foaf:name ?l .
-                          ?c vcard:org ?o .
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
+                        SELECT ?c ?l 
+                        FROM <http://ritmare.it/rdfdata/project>
+                        WHERE { 
+                          ?c rdf:type foaf:Organization.
+                          ?c foaf:name ?l.
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
                         }
                         ORDER BY ASC(?l)
@@ -209,16 +208,16 @@
                 </item>
             </produces>
         </element>
-        <!--<element isMandatory="false" isMultiple="false" xml:id="institutionID">
+        <element isMandatory="false" isMultiple="false" xml:id="institutionID">
             <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
             <produces>
-                <item hasDatatype="select" hasIndex="1" xml:id="institutionID_1" isFixed="false" field="l" datasource="info_owner">
+                <item hasDatatype="select" hasIndex="1" xml:id="institutionID_1" isFixed="false" field="c" datasource="institution">
                     <hasPath>dwc:institutionID</hasPath>
                 </item>
             </produces>
-        </element>-->
-        <!-- TODO: ??? Come fare -->
-        <!--<element isMandatory="true" isMultiple="false" xml:id="recordNumber">
+        </element>
+        <!-- TODO: ??? Come fare in maniera automatica -->
+        <element isMandatory="true" isMultiple="false" xml:id="recordNumber">
             <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="recordNumber_1" isFixed="false">
@@ -227,8 +226,8 @@
                     <hasPath>dwr:recordNumber</hasPath>
                 </item>
             </produces>
-        </element>-->
-        <!--<element isMandatory="false" isMultiple="false" xml:id="collectionCode">
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="collectionCode">
             <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="collectionCode_1" isFixed="false">
@@ -237,7 +236,7 @@
                     <hasPath>dwc:collectionCode</hasPath>
                 </item>
             </produces>
-        </element>-->
+        </element>
     </group>
 
     <!-- metaElements -->
@@ -360,7 +359,41 @@
     <group xml:id="locaEle">
         <label xml:lang="en">Location elements</label>
         <label xml:lang="it">Location elements</label>
-        <element isMandatory="true" isMultiple="false" xml:id="higherGeography">
+        <element isMandatory="false" isMultiple="false" xml:id="locality">
+            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="locality_1" isFixed="false" datasource="geoname">
+                    <label xml:lang="en">Locality</label>
+                    <help xml:lang="en">The specific description of the place. Less specific geographic information can be provided in other geographic terms (higherGeography, continent, country, stateProvince, county, municipality, waterBody, island, islandGroup). This term may contain information modified from the original to correct perceived errors or standardize the description.</help>
+                    <hasPath>dwc:locality</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="2" xml:id="locality_2" isFixed="false" datasource="geoname" field="a">
+                    <hasPath>dwc:locationID</hasPath>
+                </item>
+                <item hasDatatype="autoCompletion" hasIndex="3" xml:id="higherGeography_1" isFixed="false" datasource="geoname" field="a">
+                    <label xml:lang="en">Higher geography</label>
+                    <help xml:lang="en">A list (concatenated and separated) of geographic names less specific than the information captured in the locality term.</help>
+                    <hasPath>dwc:higherGeography</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="4" xml:id="higherGeography_2" isFixed="false" datasource="geoname" field="a">
+                    <hasPath>dwc:higherGeographyID</hasPath>
+                </item>
+                <item hasDatatype="string" hasIndex="5" xml:id="decimalLatLon_1" isFixed="false" datasource="geoname" field="a">
+                    <label xml:lang="en">Decimal latitude</label>
+                    <help xml:lang="en">The geographic latitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are north of the Equator, negative values are south of it. Legal values lie between -90 and 90, inclusive.</help>
+                    <hasPath>dwc:decimalLatitude</hasPath>
+                </item>
+                <item hasDatatype="string" hasIndex="6" xml:id="decimalLatLon_2" isFixed="false" datasource="geoname" field="a">
+                    <label xml:lang="en">Decimal longitude</label>
+                    <help xml:lang="en">The geographic longitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are east of the Greenwich Meridian, negative values are west of it. Legal values lie between -180 and 180, inclusive.</help>
+                    <hasPath>dwc:decimalLongitude</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="7" xml:id="decimalLatLon_3" isFixed="false" datasource="geoname" field="a">
+                    <hasPath>dwc:geodeticDatum</hasPath>
+                </item>
+            </produces>
+        </element>
+        <!--<element isMandatory="true" isMultiple="false" xml:id="higherGeography">
             <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="autoCompletion" hasIndex="1" xml:id="higherGeography_1" isFixed="false" datasource="geoname">
@@ -372,19 +405,9 @@
                     <hasPath>dwc:higherGeographyID</hasPath>
                 </item>
             </produces>
-        </element>
-        <element isMandatory="false" isMultiple="false" xml:id="locality">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <item hasDatatype="text" hasIndex="1" xml:id="locality_1" isFixed="false">
-                    <label xml:lang="en">Locality</label>
-                    <help xml:lang="en">The specific description of the place. Less specific geographic information can be provided in other geographic terms (higherGeography, continent, country, stateProvince, county, municipality, waterBody, island, islandGroup). This term may contain information modified from the original to correct perceived errors or standardize the description.</help>
-                    <hasPath>dwc:locality</hasPath>
-                </item>
-            </produces>
-        </element>
+        </element>-->
         <!-- TODO: map with point ?? -->
-        <element isMandatory="false" isMultiple="false" xml:id="decimalLatLon">
+        <!--<element isMandatory="false" isMultiple="false" xml:id="decimalLatLon">
             <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="string" hasIndex="1" xml:id="decimalLatLon_1" isFixed="false">
@@ -398,7 +421,7 @@
                     <hasPath>dwc:decimalLongitude</hasPath>
                 </item>
             </produces>
-        </element>
+        </element>-->
     </group>
 
     <!-- timeElements -->
