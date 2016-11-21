@@ -14,11 +14,8 @@
                 xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                 xmlns:dc="http://purl.org/dc/terms/"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:uuid="java.util.UUID"
                 xsi:schemaLocation="http://rs.tdwg.org/dwc/xsd/simpledarwincore/ http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd">    
-                <dwr:SimpleDarwinRecord>
                 
-                </dwr:SimpleDarwinRecord>
             </dwr:SimpleDarwinRecordSet>
         ]]></baseDocument>
         <xsltChain>
@@ -59,12 +56,6 @@
     </endpointTypes>
 
     <datasources>
-        <sparql endpointType="fuseki" xml:id="aaaa">
-            <query></query>
-        </sparql>
-        <singleton endpointType="fuseki" xml:id="bbbb">
-            <query></query>
-        </singleton>
         <codelist endpointType="fuseki" xml:id="ccc">
             <uri></uri>
         </codelist>
@@ -82,9 +73,9 @@
                       PREFIX dc:  <http://purl.org/dc/terms/>
                       PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 
-                      select *
+                      SELECT ?c ?l
                       WHERE{
-                       BIND('EPSG:4326' as ?geodeticDatum).
+                       BIND('EPSG:4326' AS ?geodeticDatum).
                           ?locationID
                               a gn:Feature;
                               skos:inScheme ?scheme;
@@ -107,12 +98,65 @@
                                   ?higherA1 gn:name ?nomeRegione.
                               }
                           BIND(concat("Europe | Italy | ",?nomeRegione," | ",?nomeProvincia," | ",?nomeComune) AS ?higherGeography)
+                          BIND(?locationID AS ?c)
+                          BIND(?locality AS ?l)
+                          BIND(?locationID AS ?uri)
                           OPTIONAL {?locationID gn:alternateName ?altName.}
-                        FILTER(regex(str(?locality),"?search_param","i"))
+                        FILTER(regex(str(?locality),"$search_param","i"))
                       }
+                      ORDER BY ASC(?locality)
 
             ]]></query>
+            <url>http://fuseki1.get-it.it/test_IGM/query</url>
         </sparql>
+        <singleton xml:id="geonameS" endpointType="fuseki" triggerItem="locality_1_uri">
+            <query><![CDATA[
+                
+                      PREFIX cc:    <http://creativecommons.org/ns#>
+                      PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                      PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+                      PREFIX gn:    <http://www.geonames.org/ontology#>
+                      PREFIX dcterms: <http://purl.org/dc/terms/>
+                      PREFIX wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                      PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+                      PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+                      PREFIX dc:  <http://purl.org/dc/terms/>
+                      PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+                      
+                      SELECT ?uri ?c ?l ?locationID ?locality ?label ?higherGeographyID ?lat ?long ?higherGeography ?geodeticDatum ?nomeProvincia ?nomeComune
+                      WHERE{
+                       BIND('EPSG:4326' AS ?geodeticDatum).
+                          <$search_param>
+                              a gn:Feature;
+                              skos:inScheme ?scheme;
+                              gn:name ?locality;
+                              rdfs:label ?label;
+                              gn:countryCode ?country;
+                              gn:featureCode ?featureCode; #these featureCodes are IGM fc that in the future should be linked to gn:featureCodes and classes
+                              dc:create ?dateCreated;
+                              dc:source ?sourceTavoletta;
+                              gn:parentADM3 ?higherGeographyID;
+                              wgs84_pos:lat ?lat;
+                              wgs84_pos:long ?long.
+                          # query the ISPRA endpoint for additional info about higher geographies
+                          SERVICE <http://dati.isprambiente.it/sparql>
+                              {
+                                  ?higherGeographyID  gn:name ?nomeComune;
+                                  gn:parentADM2 ?higherA2;
+                                  gn:parentADM1 ?higherA1.
+                                  ?higherA2 gn:name ?nomeProvincia.
+                                  ?higherA1 gn:name ?nomeRegione.
+                              }
+                          BIND(concat("Europe | Italy | ",?nomeRegione," | ",?nomeProvincia," | ",?nomeComune) AS ?higherGeography)
+                          BIND(?locality AS ?c)
+                          BIND(?locality AS ?l)
+                          BIND(<$search_param> AS ?uri)
+                      }
+                      ORDER BY ASC(?locality)
+                      
+            ]]></query>
+            <url>http://fuseki1.get-it.it/test_IGM/query</url>
+        </singleton>
         <sparql xml:id="institution" endpointType="virtuoso">
             <query><![CDATA[
 
@@ -128,72 +172,6 @@
 
             ]]></query>
         </sparql>
-        <!--<singleton xml:id="info_operator" endpointType="virtuoso" triggerItem="operator_1_uri">
-            <query><![CDATA[
-                PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-                WHERE {
-                  OPTIONAL {
-                    <$search_param> foaf:phone ?phone .
-                  }
-                  OPTIONAL {
-                    <$search_param> foaf:fullName ?fullname .
-                  }
-                  OPTIONAL {
-                    <$search_param> vcard:email ?email .
-                  }
-                  OPTIONAL {
-                    <$search_param> vcard:org ?b3 .
-                    ?b3 foaf:homepage ?homepage .
-                    ?b3 foaf:name ?l .
-                  }
-                
-                  {
-                    <$search_param> vcard:hasAddress ?b1 .
-                    OPTIONAL {
-                      ?b1 vcard:street-address ?addr .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:locality ?town .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:postal-code ?postcode .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:country-name ?b2 .
-                    }
-                    OPTIONAL {
-                      ?b2 foaf:name ?country .
-                    }
-                  } UNION {
-                    ?b3 vcard:hasAddress ?b1 .
-                    OPTIONAL {
-                      ?b1 vcard:street-address ?addr .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:locality ?town .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:postal-code ?postcode .
-                    }
-                    OPTIONAL {
-                      ?b1 vcard:country-name ?b2 .
-                    }
-                    OPTIONAL {
-                      ?b2 foaf:name ?country .
-                    }
-                  }
-                }
-                LIMIT 1
-            ]]></query>
-        </singleton>-->
-        <!--<codelist xml:id="EPSG" endpointType="virtuoso">
-            <uri>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</uri>
-        </codelist>-->
-        <!--<codelist endpointType="virtuoso" xml:id="languages">
-            <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
-            <url>http://sparql.get-it.it</url>
-        </codelist>-->
         <sparql endpointType="fuseki" xml:id="licence">
             <query>
                 <![CDATA[
@@ -223,6 +201,57 @@
             </query>
             <url>http://fuseki1.get-it.it/CCLicenses/query</url>
         </sparql>
+        <sparql xml:id="taxonomy" endpointType="fuseki">
+            <query><![CDATA[
+                    PREFIX txn:        <http://lod.taxonconcept.org/ontology/txn.owl#>
+                    PREFIX txnkb:      <http://lod.taxonconcept.org/ontology/void.rdf#TaxonConcept>
+                    PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX dcterms:    <http://purl.org/dc/terms/>
+                    PREFIX wisconsin:  <http://sws.geonames.org/5279468/>
+                    PREFIX carnivora:  <http://purl.uniprot.org/taxonomy/33554> 
+                    
+                    SELECT ?c ?l
+                    WHERE {
+                      SERVICE <http://uriburner.com/sparql/> {
+                        ?c rdf:type txn:SpeciesConcept;
+                        txn:scientificName ?l.
+                      }
+                      BIND(?c AS ?uri)
+                      FILTER( REGEX( STR(?l), "$search_param", "i") )
+                    }
+                    ORDER BY ASC(?c)
+                ]]></query>
+            <url>http://fuseki1.get-it.it/CCLicenses/query</url>
+        </sparql>
+        <singleton xml:id="taxonomyS" endpointType="fuseki" triggerItem="taxon_1_uri">
+            <query><![CDATA[
+                    PREFIX txn:        <http://lod.taxonconcept.org/ontology/txn.owl#>
+                    PREFIX txnkb:      <http://lod.taxonconcept.org/ontology/void.rdf#TaxonConcept>
+                    PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX dcterms:    <http://purl.org/dc/terms/>
+                    PREFIX wisconsin:  <http://sws.geonames.org/5279468/>
+                    PREFIX carnivora:  <http://purl.uniprot.org/taxonomy/33554> 
+                    
+                    SELECT ?uri ?kingdom ?phylum ?order ?family ?genus ?sciname ?accname ?acceptedNameID ?EOLpage
+                    WHERE {
+                     SERVICE <http://uriburner.com/sparql/> {
+                     <$search_param> rdf:type txn:SpeciesConcept;
+                     txn:kingdom ?kingdom;
+                     txn:phylum ?phylum;
+                     txn:order ?order;
+                     txn:family ?family;
+                     txn:genus ?genus;
+                     txn:scientificName ?sciname;
+                     txn:acceptedName ?accname;
+                     txn:acceptedNameID ?acceptedNameID;
+                     txn:hasEOLPage ?EOLpage.
+                     }
+                     BIND(<$search_param> AS ?uri)
+                    }
+                    ORDER BY ASC(?sciname)
+                ]]></query>
+            <url>http://fuseki1.get-it.it/CCLicenses/query</url>
+        </singleton>
     </datasources>
 
     <!-- collectionElements -->
@@ -230,7 +259,7 @@
         <label xml:lang="en">Collection elements</label>
         <label xml:lang="it">Collection elements</label>
         <element isMandatory="true" isMultiple="false" xml:id="oID">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="string" hasIndex="1" xml:id="oID_1" isFixed="false">
                     <label xml:lang="en">Occurence ID</label>
@@ -240,7 +269,7 @@
             </produces>
         </element>
         <element isMandatory="false" isMultiple="false" xml:id="institutionCode">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="autoCompletion" hasIndex="1" xml:id="institutionCode_1" isFixed="false" datasource="institution">
                     <label xml:lang="en">Institution code</label>
@@ -250,26 +279,26 @@
             </produces>
         </element>
         <element isMandatory="false" isMultiple="false" xml:id="institutionID">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
-                <item hasDatatype="select" hasIndex="1" xml:id="institutionID_1" isFixed="false" field="c" datasource="institution">
+                <item hasDatatype="select" hasIndex="1" xml:id="institutionID_1" isFixed="true" field="c" datasource="institution">
                     <hasPath>dwc:institutionID</hasPath>
                 </item>
             </produces>
         </element>
         <!-- TODO: ??? Come fare in maniera automatica -->
         <element isMandatory="true" isMultiple="false" xml:id="recordNumber">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="recordNumber_1" isFixed="false">
                     <label xml:lang="en">Record number</label>
                     <help xml:lang="en">An identifier given to the Occurrence at the time it was recorded. Often serves as a link between field notes and an Occurrence record, such as a specimen collector's number (e.g. ISMAR0357)</help>
-                    <hasPath>dwr:recordNumber</hasPath>
+                    <hasPath>dwc:recordNumber</hasPath>
                 </item>
             </produces>
         </element>
         <element isMandatory="false" isMultiple="false" xml:id="collectionCode">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="collectionCode_1" isFixed="false">
                     <label xml:lang="en">Collection code</label>
@@ -285,7 +314,7 @@
         <label xml:lang="en">Meta elements</label>
         <label xml:lang="it">Meta elements</label>
         <element isMandatory="false" isMultiple="false" xml:id="rightsHolder">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="rightsHolder_1" isFixed="false">
                     <label xml:lang="en">Rights holder</label>
@@ -296,7 +325,7 @@
             </produces>
         </element>
         <element isMandatory="true" isMultiple="false" xml:id="accessRights">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="codelist" hasIndex="1" xml:id="accessRights_1" isFixed="false"
                     datasource="licence">
@@ -310,7 +339,7 @@
             </produces>
         </element>
         <element isMandatory="false" isMultiple="false" xml:id="bibliographicCitation">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="bibliographicCitation_1"
                     isFixed="false">
@@ -329,68 +358,64 @@
     <group xml:id="taxoEle">
         <label xml:lang="en">Taxonomic elements</label>
         <label xml:lang="it">Taxonomic elements</label>
-        <element isMandatory="false" isMultiple="false" xml:id="taxonID">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+        <element isMandatory="true" isMultiple="false" xml:id="taxon">
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
-                <item hasDatatype="URL" hasIndex="1" xml:id="taxonID_1" isFixed="false">
-                    <label xml:lang="en">Taxon ID</label>
-                    <help xml:lang="en">An identifier for the set of taxon information (data associated with the Taxon class). May be a global unique identifier or an identifier specific to the data set.</help>
-                    <hasPath>dwc:taxonID</hasPath>
-                </item>
-            </produces>
-        </element>
-        <element isMandatory="false" isMultiple="false" xml:id="originalNameUsageID">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <!-- TODO: cosa mettere??? -->
-                <item hasDatatype="string" hasIndex="1" xml:id="originalNameUsageID_1" isFixed="false">
-                    <label xml:lang="en">Original name usage ID</label>
-                    <help xml:lang="en">An identifier for the name usage (documented meaning of the name according to a source) in which the terminal element of the scientificName was originally established under the rules of the associated nomenclaturalCode.</help>
-                    <hasPath>dwc:originalNameUsageID</hasPath>
-                </item>
-            </produces>
-        </element>
-        <!--<element isMandatory="false" isMultiple="false" xml:id="phylum">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <!-\- TODO: codelist ??? -\->
-                <item hasDatatype="string" hasIndex="1" xml:id="phylum_1" isFixed="false">
-                    <label xml:lang="en">Phylum</label>
-                    <help xml:lang="en">The full scientific name of the phylum or division in which the taxon is classified.</help>
-                    <hasPath>dwc:phylum</hasPath>
-                </item>
-            </produces>
-        </element>-->
-        <element isMandatory="false" isMultiple="false" xml:id="order">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <!-- TODO: codelist ??? -->
-                <item hasDatatype="string" hasIndex="1" xml:id="order_1" isFixed="false">
-                    <label xml:lang="en">Order</label>
-                    <help xml:lang="en">The full scientific name of the order in which the taxon is classified.</help>
-                    <hasPath>dwc:order</hasPath>
-                </item>
-            </produces>
-        </element>
-        <element isMandatory="true" isMultiple="false" xml:id="scientificName">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <!-- TODO: codelist ??? -->
-                <item hasDatatype="string" hasIndex="1" xml:id="scientificName_1" isFixed="false">
+                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="taxon_1" isFixed="false" datasource="taxonomy">
                     <label xml:lang="en">Scientific name</label>
                     <help xml:lang="en">The full scientific name, with authorship and date information if known. When forming part of an Identification, this should be the name in lowest level taxonomic rank that can be determined. This term should not contain identification qualifications, which should instead be supplied in the identificationQualifier term.</help>
                     <hasPath>dwc:scientificName</hasPath>
                 </item>
-            </produces>
-        </element>
-        <element isMandatory="false" isMultiple="false" xml:id="acceptedNameUsage">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <!-- TODO: codelist ??? -->
-                <item hasDatatype="string" hasIndex="1" xml:id="acceptedNameUsage_1" isFixed="false">
+                <item hasDatatype="select" hasIndex="2" xml:id="taxon_2" isFixed="false" datasource="taxonomyS" field="uri">
+                    <label xml:lang="en">Taxon ID</label>
+                    <help xml:lang="en">An identifier for the set of taxon information (data associated with the Taxon class). May be a global unique identifier or an identifier specific to the data set.</help>
+                    <hasPath>dwc:taxonID</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="3" xml:id="taxonomic_1" isFixed="false" datasource="taxonomyS" field="kingdom">
+                    <label xml:lang="en">Kingdom</label>
+                    <help xml:lang="en">The full scientific name of the kingdom in which the taxon is classified.</help>
+                    <hasPath>dwc:kingdom</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="4" xml:id="taxonomic_2" isFixed="false" datasource="taxonomyS" field="phylum">
+                    <label xml:lang="en">Phylum</label>
+                    <help xml:lang="en">The full scientific name of the phylum or division in which the taxon is classified.</help>
+                    <hasPath>dwc:phylum</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="5" xml:id="taxonomic_3" isFixed="false" datasource="taxonomyS" field="order">
+                    <label xml:lang="en">Order</label>
+                    <help xml:lang="en">The full scientific name of the order in which the taxon is classified.</help>
+                    <hasPath>dwc:order</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="6" xml:id="taxonomic_4" isFixed="false" datasource="taxonomyS" field="family">
+                    <label xml:lang="en">Family</label>
+                    <help xml:lang="en">The full scientific name of the family in which the taxon is classified</help>
+                    <hasPath>dwc:family</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="7" xml:id="taxonomic_5" isFixed="false" datasource="taxonomyS" field="genus">
+                    <label xml:lang="en">Genus</label>
+                    <help xml:lang="en">The full scientific name of the genus in which the taxon is classified.</help>
+                    <hasPath>dwc:genus</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="8" xml:id="taxonomic_6" isFixed="false" datasource="taxonomyS" field="accname">
                     <label xml:lang="en">Accepted name usage</label>
                     <help xml:lang="en">The full name, with authorship and date information if known, of the currently valid (zoological) or accepted (botanical) taxon.</help>
                     <hasPath>dwc:acceptedNameUsage</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="9" xml:id="taxonomic_7" isFixed="true" datasource="taxonomyS" field="EOLpage">
+                    <hasPath>dwc:scientificNameID</hasPath>
+                </item>
+            </produces>
+        </element>
+        <element isMandatory="false" isMultiple="false" xml:id="dwcAccordingTo">
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
+            <produces>
+                <item hasDatatype="string" hasIndex="1" xml:id="dwcAccordingTo_1" isFixed="true">
+                    <hasPath>dwc:nameAccordingTo</hasPath>
+                    <hasValue>globalnames</hasValue>
+                </item>
+                <item hasDatatype="URL" hasIndex="2" xml:id="dwcAccordingTo_2" isFixed="true">
+                    <hasPath>dwc:nameAccordingToID</hasPath>
+                    <defaultValue>http://gni.globalnames.org/</defaultValue>
                 </item>
             </produces>
         </element>
@@ -400,69 +425,50 @@
     <group xml:id="locaEle">
         <label xml:lang="en">Location elements</label>
         <label xml:lang="it">Location elements</label>
-        <element isMandatory="false" isMultiple="false" xml:id="locality">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+        <element isMandatory="true" isMultiple="false" xml:id="locality">
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="autoCompletion" hasIndex="1" xml:id="locality_1" isFixed="false" datasource="geoname">
                     <label xml:lang="en">Locality</label>
                     <help xml:lang="en">The specific description of the place. Less specific geographic information can be provided in other geographic terms (higherGeography, continent, country, stateProvince, county, municipality, waterBody, island, islandGroup). This term may contain information modified from the original to correct perceived errors or standardize the description.</help>
                     <hasPath>dwc:locality</hasPath>
                 </item>
-                <item hasDatatype="select" hasIndex="2" xml:id="locality_2" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="2" xml:id="locality_2" isFixed="true" datasource="geonameS" field="uri">
                     <hasPath>dwc:locationID</hasPath>
                 </item>
-                <item hasDatatype="autoCompletion" hasIndex="3" xml:id="higherGeography_1" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="3" xml:id="higherGeography_1" isFixed="false" datasource="geonameS" field="higherGeography">
                     <label xml:lang="en">Higher geography</label>
                     <help xml:lang="en">A list (concatenated and separated) of geographic names less specific than the information captured in the locality term.</help>
                     <hasPath>dwc:higherGeography</hasPath>
                 </item>
-                <item hasDatatype="select" hasIndex="4" xml:id="higherGeography_2" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="4" xml:id="higherGeography_2" isFixed="true" datasource="geonameS" field="higherGeographyID">
                     <hasPath>dwc:higherGeographyID</hasPath>
                 </item>
-                <item hasDatatype="string" hasIndex="5" xml:id="decimalLatLon_1" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="5" xml:id="higherGeography_3" isFixed="false" datasource="geonameS" field="nomeProvincia">
+                    <label xml:lang="en">State province</label>
+                    <help xml:lang="en">The name of the next smaller administrative region than country (state, province, canton, department, region, etc.) in which the Location occurs.</help>
+                    <hasPath>dwc:stateProvince</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="6" xml:id="higherGeography_4" isFixed="false" datasource="geonameS" field="nomeComune">
+                    <label xml:lang="en">Municipality</label>
+                    <help xml:lang="en"> The full, unabbreviated name of the next smaller administrative region than county (city, municipality, etc.) in which the Location occurs. Do not use this term for a nearby named place that does not contain the actual location.</help>
+                    <hasPath>dwc:municipality</hasPath>
+                </item>
+                <item hasDatatype="select" hasIndex="7" xml:id="decimalLatLon_1" isFixed="false" datasource="geonameS" field="lat">
                     <label xml:lang="en">Decimal latitude</label>
                     <help xml:lang="en">The geographic latitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are north of the Equator, negative values are south of it. Legal values lie between -90 and 90, inclusive.</help>
                     <hasPath>dwc:decimalLatitude</hasPath>
                 </item>
-                <item hasDatatype="string" hasIndex="6" xml:id="decimalLatLon_2" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="8" xml:id="decimalLatLon_2" isFixed="false" datasource="geonameS" field="long">
                     <label xml:lang="en">Decimal longitude</label>
                     <help xml:lang="en">The geographic longitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are east of the Greenwich Meridian, negative values are west of it. Legal values lie between -180 and 180, inclusive.</help>
                     <hasPath>dwc:decimalLongitude</hasPath>
                 </item>
-                <item hasDatatype="select" hasIndex="7" xml:id="decimalLatLon_3" isFixed="false" datasource="geoname" field="a">
+                <item hasDatatype="select" hasIndex="9" xml:id="decimalLatLon_3" isFixed="true" datasource="geonameS" field="geodeticDatum">
                     <hasPath>dwc:geodeticDatum</hasPath>
                 </item>
             </produces>
         </element>
-        <!--<element isMandatory="true" isMultiple="false" xml:id="higherGeography">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="higherGeography_1" isFixed="false" datasource="geoname">
-                    <label xml:lang="en">Higher geography</label>
-                    <help xml:lang="en">A list (concatenated and separated) of geographic names less specific than the information captured in the locality term.</help>
-                    <hasPath>dwc:higherGeography</hasPath>
-                </item>
-                <item hasDatatype="select" hasIndex="2" xml:id="higherGeography_2" isFixed="true" datasource="geoname" field="a">
-                    <hasPath>dwc:higherGeographyID</hasPath>
-                </item>
-            </produces>
-        </element>-->
-        <!-- TODO: map with point ?? -->
-        <!--<element isMandatory="false" isMultiple="false" xml:id="decimalLatLon">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
-            <produces>
-                <item hasDatatype="string" hasIndex="1" xml:id="decimalLatLon_1" isFixed="false">
-                    <label xml:lang="en">Decimal latitude</label>
-                    <help xml:lang="en">The geographic latitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are north of the Equator, negative values are south of it. Legal values lie between -90 and 90, inclusive.</help>
-                    <hasPath>dwc:decimalLatitude</hasPath>
-                </item>
-                <item hasDatatype="string" hasIndex="2" xml:id="decimalLatLon_2" isFixed="false">
-                    <label xml:lang="en">Decimal longitude</label>
-                    <help xml:lang="en">The geographic longitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are east of the Greenwich Meridian, negative values are west of it. Legal values lie between -180 and 180, inclusive.</help>
-                    <hasPath>dwc:decimalLongitude</hasPath>
-                </item>
-            </produces>
-        </element>-->
     </group>
 
     <!-- timeElements -->
@@ -470,7 +476,7 @@
         <label xml:lang="en">Time elements</label>
         <label xml:lang="it">Time elements</label>
         <element isMandatory="false" isMultiple="false" xml:id="verbatimEventDate">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="date" hasIndex="1" xml:id="verbatimEventDate_1" isFixed="false">
                     <label xml:lang="en">Verbatim event date</label>
@@ -486,7 +492,7 @@
         <label xml:lang="en">Other elements</label>
         <label xml:lang="it">Other elements</label>
         <element isMandatory="false" isMultiple="false" xml:id="associatedMedia">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="URL" hasIndex="1" xml:id="associatedMedia_1" isFixed="false">
                     <label xml:lang="en">Associated media</label>
@@ -496,7 +502,7 @@
             </produces>
         </element>
         <element isMandatory="false" isMultiple="false" xml:id="associatedReferences">
-            <hasRoot>dwr:SimpleDarwinRecord</hasRoot>
+            <hasRoot>/dwr:SimpleDarwinRecordSet/dwr:SimpleDarwinRecord</hasRoot>
             <produces>
                 <item hasDatatype="text" hasIndex="1" xml:id="associatedReferences_1" isFixed="false">
                     <label xml:lang="en">Associated references</label>
