@@ -1,0 +1,8 @@
+<div id="{{g.id}}" class="panel panel-primary ediGroup">
+    <div class="panel-heading">
+        <label class="groupLabel" ng-repeat="l in g.label" ng-if="language == l['_xml:lang']">{{l['__text']}}</label>
+    </div>
+    <div class="panel-body">
+        <edi-element id="{{e.id}}" ng-repeat="e in ediml.content.elements.element | filter: {'group': g.id}"></edi-element>
+    </div>
+</div>

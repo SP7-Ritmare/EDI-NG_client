@@ -1,0 +1,77 @@
+<!--
+<p>This is the partial for view 1.</p>
+
+<my-customer info="key" ng-repeat="(key, value) in people"></my-customer>
+-->
+<!--
+<pre>{{endpointTypes | json}}</pre>
+<pre>{{datasources | json}}</pre>
+-->
+
+
+<div class="content-wrap">
+    <div id="mdcontent"></div>
+    <div id="ediml">
+
+    </div>
+    <div class="container">
+        <h1>EDI <span id="template-version"></span></h1>
+        <script> var elements = []; </script>
+        <div class="row">
+            <div class="tabbable tabs-left">
+                <ul id="myTab" class="nav nav-tabs">
+                    <div class="bottoniera">
+                        <button class="btn btn-primary" ng-click="language = 'it'">it</button>
+                        <button class="btn btn-primary" ng-click="language = 'en'">en</button>
+                        <br>
+                        <!--button class="btn btn-danger debug" onclick="toggleEDIML(this);">show EDIML</button>
+                        <br-->
+                        <button class="btn btn-danger" onclick="ediml.saveAs('pippo');">save locally</button>
+                        <br>
+                        <button class="btn btn-danger" onclick="ediml.load('pippo');">load last version</button>
+                        <br>
+                        <!--button class="btn btn-danger" style="display: none;" id="EDIMLDownload"
+                                onclick="ediml.downloadEDIML();">download EDIML
+                        </button>
+                        <br-->
+                        <button class="btn btn-danger" style="display: none;" id="MDDownload"
+                                onclick="ediml.downloadMetadata();">download generated XML
+                        </button>
+                        <br>
+                        <button class="btn btn-primary" id="sendMetadata">send metadata</button>
+                        <input type="checkbox" value="0" id="ignoreWarnings">ignore warnings
+                    </div>
+                    <li ng-repeat="g in template.template.group">
+                        <a href='#{{g.id}}' id='linkTo_{{g.id}}'>
+                            <label class="form-label" ng-repeat="l in g.label" ng-if="language == l['_xml:lang']">{{l['__text']}}</label>
+                        </a>
+                    </li>
+                </ul>
+                <article class="span8" id="mdcontent">
+                    <div id="theForm">
+                        <div class="tab-content">
+                            <div ng-repeat="g in template.template.group">
+                                <edi-group
+                                        id="{{g.id}}">
+                                    <label ng-repeat="e in g.elements.element" id="{{e.id}}">
+                                        {{e.label}}
+                                    </label>
+                                </edi-group>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div id="debug">
+
+    </div>
+</div>
+
+
+
+
+<!--
+<pre>{{template.template.group | json}}</pre>
+<pre>{{error | json}}</pre>-->

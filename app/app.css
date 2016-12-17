@@ -1,0 +1,47 @@
+/* app css stylesheet */
+
+.container {
+    width: 100%;
+}
+
+.menu {
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
+}
+
+.menu:before {
+    content: "[";
+}
+
+.menu:after {
+    content: "]";
+}
+
+.menu > li {
+    display: inline;
+}
+
+.menu > li + li:before {
+    content: "|";
+    padding-right: 0.3em;
+}
+
+.ediGroup {
+}
+
+.ediElement {
+    border: 1px solid #0000cc;
+    border-radius: 4px;
+}
+
+.groupLabel {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.elementLabel {
+    font-size: 14px;
+    font-weight: bold;
+}

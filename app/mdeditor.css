@@ -1,0 +1,546 @@
+/* debug */
+#results, #debug {
+    display: none;
+    overflow: auto;
+}
+
+.info {
+    display: none;
+}
+
+.duplicator {
+}
+
+.btn-danger {
+    margin-left: 15px;
+}
+
+.duplicate-block{
+    background:#eff0ef;
+    margin-bottom:10px;
+    padding:5px;
+    border:1px dashed #bbb;
+    text-align:center;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 50px;
+}
+
+.duplicate-block h2{
+    color:#bbb;
+    margin:20px 0;
+    text-align:center
+}
+
+.duplicate-block h2 i{
+    font-size:2em
+}
+
+.mandatory {
+    font-weight: bold;
+    color: #337ab7;
+}
+
+/*
+.invisible {
+    display: block !important;
+    visibility: visible !important;
+    background-color: #ffcc00 !important;
+    color: #000 !important;
+    min-height: 200px !important;
+}
+*/
+
+/* hide setLanguage buttons */
+#en, #it {
+    display: none !important;
+}
+
+#fields-legend {
+    position: absolute;
+    top: 220px;
+    right: 100px;
+    width:300px;
+    background-color: white;
+}
+
+
+/*
+#mdcontent section {
+    margin-top: 30px;
+
+}
+
+#mdcontent section:before {
+  display: block; 
+  content: " "; 
+  margin-top: -100px; 
+  height: 100px; 
+  visibility: hidden; 
+}
+*/
+.nofloat {
+    float: none !important
+}
+
+/* Sidenav for MDEditor
+-------------------------------------------------- */
+
+.bs-docs-sidenav {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 228px;
+    margin: 30px 0 0;
+    padding: 0;
+    float: left;
+    background-color: #fff;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,.065);
+}
+.bs-docs-sidenav > li > a {
+    display: block;
+    width: 190px \9;
+    margin: 0 0 -1px;
+    padding: 8px 14px;
+    border: 1px solid #e5e5e5;
+}
+.bs-docs-sidenav > li:first-child > a {
+    -webkit-border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+.bs-docs-sidenav > li:last-child > a {
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+}
+.bs-docs-sidenav > .active > a {
+    position: relative;
+    z-index: 2;
+    padding: 9px 15px;
+    border: 0;
+    text-shadow: 0 1px 0 rgba(0,0,0,.15);
+    -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+    -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+    box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+}
+/* Chevrons */
+.bs-docs-sidenav .icon-chevron-right {
+    float: right;
+    margin-top: 2px;
+    margin-right: -6px;
+    opacity: .25;
+}
+.bs-docs-sidenav > li > a:hover {
+    background-color: #f5f5f5;
+}
+.bs-docs-sidenav a:hover .icon-chevron-right {
+    opacity: .5;
+}
+.bs-docs-sidenav .active .icon-chevron-right,
+.bs-docs-sidenav .active a:hover .icon-chevron-right {
+    background-image: url(images/glyphicons-halflings-white.png);
+    opacity: 1;
+}
+.bs-docs-sidenav.affix {
+    top: 80px;
+}
+.bs-docs-sidenav.affix-bottom {
+    position: absolute;
+    top: auto;
+    bottom: 270px;
+}
+
+.loading, .ui-autocomplete-loading {
+    background: url("../images/carousel-loader.gif") no-repeat scroll center center #f6f6f6 !important;
+}
+
+.container {
+    background: none !important;
+    width: 100%;
+    transition: width .1s;
+}
+.container.loading {
+    background: url("../images/carousel-loader.gif") no-repeat scroll center center #f6f6f6 !important;
+    content: "Loading template...";
+    text-align: center;
+    width: 10%;
+    height: 60px;
+    transition: height .5s;
+    border: solid 5px #ff9900;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px #888888;
+    margin-top: 100px;
+}
+.container.loading * {
+    /* display: none !important; */
+}
+
+
+.ref {
+    background: #ccccff;
+    display: none;
+}
+
+.no-children {
+    background: #ffcc00;
+    display: none;
+}
+
+.fixed {
+    display: none !important;
+}
+
+.prettyprint {
+    overflow: auto;
+}
+
+.invalid {
+    border: 3px solid red;
+}
+.error-message {
+    border: 1px dashed red;
+    border-radius: 4px;
+    background-color: rgba(255, 0, 0, .2);
+    font-weight: bold;
+    padding: 8px;
+    top: 20px;
+}
+.warning {
+    border: 3px solid #ff9900 !important;
+}
+.warning-message {
+    border: 1px dashed #ff9900;
+    border-radius: 4px;
+    background-color: rgba(255, 153, 0, .2);
+    font-weight: bold;
+    padding: 8px;
+    top: 20px;
+}
+
+.bbox_coord.box_northLatitude {
+    float: left;
+    margin-top: 0px;
+    width: 33%;
+}
+.bbox_coord.box_southLatitude {
+    float: left;
+    margin-top: 50px;
+    width: 33%;
+}
+.bbox_coord.box_eastLongitude {
+    float: right;
+    margin-top: 50px;
+    width: 33%;
+}
+.bbox_coord.box_westLongitude {
+    float: left;
+    margin-top: 50px;
+    width: 33%;
+}
+
+body {
+    font-family: "Helvetica", "Arial", "Verdana", "sans-serif";
+    font-size: 14px;
+}
+element {
+    display: none;
+} /* debug */
+#results {
+    display: none;
+    overflow: auto;
+}
+.info {
+    display: none;
+}
+.element-group {
+    border: 0px solid #333;
+}
+.element {
+    border: 0px solid #ff3300;
+    margin-top: 15px;
+}
+.hidden {
+    display: none;
+}
+/*
+.dependent-input {
+    background: rgba(255, 0, 0, 0.1);
+}
+.typeahead {
+    background: rgba(0, 0, 255, 0.1);
+}
+*/
+.span8 {
+    width: 770px;
+    float: left;
+}
+/*
+            #ediml {
+                float: left;
+                height: 100%;
+                position: absolute;
+                width: 600px;
+                top: 154px;
+            }
+            */
+.no-datasource {
+    background: red !important;
+    color: #ffffff !important;
+    width: 50% !important;
+}
+.dateRange {
+    display: table-cell;
+}
+.uris {
+    display: none;
+}
+
+.debug_info {
+    display: none;
+}
+
+.alternativeElement {
+    background-color: #fff; /* rgba(0, 255, 0, .2); */
+    margin-left: 100px;
+}
+/*
+.alternativeElement:nth-child(2n):before {
+    margin-left: 0;
+    content: " <locale>oppure</locale>\A";
+    font-weight: bold;
+    color: red;
+    background-color: #fff;
+    white-space: pre;
+    width: 100%;
+}
+*/
+.oppure {
+    margin-left: 0;
+    content: " <locale>oppure</locale>\A";
+    font-weight: bold;
+    color: red;
+    background-color: #fff;
+    white-space: pre;
+    width: 100%;
+    clear: both;
+}
+
+.alternativeGroup {
+    border: 1px solid;
+}
+
+.mandatory label {
+    color: #428bca;
+}
+
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+    border-bottom: 0;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+    display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+    display: block;
+}
+
+.tabs-below > .nav-tabs {
+    border-top: 1px solid #ddd;
+}
+
+.tabs-below > .nav-tabs > li {
+    margin-top: -1px;
+    margin-bottom: 0;
+}
+
+.tabs-below > .nav-tabs > li > a {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+}
+
+.tabs-below > .nav-tabs > li > a:hover,
+.tabs-below > .nav-tabs > li > a:focus {
+    border-top-color: #ddd;
+    border-bottom-color: transparent;
+}
+
+.tabs-below > .nav-tabs > .active > a,
+.tabs-below > .nav-tabs > .active > a:hover,
+.tabs-below > .nav-tabs > .active > a:focus {
+    border-color: transparent #ddd #ddd #ddd;
+}
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+    float: none;
+}
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+    min-width: 74px;
+    margin-right: 0;
+    margin-bottom: 3px;
+}
+
+.tabs-left > .nav-tabs {
+    float: left;
+    margin-right: 19px;
+    border-right: 1px solid #ddd;
+}
+
+.tabs-left > .nav-tabs > li > a {
+    margin-right: -1px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+    border-color: #ddd transparent #ddd #ddd;
+    border-right-color: #ffffff;
+}
+
+.tabs-right > .nav-tabs {
+    float: right;
+    margin-left: 19px;
+    border-left: 1px solid #ddd;
+}
+
+.tabs-right > .nav-tabs > li > a {
+    margin-left: -1px;
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.tabs-right > .nav-tabs > li > a:hover,
+.tabs-right > .nav-tabs > li > a:focus {
+    border-color: #eeeeee #eeeeee #eeeeee #dddddd;
+}
+
+.tabs-right > .nav-tabs .active > a,
+.tabs-right > .nav-tabs .active > a:hover,
+.tabs-right > .nav-tabs .active > a:focus {
+    border-color: #ddd #ddd #ddd transparent;
+    border-left-color: #ffffff;
+}
+
+.bboxMap {
+    width: 738px;
+    height: 600px;
+    clear: both;
+}
+
+#myTab {
+    position: fixed;
+    overflow: auto;
+    max-height: 100%;
+}
+
+#mdcontent, #please_wait {
+    margin-left: 300px;
+}
+
+#mdcontent pre {
+    /* display: none; */
+}
+
+.pan-draw {
+    position: absolute;
+    top: 65px;
+    left: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.mode-pan {
+    background-color: rgba(0, 60, 136, 0.5);
+    margin: 1px;
+}
+
+.mode-pan a {
+    text-decoration: none;
+}
+
+.mode-draw {
+    background-color: rgba(0, 60, 136, 0.5);
+    margin: 1px;
+}
+
+.mode-draw a {
+    text-decoration: none;
+}
+
+.active-mode {
+    color: white;
+}
+
+.inactive-mode {
+    color: rgba(0, 60, 136, 0.4);
+}
+
+.debug {
+    display: none;
+}
+
+.url_thumb img {
+    height: 200px;
+}
+
+.debug_info {
+    min-height: 100px;
+    border: 1px red solid;
+}
+
+.disabled {
+    z-index: 1000;
+    background-color: #fff;
+    opacity: 1;
+    pointer-events: none;
+    border: 1px solid #b92c28;
+}
+
+.disabled:before {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #b92c28;
+    content: "\e033 ";
+    padding: 8px;
+}
+
+.forceEnable {
+    z-index: 1010;
+    pointer-events: all;
+}
+
+.languageSelector {
+    background-color: #ffcc00;
+}
