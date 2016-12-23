@@ -1,8 +1,9 @@
 
 <div ng-class="{invisible: e.visible == false}" id="{{e.id}}" class="ediElement element">
-    <label ng-class="{mandatory: e.mandatory != 'NA'}" ng-repeat="l in e.label" ng-if="language == l['_xml:lang']">{{l['__text']}}</label>
+    <label ng-class="{mandatory: e.mandatory != 'NA'}" ng-repeat="l in e.label" ng-if="language == l['_xml:lang']" >{{l['__text']}}</label>
     <div ng-if="e.alternativeTo">Alternative to {{e.alternativeTo}}</div>
     <edi-item ng-repeat="i in e.items.item" id="{{i.id}}" hasDatatype="{{i.hasDatatype}}" showType="{{i.showType}}"
               isFixed="{{i.isFixed}}">{{i | json}}
     </edi-item>
+    <button ng-if="e.multiple == 'true'" role='button' ng-click="duplicate(e)" duplicates='{{e.id}}' class='btn btn-primary btn-sm duplicator'>+ <span ng-repeat="l in e.label" ng-if="language == l['_xml:lang']">{{l['__text']}}</span></button>
 </div>

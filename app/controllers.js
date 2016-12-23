@@ -6,11 +6,16 @@ angular.module('myApp.view1', ['ngRoute'])
         });
     }])
 
-    .controller('View1Ctrl', function ($scope, Templates, EDIML, Datasources) {
+    .controller('View1Ctrl', function ($scope, $http, Templates, EDIML, Datasources) {
         $scope.ediml = EDIML.ediml;
+        $scope.isOpen = false;
         $scope.template = {};
         $scope.error = {};
         $scope.language = "it";
+        var _selected;
+
+        $scope.selected = undefined;
+
         $scope.settings = {
             metadataLanguage: Datasources.metadataLanguage
         };
@@ -20,16 +25,28 @@ angular.module('myApp.view1', ['ngRoute'])
             Datasources.refreshAll();
         });
         $scope.datasources = Datasources.datasources;
+        $scope.datasourceInstances = Datasources.datasourceInstances;
         $scope.endpointTypes = Datasources.endpointTypes;
 
-        $scope.getData = function(datasource) {
-            return Datasources.getData(datasource);
+        $scope.getData = function(itemId, datasource) {
+            return Datasources.getData(itemId, datasource);
         };
-
-        $scope.info_md = "ciao";
-        $scope.naomi = {name: 'Naomi', address: '1600 Amphitheatre'};
-        $scope.vojta = {name: 'Vojta', address: '3456 Somewhere Else'};
-        $scope.people = [$scope.naomi, $scope.vojta];
+        $scope.duplicate = function(e) {
+            alert(JSON.stringify(e));
+        };
+        $scope.getAutocompletion = function(itemId, datasource, val) {
+            console.log("autocompletion: " + itemId, " - " + datasource + " - " + val);
+            return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: val,
+                    sensor: false
+                }
+            }).then(function(response){
+                return response.data.results.map(function(item){
+                    return item.formatted_address;
+                });
+            });
+        };
 
         Templates.load("RNDT_dataset", "4.00")
             .then(function (data) {

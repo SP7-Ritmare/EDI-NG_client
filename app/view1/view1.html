@@ -3,18 +3,41 @@
 
 <my-customer info="key" ng-repeat="(key, value) in people"></my-customer>
 -->
-<!--
-<pre>{{endpointTypes | json}}</pre>
-<pre>{{datasources | json}}</pre>
--->
-
-
+<!--pre>{{datasourceInstances | json}}</pre!-->
 <div class="content-wrap">
-    <div id="mdcontent"></div>
+    <div id="mdcontentOld"></div>
     <div id="ediml">
-
     </div>
+
     <div class="container">
+        <pre>Datasources: {{datasources.length}}</pre>
+        <pre>Datasources: {{datasourceInstances.length}}</pre>
+        <!-- pre>Datasources: {{datasourceInstances | json}}</pre -->
+        <div class="row" ng-if="false">
+            <div class="accordion-test">
+                <accordion close-others="true">
+                    <accordion-group is-open="true">
+                        <accordion-heading>
+                            header 1 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                        </accordion-heading>
+                        <p>
+                            <strong>This</strong> content is straight in the template, and is initially expanded.
+                        </p>
+                    </accordion-group>
+                    <accordion-group>
+                        <accordion-heading>
+                            header 2 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                        </accordion-heading>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ornare lobortis ipsum, vel dictum diam. Cras consectetur lorem non laoreet gravida. Aenean magna magna, accumsan et urna at, pellentesque ultrices nisi.
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ornare lobortis ipsum, vel dictum diam. Cras consectetur lorem non laoreet gravida. Aenean magna magna, accumsan et urna at, pellentesque ultrices nisi.
+                        </p>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
         <h1>EDI <span id="template-version"></span></h1>
         <script> var elements = []; </script>
         <div class="row">
@@ -68,8 +91,6 @@
 
     </div>
 </div>
-
-
 
 
 <!--

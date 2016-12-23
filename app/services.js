@@ -21,16 +21,16 @@ angular.module("app.services", [])
 
         return service;
     })
-    .factory("EDIML", function($http, $q) {
+    .factory("EDIML", function ($http, $q) {
         var service = {
             ediml: {},
             getItem: function (id) {
                 logger.log("searching for item " + id);
-                for ( var i = 0; i < ediml.content.elements.element.length; i++ ) {
+                for (var i = 0; i < ediml.content.elements.element.length; i++) {
                     var element = ediml.content.elements.element[i];
-                    for ( var j = 0; j < element.items.item.length; j++ ) {
+                    for (var j = 0; j < element.items.item.length; j++) {
                         var item = element.items.item[j];
-                        if ( item.id == id ) {
+                        if (item.id == id) {
                             logger.log("found");
                             logger.log(item);
                             return item;
@@ -77,6 +77,7 @@ angular.module("app.services", [])
             var theElement = new Element();
             theElement.id = element.id;
             theElement.mandatory = element.isMandatory;
+            theElement.multiple = element.isMultiple;
             theElement.root = element.hasRoot;
             theElement.represents_element = element.id;
             theElement.alternativeTo = element.alternativeTo;
@@ -84,8 +85,8 @@ angular.module("app.services", [])
             theElement.label = element.label;
             theElement.help = element.help;
             var atLeastOneEditableItem = false;
-            for ( var i = 0; i < element.produces.item.length; i++ ) {
-                if ( element.produces.item[i].isFixed == "false" ) {
+            for (var i = 0; i < element.produces.item.length; i++) {
+                if (element.produces.item[i].isFixed == "false") {
                     atLeastOneEditableItem = true;
                 }
                 compileItem(element.produces.item[i], theElement);
@@ -93,12 +94,14 @@ angular.module("app.services", [])
             theElement.visible = atLeastOneEditableItem;
             ediml.addElement(theElement);
         }
+
         function compileGroup(group) {
             for (var j = 0; j < group.element.length; j++) {
                 var element = group.element[j];
                 compileElement(group.element[j], group.id);
             }
         }
+
         function onTemplateLoaded(template, version, data) {
             console.log("onTemplateLoaded");
             settings = data.settings;
@@ -106,10 +109,10 @@ angular.module("app.services", [])
             console.log("default language: " + reverseLookupLanguage(data.settings.defaultLanguage));
             // angular.copy(reverseLookupLanguage(data.settings.defaultLanguage), Datasources.metadataLanguage);
             Datasources.metadataLanguage = reverseLookupLanguage(data.settings.defaultLanguage);
-/*
-            $scope.templateVersion = template + " v" + version;
-            $scope.pageTitle = template + " v" + version;
-*/
+            /*
+             $scope.templateVersion = template + " v" + version;
+             $scope.pageTitle = template + " v" + version;
+             */
 
             data = fixOneItemArrays(data);
             theTemplate = data;
@@ -152,11 +155,13 @@ angular.module("app.services", [])
                         }
                     });
                     logger.log("Adding datasource " + ds.getId());
+                    ds.instanceNumber++;
                     dataSources.push(ds);
+                    // Datasources.datasourceInstances.push(ds);
                 }
             }
 
-            for ( var i = 0; i < dataSources.length; i++ ) {
+            for (var i = 0; i < dataSources.length; i++) {
                 dataSources[i].parameters.endpointType = endpointTypes[dataSources[i].parameters.endpointType];
             }
             angular.copy(dataSources, Datasources.datasources);
@@ -236,24 +241,46 @@ angular.module("app.services", [])
 
         return service;
     })
-    .factory("Datasources", function($http, $q, EDIML) {
+    .factory("Datasources", function ($http, $q, EDIML) {
         var service = {
             metadataLanguage: "---",
             endpointTypes: {},
             datasources: [],
-            setMetadataLanguage: function(lang) {
+            datasourceInstances: [],
+            setMetadataLanguage: function (lang) {
                 service.metadataLanguage = lang;
             },
-            find: function(id) {
-                for ( var i = 0; i < service.datasources.length; i++ ) {
+            find: function (itemId, id) {
+                for (var i = 0; i < service.datasourceInstances.length; i++) {
+                    var ds = service.datasourceInstances[i];
+                    if (ds.parameters.id == id && ds.owningItem == itemId) {
+                        // console.log("found " + ds);
+                        return ds;
+                    }
+                }
+                console.log("datasource " + id + " not found for item " + itemId);
+                var baseDs = service.findBase(id);
+                if ( baseDs ) {
+                    var ds = clone(baseDs);
+                    ds.owningItem = itemId;
+                    ds.resultSet = [];
+                    service.refresh(ds);
+                    service.datasourceInstances.push(ds);
+                    return ds;
+                } else {
+                    console.log("base datasource not found: " + id);
+                }
+            },
+            findBase: function (id) {
+                for (var i = 0; i < service.datasources.length; i++) {
                     var ds = service.datasources[i];
-                    if ( ds.parameters.id == id ) {
+                    if (ds.parameters.id == id) {
                         // console.log("found " + ds);
                         return ds;
                     }
                 }
             },
-            refresh: function(ds) {
+            refresh: function (ds) {
                 function escapeSearchItem(ds, item) {
                     logger.log("searchItem for " + ds.parameters.id);
                     logger.log(item);
@@ -278,10 +305,10 @@ angular.module("app.services", [])
                         var headers = {};
                         params[ds.parameters.endpointType.parameters.queryParameter] = sparql.getSparqlQuery(ds.parameters.uri, lookupLanguage(service.metadataLanguage));
                         console.log("query: " + params[ds.parameters.endpointType.parameters.queryParameter]);
-                        for ( var p in ds.parameters.endpointType.parameters.parameters ) {
+                        for (var p in ds.parameters.endpointType.parameters.parameters) {
                             params[p] = ds.parameters.endpointType.parameters.parameters[p];
                         }
-                        if ( ds.parameters.endpointType.parameters.contentType.json ) {
+                        if (ds.parameters.endpointType.parameters.contentType.json) {
 //                            headers["Accepts"] = ds.parameters.endpointType.parameters.contentType.json;
                         }
                         $http({
@@ -289,17 +316,17 @@ angular.module("app.services", [])
                             method: ds.parameters.endpointType.parameters.method,
                             params: params,
                             headers: headers
-                        }).then(function(res) {
-                            if ( typeof ds.parameters.adapter === "undefined" && ds.parameters.type == DataSourceType.virtuosoCodelist || ds.parameters.type == DataSourceType.sparql ) {
+                        }).then(function (res) {
+                            if (typeof ds.parameters.adapter === "undefined" && ds.parameters.type == DataSourceType.virtuosoCodelist || ds.parameters.type == DataSourceType.sparql) {
                                 ds.parameters.adapter = adapters.sparql;
                             }
-                            if ( typeof ds.parameters.adapter !== "undefined" ) {
+                            if (typeof ds.parameters.adapter !== "undefined") {
                                 ds.resultSet = ds.parameters.adapter(res.data);
                             }
                             console.log("results for datasource " + ds.parameters.id + " in " + service.metadataLanguage);
                             console.log(ds.resultSet);
                         });
-                        switch(ds.parameters.endpointType.parameters.method) {
+                        switch (ds.parameters.endpointType.parameters.method) {
                             case "GET":
 
                                 break;
@@ -307,13 +334,13 @@ angular.module("app.services", [])
                                 break;
                             default:
                         }
-/*
-                        var jqXHR = sparql.query(parameters.uri, dataSuccess, dataError, language);
-                        DataSourcePool.getInstance().addPromise(jqXHR);
-*/
+                        /*
+                         var jqXHR = sparql.query(parameters.uri, dataSuccess, dataError, language);
+                         DataSourcePool.getInstance().addPromise(jqXHR);
+                         */
                         break;
                     case DataSourceType.sparql:
-                        if ( typeof ds.parameters.triggerItem !== "undefined" ) {
+                        if (typeof ds.parameters.triggerItem !== "undefined") {
                             logger.log(ds.parameters.id + " is a datasource triggered by " + ds.parameters.triggerItem);
                             ds.parameters.searchItem = ds.parameters.triggerItem;
                         }
@@ -329,8 +356,8 @@ angular.module("app.services", [])
                         console.log(EDIML.getItem(ds.parameters.searchItem));
 
                         var searchItem = EDIML.getItem(ds.parameters.searchItem);
-                        if ( typeof searchItem !== "undefined" && searchItem.value ) {
-                            if ( searchItem ) {
+                        if (typeof searchItem !== "undefined" && searchItem.value) {
+                            if (searchItem) {
                                 throw "Datasource '" + ds.parameters.id + "': search item '" + ds.parameters.searchItem + "' does not exist";
                             }
 
@@ -340,10 +367,10 @@ angular.module("app.services", [])
                         var params = {};
                         var headers = {};
                         params[ds.parameters.endpointType.parameters.queryParameter] = newQuery;
-                        for ( var p in ds.parameters.endpointType.parameters.parameters ) {
+                        for (var p in ds.parameters.endpointType.parameters.parameters) {
                             params[p] = ds.parameters.endpointType.parameters.parameters[p];
                         }
-                        if ( ds.parameters.endpointType.parameters.contentType.json ) {
+                        if (ds.parameters.endpointType.parameters.contentType.json) {
 //                            headers["Accepts"] = ds.parameters.endpointType.parameters.contentType.json;
                         }
                         $http({
@@ -351,17 +378,17 @@ angular.module("app.services", [])
                             method: ds.parameters.endpointType.parameters.method,
                             params: params,
                             headers: headers
-                        }).then(function(res) {
+                        }).then(function (res) {
                             console.log(res);
-                            if ( typeof ds.parameters.adapter === "undefined" && ds.parameters.type == DataSourceType.virtuosoCodelist || ds.parameters.type == DataSourceType.sparql ) {
+                            if (typeof ds.parameters.adapter === "undefined" && ds.parameters.type == DataSourceType.virtuosoCodelist || ds.parameters.type == DataSourceType.sparql) {
                                 ds.parameters.adapter = adapters.sparql;
                             }
-                            if ( typeof ds.parameters.adapter !== "undefined" ) {
+                            if (typeof ds.parameters.adapter !== "undefined") {
                                 ds.resultSet = ds.parameters.adapter(res.data);
                             }
 
                         });
-                        switch(ds.parameters.endpointType.parameters.method) {
+                        switch (ds.parameters.endpointType.parameters.method) {
                             case "GET":
 
                                 break;
@@ -371,9 +398,9 @@ angular.module("app.services", [])
                         }
 
                         /*
-                                                var jqXHR = sparql.specificQuery(newQuery, dataSuccess, dataError, language);
-                                                DataSourcePool.getInstance().addPromise(jqXHR);
-                        */
+                         var jqXHR = sparql.specificQuery(newQuery, dataSuccess, dataError, language);
+                         DataSourcePool.getInstance().addPromise(jqXHR);
+                         */
                         break;
                     default:
                         isLoading = false;
@@ -381,15 +408,15 @@ angular.module("app.services", [])
                 }
 
             },
-            refreshAll: function() {
-                for ( var i = 0; i < service.datasources.length; i++ ) {
-                    var ds = service.datasources[i];
+            refreshAll: function () {
+                for (var i = 0; i < service.datasourceInstances.length; i++) {
+                    var ds = service.datasourceInstances[i];
                     service.refresh(ds);
                 }
             },
-            getData: function(name) {
-                var ds = service.find(name);
-                if ( ds ) {
+            getData: function (id, name) {
+                var ds = service.find(id, name);
+                if (ds) {
                     return ds.resultSet;
                 }
             }

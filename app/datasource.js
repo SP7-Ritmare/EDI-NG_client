@@ -110,7 +110,8 @@ var DataSource = function(params) {
          *
          * @memberOf DataSource
          */
-        adapter: undefined
+        adapter: undefined,
+        instanceNumber: 0
     };
     var resultSet = undefined;
     var currentRow = -1;
