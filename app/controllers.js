@@ -28,7 +28,8 @@ angular.module('myApp.view1', ['ngRoute'])
         $scope.datasourceInstances = Datasources.datasourceInstances;
         $scope.endpointTypes = Datasources.endpointTypes;
 
-        $scope.getData = function(itemId, datasource) {
+        $scope.getComboData = function(itemId, datasource) {
+            console.log("getComboData");
             return Datasources.getData(itemId, datasource);
         };
         $scope.duplicate = function(e) {

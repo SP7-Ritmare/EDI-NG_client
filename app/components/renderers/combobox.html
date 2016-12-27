@@ -1,7 +1,7 @@
 <pre>{{settings | json}}</pre>
 <select class="form-control languageSelector" ng-model="settings.metadataLanguage" ng-if="i.id == template.template.settings.languageSelection.byItem">
-    <option ng-repeat="d in getData(i.id, i.datasource)" value="{{d.z}}">{{d.a ? d.a : d.l}}</option>
+    <option ng-repeat="d in getComboData(i.id, i.datasource)" value="{{d.z}}">{{d.a ? d.a : d.l}}</option>
 </select>
 <select class="form-control" ng-if="i.id != template.template.settings.languageSelection.byItem" ng-model="i.value">
-    <option ng-repeat="d in getData(i.id, i.datasource)" value="{{d.z}}">{{d.a ? d.a : d.l}}</option>
+    <option ng-repeat="d in getComboData(i.id, i.datasource)" value="{{d.z}}">{{d.a ? d.a : d.l}}</option>
 </select>
