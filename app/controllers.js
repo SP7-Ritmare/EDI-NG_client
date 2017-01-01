@@ -29,7 +29,7 @@ angular.module('myApp.view1', ['ngRoute'])
         $scope.endpointTypes = Datasources.endpointTypes;
 
         $scope.getComboData = function(itemId, datasource) {
-            console.log("getComboData");
+            console.log("getComboData(" + itemId + ", " + datasource + ")");
             return Datasources.getData(itemId, datasource);
         };
         $scope.duplicate = function(e) {
@@ -37,6 +37,8 @@ angular.module('myApp.view1', ['ngRoute'])
         };
         $scope.getAutocompletion = function(itemId, datasource, val) {
             console.log("autocompletion: " + itemId, " - " + datasource + " - " + val);
+            return Datasources.getData(itemId, datasource, val);
+/*
             return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
                 params: {
                     address: val,
@@ -47,6 +49,10 @@ angular.module('myApp.view1', ['ngRoute'])
                     return item.formatted_address;
                 });
             });
+*/
+        };
+        $scope.test = function(itemId, datasource, val) {
+            console.log("test: " + itemId, " - " + datasource + " - " + val);
         };
 
         Templates.load("RNDT_dataset", "4.00")

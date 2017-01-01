@@ -7,13 +7,15 @@
   "private": true,
   "dependencies": {
     "EDI-NG_templates": "https://github.com/SP7-Ritmare/EDI-NG_templates.git",
-    "angular": "~1.5.0",
-    "angular-route": "~1.5.0",
-    "angular-loader": "~1.5.0",
-    "angular-mocks": "~1.5.0",
+    "angular": "~1.6.1",
+    "angular-route": "~1.6.1",
+    "angular-loader": "~1.6.1",
+    "angular-mocks": "~1.6.1",
     "html5-boilerplate": "^5.3.0",
     "jquery": "^3.1.1",
-    "angular-ui-bootstrap-complete": "^0.6.0",
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "angular-sanitize": "^1.6.1",
+    "angular-animate": "^1.6.1",
+    "angular-bootstrap": "^2.3.2"
   }
 }

@@ -219,9 +219,9 @@ angular.module("app.services", [])
                         // string -> XML document object
                         return $.parseXML(data);
                     }
-                }).success(function (data, status, headers, config) {
-                    // console.log(data);
-                    var res = XML.xml2json(data.documentElement.outerHTML);
+                }).then(function (data, status, headers, config) {
+                    console.log(data.data.documentElement);
+                    var res = XML.xml2json(data.data.documentElement.outerHTML);
                     // fixOneItemArrays(res.template);
 
                     onTemplateLoaded(templateName, templateVersion, res.template);
@@ -230,8 +230,8 @@ angular.module("app.services", [])
                     Datasources.refreshAll();
                     // console.log(res);  // XML document object
                     deferred.resolve(res);
-                }).error(function (data, status, headers, config) {
-                    $window.alert('Errore');
+                }).catch(function (data, status, headers, config) {
+                    alert('Errore ' + data);
                     deferred.reject(data);
                 });
 
@@ -280,7 +280,7 @@ angular.module("app.services", [])
                     }
                 }
             },
-            refresh: function (ds) {
+            refresh: function (ds, searchValue) {
                 function escapeSearchItem(ds, item) {
                     logger.log("searchItem for " + ds.parameters.id);
                     logger.log(item);
@@ -352,18 +352,15 @@ angular.module("app.services", [])
                          }
                          */
                         var sparql = new SPARQL(ds.parameters.url, ds.parameters.endpointType);
-                        var newQuery = ds.parameters.query.toString();
+                        var newQuery = ds.parameters.query.__cdata.toString();
                         console.log(EDIML.getItem(ds.parameters.searchItem));
 
-                        var searchItem = EDIML.getItem(ds.parameters.searchItem);
-                        if (typeof searchItem !== "undefined" && searchItem.value) {
-                            if (searchItem) {
-                                throw "Datasource '" + ds.parameters.id + "': search item '" + ds.parameters.searchItem + "' does not exist";
-                            }
-
-                            newQuery = ds.parameters.query.toString().replace(/\$search_param\$/g, escapeSearchItem(ds, searchItem.value)).replace(/\$search_param/g, escapeSearchItem(ds, searchItem.value));
+                        // var searchItem = EDIML.getItem(ds.parameters.searchItem);
+                        if (typeof searchValue !== "undefined") {
+                            newQuery = ds.parameters.query.__cdata.toString().replace(/\$search_param\$/g, escapeSearchItem(ds, searchValue)).replace(/\$search_param/g, escapeSearchItem(ds, searchValue));
                         }
-                        logger.log(newQuery);
+                        console.log(ds.parameters.query.__cdata);
+                        console.log(newQuery);
                         var params = {};
                         var headers = {};
                         params[ds.parameters.endpointType.parameters.queryParameter] = newQuery;
@@ -414,9 +411,12 @@ angular.module("app.services", [])
                     service.refresh(ds);
                 }
             },
-            getData: function (id, name) {
+            getData: function (id, name, searchValue) {
                 var ds = service.find(id, name);
                 if (ds) {
+                    if ( searchValue ) {
+                        service.refresh(ds, searchValue);
+                    }
                     return ds.resultSet;
                 }
             }

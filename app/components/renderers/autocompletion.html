@@ -1,5 +1,13 @@
-K<input type="text" ng-model="asyncSelected" placeholder="Locations loaded via $http" uib-typeahead="value for value in getAutocompletion(i.id, i.datasource, $viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
-<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-<div ng-show="noResults">
-    <i class="glyphicon glyphicon-remove"></i> No Results Found
-</div>K
+<div class='container-fluid typeahead-demo'>
+    <input type="text"
+        ng-model="i.value"
+        placeholder="Locations loaded via $http"
+        uib-typeahead="value as value.l for value in getAutocompletion(i.id, i.datasource, $viewValue)"
+        typeahead-loading="loadingLocations"
+        typeahead-no-results="noResults"
+        class="form-control">
+    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+    <div ng-show="noResults">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+    </div>
+</div>
