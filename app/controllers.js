@@ -29,7 +29,7 @@ angular.module('myApp.view1', ['ngRoute'])
         $scope.endpointTypes = Datasources.endpointTypes;
 
         $scope.getComboData = function(itemId, datasource) {
-            console.log("getComboData(" + itemId + ", " + datasource + ")");
+            // console.log("getComboData(" + itemId + ", " + datasource + ")");
             return Datasources.getData(itemId, datasource);
         };
         $scope.duplicate = function(e) {
@@ -53,6 +53,19 @@ angular.module('myApp.view1', ['ngRoute'])
         };
         $scope.test = function(itemId, datasource, val) {
             console.log("test: " + itemId, " - " + datasource + " - " + val);
+        };
+
+        $scope.onSelect = function(theItem, item, model, label) {
+            console.log("selected:");
+            console.log($scope.i);
+            console.log(item);
+            console.log(model);
+            console.log(label);
+            theItem.codeValue = item.ttValue;
+            theItem.labelValue = item.l;
+            theItem.urnValue = item.urn;
+            var ds = Datasources.find(theItem.id, theItem.datasource);
+            ds.setCurrentRow("c", item.ttValue);
         };
 
         Templates.load("RNDT_dataset", "4.00")

@@ -1,5 +1,4 @@
 <div ng-switch on="i.showType" ng-class="{fixed: i.isFixed == 'true'}" class="input-group col-md-12">
-    {{i.value}}
     <div ng-switch-when="string">
         <div ng-include="'components/renderers/string.html'"></div>
     </div>
