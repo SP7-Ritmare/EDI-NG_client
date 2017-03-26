@@ -1,0 +1,13 @@
+.elementLabel {
+    float: left;
+    padding-right: 4px;
+}
+
+.elementMandatory {
+    color: #428bca;
+    font-weight: bold;
+}
+.elementNotMandatory {
+    color: #000;
+    font-weight: bold;
+}

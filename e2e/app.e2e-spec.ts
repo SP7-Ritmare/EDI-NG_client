@@ -1,10 +1,10 @@
-import { ProvaNG2Page } from './app.po';
+import { ProvaNg2Page } from './app.po';
 
 describe('prova-ng2 App', function() {
-  let page: ProvaNG2Page;
+  let page: ProvaNg2Page;
 
   beforeEach(() => {
-    page = new ProvaNG2Page();
+    page = new ProvaNg2Page();
   });
 
   it('should display message saying app works', () => {

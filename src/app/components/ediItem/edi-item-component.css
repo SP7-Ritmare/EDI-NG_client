@@ -1,0 +1,8 @@
+.itemLabel {
+    float: left;
+    padding-right: 4px;
+}
+
+.itemBlock {
+    clear: both;
+}

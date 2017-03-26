@@ -1,0 +1,7 @@
+<pre>
+  {{counter | json}}
+</pre>
+<div *ngFor="let c of categories">
+    <!--<pre>{{c | json}}</pre>-->
+    {{ c.title }} <button (click)="deleteTodo(c.id)">x</button>
+</div>

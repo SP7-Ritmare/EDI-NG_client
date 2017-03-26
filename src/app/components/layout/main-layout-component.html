@@ -1,0 +1,106 @@
+<!--
+<div class="container">
+-->
+
+<!--
+    <pre>{{template.group | json}}</pre>
+-->
+<div id="wrapper" data-spy="scroll" data-target="#spy" class="">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper" class="">
+
+
+<!--        <nav id="spy">
+            <ul class="sidebar-nav nav">
+                <li class="sidebar-brand active"><a href="#home" class=""><span class="fa fa-home solo">Top</span></a>
+                </li>
+                <li *ngFor="let g of template.group" class="">
+                    &lt;!&ndash;
+                                        <pre>{{g | json}}</pre>
+                    &ndash;&gt;
+                    <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
+                        <span class="fa fa-anchor solo">
+                            <div *ngFor="let l of g.label">
+                                <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                            </div>
+                        </span>
+                    </a>
+            </ul>
+        </nav>-->
+        <md-list>
+            <md-list-item *ngFor="let g of template.group">
+                <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
+                        <span class="fa fa-anchor solo">
+                            <div *ngFor="let l of g.label">
+                                <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                            </div>
+                        </span>
+                </a>
+            </md-list-item>
+        </md-list>
+
+    </div>
+    <!-- Page content -->
+    <div id="page-content-wrapper" *ngIf="template.group">
+        <div class="content-header">
+            <h1 id="home" class="">
+                {{title}}
+            </h1>
+
+        </div>
+        <div class="col-md-12">
+            <form #form="ngForm">
+                <div class="row" *ngFor="let g of template.group">
+                    <div class="col-md-11" [id]="g['_xml:id']">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div *ngFor="let l of g.label">
+                                    <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <!--
+                                                    <pre>{{g | json}}</pre>
+                                -->
+                                <div *ngFor="let e of g.element">
+                                    <app-edi-element [element]="e"></app-edi-element>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+<!--
+        <div class="col-md-6">
+            <debug-window></debug-window>
+        </div>
+-->
+    </div>
+</div>
+<script>
+
+    /*Menu-toggle*/
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+    });
+
+    /*Scroll Spy*/
+    $('body').scrollspy({target: '#spy', offset: 80});
+
+    /*Smooth link animation*/
+    $('a[href*=#]:not([href=#])').click(function () {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
+            }
+        }
+    });
+</script>

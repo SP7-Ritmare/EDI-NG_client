@@ -1,0 +1,41 @@
+<!--
+<pre>{{item | json}}</pre>
+-->
+<div class="itemBlock"></div>
+<div [ngSwitch]="item.show" *ngIf="!item.fixed">
+    <div>
+        <div class="form form-label itemLabel">
+            <div *ngFor="let l of item.label">
+                <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+            </div>
+        </div>
+        <div *ngFor="let h of item.help">
+            <md-icon *ngIf="h['_xml:lang'] == interfaceLanguage" data-toggle="tooltip" data-placement="right"
+                     title="{{h.__text}}">info
+            </md-icon>
+        </div>
+    </div>
+    <div *ngSwitchCase="'combobox'">
+        <app-edi-combobox [item]="item"></app-edi-combobox>
+    </div>
+    <div *ngSwitchCase="'autocomplete'">
+        <app-edi-autocomplete [item]="item"></app-edi-autocomplete>
+    </div>
+    <div *ngSwitchCase="'textbox'">
+        <app-edi-textbox [item]="item"></app-edi-textbox>
+    </div>
+    <div *ngSwitchCase="'boolean'">
+        <app-edi-boolean [item]="item"></app-edi-boolean>
+    </div>
+    <div *ngSwitchCase="'textarea'">
+        <app-edi-textarea [item]="item"></app-edi-textarea>
+    </div>
+<!--
+    <div *ngSwitchCase="'date'">
+        <app-edi-date [item]="item"></app-edi-date>
+    </div>
+-->
+    <div *ngSwitchDefault>
+        <div class="alert">No match for {{item.show}}</div>
+    </div>
+</div>
