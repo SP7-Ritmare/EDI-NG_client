@@ -1,0 +1,10 @@
+
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct:<http://purl.org/dc/terms/>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
+SELECT DISTINCT <http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole> AS ?uri ?c ?l ?a ?z
+WHERE {            	{
+?c rdf:type skos:Concept.
+?c skos:inScheme <http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole>.
+OPTIONAL { " +            	      ?c skos:prefLabel ?l.            	      FILTER ( LANG(?l)

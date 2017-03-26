@@ -1,0 +1,9 @@
+{
+  "name": "prova-ng2",
+  "dependencies": {
+    "xml2json": "registry:npm/xml2json#0.9.1+20160811060400"
+  },
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20170106143713"
+  }
+}
