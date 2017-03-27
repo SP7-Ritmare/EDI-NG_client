@@ -18,8 +18,10 @@ import {EdiTextareaComponent} from './components/ediItem/textarea/edi-textarea-c
 import {EdiBooleanComponent} from './components/ediItem/boolean/edi-boolean-component';
 import {MaterialModule} from '@angular/material';
 import {DebugWindowComponent} from './components/debugWindow/edi-debug-window-component';
-import {DatepickerModule} from 'ng2-bootstrap';
 import {EdiDateComponent} from './components/ediItem/date/edi-date-component';
+import {MyDatePickerModule} from 'mydatepicker';
+import {MyDateRangePickerModule} from 'mydaterangepicker';
+import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-range-component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,7 @@ import {EdiDateComponent} from './components/ediItem/date/edi-date-component';
         EdiAutocompleteComponent,
         EdiBooleanComponent,
         EdiDateComponent,
+        EdiDateRangeComponent,
         NumberValidatorDirective,
         DebugWindowComponent
     ],
@@ -44,7 +47,8 @@ import {EdiDateComponent} from './components/ediItem/date/edi-date-component';
         FormsModule,
         HttpModule,
         MaterialModule,
-        DatepickerModule
+        MyDatePickerModule,
+        MyDateRangePickerModule
     ],
     providers: [],
     bootstrap: [MainLayoutComponent]

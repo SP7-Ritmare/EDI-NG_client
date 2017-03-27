@@ -1,30 +1,34 @@
 import {Component, Input} from '@angular/core';
-import {DatePickerOptions, DateModel} from 'ng2-datepicker';
 import {Item} from '../../../model/Item';
+import {IMyDateModel, IMyOptions} from 'mydatepicker';
 
 @Component({
     selector: 'app-edi-date',
     template: `
-<!--
-        <ng2-datepicker options="options" [(ngModel)]="date"></ng2-datepicker>
--->
+        <my-date-picker [options]="myDatePickerOptions"
+                        (dateChanged)="onDateChanged($event)"></my-date-picker>
     `
 })
 
 export class EdiDateComponent {
+/*
     options: DatePickerOptions;
     _date: DateModel;
+*/
     @Input() item: Item;
 
-    constructor() {
-        this.options = new DatePickerOptions();
-    }
+    private myDatePickerOptions: IMyOptions = {
+        // other options...
+        dateFormat: 'yyyy-mm-dd',
+    };
 
-    set date(value: DateModel) {
-        this._date = value;
-    }
+    constructor() { }
 
-    get date() {
-        return this._date;
+    // dateChanged callback function called when the user select the date. This is mandatory callback
+    // in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.
+    onDateChanged(event: IMyDateModel) {
+        // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+        this.item.value = event.formatted;
+        console.log('date changed to', this.item);
     }
 }

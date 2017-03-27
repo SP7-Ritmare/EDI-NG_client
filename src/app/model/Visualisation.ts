@@ -3,9 +3,10 @@
  */
 
 export interface IVisualisation {
-    type: string,
+    types: string[],
     show: string
-};
+}
+;
 
 /*
  case 'text':
@@ -24,16 +25,37 @@ export interface IVisualisation {
  */
 export class Visualisation {
     static visualisations: IVisualisation[] = [
-        {type: 'string', show: 'textbox'},
-        {type: 'boolean', show: 'boolean'},
-        {type: 'codelist', show: 'combobox'},
-        {type: 'text', show: 'textarea'}
+        {
+            types: [
+                'string',
+                'select',
+                'copy',
+                'string',
+                'URN',
+                'URI',
+                'URL',
+                'int',
+                'real',
+                'double',
+                'text',
+                'dependent',
+                'ref',
+                'autonumber',
+                'hidden'
+
+            ], show: 'textbox'
+        },
+        {types: ['boolean'], show: 'boolean'},
+        {types: ['codelist'], show: 'combobox'},
+        {types: ['text'], show: 'textarea'},
+        {types: ['date'], show: 'date'},
+        {types: ['dateRange'], show: 'dateRange'}
     ];
     static defaultVisualisation = 'textbox';
 
     static findFor(type: string) {
-        for ( let v of Visualisation.visualisations ) {
-            if ( v.type === type ) {
+        for (let v of Visualisation.visualisations) {
+            if (v.types.indexOf(type) > -1) {
                 return v.show;
             }
         }
