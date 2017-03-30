@@ -134,8 +134,6 @@
     <group xml:id="info">
         <label xml:lang="en">General information</label>
         <label xml:lang="it">Informazioni generali</label>
-        <help xml:lang="en">General information of the dataset</help>
-        <help xml:lang="it">Informazioni generali sul dataset</help>
         <element isMandatory="true" isMultiple="false" xml:id="title">
             <hasRoot>/rdf:RDF/dcatapit:Dataset</hasRoot>
             <label xml:lang="en">Title and description</label>
@@ -163,6 +161,10 @@
                     <hasPath>dct:title</hasPath>
                 </item>
                 <item hasDatatype="codelist" hasIndex="5" xml:id="title_5" isFixed="false" datasource="languages" show="combobox" isLanguageNeutral="true">
+                    <label xml:lang="en">Language of metadata</label>
+                    <help xml:lang="en"></help>
+                    <label xml:lang="it">Lingua dei metadati</label>
+                    <help xml:lang="it"></help>
                     <hasPath>dct:title/@xml:lang</hasPath>
                 </item>
                 <item hasDatatype="text" hasIndex="6" xml:id="title_6" isFixed="false">
@@ -172,7 +174,7 @@
                     <help xml:lang="it">Descrizione del dataset</help>
                     <hasPath>dct:description</hasPath>
                 </item>
-                <item hasDatatype="ref" hasIndex="7" xml:id="title_7" isFixed="false">
+                <item hasDatatype="ref" hasIndex="7" xml:id="title_7" isFixed="true">
                     <hasPath>dct:description/@xml:lang</hasPath>
                     <hasValue>/rdf:RDF/dcatapit:Dataset/dct:title/@xml:lang</hasValue>
                 </item>
