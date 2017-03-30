@@ -256,7 +256,7 @@
                     <help xml:lang="it"></help>
                     <hasPath>dcat:contactPoint/vcard:fn</hasPath>
                 </item>
-                <item hasDatatype="select" hasIndex="3" xml:id="contactPoint_3" isFixed="false" field="uri" datasource="info_contact" outIndex="1">
+                <item hasDatatype="select" hasIndex="3" xml:id="contactPoint_3" isFixed="true" field="uri" datasource="info_contact" outIndex="1">
                     <hasPath>dcat:contactPoint/@rdf:resource</hasPath>
                 </item>
                 <item hasDatatype="select" hasIndex="4" xml:id="contactPoint_4" isFixed="false" field="email" datasource="info_contact" outIndex="3">
