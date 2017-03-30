@@ -4,14 +4,17 @@
 
 import {Component, OnInit} from '@angular/core';
 import {IDatasource, BaseDatasource} from '../../model/Datasource';
+import {State} from '../../model/State';
+import {ITemplate} from '../../model/Template';
 @Component({
     selector: 'debug-window',
     template: `
-        <pre>{{datasources | json}}</pre>
+        <pre>{{template | json}}</pre>
     `
 })
 export class DebugWindowComponent implements OnInit {
     datasources: BaseDatasource[];
+    template: ITemplate;
 
     constructor() {
     }
@@ -23,7 +26,9 @@ export class DebugWindowComponent implements OnInit {
             var json = stringify(BaseDatasource.datasources);
             console.log('pruned', JSON.parse(json));
             this.datasources = JSON.parse(json);
-
+            if ( State.template ) {
+                this.template = JSON.parse(stringify(State.template));
+            }
         }, 1000);
     }
 }

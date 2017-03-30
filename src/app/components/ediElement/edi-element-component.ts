@@ -48,6 +48,8 @@ export class EdiElementComponent {
     }
 
     constructor() {
-        this.interfaceLanguage = State.interfaceLanguage;
+        State._interfaceLanguage.asObservable().subscribe(
+            res => this.interfaceLanguage = res
+        );
     }
 }

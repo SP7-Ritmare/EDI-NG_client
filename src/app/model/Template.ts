@@ -1,4 +1,5 @@
 import {Element} from './Element';
+import {AlternativeGroup} from './AlternativeGroup';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -45,7 +46,7 @@ export interface ITemplateDatasources {
 }
 
 export interface ITemplateGroup {
-    element: Element[]
+    element: [Element|AlternativeGroup]
 }
 
 export interface ITemplateSettings {

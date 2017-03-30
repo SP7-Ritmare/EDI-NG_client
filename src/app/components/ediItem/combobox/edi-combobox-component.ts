@@ -11,7 +11,7 @@ import {State} from '../../../model/State';
 @Component({
     selector: 'app-edi-combobox',
     template: `
-        <md-select [(ngModel)]="item.valueObject" (change)="selectRow($event)" placeholder="{{placeholder()}}" [required]="item.mandatory">
+        <md-select [(ngModel)]="item.codeValue" (change)="selectRow($event)" placeholder="{{placeholder()}}" [required]="item.mandatory">
             <md-option *ngFor="let v of possibleValues" [value]="v.c">{{v.l}}</md-option>
         </md-select>
 `,
@@ -24,10 +24,17 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
 
     selectRow(value: any) {
         let values = {
-            c: this.item.value
+            c: this.item.codeValue
         };
-        console.log(values);
+        console.log('combo select', value);
         this.datasource.setCurrentRow(values);
+        if ( this.datasource.currentRow ) {
+            this.item.value = this.datasource.currentRow;
+            this.item.labelValue = this.datasource.currentRow.a;
+            this.item.codeValue = this.item.value;
+            this.item.urnValue = this.datasource.currentRow.urn;
+            this.item.languageNeutral = this.datasource.currentRow.z;
+        }
     }
 
     placeholder() {

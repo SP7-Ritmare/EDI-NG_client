@@ -68,6 +68,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     select(item: any){
         this.query = item.l;
         this.item.value = item;
+        console.log('item', this.item.id, this.item.value);
         this.filteredList = [];
     }
 

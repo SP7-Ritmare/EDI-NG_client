@@ -27,6 +27,11 @@
                     </a>
             </ul>
         </nav>-->
+        <md-card>
+            <button (click)="setLanguage('it')">IT</button>
+            <button (click)="setLanguage('en')">EN</button>
+            <a routerLinkActive="active" routerLink="/debug">debug</a>
+        </md-card>
         <md-list>
             <md-list-item *ngFor="let g of template.group">
                 <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
@@ -63,7 +68,8 @@
                                                     <pre>{{g | json}}</pre>
                                 -->
                                 <div *ngFor="let e of g.element">
-                                    <app-edi-element [element]="e"></app-edi-element>
+                                    <edi-alternative-group [group]="e" *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
+                                    <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
                                 </div>
                             </div>
                         </div>

@@ -486,6 +486,7 @@
          <produces>
             <item hasIndex="1" xml:id="system_name_1" outIndex="2" isFixed="false" hasDatatype="string">
                <hasPath>TheName</hasPath>
+               <defaultValue>Nome del sistema di sensori</defaultValue>
             </item>
             <item hasIndex="3" xml:id="system_name_3" outIndex="3" isFixed="true" hasDatatype="function">
                <hasPath>@gml:id</hasPath>
@@ -515,6 +516,7 @@
                <label xml:lang="en">Boolean value</label>
                <hasPath>gml:identifier</hasPath>
                <hasValue>auto</hasValue>
+               <defaultValue>true</defaultValue>
             </item>
          </produces>
       </element>
@@ -538,7 +540,7 @@
    <group xml:id="system_ids">
       <label xml:lang="it">Identificazione</label>
       <label xml:lang="en">Identification of the system</label>
-      <element xml:id="manuf_name" isMandatory="false" isMultiple="false">
+      <element xml:id="manuf_name" isMandatory="false" isMultiple="false" alternativeTo="gruppo">
          <label xml:lang="it">Denominazione del produttore</label>
          <label xml:lang="en">Manufacturer name</label>
          <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
@@ -559,7 +561,7 @@
             </item>
          </produces>
       </element>
-      <element xml:id="long_name" isMandatory="true" isMultiple="false">
+      <element xml:id="long_name" isMandatory="true" isMultiple="false" alternativeTo="gruppo">
          <label xml:lang="it">Nome esteso</label>
          <label xml:lang="en">Long Name</label>
          <help xml:lang="it">Indicare un nome esteso del sistema di sensori o della piattaforma.</help>
@@ -579,7 +581,7 @@
             </item>
          </produces>
       </element>
-      <element xml:id="mod_number" isMandatory="false" isMultiple="false">
+      <element xml:id="mod_number" isMandatory="false" isMultiple="false" alternativeTo="gruppo">
          <label xml:lang="it">Modello</label>
          <label xml:lang="en">Model</label>
          <help xml:lang="it">Indicare, se presente, il modello del sensore, del sistema di sensori o della piattaforma.</help>

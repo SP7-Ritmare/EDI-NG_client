@@ -23,7 +23,9 @@ export class EdiItemComponent implements OnInit {
     constructor() {
     }
     ngOnInit() {
-        this.interfaceLanguage = State.interfaceLanguage;
+        State._interfaceLanguage.asObservable().subscribe(
+            res => this.interfaceLanguage = res
+        );
         console.log('init text box', this.item.id, this.item.datasource, this.item.dataType);
         if (this.item.datasource && this.item.dataType === 'select') {
             // this.item.datasource.refresh();

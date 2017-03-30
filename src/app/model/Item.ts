@@ -39,6 +39,7 @@ export class Item {
     help: any[];
     show: string;
     mandatory: boolean = false;
+    defaultValue: string;
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
 
     valueObject() {
@@ -74,7 +75,8 @@ export class Item {
             } else {
                 this.id = this.elementId + '_' + this.index;
             }
-            this.path = i['_hasPath'];
+            this.path = i['hasPath'];
+            this.value = i['hasValue'];
             this.fixed = (i['_isFixed'] === 'true');
             this.dataType = i['_hasDatatype'];
             this.field = i['_field'];
@@ -91,7 +93,24 @@ export class Item {
                 this.datasource = BaseDatasource.find(i['_datasource']);
                 console.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
             }
+            if ( i.defaultValue ) {
+                this.defaultValue = i.defaultValue;
+                if ( this.dataType === 'codelist' ) {
+                    this.codeValue = i.defaultValue;
+                    this.value = '';
+                } else {
+                    this.value = i.defaultValue;
+                }
+            }
+            if (!this.show) {
+                this.show = Visualisation.findFor(this.dataType);
+            }
+
         } else {
+            /**
+             * TODO: implement version 1 template support
+             */
+            /*
             this.index = i['hasIndex'];
             this.id = this.elementId + '_' + this.index;
             this.path = i['hasPath'];
@@ -103,29 +122,9 @@ export class Item {
             this.outIndex = i['outIndex'];
             this.show = i['show'];
             this.datasource = BaseDatasource.find(i['datasource']);
-        }
-
-        if (!this.show) {
-            this.show = Visualisation.findFor(this.dataType);
-/*
-            switch (this.dataType) {
-                case 'text':
-                    this.show = 'textarea';
-                    break;
-                case 'string':
-                    this.show = 'textbox';
-                    break;
-                case 'boolean':
-                    this.show = 'boolean';
-                    break;
-                case 'codelist':
-                    this.show = 'combobox';
-                    break;
-                default:
-                    this.show = 'textbox';
-            }
 */
         }
+
 
     }
 }

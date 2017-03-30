@@ -1,5 +1,5 @@
-<!--<pre>{{ element.label | json }}</pre>
-<pre>{{ showTitle() }}</pre>-->
+<!--<pre>{{ element.label | json }}</pre>-->
+<!--<pre>{{ element | json }}</pre> -->
 <div *ngIf="showTitle()">
     <div *ngFor="let l of element.label" class="elementLabel">
         <div *ngIf="element.mandatory && l['_xml:lang'] == interfaceLanguage" class="elementMandatory">
@@ -17,11 +17,11 @@
     </div>
 </div>
 <div *ngIf="showRemoveButton()">
-    <a href="#" class="btn btn-danger" (click)="removeElement()">
+    <button href="#" class="btn btn-danger" (click)="removeElement()">
         <div *ngFor="let l of element.label">
             <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>clear</md-icon> <!--{{l.__text}}--></span>
         </div>
-    </a>
+    </button>
 </div>
 
 <div *ngFor="let i of element.items">

@@ -7,6 +7,7 @@ import {XML2JSON} from '../../utils/XML2JSON';
 import {EDITemplate} from '../service/EDITemplate';
 import {ITemplate, Template} from '../../model/Template';
 import {State} from '../../model/State';
+import {AlternativeGroup} from '../../model/AlternativeGroup';
 
 // const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
 const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
@@ -23,7 +24,20 @@ export class MainLayoutComponent {
     template: Template;
     interfaceLanguage: string = 'en';
 
+    setLanguage(lang: string) {
+        State.interfaceLanguage = lang;
+    }
+    isAlternativeGroup(e: any) {
+        if ( e instanceof AlternativeGroup ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     constructor(private EDITemplate: EDITemplate) {
+        State._interfaceLanguage.asObservable().subscribe(
+            res => this.interfaceLanguage = res
+        );
 
         this.template = new Template();
 

@@ -7,6 +7,7 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-boolean',
     template: ` 
+        <md-chip>{{item.value}}</md-chip>
         <md-slide-toggle [(ngModel)]="item.value"></md-slide-toggle>
     `
 })

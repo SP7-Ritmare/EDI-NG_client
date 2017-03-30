@@ -22,6 +22,7 @@ export class BaseDatasource {
     _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
     currentRowNumber: number;
     _currentRow: BehaviorSubject<any> = new BehaviorSubject({});
+    _currentRowHolder: any;
     protected baseResults: any[];
 
     static find(id: string) {
@@ -40,10 +41,17 @@ export class BaseDatasource {
 
     constructor() {
         BaseDatasource.datasources.push(this);
+        this._currentRow.subscribe(
+            res => this._currentRowHolder = res
+        )
     }
 
     set currentRow(value: any) {
         this._currentRow.next(value);
+    }
+
+    get currentRow() {
+        return this._currentRowHolder;
     }
 
     duplicate() {

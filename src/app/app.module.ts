@@ -22,6 +22,30 @@ import {EdiDateComponent} from './components/ediItem/date/edi-date-component';
 import {MyDatePickerModule} from 'mydatepicker';
 import {MyDateRangePickerModule} from 'mydaterangepicker';
 import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-range-component';
+import {RouterModule, Routes} from '@angular/router';
+import {EdiAlternativeGroupComponent} from './components/alternativeGroup/edi-alternative-group-component';
+import {RemoveCyclicPipe} from './components/pipes/remove-cyclic.pipe';
+
+const appRoutes: Routes = [
+    { path: 'main', component: MainLayoutComponent },
+    { path: 'debug', component: DebugWindowComponent },
+    { path: '',
+        redirectTo: '/main',
+        pathMatch: 'full'
+    }
+
+    /*
+        { path: 'login', component: LoginComponent },
+        { path: 'main', component: MainPageComponent},
+        { path: 'customers', component: CustomerListComponent},
+        { path: 'customers/:id', component: CustomerEditComponent },
+        { path: 'customers/new', component: CustomerEditComponent },
+        { path: '',
+            redirectTo: '/login',
+            pathMatch: 'full'
+        }
+    */
+];
 
 @NgModule({
     declarations: [
@@ -39,6 +63,8 @@ import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-ran
         EdiBooleanComponent,
         EdiDateComponent,
         EdiDateRangeComponent,
+        EdiAlternativeGroupComponent,
+        RemoveCyclicPipe,
         NumberValidatorDirective,
         DebugWindowComponent
     ],
@@ -48,10 +74,11 @@ import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-ran
         HttpModule,
         MaterialModule,
         MyDatePickerModule,
-        MyDateRangePickerModule
+        MyDateRangePickerModule,
+        RouterModule.forRoot(appRoutes)
     ],
     providers: [],
-    bootstrap: [MainLayoutComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

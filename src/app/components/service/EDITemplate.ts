@@ -17,6 +17,7 @@ import {Element} from '../../model/Element';
 import {EndpointType, ContentTypes, HTTPMethod, IEndpointType} from '../../model/EndpointType';
 import {Endpoint} from '../../model/Endpoint';
 import {Logger, availableContexts} from '../../utils/logger';
+import {AlternativeGroup} from '../../model/AlternativeGroup';
 
 @Injectable()
 export class EDITemplate {
@@ -127,16 +128,37 @@ export class EDITemplate {
 
     private fixGroupsElementsAndItems() {
         let object: any = Object.assign({}, this.contents);
+        let alternativeGroups = {
+
+        };
+
         console.log('fixGroupsElementsAndItems', object);
         for (let g of object.group) {
             console.log('group', g);
-            let elements: Element[] = [];
+            let elements: (Element|AlternativeGroup)[] = [];
+            let doingAlternativeGroup = false;
+            let currentAlternativeGroup: AlternativeGroup = new AlternativeGroup();
             for (let e of g.element) {
                 console.log('element', e);
+
                 let temp: Element = new Element();
                 temp.fromTemplateElement(e);
                 console.log('created element', temp);
-                elements.push(temp);
+                if ( !doingAlternativeGroup && e['_alternativeTo'] ) {
+                    doingAlternativeGroup = true;
+                    currentAlternativeGroup = new AlternativeGroup();
+                    currentAlternativeGroup.id = e['_alternativeGroup'];
+                    currentAlternativeGroup.elements = [];
+                }
+                if ( doingAlternativeGroup && !e['_alternativeTo'] ) {
+                    doingAlternativeGroup = false;
+                    elements.push(currentAlternativeGroup);
+                }
+                if ( doingAlternativeGroup ) {
+                    currentAlternativeGroup.elements.push(temp);
+                } else {
+                    elements.push(temp);
+                }
             }
             g.element = elements;
         }
