@@ -6,6 +6,15 @@ export class AlternativeGroup {
     activeElementIndex: number = 0;
     activeElement: Element;
 
+    get mandatory() {
+      for ( let e of this.elements ) {
+        if ( e.mandatory ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     activateElement(index: number) {
         this.activeElementIndex = index;
         this.activeElement = this.elements[index];

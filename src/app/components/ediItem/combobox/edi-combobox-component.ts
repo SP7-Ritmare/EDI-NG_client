@@ -14,12 +14,11 @@ import {State} from '../../../model/State';
         <md-select [(ngModel)]="item.codeValue" (change)="selectRow($event)" placeholder="{{placeholder()}}" [required]="item.mandatory">
             <md-option *ngFor="let v of possibleValues" [value]="v.c">{{v.l}}</md-option>
         </md-select>
-`,
-    styleUrls: [],
-    providers: []
+`
 })
 export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
     interfaceLanguage: string;
+    possibleValues: any[] = [];
     @Input() item: Item;
 
     selectRow(value: any) {

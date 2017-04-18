@@ -8,10 +8,14 @@ export class XML2JSON {
 
     constructor() {
         this.x2js = new X2JS();
-        console.log('XML2JS', this.x2js.xml_str2json('<pippo>pluto</pippo>'));
+        // console.log('XML2JS', this.x2js.xml_str2json('<pippo>pluto</pippo>'));
     }
 
     xml2json(xml: string) {
         return this.x2js.xml_str2json(xml);
+    }
+
+    json2xml(json: any) {
+      return this.x2js.json2xml(json);
     }
 }

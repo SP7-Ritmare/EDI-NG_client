@@ -7,8 +7,10 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-boolean',
     template: ` 
-        <md-chip>{{item.value}}</md-chip>
-        <md-slide-toggle [(ngModel)]="item.value"></md-slide-toggle>
+         <md-slide-toggle style="clear: both; float: left;" color="primary" [(ngModel)]="item.value"></md-slide-toggle>
+         <md-chip-list style="float: left; margin: 13px 0;">
+             <md-chip color="accent">{{item.value}}</md-chip>
+         </md-chip-list>
     `
 })
 export class EdiBooleanComponent {

@@ -49,7 +49,8 @@ export class Visualisation {
         {types: ['codelist'], show: 'combobox'},
         {types: ['text'], show: 'textarea'},
         {types: ['date'], show: 'date'},
-        {types: ['dateRange'], show: 'dateRange'}
+        {types: ['dateRange'], show: 'dateRange'},
+        {types: ['sensorID'], show: 'qrcode'}
     ];
     static defaultVisualisation = 'textbox';
 

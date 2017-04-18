@@ -3,7 +3,7 @@ import {Http, RequestOptionsArgs, Headers, Response, RequestOptions, BaseRequest
 import {Logger, availableContexts} from '../utils/logger';
 import {Observable, BehaviorSubject} from 'rxjs';
 import {Injectable, Inject, ReflectiveInjector, Injector} from '@angular/core';
-import {MockBackend} from '@angular/http/testing';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';

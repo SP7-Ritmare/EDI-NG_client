@@ -6,15 +6,19 @@ import {Component, OnInit} from '@angular/core';
 import {IDatasource, BaseDatasource} from '../../model/Datasource';
 import {State} from '../../model/State';
 import {ITemplate} from '../../model/Template';
+import {EDIML, IEDIMLItem} from "../../model/EDIML";
+import {EDITemplate} from '../service/EDITemplate';
+
 @Component({
     selector: 'debug-window',
     template: `
-        <pre>{{template | json}}</pre>
+        <pre>{{ediml | removeCyclic | json}}</pre>
     `
 })
 export class DebugWindowComponent implements OnInit {
     datasources: BaseDatasource[];
     template: ITemplate;
+    ediml: EDIML;
 
     constructor() {
     }
@@ -29,6 +33,9 @@ export class DebugWindowComponent implements OnInit {
             if ( State.template ) {
                 this.template = JSON.parse(stringify(State.template));
             }
+            console.log('Template', this.template);
+            this.ediml = new EDIML(this.template);
+            console.log('EDIML', this.ediml);
         }, 1000);
     }
 }

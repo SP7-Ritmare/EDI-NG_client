@@ -31,7 +31,7 @@ export class BaseDatasource {
         for (let d of BaseDatasource.datasources) {
             // console.log('datasource', d);
             if (d.id === id) {
-                console.log('comparing', d.id, id);
+                // console.log('comparing', d.id, id);
                 return d;
             }
         }
@@ -70,25 +70,25 @@ export class BaseDatasource {
     refresh(options?: IQueryOptions) {
         let query: string = this.query;
 
-        if ( this.hasOwnProperty('uri') ) {
+        if (this.hasOwnProperty('uri')) {
             query = query.split('$uri$').join((this as any)['uri']);
         }
-        if ( options && options.searchParam ) {
+        if (options && options.searchParam) {
             query = query.split('$search_param').join(options.searchParam);
             console.log(query);
         }
         query = query.split('$metadataLanguage$').join(Configuration.metadataLanguage);
         // let results = this.endpoint.query(query);
         //
-        if ( this.endpoint && query.indexOf('$search_param') < 0 ) {
+        if (this.endpoint && query.indexOf('$search_param') < 0) {
             console.log('the endpoint is', this.endpoint.query);
             let dataset = this.endpoint.query(query);
             console.log('dataset', dataset);
-            dataset.subscribe( res => {
+            dataset.subscribe(res => {
                 this.baseResults = res;
                 this._results.next(res);
                 console.log('datasource', this.id, this._results);
-                if ( res.length == 1 ) {
+                if (res.length == 1) {
                     this.setCurrentRow(res[0]);
                 }
             });
@@ -96,16 +96,17 @@ export class BaseDatasource {
             console.error('endpoint undefined for datasource', this.id);
         }
     }
+
     setCurrentRow(values: any) {
-        for ( let i = 0; i < this.baseResults.length; i++ ) {
+        for (let i = 0; i < this.baseResults.length; i++) {
             let count = 0;
             let keys = Object.keys(values).length;
-            for ( let field in values ) {
-                if ( values.hasOwnProperty(field) ) {
-                    if ( this.baseResults[i].hasOwnProperty(field) && values[field] === this.baseResults[i][field] ) {
+            for (let field in values) {
+                if (values.hasOwnProperty(field)) {
+                    if (this.baseResults[i].hasOwnProperty(field) && values[field] === this.baseResults[i][field]) {
                         count++;
                     }
-                    if ( count === keys ) {
+                    if (count === keys) {
                         this.currentRowNumber = i;
                         this.currentRow = this.baseResults[i];
                         console.log('row ' + this.currentRowNumber + ' selected', this.currentRow);
@@ -124,7 +125,7 @@ export class BaseDatasource {
 export interface IDatasource extends BaseDatasource {
     currentRowNumber: number;
     currentRow: any;
-    fromTemplate(input: ITemplateSingleton|ITemplateSPARQL|ITemplateCodelist): void;
+    fromTemplate(input: ITemplateSingleton | ITemplateSPARQL | ITemplateCodelist): void;
     setCurrentRow(values: any): void;
 }
 
@@ -187,11 +188,11 @@ export class CodelistDatasource extends BaseDatasource implements ICodelist {
         console.log('codelist ', this.id, input._endpointType, endpointType);
         this.endpoint = Endpoint.find(endpointType, this.url);
         console.log('Codelist fromTemplate OUT', this);
-/*
-        if ( this.uri && this.endpoint ) {
-            this.refresh();
-        }
-*/
+        /*
+         if ( this.uri && this.endpoint ) {
+         this.refresh();
+         }
+         */
     }
 }
 
@@ -240,27 +241,47 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
 
     fixTriggerItem() {
         console.log('fixTriggerItem');
-        if ( this.triggerItem ) {
-            if ( this.triggerItem.indexOf('_uri') >= 0 ) {
+        if (this.triggerItem) {
+            if (this.triggerItem.indexOf('_uri') >= 0) {
                 this.triggerItemObject = State.getItem(this.triggerItem.replace('_uri', ''));
                 if (this.triggerItemObject) {
                     console.log('creating observer for', this.triggerItem);
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
-                            console.log('trigger detected', this.triggerItemObject.value, res);
-                            this.refresh({ searchParam: res.c} );
+                            if ( res ) {
+                                console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
+                                this.refresh({searchParam: res.c});
+                            }
+                        },
+                        err => {
+                            console.log('trigger error', err);
+                        },
+                        () => {
+                            console.log('trigger done');
                         }
                     )
+                } else {
+                    console.error('trigger item ', this.triggerItem, ' not found');
                 }
             } else {
                 this.triggerItemObject = State.getItem(this.triggerItem);
-                if ( this.triggerItemObject ) {
+                if (this.triggerItemObject) {
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
-                            console.log('trigger detected', this.triggerItemObject.value, res);
-                            this.refresh({ searchParam: res.l} );
+                            if ( res ) {
+                                console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
+                                this.refresh({searchParam: res.l});
+                            }
+                        },
+                        err => {
+                            console.log('trigger error', err);
+                        },
+                        () => {
+                            console.log('trigger done');
                         }
                     )
+                } else {
+                    console.error('trigger item ', this.triggerItem, ' not found');
                 }
             }
             console.log('triggerItemObject', this.triggerItemObject);

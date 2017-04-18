@@ -1,7 +1,7 @@
 /**
  * Created by fabio on 05/03/2017.
  */
-import {Component, Input, Host} from '@angular/core';
+import {Component, Input, Host, OnInit} from '@angular/core';
 import {EDITemplate} from '../service/EDITemplate';
 import {MainLayoutComponent} from '../layout/main-layout-component';
 import {Element} from '../../model/Element';
@@ -12,8 +12,9 @@ import {State} from '../../model/State';
     styleUrls: ['./edi-element-component.css'],
     providers: []
 })
-export class EdiElementComponent {
+export class EdiElementComponent implements OnInit {
     interfaceLanguage: string;
+    temp: string;
     @Input() element: Element;
 
     duplicateElement(event: any) {
@@ -51,5 +52,9 @@ export class EdiElementComponent {
         State._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
+    }
+
+    ngOnInit() {
+        this.temp = State.findLastInstanceOfBaseElement(this.element.represents_element);
     }
 }

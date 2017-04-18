@@ -1,0 +1,94 @@
+@import './../../node_modules/@angular/material/core/theming/all-theme';
+
+// Include non-theme styles for core.
+@include mat-core();
+
+$mat-edi: (
+        50: #e3f2fd,
+        100: #bbdefb,
+        200: #a9c3df,
+        300: #64b5f6,
+        400: #42a5f5,
+        500: #2196f3,
+        600: #43c7f4,
+        700: #1976d2,
+        800: #5488bf,
+        900: #0d47a1,
+        A100: #82b1ff,
+        A200: #448aff,
+        A400: #2979ff,
+        A700: #2962ff,
+        contrast: (
+                50: $black-87-opacity,
+                100: $black-87-opacity,
+                200: $black-87-opacity,
+                300: $black-87-opacity,
+                400: $black-87-opacity,
+                500: white,
+                600: white,
+                700: white,
+                800: $white-87-opacity,
+                900: $white-87-opacity,
+                A100: $black-87-opacity,
+                A200: white,
+                A400: white,
+                A700: white,
+        )
+);
+
+// Define a theme.
+$primary: mat-palette($mat-edi);
+$accent: mat-palette($mat-red, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+// Include all theme styles for the components.
+@include angular-material-theme($theme);
+
+html, body {
+  background-color: mat-color($primary, 200);
+  color: mat-color($primary, 800);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-stretch: condensed;
+}
+.card-header {
+  background-color: mat-color($primary, 800);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mat-card-content, .mat-card {
+  background-color: mat-color($primary, 200);
+  color: mat-color($primary, 800);
+}
+
+input.mat-input-element {
+  background-color: white !important;
+  padding: 10px 8px;
+}
+
+.elementLabel {
+  float: left;
+  padding-right: 4px;
+}
+
+.elementMandatory {
+  color: mat-color($primary, 800);
+  font-weight: bold;
+}
+.elementNotMandatory {
+  color: #000;
+  font-weight: bold;
+}
+
+.header {
+  position: fixed;
+  background-color: mat-color($primary, 800);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 100;
+}
+

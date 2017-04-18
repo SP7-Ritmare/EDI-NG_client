@@ -46,7 +46,7 @@ export interface ITemplateDatasources {
 }
 
 export interface ITemplateGroup {
-    element: [Element|AlternativeGroup]
+    element: (Element|AlternativeGroup)[]
 }
 
 export interface ITemplateSettings {
@@ -65,14 +65,14 @@ export interface ITemplate {
     settings: ITemplateSettings;
     endpointTypes: ITemplateEndpointTypes;
     datasources: ITemplateDatasources;
-    group: [ITemplateGroup];
+    group: ITemplateGroup[];
 }
 
 export class Template implements ITemplate {
     settings: ITemplateSettings;
     endpointTypes: ITemplateEndpointTypes;
     datasources: [ITemplateDatasources];
-    group: [ITemplateGroup];
+    group: ITemplateGroup[];
 
     constructor() {
         this.settings = {

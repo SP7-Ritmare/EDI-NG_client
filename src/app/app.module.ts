@@ -10,7 +10,6 @@ import {EdiElementComponent} from './components/ediElement/edi-element-component
 import {EdiItemComponent} from './components/ediItem/edi-item-component';
 import {EdiComboboxComponent} from './components/ediItem/combobox/edi-combobox-component';
 import {EdiTextboxComponent} from './components/ediItem/textbox/edi-textbox-component';
-import {Ng2AutoCompleteComponent} from 'ng2-auto-complete';
 import {EdiAutocompleteComponent} from './components/ediItem/autocomplete/edi-autocomplete-component';
 import {SidebarComponent} from './components/sidebar/edi-sidebar-component';
 import {NumberValidatorDirective} from './number-validator.directive';
@@ -25,6 +24,12 @@ import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-ran
 import {RouterModule, Routes} from '@angular/router';
 import {EdiAlternativeGroupComponent} from './components/alternativeGroup/edi-alternative-group-component';
 import {RemoveCyclicPipe} from './components/pipes/remove-cyclic.pipe';
+import {TypeaheadDirective} from 'ng2-bootstrap';
+import {EdiQRCodeComponent} from './components/ediItem/qrcode/edi-qrcode-component';
+import {QRCodeComponent} from 'ng2-qrcode';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {QRCodeModule} from 'angular2-qrcode';
+import {MetadataService} from './components/service/MetadataService';
 
 const appRoutes: Routes = [
     { path: 'main', component: MainLayoutComponent },
@@ -50,7 +55,6 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        Ng2AutoCompleteComponent,
         CategoryListComponent,
         MainLayoutComponent,
         SidebarComponent,
@@ -66,18 +70,23 @@ const appRoutes: Routes = [
         EdiAlternativeGroupComponent,
         RemoveCyclicPipe,
         NumberValidatorDirective,
-        DebugWindowComponent
+        DebugWindowComponent,
+        TypeaheadDirective,
+        EdiQRCodeComponent,
+        QRCodeComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
-        MaterialModule,
         MyDatePickerModule,
         MyDateRangePickerModule,
-        RouterModule.forRoot(appRoutes)
+        MaterialModule,
+        RouterModule.forRoot(appRoutes),
+        BrowserAnimationsModule,
+        QRCodeModule
     ],
-    providers: [],
+    providers: [MetadataService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

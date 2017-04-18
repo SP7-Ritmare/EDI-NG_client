@@ -71,7 +71,7 @@ export class EDITemplate {
     private fixDatasources() {
         for ( let ds of BaseDatasource.datasources ) {
             if ( ds instanceof SingletonDatasource ) {
-                ds.fixTriggerItem();
+                (ds as SingletonDatasource).fixTriggerItem();
             }
         }
     }
@@ -188,6 +188,7 @@ export class EDITemplate {
             headers: headers
         })
             .map(res => {
+                State.originalTemplate = res.text();
                 this.contents = this.x2js.xml2json(res.text()).template;
                 this.inferVersion();
                 console.log('template version is ' + State.templateVersion);

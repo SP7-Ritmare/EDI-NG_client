@@ -6,3 +6,12 @@
 .itemBlock {
     clear: both;
 }
+
+.itemMandatory {
+  color: #428bca;
+  font-weight: bold;
+}
+.itemNotMandatory {
+  color: #000;
+  font-weight: bold;
+}

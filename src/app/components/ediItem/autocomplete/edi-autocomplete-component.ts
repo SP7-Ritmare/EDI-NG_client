@@ -2,8 +2,11 @@ import {Component, Input, ElementRef} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
 import {Item} from '../../../model/Item';
 import {State} from '../../../model/State';
+import {EDITemplate} from '../../service/EDITemplate';
 /**
  * Created by fabio on 22/03/2017.
+
+
  */
 
 @Component({
@@ -13,18 +16,22 @@ import {State} from '../../../model/State';
     },
     template: `
         <md-input-container class="col-md-12">
-        <input mdInput class="form-control" type="text" placeholder="{{placeholder()}}" [(ngModel)]="query" (keyup)=filter() [required]="item.mandatory">        
-        <div class="suggestions" *ngIf="filteredList.length > 0">
-            <ul *ngFor="let item of filteredList" >
-                <li >
-                    <a (click)="select(item)">{{item.l}}</a>
-                </li>
-            </ul>
-        </div>
+            <input
+                    mdInput
+                    class="form-control" type="text" placeholder="{{placeholder()}}" [(ngModel)]="query"
+                    (keyup)=filter() [required]="item.mandatory"
+            >
+            <div class="suggestions" *ngIf="filteredList.length > 0">
+                <ul *ngFor="let item of filteredList">
+                    <li>
+                        <a (click)="select(item)" [innerHTML]="item.l"></a>
+                    </li>
+                </ul>
+            </div>
         </md-input-container>
-        `,
+    `,
     styleUrls: ['./edi-autocomplete-component.css'],
-    providers: []
+    providers: [EDITemplate]
 })
 export class EdiAutocompleteComponent extends EdiItemComponent {
     interfaceLanguage: string;
@@ -39,10 +46,18 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
         this.elementRef = myElement;
     }
 
+    renderRow(data: any) {
+        let html = `<b style='float:left;width:100%'>${data.c}</b>
+                
+                <span>${data.l}</span>`;
+
+        return html;
+    }
+
     placeholder() {
-        if ( this.item.label ) {
-            for ( let l of this.item.label ) {
-                if ( l['_xml:lang'] === State.interfaceLanguage ) {
+        if (this.item.label) {
+            for (let l of this.item.label) {
+                if (l['_xml:lang'] === State.interfaceLanguage) {
                     return l['__text'];
                 }
             }
@@ -51,28 +66,32 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     }
 
     filter() {
-        if (this.query !== ""){
+        if (this.query !== "") {
             console.log('autocomplete refreshing on ds ' + this.item.datasource.id);
-            this.item.datasource.refresh({ searchParam: this.query });
-            this.item.datasource.results.subscribe( res => this.filteredList = res );
-/*
-            this.filteredList = this.data.filter(function(el: any){
-                return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-*/
+            this.item.datasource.refresh({searchParam: this.query});
+            this.item.datasource.results.subscribe(res => this.filteredList = res);
+            /*
+             this.filteredList = this.data.filter(function(el: any){
+             return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+             }.bind(this));
+             */
         } else {
             this.filteredList = [];
         }
     }
 
-    select(item: any){
+    select(item: any) {
         this.query = item.l;
         this.item.value = item;
-        console.log('item', this.item.id, this.item.value);
+        this.item.labelValue = item.l ? item.l : item.a;
+        this.item.codeValue = item.c;
+        this.item.languageNeutral = item.z;
+        this.item.urnValue = item.urn;
+        console.log('changed item', this.item);
         this.filteredList = [];
     }
 
-    handleClick(event: any){
+    handleClick(event: any) {
         var clickedComponent = event.target;
         var inside = false;
         do {
@@ -81,7 +100,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
             }
             clickedComponent = clickedComponent.parentNode;
         } while (clickedComponent);
-        if(!inside){
+        if (!inside) {
             this.filteredList = [];
         }
     }

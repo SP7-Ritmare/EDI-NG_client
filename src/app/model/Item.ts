@@ -3,6 +3,7 @@ import {Utils} from '../utils/Utils';
 import {BaseDatasource} from './Datasource';
 import {ReplaySubject, BehaviorSubject} from 'rxjs';
 import {Visualisation} from './Visualisation';
+import {MetadataService} from '../components/service/MetadataService';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -43,13 +44,11 @@ export class Item {
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
 
     valueObject() {
-        return this._valueObject.asObservable();
+        return this._valueObject;
     }
 
     set value(value: any) {
-/*
         console.log('set value', this.id, value);
-*/
         this._value = value;
         this._valueObject.next(value);
     }
@@ -61,6 +60,7 @@ export class Item {
     fromTemplateItem(templateItem: any, elementId: string) {
         let i: any = templateItem;
 
+        console.log('fromTemplateItem', i);
         this.elementId = elementId;
         if (i.label) {
             this.label = (Array.isArray(i.label) ? i.label : [i.label]);
@@ -76,7 +76,7 @@ export class Item {
                 this.id = this.elementId + '_' + this.index;
             }
             this.path = i['hasPath'];
-            this.value = i['hasValue'];
+            // this.value = i['hasValue'];
             this.fixed = (i['_isFixed'] === 'true');
             this.dataType = i['_hasDatatype'];
             this.field = i['_field'];
@@ -93,15 +93,35 @@ export class Item {
                 this.datasource = BaseDatasource.find(i['_datasource']);
                 console.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
             }
+            if ( i.hasValue ) {
+                if ( this.dataType === 'codelist' ) {
+                    this.codeValue = i.hasValue;
+                    this.value = '';
+                } else if ( this.dataType === 'boolean' ) {
+                    this.value = ( i.hasValue === 'true' );
+                } else if ( this.dataType === 'sensorID' ) {
+                    console.log('sensorID', i);
+                    if ( i.hasValue === 'auto' ) {
+                        this.value = MetadataService.generateSensorId();
+                    }
+                } else {
+                    console.log('fromTemplateItem', this.id, 'else', this.dataType);
+                    this.value = i.hasValue;
+                }
+            }
+
             if ( i.defaultValue ) {
                 this.defaultValue = i.defaultValue;
                 if ( this.dataType === 'codelist' ) {
                     this.codeValue = i.defaultValue;
                     this.value = '';
+                } else if ( this.dataType === 'boolean' ) {
+                    this.value = ( i.defaultValue === 'true' );
                 } else {
                     this.value = i.defaultValue;
                 }
             }
+
             if (!this.show) {
                 this.show = Visualisation.findFor(this.dataType);
             }

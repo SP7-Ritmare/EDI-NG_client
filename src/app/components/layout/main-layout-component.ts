@@ -2,7 +2,7 @@
  * Created by fabio on 02/03/2017.
  */
 
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {XML2JSON} from '../../utils/XML2JSON';
 import {EDITemplate} from '../service/EDITemplate';
 import {ITemplate, Template} from '../../model/Template';
@@ -15,14 +15,17 @@ const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
 @Component({
     selector: 'app-main-layout',
     templateUrl: './main-layout-component.html',
-    styleUrls: ['./main-layout-component.css'],
-    providers: [EDITemplate]
+    styleUrls: ['./main-layout-component.scss'],
+    providers: [EDITemplate],
+    encapsulation: ViewEncapsulation.None
 })
 export class MainLayoutComponent {
 
     title: string;
     template: Template;
+    loading: boolean = true;
     interfaceLanguage: string = 'en';
+    showDebug = false;
 
     setLanguage(lang: string) {
         State.interfaceLanguage = lang;
@@ -33,6 +36,9 @@ export class MainLayoutComponent {
         } else {
             return false;
         }
+    }
+    goTo(location: string): void {
+        window.location.hash = location;
     }
     constructor(private EDITemplate: EDITemplate) {
         State._interfaceLanguage.asObservable().subscribe(
@@ -46,6 +52,7 @@ export class MainLayoutComponent {
             .subscribe( (res) => {
                 this.template = res;
                 this.title = State.templateName;
+                this.loading = false;
                 console.log('Template loaded: ', res);
             });
     }

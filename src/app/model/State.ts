@@ -3,6 +3,7 @@ import {Item} from './Item';
 import {Element} from './Element';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AlternativeGroup} from './AlternativeGroup';
+import {MetadataService} from '../components/service/MetadataService';
 /**
  * Created by fabio on 06/03/2017.
  */
@@ -11,6 +12,8 @@ export class State {
     static templateVersion: number;
     static _interfaceLanguage: BehaviorSubject<string> = new BehaviorSubject('en');
     static template: ITemplate;
+    static originalTemplate: string;
+    static metadataService: MetadataService;
 
     static set interfaceLanguage(value: string) {
         State._interfaceLanguage.next(value);
@@ -24,14 +27,17 @@ export class State {
         for ( let g of State.template.group ) {
             for ( let e of g.element ) {
                 if ( e instanceof Element && e.id === id ) {
-                    return e;
+                    return (e as Element);
                 } else {
                     if ( e instanceof AlternativeGroup ) {
-                        for ( let ee of e.elements ) {
-                            if ( ee.id === id ) {
-                                return ee;
-                            }
+                        let e1 = (e as AlternativeGroup);
+                      if ( e1.elements ) {
+                        for ( let ee of e1.elements ) {
+                          if ( ee.id === id ) {
+                            return ee;
+                          }
                         }
+                      }
                     }
                 }
             }
@@ -93,7 +99,7 @@ export class State {
         for ( let g of State.template.group ) {
             for ( let i = 0; i < g.element.length; i++ ) {
                 let e = g.element[i];
-                if ( e.hasOwnProperty('represent_element') && e['represents_element'] === id ) {
+                if ( e.hasOwnProperty('represents_element') && e['represents_element'] === id ) {
                     last = e.id;
                 }
             }
@@ -127,7 +133,7 @@ export class State {
         for ( let g of State.template.group ) {
             for ( let e of g.element ) {
                 if ( e instanceof Element ) {
-                    for ( let i of e.items ) {
+                    for ( let i of (e as Element).items ) {
                         if ( i.id === id ) {
                             console.log('getItem found', i);
                             return i;

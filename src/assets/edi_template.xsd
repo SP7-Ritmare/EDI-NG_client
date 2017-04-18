@@ -30,7 +30,7 @@
     <xs:keyref name="sparqlEndpointTypeFK" refer="endpointTypePK">
       <xs:selector xpath="datasources/sparql"></xs:selector>
       <xs:field xpath="./@endpointType"></xs:field>
-    </xs:keyref>    
+    </xs:keyref>    x
     
     <xs:key name="datasourcePK">
       <xs:selector xpath="datasources/*"></xs:selector>
@@ -197,7 +197,7 @@
       <xs:attribute name="isMandatory" use="required" type="xs:boolean"/>
       <xs:attribute name="isMultiple" use="required" type="xs:boolean"/>
       <xs:attribute ref="xml:id" use="required"/>
-      <xs:attribute name="alternativeTo" use="optional" type="xs:IDREF"/>
+      <xs:attribute name="alternativeTo" use="optional" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="hasRoot" type="xs:string"/>
@@ -262,6 +262,8 @@
       <xs:attribute ref="xml:id" use="required"/>
       <xs:attribute name="isFixed" use="required" type="xs:boolean"/>
       <xs:attribute name="field" use="optional"/>
+      <xs:attribute name="useCode" use="optional"/>
+      <xs:attribute name="useUrn" use="optional"/>
       <xs:attribute name="outIndex" type="xs:integer"/>
       <xs:attribute name="isLanguageNeutral"></xs:attribute>
       <xs:attribute name="queryStringParameter"></xs:attribute>
