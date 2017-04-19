@@ -45,15 +45,15 @@
         </md-list>
 
     </div>-->
-    <div class="header">
-        <img src="/assets/logo-getit.png">
+    <div class="header" style="z-index: 1000;">
+        <img src="assets/logo-getit.png">
         <div class="content-header">
                 {{title}}
         </div>
         <button mdButton (click)="navigation.toggle()"><md-icon>menu</md-icon><md-basic-chip>EDI-NG Client v2.0 alpha</md-basic-chip></button>
     </div>
-    <md-sidenav-container class="container">
-        <md-sidenav #navigation mode="push" opened="false">
+    <md-sidenav-container style="padding-top: 100px;">
+        <md-sidenav #navigation mode="push" opened="false" style="padding-top: 100px;">
             <md-card>
                 <button (click)="setLanguage('it')">IT</button>
                 <button (click)="setLanguage('en')">EN</button>
