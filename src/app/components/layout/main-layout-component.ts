@@ -10,7 +10,8 @@ import {State} from '../../model/State';
 import {AlternativeGroup} from '../../model/AlternativeGroup';
 
 // const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
-const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
+// const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
+const templateUrl = 'assets/RNDT_dataset_v4.00_newFormat.xml';
 
 @Component({
     selector: 'app-main-layout',

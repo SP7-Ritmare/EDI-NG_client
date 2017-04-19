@@ -1,0 +1,8 @@
+md-select {
+  width: 100%;
+  background-color: white !important;
+}
+
+md-select-value.md-select-placeholder {
+  /* color: blue !important; */
+}

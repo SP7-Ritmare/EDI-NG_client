@@ -11,3 +11,12 @@ ul, li {
     color: #000;
     cursor: pointer;
 }
+
+md-input-container {
+  width: 100%;
+}
+
+input.mat-input-element {
+  background-color: #b2dba1 !important;
+  padding: 10px 8px;
+}

@@ -98,6 +98,7 @@ export class BaseDatasource {
     }
 
     setCurrentRow(values: any) {
+      console.log(this.id, 'setting current row to', values);
         for (let i = 0; i < this.baseResults.length; i++) {
             let count = 0;
             let keys = Object.keys(values).length;

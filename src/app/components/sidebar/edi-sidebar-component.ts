@@ -7,7 +7,7 @@ import {XML2JSON} from '../../utils/XML2JSON';
 import {State} from '../../model/State';
 
 // const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
-const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
+// const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
 
 @Component({
     selector: 'app-sidebar',
@@ -18,11 +18,11 @@ const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
 export class SidebarComponent {
     title: string;
     @Input() template: any;
-    interfaceLanguage: string = 'en';
+    interfaceLanguage = 'en';
 
     constructor() {
         // this.template = State.template;
 
-        console.log('about to load template', templateUrl);
+        // console.log('about to load template', templateUrl);
     }
 }

@@ -13,7 +13,8 @@ var EDITemplate_1 = require('../service/EDITemplate');
 var Template_1 = require('../../model/Template');
 var State_1 = require('../../model/State');
 // const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
-var templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
+// var templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
+var templateUlr = 'assets/RNDT_dataset_v4.00_newFormat.xml';
 var MainLayoutComponent = (function () {
     function MainLayoutComponent(EDITemplate) {
         var _this = this;
