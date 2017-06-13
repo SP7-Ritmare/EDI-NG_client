@@ -574,8 +574,12 @@
         };
 
         this.json2xml = function (jsonObj) {
+          console.log('json2xml inner', jsonObj);
             var xmlDocStr = this.json2xml_str (jsonObj);
-            return this.parseXmlString(xmlDocStr);
+            console.log('json2xml inner xml string', xmlDocStr);
+            var temp = this.parseXmlString(xmlDocStr);
+            console.log('json2xml inner', temp);
+            return temp;
         };
 
         this.getVersion = function () {

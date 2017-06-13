@@ -6,156 +6,160 @@
     <pre>{{template.group | json}}</pre>
 -->
 <div id="wrapper" data-spy="scroll" data-target="#spy" class="">
-    <!-- Sidebar -->
-<!--    <div id="sidebar-wrapper" class="">
+  <!-- Sidebar -->
+  <!--    <div id="sidebar-wrapper" class="">
 
 
-&lt;!&ndash;        <nav id="spy">
-            <ul class="sidebar-nav nav">
-                <li class="sidebar-brand active"><a href="#home" class=""><span class="fa fa-home solo">Top</span></a>
-                </li>
-                <li *ngFor="let g of template.group" class="">
-                    &lt;!&ndash;
-                                        <pre>{{g | json}}</pre>
-                    &ndash;&gt;
-                    <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
-                        <span class="fa fa-anchor solo">
-                            <div *ngFor="let l of g.label">
-                                <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
-                            </div>
-                        </span>
-                    </a>
-            </ul>
-        </nav>&ndash;&gt;
-        <md-card>
-            <button (click)="setLanguage('it')">IT</button>
-            <button (click)="setLanguage('en')">EN</button>
-            <a routerLinkActive="active" routerLink="/debug">debug</a>
-        </md-card>
-        <md-list>
-            <md-list-item *ngFor="let g of template.group">
-                <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
-                        <span class="fa fa-anchor solo">
-                            <div *ngFor="let l of g.label">
-                                <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
-                            </div>
-                        </span>
-                </a>
-            </md-list-item>
-        </md-list>
+  &lt;!&ndash;        <nav id="spy">
+              <ul class="sidebar-nav nav">
+                  <li class="sidebar-brand active"><a href="#home" class=""><span class="fa fa-home solo">Top</span></a>
+                  </li>
+                  <li *ngFor="let g of template.group" class="">
+                      &lt;!&ndash;
+                                          <pre>{{g | json}}</pre>
+                      &ndash;&gt;
+                      <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
+                          <span class="fa fa-anchor solo">
+                              <div *ngFor="let l of g.label">
+                                  <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                              </div>
+                          </span>
+                      </a>
+              </ul>
+          </nav>&ndash;&gt;
+          <md-card>
+              <button (click)="setLanguage('it')">IT</button>
+              <button (click)="setLanguage('en')">EN</button>
+              <a routerLinkActive="active" routerLink="/debug">debug</a>
+          </md-card>
+          <md-list>
+              <md-list-item *ngFor="let g of template.group">
+                  <a [href]="'#' + g['_xml:id']" data-scroll="" class="">
+                          <span class="fa fa-anchor solo">
+                              <div *ngFor="let l of g.label">
+                                  <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                              </div>
+                          </span>
+                  </a>
+              </md-list-item>
+          </md-list>
 
-    </div>-->
-    <div class="header" style="z-index: 1000;">
-        <img src="assets/logo-getit.png">
-        <div class="content-header">
-                {{title}}
-        </div>
-        <button mdButton (click)="navigation.toggle()"><md-icon>menu</md-icon><md-basic-chip>EDI-NG Client v2.0 alpha</md-basic-chip></button>
+      </div>-->
+  <div class="header" style="z-index: 1000;">
+    <img src="assets/logo-getit.png">
+    <div class="content-header">
+      {{title}}
     </div>
-    <md-sidenav-container style="padding-top: 100px;">
-        <md-sidenav #navigation mode="push" opened="false" style="padding-top: 100px;">
-            <md-card>
-                <button (click)="setLanguage('it')">IT</button>
-                <button (click)="setLanguage('en')">EN</button>
-                <a routerLinkActive="active" routerLink="/debug">debug</a>
-              <button (click)="showDebug=!showDebug">EDIML</button>
-              <pre *ngIf="showDebug">{{template | removeCyclic | json}}</pre>
-            </md-card>
-            <md-nav-list>
-                <md-list-item *ngFor="let g of template.group">
-                    <!--<a [routerLink]="['/main']" [attr.fragment]="'#' + g['_xml:id']" data-scroll="" class="">-->
-                    <a (click)="navigation.toggle(); goTo('#' + g['_xml:id'])">
+    <button mdButton (click)="navigation.toggle()">
+      <md-icon>menu</md-icon>
+      <md-basic-chip>EDI-NG Client v2.0 alpha</md-basic-chip>
+    </button>
+  </div>
+  <md-sidenav-container style="padding-top: 100px;">
+    <md-sidenav #navigation mode="push" opened="false" style="padding-top: 100px;">
+      <md-card>
+        <button (click)="setLanguage('it')">IT</button>
+        <button (click)="setLanguage('en')">EN</button>
+        <button (click)="sendMetadata()">Send metadata</button>
+        <a routerLinkActive="active" routerLink="/debug">debug</a>
+        <button (click)="showDebug=!showDebug">EDIML</button>
+        <pre *ngIf="showDebug">{{template | removeCyclic | json}}</pre>
+      </md-card>
+      <md-nav-list>
+        <md-list-item *ngFor="let g of template.group">
+          <!--<a [routerLink]="['/main']" [attr.fragment]="'#' + g['_xml:id']" data-scroll="" class="">-->
+          <a (click)="navigation.toggle(); goTo('#' + g['_xml:id'])">
                         <span class="fa fa-anchor solo">
                             <div *ngFor="let l of g.label">
                                 <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
                             </div>
                         </span>
-                    </a>
-                </md-list-item>
-            </md-nav-list>
-        </md-sidenav>
-        <!-- Page content -->
-            <div id="page-content-wrapper" *ngIf="template.group">
-                <div *ngIf="loading">
-                    <md-spinner mode="indeterminate"></md-spinner>
+          </a>
+        </md-list-item>
+      </md-nav-list>
+    </md-sidenav>
+    <!-- Page content -->
+    <div id="page-content-wrapper" *ngIf="template.group">
+      <div *ngIf="loading">
+        <md-spinner mode="indeterminate"></md-spinner>
+      </div>
+      <div class="col-md-12" *ngIf="!loading">
+        <form #form="ngForm">
+          <md-card class="row" *ngFor="let g of template.group">
+            <div class="col-md-11" [id]="g['_xml:id']">
+              <md-card-header class="card-header primary-color white-text">
+                <div *ngFor="let l of g.label">
+                  <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
                 </div>
-                <div class="col-md-12" *ngIf="!loading">
-                    <form #form="ngForm">
-                        <md-card class="row" *ngFor="let g of template.group">
-                            <div class="col-md-11" [id]="g['_xml:id']">
-                                    <md-card-header class="card-header primary-color white-text">
-                                        <div *ngFor="let l of g.label">
-                                            <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
-                                        </div>
-                                    </md-card-header>
-                                    <md-card-content>
-                                        <!--
-                                                            <pre>{{g | json}}</pre>
-                                        -->
-                                        <div *ngFor="let e of g.element">
-                                            <edi-alternative-group [group]="e" *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
-                                            <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
-                                        </div>
-                                    </md-card-content>
-                            </div>
-                        </md-card>
-
-                        <!--
-                                                <div class="row" *ngFor="let g of template.group">
-                                                    <div class="col-md-11" [id]="g['_xml:id']">
-                                                        <div class="panel panel-primary">
-                                                            <div class="panel-heading">
-                                                                <div *ngFor="let l of g.label">
-                                                                    <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                &lt;!&ndash;
-                                                                                    <pre>{{g | json}}</pre>
-                                                                &ndash;&gt;
-                                                                <div *ngFor="let e of g.element">
-                                                                    <edi-alternative-group [group]="e" *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
-                                                                    <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                        -->
-                    </form>
-                </div>
+              </md-card-header>
+              <md-card-content>
                 <!--
-                        <div class="col-md-6">
-                            <debug-window></debug-window>
-                        </div>
+                                    <pre>{{g | json}}</pre>
                 -->
+                <div *ngFor="let e of g.element">
+                  <edi-alternative-group [group]="e" *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
+                  <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
+                </div>
+              </md-card-content>
             </div>
-    </md-sidenav-container>
+          </md-card>
+
+          <!--
+                                  <div class="row" *ngFor="let g of template.group">
+                                      <div class="col-md-11" [id]="g['_xml:id']">
+                                          <div class="panel panel-primary">
+                                              <div class="panel-heading">
+                                                  <div *ngFor="let l of g.label">
+                                                      <div *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
+                                                  </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                  &lt;!&ndash;
+                                                                      <pre>{{g | json}}</pre>
+                                                  &ndash;&gt;
+                                                  <div *ngFor="let e of g.element">
+                                                      <edi-alternative-group [group]="e" *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
+                                                      <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+          -->
+        </form>
+      </div>
+      <!--
+              <div class="col-md-6">
+                  <debug-window></debug-window>
+              </div>
+      -->
+    </div>
+  </md-sidenav-container>
 
 </div>
 <script>
 
-    /*Menu-toggle*/
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-    });
+  /*Menu-toggle*/
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("active");
+  });
 
-    /*Scroll Spy*/
-    $('body').scrollspy({target: '#spy', offset: 80});
+  /*Scroll Spy*/
+  $('body').scrollspy({target: '#spy', offset: 80});
 
-    /*Smooth link animation*/
-    $('a[href*=#]:not([href=#])').click(function () {
-        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+  /*Smooth link animation*/
+  $('a[href*=#]:not([href=#])').click(function () {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
 
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-            if (target.length) {
-                $('html,body').animate({
-                    scrollTop: target.offset().top
-                }, 1000);
-                return false;
-            }
-        }
-    });
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+        return false;
+      }
+    }
+  });
 </script>

@@ -18,6 +18,7 @@ export interface IValueObject {
 }
 
 export class Item {
+  static metadataService: MetadataService;
     id: string;
     index: number;
     elementId: string;
@@ -39,7 +40,7 @@ export class Item {
     label: any[];
     help: any[];
     show: string;
-    mandatory: boolean = false;
+    mandatory = false;
     defaultValue: string;
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
 
@@ -102,7 +103,7 @@ export class Item {
                 } else if ( this.dataType === 'sensorID' ) {
                     console.log('sensorID', i);
                     if ( i.hasValue === 'auto' ) {
-                        this.value = MetadataService.generateSensorId();
+                        this.value = Item.metadataService.generateSensorId();
                     }
                 } else {
                     console.log('fromTemplateItem', this.id, 'else', this.dataType);
