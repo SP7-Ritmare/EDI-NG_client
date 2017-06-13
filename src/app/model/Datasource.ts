@@ -68,8 +68,12 @@ export class BaseDatasource {
     }
 
     refresh(options?: IQueryOptions) {
-        let query: string = this.query;
+        let query: any = this.query;
 
+        if ( query.__cdata ) {
+            query = query.__cdata;
+        }
+        console.log('query', this.query);
         if (this.hasOwnProperty('uri')) {
             query = query.split('$uri$').join((this as any)['uri']);
         }

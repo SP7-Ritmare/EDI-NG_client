@@ -133,7 +133,7 @@ export class Item {
              */
             /*
             this.index = i['hasIndex'];
-            this.id = this.elementId + '_' + this.index;
+            this.id = this.element_id + '_' + this.index;
             this.path = i['hasPath'];
             this.fixed = i['isFixed'];
             this.dataType = i['hasDatatype'];

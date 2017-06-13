@@ -18,6 +18,8 @@ import {EndpointType, ContentTypes, HTTPMethod, IEndpointType} from '../../model
 import {Endpoint} from '../../model/Endpoint';
 import {Logger, availableContexts} from '../../utils/logger';
 import {AlternativeGroup} from '../../model/AlternativeGroup';
+import {Item} from '../../model/Item';
+import {MetadataService} from './MetadataService';
 
 @Injectable()
 export class EDITemplate {
@@ -26,8 +28,8 @@ export class EDITemplate {
     contents: ITemplate;
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
 
-    constructor(private http: Http) {
-
+    constructor(private http: Http, private metadataService: MetadataService) {
+        Item.metadataService = this.metadataService;
     }
 
     private importEndpointTypes() {
@@ -40,6 +42,7 @@ export class EDITemplate {
 
     private importDatasources() {
         let defaultMetadataEndpoint = this.contents.settings.metadataEndpoint;
+        this.metadataService._defaultMetadataEndpoint = defaultMetadataEndpoint;
 
         console.log('importDatasources', this.contents.datasources);
         for ( let ds of this.contents.datasources.codelist ) {

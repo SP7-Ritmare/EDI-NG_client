@@ -16,19 +16,21 @@ export interface IXSLT {
 
 export interface IEDIMLItem {
   id: string;
-  index: number;
-  elementId: string;
+/*
+  hasIndex: number;
+*/
+  element_id: string;
   path: string;
   codeValue: string;
   urnValue: string;
   labelValue: string;
   value: string;
-  dataType: string;
+  datatype: string;
   fixed: string;
   isLanguageNeutral: string;
   languageNeutral: string;
   useCode: string;
-  useUrn: string;
+  useURN: string;
   outIndex?: string;
   datasource: string;
 }
@@ -38,7 +40,9 @@ export interface IEDIMLElement {
   root: string;
   mandatory: string;
   label: string;
-  items: IEDIMLItem[];
+  items: {
+    item: IEDIMLItem[]
+  };
 }
 
 export class EDIML {
@@ -47,18 +51,22 @@ export class EDIML {
     ediVersion: string;
     starterKit: string;
     starterKitUri: string;
+    fileId: string;
+    fileUri: string;
     timestamp: Date;
     baseDocument: string;
     xsltChain: IXSLT[];
+/*
     templateName: string;
     templateDocument: string;
+*/
     version: string;
-    fileId: string;
-    fileUri: string;
     user: string;
+/*
     queryString: string;
     numElements: number;
-    elements: IEDIMLElement[];
+*/
+    element: IEDIMLElement[];
   } = {
     generator: 'EDI-NG_CLient v.3.0',
     ediVersion: '3.0',
@@ -67,15 +75,19 @@ export class EDIML {
     timestamp: new Date(),
     baseDocument: '',
     xsltChain: [],
+/*
     templateName: '',
     templateDocument: '',
+*/
     version: '',
     fileId: '',
     fileUri: '',
     user: '',
+/*
     queryString: '',
-    numElements: 0,
-    elements: []
+ numElements: 0,
+*/
+    element: []
   }
   ;
   private x2js: XML2JSON = new XML2JSON();
@@ -90,7 +102,9 @@ export class EDIML {
       }
     };
 */
-    let temp = this.x2js.json2xmlString({ ediml: json });
+    delete json.templateDocument;
+
+    let temp = this.x2js.json2xmlString({ elements: json });
     // let parser = require('xml2json');
     // let temp = parser.toXml(json, {});
     console.log('toXML', temp);
@@ -106,10 +120,14 @@ export class EDIML {
     this.contents.timestamp = new Date();
     this.contents.baseDocument = template.settings.baseDocument;
     this.contents.xsltChain = template.settings.xsltChain;
+/*
     this.contents.templateName = State.templateName;
     this.contents.templateDocument = State.originalTemplate;
+*/
     this.contents.version = '' + State.templateVersion;
+/*
     this.contents.queryString = '';
+*/
     let elements: IEDIMLElement[] = [];
     for (let g of template.group) {
       console.log('group', g);
@@ -122,16 +140,18 @@ export class EDIML {
             label: '',
             mandatory: ( e1.mandatory ? 'forAll' : 'NA' ),
             root: (e1 as Element).root,
-            items: []
+            items: { item: [] }
           };
           for (let i of e1.items) {
             let item: IEDIMLItem = {
-              id: i['_xml:id'],
-              index: i.index,
-              elementId: i.elementId,
+              id: i.elementId + '_' + i.index,
+/*
+              hasIndex: i.index,
+*/
+              element_id: i.elementId,
               codeValue: i.codeValue,
               datasource: ( i.datasource ? i.datasource.id : '' ),
-              dataType: i.dataType,
+              datatype: i.dataType,
               fixed: ( i.fixed ? 'true' : 'false'),
               isLanguageNeutral: ( i.isLanguageNeutral ? 'true' : 'false' ),
               labelValue: i.labelValue,
@@ -141,7 +161,7 @@ export class EDIML {
               outIndex: i.outIndex ? '' + i.outIndex : undefined,
               path: i.path,
               useCode: ( i.useCode ? 'true' : 'false' ),
-              useUrn: ( i.useURN ? 'true' : 'false')
+              useURN: ( i.useURN ? 'true' : 'false')
             }
             if (item.value && item.value.hasOwnProperty('ttValue')) {
               item.codeValue = item.value['ttValue'];
@@ -153,13 +173,13 @@ export class EDIML {
                 item.value = item.languageNeutral;
               } else if (item.useCode == 'true') {
                 item.value = item.codeValue;
-              } else if (item.useUrn == 'true') {
+              } else if (item.useURN == 'true') {
                 item.value = item.urnValue;
               } else {
                 item.value = item.labelValue;
               }
             }
-            element.items.push(item);
+            element.items.item.push(item);
           }
         } else {
           let e1 = (e as AlternativeGroup).activeElement;
@@ -171,16 +191,18 @@ export class EDIML {
             label: '',
             mandatory: ( e1.mandatory ? 'true' : 'false' ),
             root: (e1 as Element).root,
-            items: []
+            items: { item: [] }
           }
           for (let i of e1.items) {
             let item: IEDIMLItem = {
-              id: i['_xml:id'],
-              index: i.index,
-              elementId: i.elementId,
+              id: i.elementId + '_' + i.index,
+/*
+              hasIndex: i.index,
+*/
+              element_id: i.elementId,
               codeValue: i.codeValue,
               datasource: ( i.datasource ? i.datasource.id : '' ),
-              dataType: i.dataType,
+              datatype: i.dataType,
               fixed: ( i.fixed ? 'true' : 'false'),
               isLanguageNeutral: ( i.isLanguageNeutral ? 'true' : 'false' ),
               labelValue: i.labelValue,
@@ -190,7 +212,7 @@ export class EDIML {
               outIndex: '' + i.outIndex,
               path: i.path,
               useCode: ( i.useCode ? 'true' : 'false' ),
-              useUrn: ( i.useURN ? 'true' : 'false')
+              useURN: ( i.useURN ? 'true' : 'false')
             }
             if (item.value && item.value.hasOwnProperty('ttValue')) {
               item.codeValue = item.value['ttValue'];
@@ -198,7 +220,7 @@ export class EDIML {
               item.labelValue = item.value['l'] ? item.value['l'] : item.value['a'];
               item.languageNeutral = item.value['z'];
             }
-            element.items.push(item);
+            element.items.item.push(item);
           }
         }
         console.log('pushing element', element.id);
@@ -206,7 +228,7 @@ export class EDIML {
       }
     }
 
-    this.contents.elements = elements;
+    this.contents.element = elements;
     console.log('EDIML', this.contents);
   }
 }
