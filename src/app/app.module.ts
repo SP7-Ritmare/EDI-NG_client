@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
@@ -30,27 +30,42 @@ import {QRCodeComponent} from 'ng2-qrcode';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {QRCodeModule} from 'angular2-qrcode';
 import {MetadataService} from './components/service/MetadataService';
+import {BoundingBoxComponent} from './components/ediItem/bounding-box/bounding-box.component';
+import {LeafletModule} from '@asymmetrik/angular2-leaflet';
+import {LeafletDrawModule} from '@asymmetrik/angular2-leaflet-draw';
+import {UuidComponent} from './components/ediItem/uuid/uuid.component';
+import {ConfigService} from './components/service/ConfigService';
+import { environment } from '../environments/environment';
+import { TemplateSelectorComponent } from './components/template-selector/template-selector.component';
 
 const appRoutes: Routes = [
-    { path: 'main', component: MainLayoutComponent },
-    { path: 'debug', component: DebugWindowComponent },
-    { path: '',
-        redirectTo: '/main',
+    {path: 'select', component: TemplateSelectorComponent},
+    {path: ':template', component: MainLayoutComponent},
+    {path: 'debug', component: DebugWindowComponent},
+    {
+        path: '',
+        redirectTo: '/select',
         pathMatch: 'full'
     }
 
     /*
-        { path: 'login', component: LoginComponent },
-        { path: 'main', component: MainPageComponent},
-        { path: 'customers', component: CustomerListComponent},
-        { path: 'customers/:id', component: CustomerEditComponent },
-        { path: 'customers/new', component: CustomerEditComponent },
-        { path: '',
-            redirectTo: '/login',
-            pathMatch: 'full'
-        }
-    */
+     { path: 'login', component: LoginComponent },
+     { path: 'main', component: MainPageComponent},
+     { path: 'customers', component: CustomerListComponent},
+     { path: 'customers/:id', component: CustomerEditComponent },
+     { path: 'customers/new', component: CustomerEditComponent },
+     { path: '',
+     redirectTo: '/login',
+     pathMatch: 'full'
+     }
+     */
 ];
+
+export function ConfigLoader(configService: ConfigService) {
+//Note: this factory need to return a function (that return a promise)
+
+    return () => configService.load(environment.configFile);
+}
 
 @NgModule({
     declarations: [
@@ -73,7 +88,10 @@ const appRoutes: Routes = [
         DebugWindowComponent,
         TypeaheadDirective,
         EdiQRCodeComponent,
-        QRCodeComponent
+        QRCodeComponent,
+        BoundingBoxComponent,
+        UuidComponent,
+        TemplateSelectorComponent
     ],
     imports: [
         BrowserModule,
@@ -84,9 +102,20 @@ const appRoutes: Routes = [
         MaterialModule,
         RouterModule.forRoot(appRoutes),
         BrowserAnimationsModule,
-        QRCodeModule
+        QRCodeModule,
+        LeafletModule,
+        LeafletDrawModule
     ],
-    providers: [MetadataService],
+    providers: [
+        MetadataService,
+        ConfigService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: ConfigLoader,
+            deps: [ConfigService],
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

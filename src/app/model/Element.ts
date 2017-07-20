@@ -54,6 +54,7 @@ export class Element {
         console.log('duplicate', this);
         let tempElement = _.cloneDeep(this); //  Object.assign({}, this);
         let instances = State.getElementInstances(this.represents_element);
+        console.log('instances of', this.id, instances);
         let latestInstance: string = '';
         for ( let e of instances ) {
             if ( e.id.length > latestInstance.length ) {

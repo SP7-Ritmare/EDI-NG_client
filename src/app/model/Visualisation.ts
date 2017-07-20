@@ -46,11 +46,13 @@ export class Visualisation {
             ], show: 'textbox'
         },
         {types: ['boolean'], show: 'boolean'},
+        {types: ['boundingBox'], show: 'boundingBox'},
         {types: ['codelist'], show: 'combobox'},
         {types: ['text'], show: 'textarea'},
         {types: ['date'], show: 'date'},
+        {types: ['UUID'], show: 'UUID'},
         {types: ['dateRange'], show: 'dateRange'},
-        {types: ['sensorID'], show: 'qrcode'}
+        {types: ['sensorID'], show: 'label'}
     ];
     static defaultVisualisation = 'textbox';
 

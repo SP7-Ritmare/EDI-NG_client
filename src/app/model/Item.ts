@@ -19,6 +19,7 @@ export interface IValueObject {
 
 export class Item {
   static metadataService: MetadataService;
+  static gmlId = 1;
     id: string;
     index: number;
     elementId: string;
@@ -42,6 +43,11 @@ export class Item {
     show: string;
     mandatory = false;
     defaultValue: string;
+    eastLongitude: any;
+    westLongitude: any;
+    northLatitude: any;
+    southLatitude: any;
+
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
 
     valueObject() {
@@ -85,6 +91,13 @@ export class Item {
             this.useURN = Utils.stringToBoolean(i['_useURN']);
             this.isLanguageNeutral = Utils.stringToBoolean(i['_isLanguageNeutral']);
             this.outIndex = i['_outIndex'];
+            if ( this.dataType == 'boundingBox' ) {
+                console.log('THE BOUNDING BOX ITEM', templateItem);
+                this.eastLongitude = i.eastLongitude;
+                this.westLongitude = i.westLongitude;
+                this.northLatitude = i.northLatitude;
+                this.southLatitude = i.southLatitude;
+            }
             if ( this.dataType === 'autoCompletion' ) {
                 this.show = 'autocomplete';
             } else {
@@ -100,10 +113,15 @@ export class Item {
                     this.value = '';
                 } else if ( this.dataType === 'boolean' ) {
                     this.value = ( i.hasValue === 'true' );
+                } else if ( this.dataType === 'gmlId' ) {
+                    this.value = '' + (Item.gmlId++);
                 } else if ( this.dataType === 'sensorID' ) {
                     console.log('sensorID', i);
                     if ( i.hasValue === 'auto' ) {
-                        this.value = Item.metadataService.generateSensorId();
+                        Item.metadataService.getCatalogueMetadatumURL()
+                            .subscribe( res => {
+                                this.value = res;
+                            })
                     }
                 } else {
                     console.log('fromTemplateItem', this.id, 'else', this.dataType);

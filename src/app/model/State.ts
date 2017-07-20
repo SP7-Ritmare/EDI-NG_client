@@ -14,6 +14,7 @@ export class State {
     static template: ITemplate;
     static originalTemplate: string;
     static metadataService: MetadataService;
+    static queryParameters: any;
 
     static set interfaceLanguage(value: string) {
         State._interfaceLanguage.next(value);
@@ -24,20 +25,20 @@ export class State {
     }
 
     static getElement(id: string): Element {
-        for ( let g of State.template.group ) {
-            for ( let e of g.element ) {
-                if ( e instanceof Element && e.id === id ) {
+        for (let g of State.template.group) {
+            for (let e of g.element) {
+                if (e instanceof Element && e.id === id) {
                     return (e as Element);
                 } else {
-                    if ( e instanceof AlternativeGroup ) {
+                    if (e instanceof AlternativeGroup) {
                         let e1 = (e as AlternativeGroup);
-                      if ( e1.elements ) {
-                        for ( let ee of e1.elements ) {
-                          if ( ee.id === id ) {
-                            return ee;
-                          }
+                        if (e1.elements) {
+                            for (let ee of e1.elements) {
+                                if (ee.id === id) {
+                                    return ee;
+                                }
+                            }
                         }
-                      }
                     }
                 }
             }
@@ -46,22 +47,39 @@ export class State {
     }
 
     static getElementInstances(id: string) {
-        let temp: (AlternativeGroup|Element)[] = [];
-        for ( let g of State.template.group ) {
-            for ( let e of g.element ) {
-                if ( e.hasOwnProperty('represent_element') && e['represents_element'] === id ) {
-                    temp.push(e);
+        let temp: (AlternativeGroup | Element)[] = [];
+        for (let g of State.template.group) {
+            for (let e of g.element) {
+                if (e instanceof Element) {
+                    console.log('getElementInstances', 'comparing', e['represents_element'], id);
+                    if (e['represents_element'] === id) {
+                        console.log('getElementInstances', 'found', e['id'], id);
+                        temp.push(e);
+                    }
+                } else if (e instanceof AlternativeGroup) {
+                    let e1 = (e as AlternativeGroup);
+                    if (e1.elements) {
+                        for (let ee of e1.elements) {
+                            console.log('getElementInstances', 'comparing', ee['represents_element'], id);
+                            if (ee['represents_element'] === id) {
+                                console.log('getElementInstances', 'found', ee['id'], id);
+                                temp.push(ee);
+                            }
+                        }
+                    }
                 }
+
+
             }
         }
         return temp;
     }
 
     private static findElementGroup(e: Element) {
-        for ( let g of State.template.group ) {
-            for ( let el of g.element ) {
+        for (let g of State.template.group) {
+            for (let el of g.element) {
                 console.log('findElementGroup', e.id, el.id)
-                if ( el.id === e.represents_element ) {
+                if (el.id === e.represents_element) {
                     return g;
                 }
             }
@@ -70,10 +88,10 @@ export class State {
     }
 
     private static findIndexOfElement(id: string) {
-        for ( let g of State.template.group ) {
-            for ( let i = 0; i < g.element.length; i++ ) {
+        for (let g of State.template.group) {
+            for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
-                if ( e.id === id ) {
+                if (e.id === id) {
                     return i;
                 }
             }
@@ -83,10 +101,10 @@ export class State {
 
     private static findLastIndexOfBaseElement(id: string) {
         let last = 0;
-        for ( let g of State.template.group ) {
-            for ( let i = 0; i < g.element.length; i++ ) {
+        for (let g of State.template.group) {
+            for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
-                if ( e.hasOwnProperty('represent_element') && e['represents_element'] === id ) {
+                if (e['represents_element'] === id) {
                     last = i;
                 }
             }
@@ -96,22 +114,26 @@ export class State {
 
     static findLastInstanceOfBaseElement(id: string) {
         let last: string;
-        for ( let g of State.template.group ) {
-            for ( let i = 0; i < g.element.length; i++ ) {
+        for (let g of State.template.group) {
+            for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
-                if ( e.hasOwnProperty('represents_element') && e['represents_element'] === id ) {
+                if (e['represents_element'] === id) {
                     last = e.id;
+                } else if (!e.hasOwnProperty('represents_element')) {
+                    // console.log(e);
+//                    throw 'missing property \'represents_element\' on ' + id;
                 }
             }
         }
         return last;
     }
+
     static appendElement(e: Element) {
         let g = State.findElementGroup(e);
         let i = State.findLastIndexOfBaseElement(e.represents_element);
         console.log('appendElement', g, i);
-        if ( g.element.length > i + 1 ) {
-            g.element.splice(i+1, 0, e);
+        if (g.element.length > i + 1) {
+            g.element.splice(i + 1, 0, e);
         } else {
             g.element.push(e);
         }
@@ -122,7 +144,7 @@ export class State {
         let g = State.findElementGroup(e);
         let i = State.findIndexOfElement(e.id);
         console.log('removeElement', e.id, g, i);
-        if ( i > -1 ) {
+        if (i > -1) {
             g.element.splice(i, 1);
         }
         console.log('removeElement OUT', e.id, g, i);
@@ -130,11 +152,11 @@ export class State {
 
     static getItem(id: string): Item {
         console.log('getItem', id);
-        for ( let g of State.template.group ) {
-            for ( let e of g.element ) {
-                if ( e instanceof Element ) {
-                    for ( let i of (e as Element).items ) {
-                        if ( i.id === id ) {
+        for (let g of State.template.group) {
+            for (let e of g.element) {
+                if (e instanceof Element) {
+                    for (let i of (e as Element).items) {
+                        if (i.id === id) {
                             console.log('getItem found', i);
                             return i;
                         }

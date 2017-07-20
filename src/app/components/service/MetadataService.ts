@@ -9,14 +9,19 @@ import {EDIML} from "../../model/EDIML";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from "rxjs";
+import {ConfigService} from './ConfigService';
 
 
 @Injectable()
 export class MetadataService {
     _defaultMetadataEndpoint = 'http://localhost:8080';
+    _defaultEDICatalogue = 'wrong url';
+    static currentCatalogueUrl: string = null;
+    static currentEdimlId: any = null;
 
-    constructor(private http: Http) {
-
+    constructor(private http: Http, private configService: ConfigService) {
+        this._defaultEDICatalogue = configService.getConfiguration()['ediCatalogue'];
+        console.log('default EDI Catalogue', this._defaultEDICatalogue);
     }
 
     set defaultMetadataEndpoint(value) {
@@ -26,13 +31,51 @@ export class MetadataService {
         return this._defaultMetadataEndpoint;
     }
 
+    /**
+     * @deprecated
+     *
+     * @returns {string}
+     */
     generateSensorId() {
         return 'http://edi.get-it.it/sensor/blabla';
     }
 
+    clear() {
+        MetadataService.currentCatalogueUrl = null;
+        MetadataService.currentEdimlId = null;
+    }
+
     getEdimlId() {
+        if ( MetadataService.currentEdimlId != null ) {
+            return Observable.of(MetadataService.currentEdimlId);
+        }
         return this.http.get(this._defaultMetadataEndpoint + '/rest/ediml/requestId')
             .map( res => res.json() )
+            .map( res => MetadataService.currentEdimlId = res )
+    }
+
+    get catalogueMetadatumURL() {
+        return MetadataService.currentCatalogueUrl;
+    }
+
+    getCatalogueMetadatumURL() {
+        if ( MetadataService.currentCatalogueUrl != null ) {
+            return Observable.of(MetadataService.currentCatalogueUrl);
+        }
+        return this.http.get(this._defaultEDICatalogue + '/requestId')
+            .map( res => res.text() )
+            .map( res => MetadataService.currentCatalogueUrl = res )
+    }
+
+    sendToCatalogue(metadatum: any) {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        this.http
+            .post(this._defaultEDICatalogue + '/metadata', metadatum, options)
+            .map( res => res.json() )
+            .subscribe( res => {
+                console.log('sent to catalogue', res);
+            })
     }
 
     private saveEDIML(ediml: EDIML) {
@@ -53,7 +96,16 @@ export class MetadataService {
                 console.error(error.message || error);
                 return Observable.throw(error.message || error);
             })
-            .subscribe(res => console.log('post metadata results', res))
+            .subscribe(res => {
+                console.log('post metadata results', res);
+                this.http
+                    .get(this._defaultMetadataEndpoint + '/rest/ediml/' + res['edimlId'] + '.json')
+                    .map( res => res.json() )
+                    .subscribe( result => {
+                        res['ediml'] = result;
+                        this.sendToCatalogue(res);
+                    })
+            })
         ;
     }
 
@@ -71,6 +123,8 @@ export class MetadataService {
         }
         console.log('Template', template);
         let ediml = new EDIML(template);
+        ediml.contents.templateName = State.templateName;
+
         if ( !ediml.contents.fileId ) {
             this.getEdimlId()
                 .subscribe( res => {
@@ -79,7 +133,11 @@ export class MetadataService {
                     ediml.contents.fileUri = res.uri;
                     ediml.contents.starterKit = res.starterKit || 'noSK';
                     console.log('ediml modified', ediml.contents);
-                    this.saveEDIML(ediml);
+                    this.getCatalogueMetadatumURL()
+                        .subscribe( res => {
+                            ediml.contents.fileUri = res;
+                            this.saveEDIML(ediml);
+                        })
                 })
         } else {
             this.saveEDIML(ediml);

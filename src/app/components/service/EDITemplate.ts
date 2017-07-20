@@ -27,6 +27,7 @@ export class EDITemplate {
     x2js: XML2JSON = new XML2JSON();
     contents: ITemplate;
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
+    private loading = false;
 
     constructor(private http: Http, private metadataService: MetadataService) {
         Item.metadataService = this.metadataService;
@@ -181,8 +182,10 @@ export class EDITemplate {
     }
 
     load(filename: string): Observable<any> {
+        this.loading = true;
+
         this.path = filename;
-        State.templateName = filename;
+        // State.templateName = filename;
         let headers = new Headers();
         headers.append('Accept', 'application/xml');
         Endpoint.http = this.http;
@@ -211,6 +214,7 @@ export class EDITemplate {
 
                 State.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
                 console.log('Contents: ', this.contents);
+                this.loading = false;
                 return this.contents;
             })
             ;

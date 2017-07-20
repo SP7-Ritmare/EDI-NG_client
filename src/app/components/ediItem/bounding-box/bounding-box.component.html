@@ -1,0 +1,26 @@
+<!--
+<div leaflet style="width: 100%; height: 40vh;"
+     [leafletOptions]="options"
+     (leafletMapReady)="onMapReady($event)"
+>
+</div>
+-->
+<pre>{{item | json}}</pre>
+<div class="col-md-12">
+    <div class="west">
+        <input type="text" [(ngModel)]="item.westLongitude.value">
+    </div>
+    <div class="east">
+        <input type="text" [(ngModel)]="item.eastLongitude.value">
+    </div>
+    <div class="north">
+        <input type="text" [(ngModel)]="item.northLatitude.value">
+    </div>
+    <div class="south">
+        <input type="text" [(ngModel)]="item.southLatitude.value">
+    </div>
+</div>
+<div class="map-container">
+    <div id="map" style="width: 100%; height: 40vh;">
+    </div>
+</div>

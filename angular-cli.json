@@ -18,7 +18,9 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/leaflet/dist/leaflet.css",
+        "../node_modules/leaflet-draw/dist/leaflet.draw.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

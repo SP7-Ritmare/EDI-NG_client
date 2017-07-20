@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="edi_template.xsd">
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../edi_template.xsd">
     <settings>
         <userInterfaceLanguage xml:lang="it"/>
         <metadataLanguage selectionItem="ling_md_1"/>
-        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+        <metadataEndpoint>http://localhost:8080/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresValidation>false</requiresValidation>
         <baseDocument><![CDATA[
@@ -1317,6 +1317,12 @@
                 /gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox
             </hasRoot>
             <produces>
+                <item hasIndex="2" xml:id="loc_geo_2" isFixed="false" hasDatatype="UUID"
+                      >
+                    <hasPath>
+                        /gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode
+                    </hasPath>
+                </item>
                 <item hasIndex="1" xml:id="loc_geo_1" isFixed="false" hasDatatype="boundingBox">
                     <westLongitude outIndex="1" queryStringParameter="westlon">
                         <label xml:lang="en">W longitude</label>

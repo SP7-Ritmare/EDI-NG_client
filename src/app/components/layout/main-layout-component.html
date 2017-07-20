@@ -46,7 +46,7 @@
 
       </div>-->
   <div class="header" style="z-index: 1000;">
-    <img src="assets/logo-getit.png">
+    <!--<img src="assets/logo-getit.png">-->
     <div class="content-header">
       {{title}}
     </div>
@@ -58,9 +58,12 @@
   <md-sidenav-container style="padding-top: 100px;">
     <md-sidenav #navigation mode="push" opened="false" style="padding-top: 100px;">
       <md-card>
+        <h1>{{metadataService.catalogueMetadatumURL}}</h1>
         <button (click)="setLanguage('it')">IT</button>
         <button (click)="setLanguage('en')">EN</button>
         <button (click)="sendMetadata()">Send metadata</button>
+        <a target="_blank" href="{{metadataService.catalogueMetadatumURL}}.json" *ngIf="metadataService.catalogueMetadatumURL != null">View EDIML</a>
+        <a target="_blank" href="{{metadataService.catalogueMetadatumURL}}.xml" *ngIf="metadataService.catalogueMetadatumURL != null">View Generated XML</a>
         <a routerLinkActive="active" routerLink="/debug">debug</a>
         <button (click)="showDebug=!showDebug">EDIML</button>
         <pre *ngIf="showDebug">{{template | removeCyclic | json}}</pre>
@@ -80,10 +83,11 @@
     </md-sidenav>
     <!-- Page content -->
     <div id="page-content-wrapper" *ngIf="template.group">
-      <div *ngIf="loading">
+      <div style="padding-top: 100px;" class="col-md-12" *ngIf="EDITemplate.loading">
+        Loading template {{templateName}}
         <md-spinner mode="indeterminate"></md-spinner>
       </div>
-      <div class="col-md-12" *ngIf="!loading">
+      <div class="col-md-12" *ngIf="!EDITemplate.loading">
         <form #form="ngForm">
           <md-card class="row" *ngFor="let g of template.group">
             <div class="col-md-11" [id]="g['_xml:id']">

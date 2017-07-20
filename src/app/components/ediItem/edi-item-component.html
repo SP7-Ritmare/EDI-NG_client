@@ -37,8 +37,17 @@
   <div *ngSwitchCase="'qrcode'">
     <app-edi-qrcode [item]="item"></app-edi-qrcode>
   </div>
+  <div *ngSwitchCase="'UUID'">
+    <app-edi-uuid [item]="item"></app-edi-uuid>
+  </div>
+  <div *ngSwitchCase="'boundingBox'">
+    <app-edi-bounding-box [item]="item"></app-edi-bounding-box>
+  </div>
   <div *ngSwitchCase="'dateRange'">
     <app-edi-date-range [item]="item"></app-edi-date-range>
+  </div>
+  <div *ngSwitchCase="'label'">
+    <p>{{item.value}}</p>
   </div>
   <div *ngSwitchDefault>
     <div class="alert">No match for {{item.show}}</div>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="edi_template.xsd">
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../edi_template.xsd">
    <settings>
       <userInterfaceLanguage xml:lang="it"/>
       <metadataLanguage selectionItem="ling_md_1"/>
-      <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+      <metadataEndpoint>http://localhost:8080/</metadataEndpoint>
       <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
       <requiresValidation>true</requiresValidation>
       <baseDocument><![CDATA[
@@ -540,7 +540,7 @@
    <group xml:id="system_ids">
       <label xml:lang="it">Identificazione</label>
       <label xml:lang="en">Identification of the system</label>
-      <element xml:id="manuf_name" isMandatory="false" isMultiple="false">
+      <element xml:id="manuf_name" isMandatory="false" isMultiple="false" alternativeTo="gruppo">
          <label xml:lang="it">Denominazione del produttore</label>
          <label xml:lang="en">Manufacturer name</label>
          <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>
