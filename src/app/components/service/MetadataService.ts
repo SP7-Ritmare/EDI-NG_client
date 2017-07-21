@@ -75,6 +75,7 @@ export class MetadataService {
             .map( res => res.json() )
             .subscribe( res => {
                 console.log('sent to catalogue', res);
+                alert('Your XML has been generated and saved to EDI Catalogue')
             })
     }
 
@@ -84,7 +85,7 @@ export class MetadataService {
         let headers = new Headers({'Content-Type': 'application/xml'});
         let options = new RequestOptions({headers: headers});
 
-        this._defaultMetadataEndpoint = 'http://localhost:8080';
+        // this._defaultMetadataEndpoint = 'http://localhost:8080';
 
         console.log('about to post metadata', this.http);
         this.http.post(this._defaultMetadataEndpoint + '/rest/metadata', edimlXml, options)

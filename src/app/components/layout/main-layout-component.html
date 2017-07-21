@@ -64,7 +64,9 @@
         <button (click)="sendMetadata()">Send metadata</button>
         <a target="_blank" href="{{metadataService.catalogueMetadatumURL}}.json" *ngIf="metadataService.catalogueMetadatumURL != null">View EDIML</a>
         <a target="_blank" href="{{metadataService.catalogueMetadatumURL}}.xml" *ngIf="metadataService.catalogueMetadatumURL != null">View Generated XML</a>
+<!--
         <a routerLinkActive="active" routerLink="/debug">debug</a>
+-->
         <button (click)="showDebug=!showDebug">EDIML</button>
         <pre *ngIf="showDebug">{{template | removeCyclic | json}}</pre>
       </md-card>

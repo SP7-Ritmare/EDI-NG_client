@@ -47,6 +47,7 @@ export class Item {
     westLongitude: any;
     northLatitude: any;
     southLatitude: any;
+    queryStringParameter: string;
 
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
 
@@ -90,13 +91,26 @@ export class Item {
             this.useCode = Utils.stringToBoolean(i['_useCode']);
             this.useURN = Utils.stringToBoolean(i['_useURN']);
             this.isLanguageNeutral = Utils.stringToBoolean(i['_isLanguageNeutral']);
+            this.queryStringParameter = i['_queryStringParameter'];
             this.outIndex = i['_outIndex'];
             if ( this.dataType == 'boundingBox' ) {
                 console.log('THE BOUNDING BOX ITEM', templateItem);
                 this.eastLongitude = i.eastLongitude;
+                if ( i.eastLongitude['_queryStringParameter'] ) {
+                    this.eastLongitude.value = State.getQuerystringParameter(i.eastLongitude['_queryStringParameter'])
+                }
                 this.westLongitude = i.westLongitude;
+                if ( i.westLongitude['_queryStringParameter'] ) {
+                    this.westLongitude.value = State.getQuerystringParameter(i.westLongitude['_queryStringParameter'])
+                }
                 this.northLatitude = i.northLatitude;
+                if ( i.northLatitude['_queryStringParameter'] ) {
+                    this.northLatitude.value = State.getQuerystringParameter(i.northLatitude['_queryStringParameter'])
+                }
                 this.southLatitude = i.southLatitude;
+                if ( i.southLatitude['_queryStringParameter'] ) {
+                    this.southLatitude.value = State.getQuerystringParameter(i.southLatitude['_queryStringParameter'])
+                }
             }
             if ( this.dataType === 'autoCompletion' ) {
                 this.show = 'autocomplete';
@@ -107,6 +121,14 @@ export class Item {
                 this.datasource = BaseDatasource.find(i['_datasource']);
                 console.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
             }
+
+            if ( this.queryStringParameter ) {
+                if ( State.getQuerystringParameter(this.queryStringParameter) ) {
+                    console.log('query parameter', this.queryStringParameter, State.getQuerystringParameter(this.queryStringParameter));
+                    this.value = State.getQuerystringParameter(this.queryStringParameter);
+                }
+            }
+
             if ( i.hasValue ) {
                 if ( this.dataType === 'codelist' ) {
                     this.codeValue = i.hasValue;

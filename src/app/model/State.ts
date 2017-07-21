@@ -24,6 +24,10 @@ export class State {
         return this._interfaceLanguage.value;
     }
 
+    static getQuerystringParameter(name: string) {
+        return State.queryParameters[name];
+    }
+
     static getElement(id: string): Element {
         for (let g of State.template.group) {
             for (let e of g.element) {
