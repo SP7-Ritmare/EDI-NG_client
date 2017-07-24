@@ -31,14 +31,14 @@ export class EdiItemComponent implements OnInit {
             // this.item.datasource.refresh();
             this.item.datasource._currentRow.subscribe(
                 res => {
-                    console.log('ds change on item', this.item.id, res, this.item);
+                    console.log('ds timeChange on item', this.item.id, res, this.item);
                     this.item.value = res[this.item.field];
                 },
                 err => {
-                    console.log('ds change error', err);
+                    console.log('ds timeChange error', err);
                 },
                 () => {
-                    console.log('ds change complete');
+                    console.log('ds timeChange complete');
                 }
             )
         }

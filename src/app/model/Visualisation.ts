@@ -50,6 +50,8 @@ export class Visualisation {
         {types: ['codelist'], show: 'combobox'},
         {types: ['text'], show: 'textarea'},
         {types: ['date'], show: 'date'},
+        {types: ['dateTime'], show: 'dateTime'},
+        {types: ['time'], show: 'time'},
         {types: ['UUID'], show: 'UUID'},
         {types: ['dateRange'], show: 'dateRange'},
         {types: ['sensorID'], show: 'label'}

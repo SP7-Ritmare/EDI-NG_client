@@ -37,6 +37,7 @@ import {UuidComponent} from './components/ediItem/uuid/uuid.component';
 import {ConfigService} from './components/service/ConfigService';
 import { environment } from '../environments/environment';
 import { TemplateSelectorComponent } from './components/template-selector/template-selector.component';
+import { TimePickerComponent } from './components/ediItem/time-picker/time-picker.component';
 
 const appRoutes: Routes = [
     {path: 'select', component: TemplateSelectorComponent},
@@ -91,7 +92,8 @@ export function ConfigLoader(configService: ConfigService) {
         QRCodeComponent,
         BoundingBoxComponent,
         UuidComponent,
-        TemplateSelectorComponent
+        TemplateSelectorComponent,
+        TimePickerComponent
     ],
     imports: [
         BrowserModule,

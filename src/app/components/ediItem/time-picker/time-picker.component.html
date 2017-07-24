@@ -1,0 +1,11 @@
+<div>
+    <select (change)="selectionChange()" [(ngModel)]="currentValue.hours">
+        <option *ngFor="let h of hours" value="{{h}}">{{h | number : '2.0-0'}}</option>
+    </select> :
+    <select (change)="selectionChange()" [(ngModel)]="currentValue.minutes">
+        <option *ngFor="let m of minutes" value="{{m}}">{{m | number : '2.0-0'}}</option>
+    </select> :
+    <select (change)="selectionChange()" [(ngModel)]="currentValue.seconds">
+        <option *ngFor="let s of seconds" value="{{s}}">{{s | number : '2.0-0'}}</option>
+    </select>
+</div>
