@@ -3,7 +3,7 @@
    <settings>
       <userInterfaceLanguage xml:lang="it"/>
       <metadataLanguage selectionItem="ling_md_1"/>
-      <metadataEndpoint>http://enygma.it/edi/</metadataEndpoint>
+      <metadataEndpoint>http://localhost:8080/</metadataEndpoint>
       <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
       <requiresValidation>true</requiresValidation>
       <baseDocument><![CDATA[
@@ -487,6 +487,11 @@
             <item hasIndex="1" xml:id="system_name_1" outIndex="2" isFixed="false" hasDatatype="string">
                <hasPath>TheName</hasPath>
                <defaultValue>Nome del sistema di sensori</defaultValue>
+            </item>
+            <item hasIndex="8" xml:id="system_name_8" isFixed="false" hasDatatype="time">
+               <label xml:lang="it">Ora dell'intervento</label>
+               <label xml:lang="en">Event time</label>
+               <hasPath>sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition</hasPath>
             </item>
             <item hasIndex="3" xml:id="system_name_3" outIndex="3" isFixed="true" hasDatatype="function">
                <hasPath>@gml:id</hasPath>

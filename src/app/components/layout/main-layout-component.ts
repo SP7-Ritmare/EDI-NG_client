@@ -10,6 +10,7 @@ import {State} from '../../model/State';
 import {AlternativeGroup} from '../../model/AlternativeGroup';
 import {MetadataService} from "../service/MetadataService";
 import {ActivatedRoute} from '@angular/router';
+import {CatalogueService} from '../service/catalogue.service';
 
 // const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
 // const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
@@ -50,10 +51,12 @@ export class MainLayoutComponent {
         this.metadataService.sendMetadata();
     }
 
-    constructor(private route: ActivatedRoute, private EDITemplate: EDITemplate, public metadataService: MetadataService) {
+    constructor(private route: ActivatedRoute, private EDITemplate: EDITemplate, public metadataService: MetadataService, private catalogueService: CatalogueService) {
         State._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
+        State.queryParameters = this.route.snapshot.queryParams;
+        console.log('queryParams', this.route.snapshot.queryParams);
 
         this.route.params.subscribe(params => {
             console.log('params', params)
@@ -67,11 +70,21 @@ export class MainLayoutComponent {
                 .subscribe((res) => {
                     this.template = res;
                     this.title = State.templateName;
-                    this.loading = false;
-                    console.log('Template loaded: ', res);
+                    if ( this.route.snapshot.queryParams['edit'] ) {
+                        let id = this.route.snapshot.queryParams['edit'];
+                        this.catalogueService.getEDIML(id)
+                            .subscribe( res => {
+                                console.log('loaded EDIML', id, res);
+                                State.mergeWithEDIML(res);
+                                console.log('merged with EDIML', id, State.template);
+                                this.loading = false;
+                                console.log('Template loaded: ', res);
+                            })
+                    } else {
+                        this.loading = false;
+                        console.log('Template loaded: ', res);
+                    }
                 });
         });
-        State.queryParameters = this.route.snapshot.queryParams;
-        console.log('queryParams', this.route.snapshot.queryParams);
     }
 }

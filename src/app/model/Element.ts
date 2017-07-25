@@ -1,6 +1,7 @@
 import {Item} from './Item';
 import {State} from './State';
 import {Utils} from '../utils/Utils';
+import {IEDIMLElement} from './EDIML';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -12,6 +13,7 @@ export class Element {
     mandatory: boolean = undefined;
     multiple: boolean = undefined;
     represents_element: string = undefined;
+    alternativeTo: string;
     items: Item[];
     label: any[];
     help: any[];
@@ -49,6 +51,45 @@ export class Element {
         this.represents_element = this.id;
     }
 
+    fromEDIML(e: IEDIMLElement) {
+        function getItem(e: any, id: string) {
+            console.log('fromEDIML', 'getItem', e, id);
+            for ( let i of e.items ) {
+                if ( i.id == id ) {
+                    return i;
+                }
+            }
+        }
+        var _ = require('lodash');
+        console.log('fromEDIML', e);
+        this.id = e.id;
+        this.alternativeTo = e.alternativeTo;
+        this.represents_element = e.represents_element;
+        let items: Item[] = [];
+        console.log('fromEDIML element items', e.items);
+        for ( let i of this.items ) {
+            let item = _.cloneDeep(i); // Object.assign({}, i);
+            item.id = i.id;
+            item.elementId = this.id;
+            if ( i.datasource ) {
+                let ds = i.datasource.duplicate();
+                if ( ds.triggerItem ) {
+                    ds.triggerItem = ds.triggerItem;
+                    ds.fixTriggerItem();
+                }
+                console.log('duplicated datasource', ds);
+                item.datasource = ds;
+            }
+            let newItem = getItem(e, i.id);
+            console.log('fromEDIML newItem', newItem);
+
+            item.value = newItem.value;
+            console.log('fromEDIML adding item', item);
+            items.push(item);
+        }
+        this.items = items;
+    }
+
     duplicate() {
         var _ = require('lodash');
         console.log('duplicate', this);
@@ -79,6 +120,7 @@ export class Element {
                 console.log('duplicated datasource', ds);
                 item.datasource = ds;
             }
+            item.resetToInitialValue();
             items.push(item);
         }
         tempElement.items = items;

@@ -50,7 +50,7 @@ export class EDITemplate {
                 console.log('timezones', res);
                 this.timezones = res;
                 for ( let t of this.timezones ) {
-                    t.forrmattedOffset = (t.offset >= 0 ? '+' : '') + this.minTommss(t.offset);
+                    t.formattedOffset = (t.offset >= 0 ? '+' : '') + this.minTommss(t.offset);
                 }
                 this.timezones.sort( (a, b) => {
                     if ( a.value > b.value ) {
@@ -65,10 +65,10 @@ export class EDITemplate {
     }
 
     getTimezone(s: string) {
-        console.log('getTimezone', s);
+        // console.log('getTimezone', s);
         for ( let t of this.timezones ) {
             if ( t.abbr == s ) {
-                console.log('getTimezone', 'found', t);
+                // console.log('getTimezone', 'found', t);
                 return t;
             }
         }
@@ -192,7 +192,7 @@ export class EDITemplate {
                 if ( !doingAlternativeGroup && e['_alternativeTo'] ) {
                     doingAlternativeGroup = true;
                     currentAlternativeGroup = new AlternativeGroup();
-                    currentAlternativeGroup.id = e['_alternativeGroup'];
+                    currentAlternativeGroup.id = e['_alternativeTo'];
                     currentAlternativeGroup.elements = [];
                 }
                 if ( doingAlternativeGroup && !e['_alternativeTo'] ) {
@@ -200,6 +200,7 @@ export class EDITemplate {
                     elements.push(currentAlternativeGroup);
                 }
                 if ( doingAlternativeGroup ) {
+                    temp.alternativeTo = currentAlternativeGroup.id;
                     currentAlternativeGroup.elements.push(temp);
                 } else {
                     elements.push(temp);

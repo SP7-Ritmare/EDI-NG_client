@@ -45,4 +45,9 @@ export class CatalogueService {
             .map( res => res.json());
     }
 
+    getEDIML(id: string) {
+        return this.http.get(this._defaultEDICatalogue + '/metadata/' + id + '.json')
+            .map( res => res.json());
+    }
+
 }

@@ -38,6 +38,8 @@ export interface IEDIMLElement {
     root: string;
     mandatory: string;
     label: string;
+    alternativeTo?: string;
+    represents_element?: string;
     items: {
         item: IEDIMLItem[]
     };
@@ -185,7 +187,7 @@ export class EDIML {
         return [itemEast, itemWest, itemNorth, itemSouth];
     }
 
-    constructor(template: ITemplate) {
+    constructor(public template: ITemplate) {
         console.log('EDIML constructor', template);
         this.contents.generator = 'EDI-NG_CLient v.3.0';
         this.contents.ediVersion = '3.0';
@@ -216,6 +218,7 @@ export class EDIML {
                         label: '',
                         mandatory: ( e1.mandatory ? 'forAll' : 'NA' ),
                         root: (e1 as Element).root,
+                        represents_element: e1.represents_element,
                         items: {item: []}
                     };
                     for (let i of e1.items) {
@@ -273,7 +276,9 @@ export class EDIML {
                         label: '',
                         mandatory: ( e1.mandatory ? 'true' : 'false' ),
                         root: (e1 as Element).root,
-                        items: {item: []}
+                        represents_element: e1.represents_element,
+                        items: {item: []},
+                        alternativeTo: e.id
                     }
                     for (let i of e1.items) {
                         let item: IEDIMLItem = {

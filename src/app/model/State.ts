@@ -170,4 +170,23 @@ export class State {
         }
         return undefined;
     }
+
+    static mergeWithEDIML(ediml: any) {
+        for ( let e of ediml.elements ) {
+            console.log('EDIML', 'doing element', e.id, e.represents_element);
+            if ( e.id == e.represents_element ) {
+                // base element
+                let element = State.getElement(e.id);
+                console.log('EDIML', 'found element', element);
+                element.fromEDIML(e);
+            } else {
+                // duplicate element
+                let element = State.getElement(e.represents_element);
+                element.duplicate();
+                element = State.getElement(e.id);
+                element.fromEDIML(e);
+            }
+        }
+    }
+
 }

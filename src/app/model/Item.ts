@@ -65,6 +65,53 @@ export class Item {
         return this._value;
     }
 
+    resetToInitialValue() {
+        if ( this.defaultValue ) {
+            this.value = this.defaultValue;
+        } else {
+            this.value = undefined;
+        }
+    }
+
+    fromEDIMLItem(item: Item) {
+/*
+        if ( item.value ) {
+            if ( this.dataType === 'codelist' ) {
+                this.codeValue = i.hasValue;
+                this.value = '';
+            } else if ( this.dataType === 'boolean' ) {
+                this.value = ( i.hasValue === 'true' );
+            } else if ( this.dataType === 'gmlId' ) {
+                this.value = '' + (Item.gmlId++);
+            } else if ( this.dataType === 'sensorID' ) {
+                console.log('sensorID', i);
+                if ( i.hasValue === 'auto' ) {
+                    Item.metadataService.getCatalogueMetadatumURL()
+                        .subscribe( res => {
+                            this.value = res;
+                        })
+                }
+            } else {
+                console.log('fromTemplateItem', this.id, 'else', this.dataType);
+                this.value = i.hasValue;
+            }
+        }
+
+        if ( i.defaultValue ) {
+            this.defaultValue = i.defaultValue;
+            if ( this.dataType === 'codelist' ) {
+                this.codeValue = i.defaultValue;
+                this.value = '';
+            } else if ( this.dataType === 'boolean' ) {
+                this.value = ( i.defaultValue === 'true' );
+            } else {
+                this.value = i.defaultValue;
+            }
+        }
+*/
+
+    }
+
     fromTemplateItem(templateItem: any, elementId: string) {
         let i: any = templateItem;
 
@@ -93,6 +140,7 @@ export class Item {
             this.isLanguageNeutral = Utils.stringToBoolean(i['_isLanguageNeutral']);
             this.queryStringParameter = i['_queryStringParameter'];
             this.outIndex = i['_outIndex'];
+
             if ( this.dataType == 'boundingBox' ) {
                 console.log('THE BOUNDING BOX ITEM', templateItem);
                 this.eastLongitude = i.eastLongitude;

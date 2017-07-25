@@ -29,7 +29,11 @@ export class TimeComponent implements OnInit {
     }
 
     private toString() {
-        return this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone).forrmattedOffset) + 'Z';
+        if ( this.template && this.template.getTimezone ) {
+            return this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') + 'Z';
+        } else {
+            return '';
+        }
     }
 
 
