@@ -38,9 +38,14 @@ import {ConfigService} from './components/service/ConfigService';
 import { environment } from '../environments/environment';
 import { TemplateSelectorComponent } from './components/template-selector/template-selector.component';
 import { TimePickerComponent } from './components/ediItem/time-picker/time-picker.component';
+import {CatalogueService} from './components/service/catalogue.service';
+import { CatalogueListComponent } from './components/catalogue-list/catalogue-list.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { TimeComponent } from './components/ediItem/time/time.component';
 
 const appRoutes: Routes = [
     {path: 'select', component: TemplateSelectorComponent},
+    {path: 'catalogue-list', component: CatalogueListComponent},
     {path: ':template', component: MainLayoutComponent},
     {path: 'debug', component: DebugWindowComponent},
     {
@@ -93,7 +98,9 @@ export function ConfigLoader(configService: ConfigService) {
         BoundingBoxComponent,
         UuidComponent,
         TemplateSelectorComponent,
-        TimePickerComponent
+        TimePickerComponent,
+        CatalogueListComponent,
+        TimeComponent
     ],
     imports: [
         BrowserModule,
@@ -106,10 +113,12 @@ export function ConfigLoader(configService: ConfigService) {
         BrowserAnimationsModule,
         QRCodeModule,
         LeafletModule,
-        LeafletDrawModule
+        LeafletDrawModule,
+        FilterPipeModule
     ],
     providers: [
         MetadataService,
+        CatalogueService,
         ConfigService,
         {
             provide: APP_INITIALIZER,

@@ -1,0 +1,12 @@
+<input type="text" [(ngModel)]="search.templateName">
+<div *ngFor="let m of metadata | filterBy: search">
+  <h3>{{m.templateName}}</h3>
+  <h4>{{m._id}}</h4>
+  <p><a md-button href="/{{m.templateName}}?edit={{m._id}}" target="_blank">Edit</a></p>
+  <p><a md-button href="{{m.fileUri}}" target="_blank">EDIML</a></p>
+  <p><a md-button href="{{m.fileUri}}.xml" target="_blank">XML</a></p>
+
+<!--
+  <pre>{{m | json}}</pre>
+-->
+</div>

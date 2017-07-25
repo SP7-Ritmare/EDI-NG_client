@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from "rxjs";
 import {ConfigService} from './ConfigService';
+import {CatalogueService} from './catalogue.service';
 
 
 @Injectable()
@@ -19,13 +20,13 @@ export class MetadataService {
     static currentCatalogueUrl: string = null;
     static currentEdimlId: any = null;
 
-    constructor(private http: Http, private configService: ConfigService) {
+    constructor(private http: Http, private configService: ConfigService, private catalogueService: CatalogueService) {
         this._defaultEDICatalogue = configService.getConfiguration()['ediCatalogue'];
         console.log('default EDI Catalogue', this._defaultEDICatalogue);
     }
 
     set defaultMetadataEndpoint(value) {
-
+        this._defaultMetadataEndpoint = value;
     }
     get defaultMetadataEndpoint() {
         return this._defaultMetadataEndpoint;
@@ -55,28 +56,15 @@ export class MetadataService {
     }
 
     get catalogueMetadatumURL() {
-        return MetadataService.currentCatalogueUrl;
+        return CatalogueService.currentCatalogueUrl;
     }
 
     getCatalogueMetadatumURL() {
-        if ( MetadataService.currentCatalogueUrl != null ) {
-            return Observable.of(MetadataService.currentCatalogueUrl);
-        }
-        return this.http.get(this._defaultEDICatalogue + '/requestId')
-            .map( res => res.text() )
-            .map( res => MetadataService.currentCatalogueUrl = res )
+        return this.catalogueService.getCatalogueMetadatumURL();
     }
 
     sendToCatalogue(metadatum: any) {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        this.http
-            .post(this._defaultEDICatalogue + '/metadata', metadatum, options)
-            .map( res => res.json() )
-            .subscribe( res => {
-                console.log('sent to catalogue', res);
-                alert('Your XML has been generated and saved to EDI Catalogue')
-            })
+        return this.catalogueService.sendToCatalogue(metadatum);
     }
 
     private saveEDIML(ediml: EDIML) {
@@ -104,7 +92,7 @@ export class MetadataService {
                     .map( res => res.json() )
                     .subscribe( result => {
                         res['ediml'] = result;
-                        this.sendToCatalogue(res);
+                        this.catalogueService.sendToCatalogue(res);
                     })
             })
         ;
@@ -134,7 +122,7 @@ export class MetadataService {
                     ediml.contents.fileUri = res.uri;
                     ediml.contents.starterKit = res.starterKit || 'noSK';
                     console.log('ediml modified', ediml.contents);
-                    this.getCatalogueMetadatumURL()
+                    this.catalogueService.getCatalogueMetadatumURL()
                         .subscribe( res => {
                             ediml.contents.fileUri = res;
                             this.saveEDIML(ediml);

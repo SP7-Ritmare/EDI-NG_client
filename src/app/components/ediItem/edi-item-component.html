@@ -35,6 +35,9 @@
   <div *ngSwitchCase="'dateTime'">
     <app-edi-date [item]="item" [hasTime]="true"></app-edi-date>
   </div>
+  <div *ngSwitchCase="'time'">
+    <app-edi-time [item]="item"></app-edi-time>
+  </div>
   <div *ngSwitchCase="'qrcode'">
     <app-edi-qrcode [item]="item"></app-edi-qrcode>
   </div>
