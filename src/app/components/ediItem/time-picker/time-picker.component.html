@@ -8,4 +8,10 @@
     <select (change)="selectionChange()" [(ngModel)]="currentValue.seconds">
         <option *ngFor="let s of seconds" value="{{s}}">{{s | number : '2.0-0'}}</option>
     </select>
+    <select (change)="selectionChange()" [(ngModel)]="currentValue.timezone">
+        <option *ngFor="let t of template.timezones" value="{{t.abbr}}">{{t.value}} ({{t.forrmattedOffset}})</option>
+    </select>
+<!--
+    <pre>{{template.timezones | json}}</pre>
+-->
 </div>

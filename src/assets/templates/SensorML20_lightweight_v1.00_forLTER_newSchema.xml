@@ -1014,7 +1014,7 @@
                <help xml:lang="en">Brief description of the event</help>
                <hasPath>sml:event/sml:Event/swe:description</hasPath>
             </item>
-            <item hasIndex="3" xml:id="history_3" isFixed="false" hasDatatype="date">
+            <item hasIndex="3" xml:id="history_3" isFixed="false" hasDatatype="dateTime">
                <label xml:lang="it">Data dell'intervento</label>
                <label xml:lang="en">Event date</label>
                <hasPath>sml:event/sml:Event/sml:time/gml:TimeInstant/gml:timePosition</hasPath>

@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Item} from '../../../model/Item';
 import {IMyDateModel, IMyOptions} from 'mydatepicker';
 import {TimePickerValue} from '../time-picker/time-picker.component';
+import {EDITemplate} from '../../service/EDITemplate';
 
 @Component({
     selector: 'app-edi-date',
@@ -9,6 +10,7 @@ import {TimePickerValue} from '../time-picker/time-picker.component';
         <my-date-picker [options]="myDatePickerOptions"
                         (dateChanged)="onDateChanged($event)"></my-date-picker>
         <time-picker *ngIf="hasTime" (timeChange)="timeChanged($event)"></time-picker>
+        <pre>{{toString()}}</pre>
     `
 })
 
@@ -23,7 +25,8 @@ export class EdiDateComponent {
     time: TimePickerValue = {
         hours: '0',
         minutes: '0',
-        seconds: '0'
+        seconds: '0',
+        timezone: 'CUT'
     }
     date: string = null;
 
@@ -38,10 +41,10 @@ export class EdiDateComponent {
     }
 
     private toString() {
-        return this.date + 'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + 'Z';
+        return this.date + 'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone).forrmattedOffset) + 'Z';
     }
 
-    constructor() { }
+    constructor(public template: EDITemplate) { }
 
     // dateChanged callback function called when the user select the date. This is mandatory callback
     // in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.

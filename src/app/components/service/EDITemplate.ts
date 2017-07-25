@@ -23,6 +23,7 @@ import {MetadataService} from './MetadataService';
 
 @Injectable()
 export class EDITemplate {
+    timezones: any[] = [];
     path: string;
     x2js: XML2JSON = new XML2JSON();
     contents: ITemplate;
@@ -31,6 +32,46 @@ export class EDITemplate {
 
     constructor(private http: Http, private metadataService: MetadataService) {
         Item.metadataService = this.metadataService;
+        this.getTimezones();
+    }
+
+    private minTommss(minutes: number){
+        var sign = minutes < 0 ? "-" : "";
+        var min = Math.floor(Math.abs(minutes));
+        var sec = Math.floor((Math.abs(minutes) * 60) % 60);
+        return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+    }
+
+    private getTimezones() {
+        let url = 'https://raw.githubusercontent.com/dmfilipenko/timezones.json/master/timezones.json';
+        this.http.get(url)
+            .map(res => res.json())
+            .subscribe( res => {
+                console.log('timezones', res);
+                this.timezones = res;
+                for ( let t of this.timezones ) {
+                    t.forrmattedOffset = (t.offset >= 0 ? '+' : '') + this.minTommss(t.offset);
+                }
+                this.timezones.sort( (a, b) => {
+                    if ( a.value > b.value ) {
+                        return 1;
+                    } else if ( a.value < b.value ) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+            })
+    }
+
+    getTimezone(s: string) {
+        console.log('getTimezone', s);
+        for ( let t of this.timezones ) {
+            if ( t.abbr == s ) {
+                console.log('getTimezone', 'found', t);
+                return t;
+            }
+        }
     }
 
     private importEndpointTypes() {
