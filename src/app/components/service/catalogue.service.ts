@@ -18,6 +18,10 @@ export class CatalogueService {
         return CatalogueService.currentCatalogueUrl;
     }
 
+    setId(id: string) {
+        CatalogueService.currentCatalogueUrl = this._defaultEDICatalogue + '/metadata/' + id
+    }
+
     getCatalogueMetadatumURL() {
         if (CatalogueService.currentCatalogueUrl != null) {
             console.log('CatalogueService', 'catalogueMetadatumURL', CatalogueService.currentCatalogueUrl);
@@ -38,6 +42,11 @@ export class CatalogueService {
                 console.log('sent to catalogue', res);
                 alert('Your XML has been generated and saved to EDI Catalogue')
             })
+    }
+
+    search(query: string) {
+        return this.http.get(this._defaultEDICatalogue + '/discover/' + query)
+            .map(res => res.json());
     }
 
     getMetadata() {

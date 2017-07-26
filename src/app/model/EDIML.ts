@@ -304,6 +304,8 @@ export class EDIML {
                             item.urnValue = item.value['urn'];
                             item.labelValue = item.value['l'] ? item.value['l'] : item.value['a'];
                             item.languageNeutral = item.value['z'];
+                        } else if ( ! item.value ) {
+                            item.value = item.labelValue;
                         }
                         element.items.item.push(item);
                     }

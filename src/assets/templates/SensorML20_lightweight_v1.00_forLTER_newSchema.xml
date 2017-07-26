@@ -545,7 +545,7 @@
    <group xml:id="system_ids">
       <label xml:lang="it">Identificazione</label>
       <label xml:lang="en">Identification of the system</label>
-      <element xml:id="manuf_name" isMandatory="false" isMultiple="false" alternativeTo="gruppo">
+      <element xml:id="manuf_name" isMandatory="false" isMultiple="false">
          <label xml:lang="it">Denominazione del produttore</label>
          <label xml:lang="en">Manufacturer name</label>
          <help xml:lang="it">Indicare la denominazione del produttore del sensore, del sistema di sensori o della piattaforma. Iniziare a digitare tre lettere per ottenere dei suggerimenti da un elenco precompilato di produttori.</help>

@@ -77,6 +77,8 @@ export class MainLayoutComponent {
                                 console.log('loaded EDIML', id, res);
                                 State.mergeWithEDIML(res);
                                 console.log('merged with EDIML', id, State.template);
+                                this.catalogueService.setId(id);
+                                console.log('Loading EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
                                 this.loading = false;
                                 console.log('Template loaded: ', res);
                             })

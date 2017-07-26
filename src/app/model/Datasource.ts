@@ -5,6 +5,7 @@ import {Configuration} from './Configuration';
 import {ITemplateSingleton, ITemplateSPARQL, ITemplateCodelist} from './Template';
 import {State} from './State';
 import {Item} from './Item';
+
 /**
  * Created by fabio on 02/03/2017.
  */
@@ -12,6 +13,7 @@ import {Item} from './Item';
 export interface IQueryOptions {
     searchParam?: string;
 }
+
 export class BaseDatasource {
     static datasources: BaseDatasource[] = [];
     static counter = 0;
@@ -47,6 +49,7 @@ export class BaseDatasource {
     }
 
     set currentRow(value: any) {
+        this._currentRowHolder = value;
         this._currentRow.next(value);
     }
 
@@ -70,7 +73,7 @@ export class BaseDatasource {
     refresh(options?: IQueryOptions) {
         let query: any = this.query;
 
-        if ( query.__cdata ) {
+        if (query.__cdata) {
             query = query.__cdata;
         }
         console.log('query', this.query);
@@ -102,10 +105,10 @@ export class BaseDatasource {
     }
 
     setCurrentRow(values: any) {
-      console.log(this.id, 'setting current row to', values);
+        let keys = Object.keys(values).length;
+        console.log(this.id, 'setting current row to', values, 'number of keys', keys);
         for (let i = 0; i < this.baseResults.length; i++) {
             let count = 0;
-            let keys = Object.keys(values).length;
             for (let field in values) {
                 if (values.hasOwnProperty(field)) {
                     if (this.baseResults[i].hasOwnProperty(field) && values[field] === this.baseResults[i][field]) {
@@ -114,7 +117,7 @@ export class BaseDatasource {
                     if (count === keys) {
                         this.currentRowNumber = i;
                         this.currentRow = this.baseResults[i];
-                        console.log('row ' + this.currentRowNumber + ' selected', this.currentRow);
+                        console.log('row ' + this.currentRowNumber + ' selected', this.baseResults[i]);
                         return;
                     }
                 }
@@ -130,7 +133,9 @@ export class BaseDatasource {
 export interface IDatasource extends BaseDatasource {
     currentRowNumber: number;
     currentRow: any;
+
     fromTemplate(input: ITemplateSingleton | ITemplateSPARQL | ITemplateCodelist): void;
+
     setCurrentRow(values: any): void;
 }
 
@@ -253,7 +258,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
                     console.log('creating observer for', this.triggerItem);
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
-                            if ( res ) {
+                            if (res) {
                                 console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
                                 this.refresh({searchParam: res.c});
                             }
@@ -273,7 +278,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
                 if (this.triggerItemObject) {
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
-                            if ( res ) {
+                            if (res) {
                                 console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
                                 this.refresh({searchParam: res.l});
                             }

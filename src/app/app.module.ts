@@ -42,6 +42,7 @@ import {CatalogueService} from './components/service/catalogue.service';
 import { CatalogueListComponent } from './components/catalogue-list/catalogue-list.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { TimeComponent } from './components/ediItem/time/time.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 const appRoutes: Routes = [
     {path: 'select', component: TemplateSelectorComponent},
@@ -114,7 +115,8 @@ export function ConfigLoader(configService: ConfigService) {
         QRCodeModule,
         LeafletModule,
         LeafletDrawModule,
-        FilterPipeModule
+        FilterPipeModule,
+        FlexLayoutModule
     ],
     providers: [
         MetadataService,

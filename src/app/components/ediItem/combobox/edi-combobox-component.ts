@@ -15,10 +15,8 @@ import {State} from '../../../model/State';
                    [required]="item.mandatory">
             <md-option *ngFor="let v of possibleValues" [value]="v.c">{{v.a ? v.a : v.l}}</md-option>
         </md-select>
-        <!--
             <pre>{{item.value | removeCyclic | json}}</pre>
-            <pre>{{item.labelValue | removeCyclic | json}}</pre>
-        -->
+            <pre>{{currentValue | removeCyclic | json}}</pre>
     `,
     styleUrls: ['./edi-combobox-component.css']
 })
@@ -32,9 +30,10 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
         let values = {
             c: value.value
         };
-        console.log('COMBOBOX Component', 'combo select', this.item.id, value, this.datasource.currentRow);
         this.datasource.setCurrentRow(values);
+        console.log('COMBOBOX Component', 'combo select', this.item.id, value, this.datasource.currentRow);
         if (this.datasource.currentRow) {
+            console.log('COMBOBOX Component', 'current row', values, this.datasource.currentRow);
             this.item.value = this.datasource.currentRow;
             console.log('new value object', this.item.value);
             this.item.labelValue = (this.item.value.a ? this.item.value.a : this.item.value.l);
@@ -67,10 +66,13 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
             if (this.datasource) {
                 this.datasource.results.subscribe(
                     res => {
-                        console.log('COMBOBOX Component', 'Item', this.item.id, this.item.value, 'received data', res);
+                        console.log('COMBOBOX Component', 'Item', this.item.id, this.item.codeValue, 'received data', res);
                         this.possibleValues = res;
-                        if (res.length > 0 && this.item.value && this.item.value !== '' && !this.currentValue) {
-                            this.currentValue = this.item.value;
+                        if (res.length > 0 && this.item.codeValue && this.item.codeValue !== '' && !this.currentValue) {
+                            this.currentValue = this.item.codeValue;
+                            this.selectRow({
+                                value: this.currentValue
+                            });
                         }
                         /*
                          if ( res.length > 0 && this.currentValue ) {

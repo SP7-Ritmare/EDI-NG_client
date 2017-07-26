@@ -83,7 +83,12 @@ export class Element {
             let newItem = getItem(e, i.id);
             console.log('fromEDIML newItem', newItem);
 
+            item.codeValue = newItem.codeValue;
+            item.labelValue = newItem.labelValue;
+            item.urnValue = newItem.urnValue;
+            item.languageNeutral = newItem.languageNeutral;
             item.value = newItem.value;
+
             console.log('fromEDIML adding item', item);
             items.push(item);
         }

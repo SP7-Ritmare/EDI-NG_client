@@ -41,7 +41,11 @@ export class EdiDateComponent {
     }
 
     private toString() {
-        return this.date + 'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') + 'Z';
+        if ( this.hasTime ) {
+            return this.date + 'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') + 'Z';
+        } else {
+            return this.date;
+        }
     }
 
     constructor(public template: EDITemplate) { }

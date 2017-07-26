@@ -17,7 +17,9 @@ import {CatalogueService} from './catalogue.service';
 export class MetadataService {
     _defaultMetadataEndpoint = 'http://localhost:8080';
     _defaultEDICatalogue = 'wrong url';
+/*
     static currentCatalogueUrl: string = null;
+*/
     static currentEdimlId: any = null;
 
     constructor(private http: Http, private configService: ConfigService, private catalogueService: CatalogueService) {
@@ -42,7 +44,7 @@ export class MetadataService {
     }
 
     clear() {
-        MetadataService.currentCatalogueUrl = null;
+        CatalogueService.currentCatalogueUrl = null;
         MetadataService.currentEdimlId = null;
     }
 
@@ -122,6 +124,7 @@ export class MetadataService {
                     ediml.contents.fileUri = res.uri;
                     ediml.contents.starterKit = res.starterKit || 'noSK';
                     console.log('ediml modified', ediml.contents);
+                    console.log('Saving EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
                     this.catalogueService.getCatalogueMetadatumURL()
                         .subscribe( res => {
                             ediml.contents.fileUri = res;
@@ -129,7 +132,11 @@ export class MetadataService {
                         })
                 })
         } else {
-            this.saveEDIML(ediml);
+            this.catalogueService.getCatalogueMetadatumURL()
+                .subscribe( res => {
+                    ediml.contents.fileUri = res;
+                    this.saveEDIML(ediml);
+                })
         }
 
     }

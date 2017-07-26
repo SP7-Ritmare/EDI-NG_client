@@ -4,18 +4,10 @@ import {BaseDatasource} from './Datasource';
 import {ReplaySubject, BehaviorSubject} from 'rxjs';
 import {Visualisation} from './Visualisation';
 import {MetadataService} from '../components/service/MetadataService';
+import {IValueObject, ValueObject} from './ValueObject';
 /**
  * Created by fabio on 05/03/2017.
  */
-
-export interface IValueObject {
-    c?: string;
-    l?: string;
-    uri?: string;
-    label?: string;
-    languageNeutral?: string;
-    urn?: string;
-}
 
 export class Item {
   static metadataService: MetadataService;
@@ -49,7 +41,7 @@ export class Item {
     southLatitude: any;
     queryStringParameter: string;
 
-    private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject({});
+    private _valueObject: BehaviorSubject<ValueObject> = new BehaviorSubject<ValueObject>(new ValueObject());
 
     valueObject() {
         return this._valueObject;
@@ -58,7 +50,9 @@ export class Item {
     set value(value: any) {
         console.log('set value', this.id, value);
         this._value = value;
-        this._valueObject.next(value);
+        let v = new ValueObject();
+        v.value = value;
+        this._valueObject.next(v);
     }
 
     get value() {
