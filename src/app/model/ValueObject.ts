@@ -6,9 +6,9 @@ export interface IValueObject {
     languageNeutral?: string;
     urn?: string;
     // boolean properties
-    useCode: boolean;
-    useUrn: boolean;
-    useLanguageNeutral: boolean;
+    useCode?: boolean;
+    useUrn?: boolean;
+    useLanguageNeutral?: boolean;
 }
 
 export class ValueObject implements IValueObject {

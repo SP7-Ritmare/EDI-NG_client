@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
+import {State} from '../../../model/State';
 
 @Component({
     selector: 'app-edi-bounding-box',
@@ -7,6 +8,7 @@ import {EdiItemComponent} from '../edi-item-component';
     styleUrls: ['./bounding-box.component.css']
 })
 export class BoundingBoxComponent extends EdiItemComponent implements OnInit, AfterViewInit {
+    interfaceLanguage: string;
     options: any;
     drawOptions: any;
     layersControl: any;
@@ -127,6 +129,9 @@ export class BoundingBoxComponent extends EdiItemComponent implements OnInit, Af
     }
 
     ngOnInit() {
+        State._interfaceLanguage.asObservable().subscribe(
+            res => this.interfaceLanguage = res
+        );
     }
 
 }

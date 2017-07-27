@@ -5,6 +5,7 @@ import {ReplaySubject, BehaviorSubject} from 'rxjs';
 import {Visualisation} from './Visualisation';
 import {MetadataService} from '../components/service/MetadataService';
 import {IValueObject, ValueObject} from './ValueObject';
+import {NgZone} from '@angular/core';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -23,7 +24,7 @@ export class Item {
     useURN?: boolean;
     outIndex?: number;
     datasource: BaseDatasource;
-    _value: any;
+    private _value: any;
     labelValue: string;
     codeValue: string;
     urnValue: string;
@@ -40,19 +41,23 @@ export class Item {
     northLatitude: any;
     southLatitude: any;
     queryStringParameter: string;
+    static zone: NgZone;
 
-    private _valueObject: BehaviorSubject<ValueObject> = new BehaviorSubject<ValueObject>(new ValueObject());
+    private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject<IValueObject>({});
 
     valueObject() {
         return this._valueObject;
     }
 
     set value(value: any) {
-        console.log('set value', this.id, value);
-        this._value = value;
-        let v = new ValueObject();
-        v.value = value;
-        this._valueObject.next(v);
+        Item.zone.run( () => {
+            console.log('set value', this.id, value);
+            this._value = value;
+            let v = { value: value }; // new ValueObject();
+            v.value = value;
+            this._valueObject.next(value);
+            console.log('value set for', this);
+        });
     }
 
     get value() {

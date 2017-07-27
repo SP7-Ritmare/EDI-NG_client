@@ -2,7 +2,7 @@
  * Created by fabio on 02/03/2017.
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {
     IDatasource, CodelistDatasource, BaseDatasource, SingletonDatasource,
     SPARQLDatasource
@@ -30,8 +30,9 @@ export class EDITemplate {
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
     private loading = false;
 
-    constructor(private http: Http, private metadataService: MetadataService) {
+    constructor(private http: Http, private metadataService: MetadataService, private zone: NgZone) {
         Item.metadataService = this.metadataService;
+        Item.zone = this.zone;
         this.getTimezones();
     }
 

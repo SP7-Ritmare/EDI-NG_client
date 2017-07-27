@@ -241,7 +241,7 @@ export class EDIML {
                                 labelValue: i.labelValue,
                                 urnValue: i.urnValue,
                                 languageNeutral: i.languageNeutral,
-                                value: i._value,
+                                value: i.value,
                                 outIndex: i.outIndex ? '' + i.outIndex : undefined,
                                 path: i.path,
                                 useCode: ( i.useCode ? 'true' : 'false' ),

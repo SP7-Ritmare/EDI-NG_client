@@ -96,6 +96,7 @@ export class BaseDatasource {
                 this._results.next(res);
                 console.log('datasource', this.id, this._results);
                 if (res.length == 1) {
+                    console.log('setting current row to res[0]', res[0]);
                     this.setCurrentRow(res[0]);
                 }
             });
@@ -259,7 +260,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
                             if (res) {
-                                console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
+                                console.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
                                 this.refresh({searchParam: res.c});
                             }
                         },
@@ -279,7 +280,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
                             if (res) {
-                                console.log('trigger detected', this.triggerItem, this.triggerItemObject._value, res);
+                                console.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
                                 this.refresh({searchParam: res.l});
                             }
                         },
@@ -298,6 +299,10 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
         }
     }
 
+    duplicate() {
+        return this;
+    }
+    
     fromTemplate(input: ITemplateSingleton): void {
         console.log('Singleton fromTemplate', input);
         this.id = input['_xml:id'] as string;
