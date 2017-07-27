@@ -23,7 +23,7 @@
                             <div class="flex-container"
                                  fxLayout="row">
                                 <div class="flex-item">
-                                    <p><a md-button href="/{{m.templateName}}?edit={{m._id}}" target="_blank">Edit</a>
+                                    <p><a md-button [routerLink]="'/' + m.templateName" [queryParams]="{ edit: m._id}" target="_blank">Edit</a>
                                     </p>
                                 </div>
                                 <div class="flex-item">

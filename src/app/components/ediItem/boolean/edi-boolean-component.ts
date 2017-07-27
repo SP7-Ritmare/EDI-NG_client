@@ -7,13 +7,21 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-boolean',
     template: ` 
-         <md-slide-toggle style="clear: both; float: left;" color="primary" [(ngModel)]="item.value"></md-slide-toggle>
+         <md-slide-toggle style="clear: both; float: left;" color="primary" [checked]="item.value == 'true'" (change)="onChange($event)"></md-slide-toggle>
          <md-chip-list style="float: left; margin: 13px 0;">
-             <md-chip color="accent">{{item.value}}</md-chip>
+             <md-chip color="accent">{{item.value | json}}</md-chip>
          </md-chip-list>
     `
 })
 export class EdiBooleanComponent {
     @Input() item: Item;
 
+    onChange(event: any) {
+        console.log('onChange', event);
+        if ( event.checked ) {
+            this.item.value = 'true';
+        } else {
+            this.item.value = 'false';
+        }
+    }
 }
