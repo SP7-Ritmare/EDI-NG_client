@@ -6,13 +6,14 @@ import {Visualisation} from './Visualisation';
 import {MetadataService} from '../components/service/MetadataService';
 import {IValueObject, ValueObject} from './ValueObject';
 import {NgZone} from '@angular/core';
+
 /**
  * Created by fabio on 05/03/2017.
  */
 
 export class Item {
-  static metadataService: MetadataService;
-  static gmlId = 1;
+    static metadataService: MetadataService;
+    static gmlId = 1;
     id: string;
     index: number;
     elementId: string;
@@ -24,7 +25,7 @@ export class Item {
     useURN?: boolean;
     outIndex?: number;
     datasource: BaseDatasource;
-    private _value: any;
+    _value: any;
     labelValue: string;
     codeValue: string;
     urnValue: string;
@@ -41,7 +42,7 @@ export class Item {
     northLatitude: any;
     southLatitude: any;
     queryStringParameter: string;
-    static zone: NgZone;
+
 
     private _valueObject: BehaviorSubject<IValueObject> = new BehaviorSubject<IValueObject>({});
 
@@ -50,14 +51,9 @@ export class Item {
     }
 
     set value(value: any) {
-        Item.zone.run( () => {
-            console.log('set value', this.id, value);
-            this._value = value;
-            let v = { value: value }; // new ValueObject();
-            v.value = value;
-            this._valueObject.next(value);
-            console.log('value set for', this);
-        });
+        console.log('set value', this.id, value);
+        this._value = value;
+        this._valueObject.next(value);
     }
 
     get value() {
@@ -65,7 +61,7 @@ export class Item {
     }
 
     resetToInitialValue() {
-        if ( this.defaultValue ) {
+        if (this.defaultValue) {
             this.value = this.defaultValue;
         } else {
             this.value = undefined;
@@ -73,41 +69,41 @@ export class Item {
     }
 
     fromEDIMLItem(item: Item) {
-/*
-        if ( item.value ) {
-            if ( this.dataType === 'codelist' ) {
-                this.codeValue = i.hasValue;
-                this.value = '';
-            } else if ( this.dataType === 'boolean' ) {
-                this.value = ( i.hasValue === 'true' );
-            } else if ( this.dataType === 'gmlId' ) {
-                this.value = '' + (Item.gmlId++);
-            } else if ( this.dataType === 'sensorID' ) {
-                console.log('sensorID', i);
-                if ( i.hasValue === 'auto' ) {
-                    Item.metadataService.getCatalogueMetadatumURL()
-                        .subscribe( res => {
-                            this.value = res;
-                        })
+        /*
+                if ( item.value ) {
+                    if ( this.dataType === 'codelist' ) {
+                        this.codeValue = i.hasValue;
+                        this.value = '';
+                    } else if ( this.dataType === 'boolean' ) {
+                        this.value = ( i.hasValue === 'true' );
+                    } else if ( this.dataType === 'gmlId' ) {
+                        this.value = '' + (Item.gmlId++);
+                    } else if ( this.dataType === 'sensorID' ) {
+                        console.log('sensorID', i);
+                        if ( i.hasValue === 'auto' ) {
+                            Item.metadataService.getCatalogueMetadatumURL()
+                                .subscribe( res => {
+                                    this.value = res;
+                                })
+                        }
+                    } else {
+                        console.log('fromTemplateItem', this.id, 'else', this.dataType);
+                        this.value = i.hasValue;
+                    }
                 }
-            } else {
-                console.log('fromTemplateItem', this.id, 'else', this.dataType);
-                this.value = i.hasValue;
-            }
-        }
 
-        if ( i.defaultValue ) {
-            this.defaultValue = i.defaultValue;
-            if ( this.dataType === 'codelist' ) {
-                this.codeValue = i.defaultValue;
-                this.value = '';
-            } else if ( this.dataType === 'boolean' ) {
-                this.value = ( i.defaultValue === 'true' );
-            } else {
-                this.value = i.defaultValue;
-            }
-        }
-*/
+                if ( i.defaultValue ) {
+                    this.defaultValue = i.defaultValue;
+                    if ( this.dataType === 'codelist' ) {
+                        this.codeValue = i.defaultValue;
+                        this.value = '';
+                    } else if ( this.dataType === 'boolean' ) {
+                        this.value = ( i.defaultValue === 'true' );
+                    } else {
+                        this.value = i.defaultValue;
+                    }
+                }
+        */
 
     }
 
@@ -140,26 +136,26 @@ export class Item {
             this.queryStringParameter = i['_queryStringParameter'];
             this.outIndex = i['_outIndex'];
 
-            if ( this.dataType == 'boundingBox' ) {
+            if (this.dataType == 'boundingBox') {
                 console.log('THE BOUNDING BOX ITEM', templateItem);
                 this.eastLongitude = i.eastLongitude;
-                if ( i.eastLongitude['_queryStringParameter'] ) {
+                if (i.eastLongitude['_queryStringParameter']) {
                     this.eastLongitude.value = State.getQuerystringParameter(i.eastLongitude['_queryStringParameter'])
                 }
                 this.westLongitude = i.westLongitude;
-                if ( i.westLongitude['_queryStringParameter'] ) {
+                if (i.westLongitude['_queryStringParameter']) {
                     this.westLongitude.value = State.getQuerystringParameter(i.westLongitude['_queryStringParameter'])
                 }
                 this.northLatitude = i.northLatitude;
-                if ( i.northLatitude['_queryStringParameter'] ) {
+                if (i.northLatitude['_queryStringParameter']) {
                     this.northLatitude.value = State.getQuerystringParameter(i.northLatitude['_queryStringParameter'])
                 }
                 this.southLatitude = i.southLatitude;
-                if ( i.southLatitude['_queryStringParameter'] ) {
+                if (i.southLatitude['_queryStringParameter']) {
                     this.southLatitude.value = State.getQuerystringParameter(i.southLatitude['_queryStringParameter'])
                 }
             }
-            if ( this.dataType === 'autoCompletion' ) {
+            if (this.dataType === 'autoCompletion') {
                 this.show = 'autocomplete';
             } else {
                 this.show = i['_show'];
@@ -169,26 +165,26 @@ export class Item {
                 console.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
             }
 
-            if ( this.queryStringParameter ) {
-                if ( State.getQuerystringParameter(this.queryStringParameter) ) {
+            if (this.queryStringParameter) {
+                if (State.getQuerystringParameter(this.queryStringParameter)) {
                     console.log('query parameter', this.queryStringParameter, State.getQuerystringParameter(this.queryStringParameter));
                     this.value = State.getQuerystringParameter(this.queryStringParameter);
                 }
             }
 
-            if ( i.hasValue ) {
-                if ( this.dataType === 'codelist' ) {
+            if (i.hasValue) {
+                if (this.dataType === 'codelist') {
                     this.codeValue = i.hasValue;
                     this.value = '';
-                } else if ( this.dataType === 'boolean' ) {
+                } else if (this.dataType === 'boolean') {
                     this.value = ( i.hasValue === 'true' );
-                } else if ( this.dataType === 'gmlId' ) {
+                } else if (this.dataType === 'gmlId') {
                     this.value = '' + (Item.gmlId++);
-                } else if ( this.dataType === 'sensorID' ) {
+                } else if (this.dataType === 'sensorID') {
                     console.log('sensorID', i);
-                    if ( i.hasValue === 'auto' ) {
+                    if (i.hasValue === 'auto') {
                         Item.metadataService.getCatalogueMetadatumURL()
-                            .subscribe( res => {
+                            .subscribe(res => {
                                 this.value = res;
                             })
                     }
@@ -198,12 +194,12 @@ export class Item {
                 }
             }
 
-            if ( i.defaultValue ) {
+            if (i.defaultValue) {
                 this.defaultValue = i.defaultValue;
-                if ( this.dataType === 'codelist' ) {
+                if (this.dataType === 'codelist') {
                     this.codeValue = i.defaultValue;
                     this.value = '';
-                } else if ( this.dataType === 'boolean' ) {
+                } else if (this.dataType === 'boolean') {
                     this.value = ( i.defaultValue === 'true' );
                 } else {
                     this.value = i.defaultValue;

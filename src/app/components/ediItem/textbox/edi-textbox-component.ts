@@ -14,7 +14,6 @@ import {State} from '../../../model/State';
 <!--
         <pre *ngIf="item.elementId == 'manufacturer'">{{item | removeCyclic | json}}</pre>
 -->
-<pre>{{item.id}} {{item.value}}</pre>
         <md-input-container class="col-md-12">
             <input mdInput #pippo="ngModel" type="text" [attr.name]="item.id" placeholder="{{placeholder()}}" [(ngModel)]="item.value" pattern="{{pattern}}" (change)="onChange($event)" [required]="item.mandatory">
         </md-input-container>
@@ -41,7 +40,7 @@ export class EdiTextboxComponent extends EdiItemComponent implements OnInit {
         return '';
     }
     onChange(event: any) {
-        console.log('textbox change', this.item.id, event);
+        console.log('textbox change', this.item.id, event, this.item.value);
     }
     ngOnInit() {
       if ( !this.item.value ) {

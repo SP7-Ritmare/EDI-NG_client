@@ -30,9 +30,8 @@ export class EDITemplate {
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
     private loading = false;
 
-    constructor(private http: Http, private metadataService: MetadataService, private zone: NgZone) {
+    constructor(private http: Http, private metadataService: MetadataService) {
         Item.metadataService = this.metadataService;
-        Item.zone = this.zone;
         this.getTimezones();
     }
 

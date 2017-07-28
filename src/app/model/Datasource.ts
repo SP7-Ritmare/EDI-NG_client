@@ -302,7 +302,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
     duplicate() {
         return this;
     }
-    
+
     fromTemplate(input: ITemplateSingleton): void {
         console.log('Singleton fromTemplate', input);
         this.id = input['_xml:id'] as string;
