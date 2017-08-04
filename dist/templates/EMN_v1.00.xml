@@ -22,13 +22,12 @@
     xmlns:bu-base="http://inspire.ec.europa.eu/schemas/bu-base/4.0"
     xmlns:ef="http://inspire.ec.europa.eu/schemas/ef/4.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:uuid="java.util.UUID"
     xsi:schemaLocation="http://inspire.ec.europa.eu/schemas/ef/4.0 http://inspire.ec.europa.eu/schemas/ef/4.0/EnvironmentalMonitoringFacilities.xsd">
     
     </ef:EnvironmentalMonitoringNetwork>
         ]]></baseDocument>
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/EMF.xsl?version=1.00</xslt>
+            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/EMN.xsl?version=1.00</xslt>
         </xsltChain>
     </settings>
     
@@ -57,26 +56,82 @@
         <endpointType xml:id="fuseki" method="GET" queryParameter="query">
             <parameters>
                 <parameter name="output" value="json"/>
+                <parameter name="format" value="application/sparql-results+json"/>
+                <parameter name="save" value="display"/>
+                <parameter name="fname" value="undefined"/>
             </parameters>
         </endpointType>
     </endpointTypes>
     
     <datasources>
-        <sparql xml:id="operators" endpointType="virtuoso">
+        <sparql xml:id="operators" endpointType="fuseki">
             <query><![CDATA[
-
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
+                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
                         SELECT ?c ?l
-                        FROM <http://ritmare.it/rdfdata/lotrx>
-                        WHERE {
+                        WHERE { 
                           ?c rdf:type foaf:Person .
-                          ?c ns:email ?l.
+                          ?c foaf:mbox ?l.
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
                         }
                         ORDER BY ASC(?l)
-
             ]]></query>
+            <!-- Query with ORCID
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        SELECT DISTINCT ?c ?l ?orcid
+                        WHERE { 
+                          ?c rdf:type foaf:Person .
+                          ?c foaf:mbox ?l .
+  						  ?c foaf:account ?d .
+  						  ?d foaf:accountServiceHomepage ?homepage .
+  						  ?d foaf:accountProfilePage ?orcid .
+  							FILTER( 
+    							REGEX(STR(?l), "$search_param", "i") && STR(?homepage) = "http://orcid.org"
+  							)
+                        }
+                        ORDER BY ASC(?l)
+         -->
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
         </sparql>
+        <singleton xml:id="info_operator" endpointType="fuseki" triggerItem="responsiblePar_1_uri">
+            <query><![CDATA[
+                
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        SELECT ?fullname ?email ?phone ?homepage ?l ?addr ?town ?postcode ?country
+                        WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:fullName ?fullname .
+                          }
+                          OPTIONAL {
+                            <$search_param> foaf:mbox ?email .
+                          }
+  						  OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
+                          OPTIONAL {
+                            <$search_param> vcard:org ?b3 .
+                            ?b3 foaf:homepage ?homepage .
+                            ?b3 foaf:name ?l .
+                          }
+                          {
+                            <$search_param> vcard:org/vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                          }
+						  SERVICE <http://sparql.get-it.it> {
+    						?b2 foaf:name ?country . 
+  						  }
+                        }
+                        LIMIT 1  
+                        
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </singleton>
         <sparql xml:id="ILTERBiom" endpointType="envthes">
             <query><![CDATA[
             ]]></query>
@@ -89,105 +144,238 @@
             <query><![CDATA[
             ]]></query>
         </sparql>
-        <sparql xml:id="EunisHabitat" endpointType="lustre">
+        <sparql xml:id="EunisHabitat" endpointType="envthes">
             <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT * WHERE {
+                        SERVICE <http://vocabs.ceh.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:envthes>{
+                                {
+                                    BIND (<http://vocabs.lter-europe.net/EnvThes/10004> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
             ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
         </sparql>
-        <singleton xml:id="info_operator" endpointType="virtuoso" triggerItem="operator_1_uri">
+        <sparql xml:id="mediaMonotoring" endpointType="fuseki">
             <query><![CDATA[
-
-                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
-WHERE {
-  OPTIONAL {
-    <$search_param> foaf:phone ?phone .
-  }
-  OPTIONAL {
-    <$search_param> foaf:fullName ?fullname .
-  }
-  OPTIONAL {
-    <$search_param> vcard:email ?email .
-  }
-  OPTIONAL {
-    <$search_param> vcard:org ?b3 .
-    ?b3 foaf:homepage ?homepage .
-    ?b3 foaf:name ?l .
-  }
-
-  {
-    <$search_param> vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  } UNION {
-    ?b3 vcard:hasAddress ?b1 .
-    OPTIONAL {
-      ?b1 vcard:street-address ?addr .
-    }
-    OPTIONAL {
-      ?b1 vcard:locality ?town .
-    }
-    OPTIONAL {
-      ?b1 vcard:postal-code ?postcode .
-    }
-    OPTIONAL {
-      ?b1 vcard:country-name ?b2 .
-    }
-    OPTIONAL {
-      ?b2 foaf:name ?country .
-    }
-  }
-}
-LIMIT 1
-
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                        WHERE {
+                            {
+                                ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/MediaValue> .
+                                ?c skos:prefLabel ?l.
+                            }
+                            FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
             ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
+        </sparql>
+        <sparql xml:id="measurementRegime" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                        WHERE {
+                            {
+                                ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/MeasurementRegimeValue> .
+                                ?c skos:prefLabel ?l.
+                            }
+                            FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
+        </sparql>
+        <sparql xml:id="resultAcquisitionSource" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                        WHERE {
+                            {
+                                ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/ResultAcquisitionSourceValue> .
+                                ?c skos:prefLabel ?l.
+                            }
+                            FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
+        </sparql>
+        <sparql xml:id="organiLevel" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                    WHERE {
+                    {
+                    ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/LegislationLevelValue> .
+                        ?c skos:prefLabel ?l.
+                        }
+                        FILTER( REGEX( STR(?l), "$search_param", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
+        </sparql>
+        
+        <!-- for ef:observingCapability -->
+        <sparql xml:id="processType" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                        WHERE {
+                            {
+                                ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/ProcessTypeValue> .
+                                ?c skos:prefLabel ?l.
+                            }
+                            FILTER( REGEX( STR(?l), "", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        <!-- for ef:observingCapability -->
+        <sparql xml:id="resultNature" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    SELECT *
+                        WHERE {
+                            {
+                                ?c skos:inScheme <http://inspire.ec.europa.eu/codelist/ResultNatureValue> .
+                                ?c skos:prefLabel ?l.
+                            }
+                            FILTER( REGEX( STR(?l), "", "i") )
+                        }
+                        ORDER BY ASC(?l)
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        <!-- from NERC because INSPIRE codelist is empty -->
+        <singleton xml:id="purposeOfCollection" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                    SELECT ?c ?l WHERE {
+                        SERVICE <http://onto.nerc.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:ef>{
+                                {
+                                    BIND (<http://onto.nerc.ac.uk/EF/purposeOfCollection> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/EFcodeList/query</url>
         </singleton>
+        
+        <!-- from NERC thesaurus -->
+        <sparql xml:id="envDomain" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                    SELECT * WHERE {
+                        SERVICE <http://onto.nerc.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:ef>{
+                                {
+                                    BIND (<http://onto.nerc.ac.uk/EF/environmentalDomain> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        <sparql xml:id="facilityType" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                    SELECT * WHERE {
+                        SERVICE <http://onto.nerc.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:ef>{
+                                {
+                                    BIND (<http://onto.nerc.ac.uk/EF/facilityType> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        <sparql xml:id="foundingCategory" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                    SELECT * WHERE {
+                        SERVICE <http://onto.nerc.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:ef>{
+                                {
+                                    BIND (<http://onto.nerc.ac.uk/EF/fundingCategory> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        <sparql xml:id="responsiblePartyRole" endpointType="fuseki">
+            <query><![CDATA[
+                
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                    SELECT * WHERE {
+                        SERVICE <http://onto.nerc.ac.uk/evn/tbl/sparql> {
+                            GRAPH <urn:x-evn-pub:ef>{
+                                {
+                                    BIND (<http://onto.nerc.ac.uk/EF/responsiblePartyRole> as ?root)
+                                    ?root (skos:narrower*) ?c.
+                                    ?c skos:prefLabel ?l.
+                                }
+                                FILTER( REGEX( STR(?l), "$search_param", "i") )
+                            }
+                        }
+                    }
+                
+            ]]></query>
+            <url>http://fuseki1.get-it.it/directory/sparql</url>
+        </sparql>
+        
         <codelist xml:id="EPSG" endpointType="virtuoso">
             <uri>http://www.rndt.gov.it/codelists/MD_ReferenceSystemCode/items</uri>
         </codelist>
-        <codelist xml:id="roleCodes" endpointType="virtuoso">
-            <uri>http://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole</uri>
-        </codelist>
-        <codelist xml:id="mediaMonList" endpointType="fuseki">
-            <uri>http://inspire.ec.europa.eu/codelist/MediaValue</uri>
-            <url>http://fuseki1.get-it.it</url>
-        </codelist>
-        <codelist xml:id="measurReg" endpointType="fuseki">
-            <uri>http://inspire.ec.europa.eu/codelist/MeasurementRegimeValue</uri>
-            <url>http://fuseki1.get-it.it</url>
-        </codelist>
-        <codelist endpointType="fuseki" xml:id="organiLevel">
-            <uri>http://inspire.ec.europa.eu/codeList/LegislationLevelValue</uri>
-            <url>http://fuseki1.get-it.it</url>
-        </codelist>
     </datasources>
-    
-    <!-- ====== -->
-    <!-- GML:ID -->
-    <!-- ====== -->
-    <group xml:id="UUID">
-        <element isMandatory="true" isMultiple="false" xml:id="UUIDEMN">
-            <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
-            <produces>
-                <item hasDatatype="function" hasIndex="1" xml:id="UUIDEMN_1" isFixed="true">
-                    <hasValue>uuid:randomUUID()</hasValue>
-                    <hasPath>@gml:id</hasPath>
-                </item>
-            </produces>
-        </element>
-    </group>
     
     <!-- GROUPS -->
     <!-- ========= -->
@@ -196,6 +384,18 @@ LIMIT 1
     <group xml:id="inspireId">
         <label xml:lang="it">Identificativo INSPIRE</label>
         <label xml:lang="en">INSPIRE Identifier</label>
+        <!-- ====== -->
+        <!-- GML:ID -->
+        <!-- ====== -->
+        <element isMandatory="true" isMultiple="false" xml:id="UUIDEMF">
+            <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+            <produces>
+                <item hasDatatype="string" hasIndex="1" xml:id="UUIDEMF_1" isFixed="true">
+                    <hasValue>LTER-f30007c4-8a6e-4f11-ab87-569db54638fe</hasValue>
+                    <hasPath>@gml:id</hasPath>
+                </item>
+            </produces>
+        </element>
         <element xml:id="localId" isMultiple="false" isMandatory="true">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork/ef:inspireId/base:Identifier</hasRoot>
             <produces>
@@ -221,23 +421,28 @@ LIMIT 1
     <!-- Description -->
     <!-- =========== -->
     <group xml:id="descr">
-        <label xml:lang="it">EF description</label>
-        <label xml:lang="en">Descrizione EF</label>
-        <element xml:id="description" isMandatory="true" isMultiple="false">
+        <label xml:lang="en">Enviromental Network description</label>
+        <label xml:lang="it">Descrizione dell'Enviromental Network</label>
+        <element xml:id="name" isMandatory="true" isMultiple="true">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+            <label xml:lang="en">Name</label>
+            <label xml:lang="it">Nome</label>
+            <help xml:lang="en">Plain text denotation of the Environmental Manitoring.</help>
+            <help xml:lang="it"></help>
             <produces>
-                <item hasIndex="1" xml:id="description_1" isFixed="false" hasDatatype="string">
-                    <label xml:lang="en">Name</label>
-                    <label xml:lang="it">Nome</label>
-                    <help xml:lang="en">Plain text denotation of the Environmental Manitoring.</help>
-                    <help xml:lang="it"></help>
+                <item hasIndex="1" xml:id="name_1" isFixed="false" hasDatatype="string">
                     <hasPath>ef:name</hasPath>
                 </item>
-                <item hasIndex="2" xml:id="description_2" isFixed="false" hasDatatype="string">
-                    <label xml:lang="en">Additional Description</label>
-                    <label xml:lang="it">Descrizione</label>
-                    <help xml:lang="en">Plain text description of additional information not fitting in other attributes.</help>
-                    <help xml:lang="it"></help>
+            </produces>
+        </element>
+        <element xml:id="description" isMandatory="true" isMultiple="false">
+            <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+            <label xml:lang="en">Additional Description</label>
+            <label xml:lang="it">Descrizione</label>
+            <help xml:lang="en">Plain text description of additional information not fitting in other attributes.</help>
+            <help xml:lang="it"></help>
+            <produces>
+                <item hasIndex="1" xml:id="description_1" isFixed="false" hasDatatype="string">
                     <hasPath>ef:additionalDescription</hasPath>
                 </item>
             </produces>
@@ -251,15 +456,19 @@ LIMIT 1
     <group xml:id="mMon">
         <label xml:lang="it">Aspetto monitorato</label>
         <label xml:lang="en">Media Monitored</label>
-        <element xml:id="mediaMon" isMandatory="true" isMultiple="true">
+        <element isMandatory="true" isMultiple="true" xml:id="mediaMon">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+            <label xml:lang="it">Aspetto ambientale monitorato</label>
+            <label xml:lang="en">Monitored environmental medium</label>
+            <help xml:lang="en"/>
+            <help xml:lang="it"/>
             <produces>
-                <item hasIndex="1" xml:id="mediaMon_1" isFixed="false" hasDatatype="codelist" datasource="mediaMonList" show="combobox">
-                    <label xml:lang="it">Aspetto ambientale monitorato</label>
-                    <label xml:lang="en">Monitored environmental medium</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
+                <item hasIndex="1" xml:id="mediaMon_1" isFixed="false" hasDatatype="autoCompletion" datasource="mediaMonotoring">
                     <hasPath>ef:mediaMonitored</hasPath>
+                </item>
+                <item hasIndex="2" xml:id="mediaMon_2" isFixed="true" hasDatatype="select" datasource="mediaMonotoring" field="c">
+                    <hasPath>ef:mediaMonitored/@xlink:href</hasPath>
+                    <hasValue>ef:mediaMonitored</hasValue>
                 </item>
                 <!-- ILTER Biome -->
                 <!-- TODO: query SPARQL from EnvThes -->
@@ -304,7 +513,7 @@ LIMIT 1
     <!-- =============== -->
     <!-- legalBackground -->
     <!-- =============== -->
-    <group xml:id="lBac">
+    <!--<group xml:id="lBac">
         <label xml:lang="it">Aspetti legali</label>
         <label xml:lang="en">Legal Background</label>
         <element xml:id="legalBac" isMandatory="false" isMultiple="true">
@@ -319,7 +528,7 @@ LIMIT 1
                 </item>
             </produces>
         </element>
-    </group>
+    </group>-->
     
     <!-- ================ -->
     <!-- responsibleParty -->
@@ -327,68 +536,76 @@ LIMIT 1
     <group xml:id="rPar">
         <label xml:lang="it">Contatti</label>
         <label xml:lang="en">Contacts</label>
-        <element xml:id="responsiblePar" isMandatory="false" isMultiple="true">
-            <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+        <element xml:id="responsiblePar" isMandatory="true" isMultiple="true">
+            <hasRoot>/ef:EnvironmentalMonitoringNetwork/ef:responsibleParty/base2:RelatedParty</hasRoot>
             <produces>
-                <item hasIndex="1" xml:id="responsiblePar_1" isFixed="false" hasDatatype="autoCompletion" datasource="operators" outIndex="4">
+                <item hasIndex="1" xml:id="responsiblePar_1" isFixed="false"
+                    hasDatatype="autoCompletion" datasource="operators" outIndex="4">
                     <label xml:lang="it">Indirizzo e-mail</label>
                     <label xml:lang="en">Electronic mail address</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
-                    <hasPath>base2:RelatedParty/base2:contact/base2:Contact/base2:electronicMailAddress</hasPath>
+                    <help xml:lang="en"/>
+                    <help xml:lang="it"/>
+                    <hasPath>base2:contact/base2:Contact/base2:electronicMailAddress</hasPath>
                 </item>
-                <item hasIndex="2" xml:id="responsiblePar_2" isFixed="false" field="fullname" hasDatatype="select" datasource="info_operator" outIndex="1">
+                <item hasIndex="2" xml:id="responsiblePar_2" isFixed="false" field="fullname"
+                    hasDatatype="select" datasource="info_operator" outIndex="1">
                     <label xml:lang="it">Nome</label>
                     <label xml:lang="en">Individual name</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
-                    <hasPath>ef:responsibleParty/base2:RelatedParty/base2:individualName/gco:CharacterString</hasPath>
+                    <help xml:lang="en"/>
+                    <help xml:lang="it"/>
+                    <hasPath>base2:individualName/gco:CharacterString</hasPath>
                 </item>
-                <item hasIndex="3" xml:id="responsiblePar_3" isFixed="false" field="l" hasDatatype="select" datasource="info_operator" outIndex="2">
+                <item hasIndex="3" xml:id="responsiblePar_3" isFixed="false" field="l"
+                    hasDatatype="select" datasource="info_operator" outIndex="2">
                     <label xml:lang="it">Nome organizzazione</label>
                     <label xml:lang="en">Organization name</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
-                    <hasPath>ef:responsibleParty/base2:RelatedParty/base2:organisationName/gco:CharacterString</hasPath>
+                    <help xml:lang="en"/>
+                    <help xml:lang="it"/>
+                    <hasPath>base2:organisationName/gco:CharacterString</hasPath>
                 </item>
-                <item hasIndex="4" xml:id="responsiblePar_4" isFixed="false" hasDatatype="string" outIndex="3">
+                <item hasIndex="4" xml:id="responsiblePar_4" isFixed="false" hasDatatype="string"
+                    outIndex="3">
                     <label xml:lang="it">Posizione</label>
                     <label xml:lang="en">Position name</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
-                    <hasPath>ef:responsibleParty/base2:RelatedParty/base2:positionName/gco:CharacterString</hasPath>
+                    <help xml:lang="en"/>
+                    <help xml:lang="it"/>
+                    <hasPath>base2:positionName/gco:CharacterString</hasPath>
                 </item>
-                <item hasIndex="6" xml:id="responsiblePar_6" isFixed="false" hasDatatype="string"  outIndex="6">
+                <!--<item hasIndex="6" xml:id="responsiblePar_6" isFixed="false" hasDatatype="string"  outIndex="6">
                     <label xml:lang="it">FAX</label>
                     <label xml:lang="en">Telephone facsimile</label>
                     <help xml:lang="en"></help>
                     <help xml:lang="it"></help>
                     <hasPath>base2:RelatedParty/base2:contact/base2:Contact/base2:telephoneFacsimile</hasPath>
-                </item>
-                <item hasIndex="7" xml:id="responsiblePar_7" isFixed="false" field="phone" hasDatatype="select" datasource="info_operator" outIndex="7">
+                </item>-->
+                <!--<item hasIndex="7" xml:id="responsiblePar_7" isFixed="false" field="phone" hasDatatype="select" datasource="info_operator" outIndex="7">
                     <label xml:lang="it">Telefono</label>
                     <label xml:lang="en">Telephone voice</label>
                     <help xml:lang="en"></help>
                     <help xml:lang="it"></help>
                     <hasPath>base2:RelatedParty/base2:contact/base2:Contact/base2:telephoneVoice</hasPath>
-                </item>
-                <item hasIndex="8" xml:id="responsiblePar_8" isFixed="false" field="homepage" hasDatatype="select" datasource="info_operator" outIndex="8">
+                </item>-->
+                <item hasIndex="8" xml:id="responsiblePar_8" isFixed="false" field="homepage"
+                    hasDatatype="select" datasource="info_operator" outIndex="5">
                     <label xml:lang="it">Website</label>
                     <label xml:lang="en">Website</label>
-                    <help xml:lang="en"></help>
-                    <help xml:lang="it"></help>
-                    <hasPath>base2:RelatedParty/base2:contact/base2:Contact/base2:website</hasPath>
+                    <help xml:lang="en"/>
+                    <help xml:lang="it"/>
+                    <hasPath>base2:contact/base2:Contact/base2:website</hasPath>
                 </item>
-              <item hasIndex="9" xml:id="responsiblePar_9" isFixed="false" hasDatatype="codelist" show="combobox" datasource="roleCodes"> <!--hasDatatype="string">-->
+                <item hasIndex="9" xml:id="responsiblePar_9" isFixed="false"
+                    hasDatatype="autoCompletion" datasource="responsiblePartyRole" outIndex="6">
+                    <!--hasDatatype="string">-->
                     <label xml:lang="it">Ruolo</label>
                     <label xml:lang="en">Role</label>
-                    <help xml:lang="it"></help>
-                    <help xml:lang="en"></help>
-                    <hasPath>ef:responsibleParty/base2:RelatedParty/base2:role/@xlink:role</hasPath>
+                    <help xml:lang="it"/>
+                    <help xml:lang="en"/>
+                    <hasPath>base2:role/@xlink:role</hasPath>
                 </item>
-                <item hasIndex="10" xml:id="responsiblePar_10" isFixed="true" hasDatatype="ref">
-                    <hasPath>ef:responsibleParty/base2:RelatedParty/base2:role/@xlink:href</hasPath>
-                  <hasValue>ef:responsibleParty/base2:RelatedParty/base2:role/@xlink:role</hasValue>
+                <item hasIndex="10" xml:id="responsiblePar_10" isFixed="true" hasDatatype="select"
+                    datasource="responsiblePartyRole" field="c" outIndex="7">
+                    <hasPath>base2:role/@xlink:href</hasPath>
+                    <hasValue>base2:role/@xlink:role</hasValue>
                 </item>
             </produces>
         </element>
@@ -399,12 +616,10 @@ LIMIT 1
     <!-- ======== -->
     <group xml:id="geom">
         <label xml:lang="en">Geometry</label>
-        <help xml:lang="en">Geometry associated to the AbstractMonitoringObject. For mobile facilities the geometry represents the area the facility is expected to measure in.</help>
         <label xml:lang="it">Geometria</label>
-        <help xml:lang="it"></help>
         <element isMandatory="false" isMultiple="false" xml:id="geo"> <!-- add this if alternative option of geometry alternativeTo="geoGml">-->
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
-            <label xml:lang="en">WFS URL</label>
+            <label xml:lang="en">Geometry associated to the AbstractMonitoringObject. For mobile facilities the geometry represents the area the facility is expected to measure in. WFS URL</label>
             <help xml:lang="en">Complete this field with the endpoint of WFS</help>
             <label xml:lang="it">WFS URL</label>
             <help xml:lang="it"></help>
@@ -430,18 +645,20 @@ LIMIT 1
     <!-- ======= -->
     <group xml:id="purp">
         <label xml:lang="en">Purpose</label>
-        <help xml:lang="en">Reason for which the AbstractMonitoringObject has been generated.</help>
         <label xml:lang="it">Scopo</label>
-        <help xml:lang="it">Motivo per cui il AbstractMonitoringObject è stato creato.</help>
-        <element isMandatory="false" isMultiple="true" xml:id="purpose">
+        <element isMandatory="true" isMultiple="true" xml:id="purpose">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
             <label xml:lang="en">Description</label>
-            <help xml:lang="en">Add a text for describe the purpose</help>
+            <help xml:lang="en">Reason for which the AbstractMonitoringObject has been generated. Add a text for describe the purpose</help>
             <label xml:lang="it">Descrizione</label>
-            <help xml:lang="it">Aggiungere un testo per descrivere lo scopo</help>
+            <help xml:lang="it">Motivo per cui il AbstractMonitoringObject è stato creato. Aggiungere un testo per descrivere lo scopo</help>
             <produces>
-                <item hasDatatype="text" hasIndex="1" xml:id="purpose_1" isFixed="false">
+                <item hasIndex="1" xml:id="purpose_1" isFixed="false" hasDatatype="autoCompletion" datasource="purposeOfCollection">
                     <hasPath>ef:purpose</hasPath>
+                </item>
+                <item hasIndex="2" xml:id="purpose_2" isFixed="true" hasDatatype="select" datasource="purposeOfCollection" field="c">
+                    <hasPath>ef:purpose/@xlink:href</hasPath>
+                    <hasValue>ef:purpose</hasValue>
                 </item>
             </produces>
         </element>
@@ -457,25 +674,23 @@ LIMIT 1
     <!-- ======= -->
     <group xml:id="broad">
         <label xml:lang="en">Broader</label>
-        <help xml:lang="en">A link pointing to a broader AbstractMonitoringObject (a higher level in a hierarchical structure). The association has additional properties as defined in the association class Hierarchy.</help>
         <label xml:lang="it">Elemento di livello superiore</label>
-        <help xml:lang="it"></help>
         <element isMandatory="false" isMultiple="true" xml:id="broader">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
             <produces>
                 <item hasDatatype="URL" hasIndex="1" xml:id="broader_1" isFixed="false">
                     <label xml:lang="en">Broader URL</label>
-                    <help xml:lang="en"></help>
+                    <help xml:lang="en">A link pointing to a broader AbstractMonitoringObject (a higher level in a hierarchical structure). The association has additional properties as defined in the association class Hierarchy.</help>
                     <label xml:lang="it">URL dell'elemento broader</label>
                     <help xml:lang="it"></help>
                     <hasPath>ef:broader/@xlink:href</hasPath>
                 </item>
-                <!-- TODO: ??? -->
+                <!--<!-\- TODO: ??? -\->
                 <item hasDatatype="function" hasIndex="2" xml:id="broader_2" isFixed="true">
                     <hasPath>ef:broader/ef:Hierarchy/@gml:id</hasPath>
                     <hasValue></hasValue>
                 </item>
-                <!-- TODO: ??? -->
+                <!-\- TODO: ??? -\->
                 <item hasDatatype="function" hasIndex="3" xml:id="broader_3" isFixed="true">
                     <hasPath>ef:broader/ef:Hierarchy/ef:linkingTime/gml:TimePeriod/@gml:id</hasPath>
                     <hasValue></hasValue>
@@ -488,7 +703,7 @@ LIMIT 1
                 <item hasDatatype="string" hasIndex="5" xml:id="broader_5" isFixed="true">
                     <defaultValue>now</defaultValue>
                     <hasPath>ef:broader/ef:Hierarchy/ef:linkingTime/gml:TimePeriod/gml:endPosition</hasPath>
-                </item>
+                </item>-->
             </produces>
         </element>
     </group>
@@ -498,24 +713,22 @@ LIMIT 1
     <!-- ======== -->
     <group xml:id="narr">
         <label xml:lang="en">Narrower</label>
-        <help xml:lang="en">A link pointing to narrower AbstractMonitoringObject(s) (a lower level in a hierarchical structure). The association has additional properties as defined in the association class Hierarchy.</help>
         <label xml:lang="it">Elemento di livello inferiore</label>
-        <help xml:lang="it"></help>
         <element isMandatory="false" isMultiple="true" xml:id="narrower">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
             <produces>
                 <item hasDatatype="URL" hasIndex="1" xml:id="narrower_1" isFixed="false">
-                    <label xml:lang="en">Broader URL</label>
-                    <help xml:lang="en"></help>
+                    <label xml:lang="en">Narrower URL</label>
+                    <help xml:lang="en">A link pointing to narrower AbstractMonitoringObject(s) (a lower level in a hierarchical structure). The association has additional properties as defined in the association class Hierarchy.</help>
                     <label xml:lang="it">URL dell'elemento broader</label>
                     <help xml:lang="it"></help>
                     <hasPath>ef:narrower/@xlink:href</hasPath>
                 </item>
-                <!-- TODO: ??? -->
+                <!--<!-\- TODO: ??? -\->
                 <item hasDatatype="function" hasIndex="2" xml:id="narrower_2" isFixed="false">
                     <hasPath>ef:narrower/ef:Hierarchy/@gml:id</hasPath>
                 </item>
-                <!-- TODO: ??? -->
+                <!-\- TODO: ??? -\->
                 <item hasDatatype="function" hasIndex="3" xml:id="narrower_3" isFixed="true">
                     <hasPath>ef:narrower/ef:Hierarchy/ef:linkingTime/gml:TimePeriod/@gml:id</hasPath>
                     <hasValue></hasValue>
@@ -528,7 +741,7 @@ LIMIT 1
                 <item hasDatatype="string" hasIndex="5" xml:id="narrower_5" isFixed="true">
                     <defaultValue>now</defaultValue>
                     <hasPath>ef:narrower/ef:Hierarchy/ef:linkingTime/gml:TimePeriod/gml:endPosition</hasPath>
-                </item>
+                </item>-->
             </produces>
         </element>
     </group>
@@ -577,15 +790,24 @@ LIMIT 1
     <!-- ================= -->
     <!-- organisationLevel -->
     <!-- ================= -->
-    <!-- TODO: add http://inspire.ec.europa.eu/codeList/LegislationLevelValue to EMF codelist in Fuseki -->
     <group xml:id="orgLev">
         <label xml:lang="en">Organisation level</label>
         <label xml:lang="it">Livello di organizzazione</label>
-        <element isMandatory="false" isMultiple="true" xml:id="organisationLevel">
+        <element isMandatory="true" isMultiple="true" xml:id="organisationLevel">
             <hasRoot>/ef:EnvironmentalMonitoringNetwork</hasRoot>
+            <label xml:lang="en">Organisation level</label>
+            <label xml:lang="it">Livello di organizzazione</label>
+            <help xml:lang="en">Level of legal organisation the EnvironmentalMonitoringNetwork is affiliated with.</help>
+            <help xml:lang="it"/>
             <produces>
-                <item hasDatatype="codelist" hasIndex="1" xml:id="organisationLevel_1" isFixed="true" show="combobox" datasource="organiLevel">
+                <item hasDatatype="autoCompletion" hasIndex="1" xml:id="organisationLevel_1" isFixed="false"
+                    datasource="organiLevel">
+                    <hasPath>ef:organisationLevel</hasPath>
+                </item>
+                <item hasIndex="2" xml:id="organisationLevel_2" isFixed="true" hasDatatype="select"
+                    datasource="organiLevel" field="c">
                     <hasPath>ef:organisationLevel/@xlink:href</hasPath>
+                    <hasValue>ef:organisationLevel</hasValue>
                 </item>
             </produces>
         </element>
