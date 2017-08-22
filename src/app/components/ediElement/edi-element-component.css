@@ -2,3 +2,10 @@
     font-size: 18px;
 }
 
+.elementMandatory {
+    text-shadow: 4px 4px 8px white;
+}
+
+.elementMandatory::after {
+    content: '*';
+}

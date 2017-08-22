@@ -10,28 +10,28 @@ import {availableContexts, Logger} from '../utils/logger';
  */
 export class State {
     static logger = new Logger(availableContexts.STATE);
-    static templateName: string;
-    static templateVersion: number;
-    static _interfaceLanguage: BehaviorSubject<string> = new BehaviorSubject('en');
-    static template: ITemplate;
-    static originalTemplate: string;
-    static metadataService: MetadataService;
-    static queryParameters: any;
+    templateName: string;
+    templateVersion: number;
+    _interfaceLanguage: BehaviorSubject<string> = new BehaviorSubject('en');
+    template: ITemplate;
+    originalTemplate: string;
+    metadataService: MetadataService;
+    queryParameters: any;
 
-    static set interfaceLanguage(value: string) {
-        State._interfaceLanguage.next(value);
+    set interfaceLanguage(value: string) {
+        this._interfaceLanguage.next(value);
     }
 
-    static get interfaceLanguage() {
+    get interfaceLanguage() {
         return this._interfaceLanguage.value;
     }
 
-    static getQuerystringParameter(name: string) {
-        return State.queryParameters[name];
+    getQuerystringParameter(name: string) {
+        return this.queryParameters[name];
     }
 
-    static getElement(id: string): Element {
-        for (let g of State.template.group) {
+    getElement(id: string): Element {
+        for (let g of this.template.group) {
             for (let e of g.element) {
                 if (e instanceof Element && e.id === id) {
                     return (e as Element);
@@ -52,9 +52,9 @@ export class State {
         return undefined;
     }
 
-    static getElementInstances(id: string) {
+    getElementInstances(id: string) {
         let temp: (AlternativeGroup | Element)[] = [];
-        for (let g of State.template.group) {
+        for (let g of this.template.group) {
             for (let e of g.element) {
                 if (e instanceof Element) {
                     State.logger.log('getElementInstances', 'comparing', e['represents_element'], id);
@@ -81,8 +81,8 @@ export class State {
         return temp;
     }
 
-    private static findElementGroup(e: Element) {
-        for (let g of State.template.group) {
+    private findElementGroup(e: Element) {
+        for (let g of this.template.group) {
             for (let el of g.element) {
                 State.logger.log('findElementGroup', e.id, el.id)
                 if (el.id === e.represents_element) {
@@ -93,8 +93,8 @@ export class State {
         return undefined;
     }
 
-    private static findIndexOfElement(id: string) {
-        for (let g of State.template.group) {
+    private findIndexOfElement(id: string) {
+        for (let g of this.template.group) {
             for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
                 if (e.id === id) {
@@ -105,9 +105,9 @@ export class State {
         return -1;
     }
 
-    private static findLastIndexOfBaseElement(id: string) {
+    private findLastIndexOfBaseElement(id: string) {
         let last = 0;
-        for (let g of State.template.group) {
+        for (let g of this.template.group) {
             for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
                 if (e['represents_element'] === id) {
@@ -118,9 +118,9 @@ export class State {
         return last;
     }
 
-    static findLastInstanceOfBaseElement(id: string) {
+    findLastInstanceOfBaseElement(id: string) {
         let last: string;
-        for (let g of State.template.group) {
+        for (let g of this.template.group) {
             for (let i = 0; i < g.element.length; i++) {
                 let e = g.element[i];
                 if (e['represents_element'] === id) {
@@ -134,9 +134,9 @@ export class State {
         return last;
     }
 
-    static appendElement(e: Element) {
-        let g = State.findElementGroup(e);
-        let i = State.findLastIndexOfBaseElement(e.represents_element);
+    appendElement(e: Element) {
+        let g = this.findElementGroup(e);
+        let i = this.findLastIndexOfBaseElement(e.represents_element);
         State.logger.log('appendElement', g, i);
         if (g.element.length > i + 1) {
             g.element.splice(i + 1, 0, e);
@@ -146,9 +146,9 @@ export class State {
         State.logger.log('appendElement OUT', g.element);
     }
 
-    static removeElement(e: Element) {
-        let g = State.findElementGroup(e);
-        let i = State.findIndexOfElement(e.id);
+    removeElement(e: Element) {
+        let g = this.findElementGroup(e);
+        let i = this.findIndexOfElement(e.id);
         State.logger.log('removeElement', e.id, g, i);
         if (i > -1) {
             g.element.splice(i, 1);
@@ -156,9 +156,9 @@ export class State {
         State.logger.log('removeElement OUT', e.id, g, i);
     }
 
-    static getItem(id: string): Item {
+    getItem(id: string): Item {
         State.logger.log('getItem', id);
-        for (let g of State.template.group) {
+        for (let g of this.template.group) {
             for (let e of g.element) {
                 if (e instanceof Element) {
                     for (let i of (e as Element).items) {
@@ -173,19 +173,19 @@ export class State {
         return undefined;
     }
 
-    static mergeWithEDIML(ediml: any) {
+    mergeWithEDIML(ediml: any) {
         for ( let e of ediml.elements ) {
             State.logger.log('EDIML', 'doing element', e.id, e.represents_element);
             if ( e.id == e.represents_element ) {
                 // base element
-                let element = State.getElement(e.id);
+                let element = this.getElement(e.id);
                 State.logger.log('EDIML', 'found element', element);
                 element.fromEDIML(e);
             } else {
                 // duplicate element
-                let element = State.getElement(e.represents_element);
+                let element = this.getElement(e.represents_element);
                 element.duplicate();
-                element = State.getElement(e.id);
+                element = this.getElement(e.id);
                 element.fromEDIML(e);
             }
         }

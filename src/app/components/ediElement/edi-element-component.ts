@@ -6,6 +6,7 @@ import {EDITemplate} from '../service/EDITemplate';
 import {MainLayoutComponent} from '../layout/main-layout-component';
 import {Element} from '../../model/Element';
 import {State} from '../../model/State';
+import {MetadataService} from '../service/MetadataService';
 @Component({
     selector: 'app-edi-element',
     templateUrl: './edi-element-component.html',
@@ -28,7 +29,7 @@ export class EdiElementComponent implements OnInit {
     }
 
     showButton() {
-        if ( this.element.multiple && this.element.id === State.findLastInstanceOfBaseElement(this.element.represents_element) ) {
+        if ( this.element.multiple && this.element.id === this.metadataService.state.findLastInstanceOfBaseElement(this.element.represents_element) ) {
             return true;
         }
         return false;
@@ -48,13 +49,13 @@ export class EdiElementComponent implements OnInit {
         return false;
     }
 
-    constructor() {
-        State._interfaceLanguage.asObservable().subscribe(
+    constructor(private metadataService: MetadataService) {
+        this.metadataService.state._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
     }
 
     ngOnInit() {
-        this.temp = State.findLastInstanceOfBaseElement(this.element.represents_element);
+        this.temp = this.metadataService.state.findLastInstanceOfBaseElement(this.element.represents_element);
     }
 }

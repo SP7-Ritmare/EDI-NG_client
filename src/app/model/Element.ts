@@ -2,12 +2,16 @@ import {Item} from './Item';
 import {State} from './State';
 import {Utils} from '../utils/Utils';
 import {IEDIMLElement} from './EDIML';
+import {availableContexts, Logger} from '../utils/logger';
+import {MetadataService} from '../components/service/MetadataService';
 /**
  * Created by fabio on 05/03/2017.
  */
 const cloneSuffix = "_XritX";
 
 export class Element {
+    static logger = new Logger(availableContexts.ELEMENT);
+    static metadataService: MetadataService;
     id: string = undefined;
     root: string = undefined;
     mandatory: boolean = undefined;
@@ -28,7 +32,7 @@ export class Element {
         if ( e.help ) {
             this.help = (Array.isArray(e.help) ? e.help : [e.help]);
         }
-        if ( State.templateVersion === 2 ) {
+        if ( Element.metadataService.state.templateVersion === 2 ) {
             this.id = e['_xml:id'];
             this.mandatory = Utils.stringToBoolean(e['_isMandatory']);
             this.multiple = Utils.stringToBoolean(e['_isMultiple']);
@@ -53,7 +57,7 @@ export class Element {
 
     fromEDIML(e: IEDIMLElement) {
         function getItem(e: any, id: string) {
-            console.log('fromEDIML', 'getItem', e, id);
+            Element.logger.log('fromEDIML', 'getItem', e, id);
             for ( let i of e.items ) {
                 if ( i.id == id ) {
                     return i;
@@ -61,12 +65,12 @@ export class Element {
             }
         }
         var _ = require('lodash');
-        console.log('fromEDIML', e);
+        Element.logger.log('fromEDIML', e);
         this.id = e.id;
         this.alternativeTo = e.alternativeTo;
         this.represents_element = e.represents_element;
         let items: Item[] = [];
-        console.log('fromEDIML element items', e.items);
+        Element.logger.log('fromEDIML element items', e.items);
         for ( let i of this.items ) {
             let item = _.cloneDeep(i); // Object.assign({}, i);
             item.id = i.id;
@@ -77,7 +81,7 @@ export class Element {
                     ds.triggerItem = ds.triggerItem;
                     ds.fixTriggerItem();
                 }
-                console.log('duplicated datasource', ds);
+                Element.logger.log('duplicated datasource', ds);
                 item.datasource = ds;
             }
             let newItem = getItem(e, i.id);
@@ -90,35 +94,40 @@ export class Element {
 
             } else {
                 if ( i.dataType == 'boundingBox' ) {
-                    console.log('boundingBox found', getItem(e, i.id + '_westLongitude'));
+                    const templateItem = Element.metadataService.state.getItem(i.id);
+                    Element.logger.log('boundingBox found', getItem(e, i.id + '_westLongitude'));
                     let westLong = getItem(e, i.id + '_westLongitude');
                     item.westLongitude = {
+                        label: templateItem.westLongitude.label,
                         hasPath: westLong.path,
                         value: westLong.value
                     }
                     let eastLong = getItem(e, i.id + '_eastLongitude');
                     item.eastLongitude = {
+                        label: templateItem.eastLongitude.label,
                         hasPath: eastLong.path,
                         value: eastLong.value
                     }
                     let northLat = getItem(e, i.id + '_northLatitude');
                     item.northLatitude = {
+                        label: templateItem.northLatitude.label,
                         hasPath: northLat.path,
                         value: northLat.value
                     }
                     let southLat = getItem(e, i.id + '_southLatitude');
                     item.southLatitude = {
+                        label: templateItem.southLatitude.label,
                         hasPath: southLat.path,
                         value: southLat.value
                     }
 
-                    console.log('fromEDIML - partial item', item);
+                    Element.logger.log('fromEDIML - partial item', item);
                 }
-                console.log('ERROR - newItem is undefined', i.id);
+                Element.logger.log('ERROR - newItem is undefined', i.id);
             }
-            console.log('fromEDIML newItem', newItem);
+            Element.logger.log('fromEDIML newItem', newItem);
 
-            console.log('fromEDIML adding item', item);
+            Element.logger.log('fromEDIML adding item', item);
             items.push(item);
         }
         this.items = items;
@@ -126,21 +135,21 @@ export class Element {
 
     duplicate() {
         var _ = require('lodash');
-        console.log('duplicate', this);
+        Element.logger.log('duplicate', this);
         let tempElement = _.cloneDeep(this); //  Object.assign({}, this);
-        let instances = State.getElementInstances(this.represents_element);
-        console.log('instances of', this.id, instances);
+        let instances = Element.metadataService.state.getElementInstances(this.represents_element);
+        Element.logger.log('instances of', this.id, instances);
         let latestInstance: string = '';
         for ( let e of instances ) {
             if ( e.id.length > latestInstance.length ) {
                 latestInstance = e.id;
             }
         }
-        console.log('latestInstance: ' + latestInstance, instances);
+        Element.logger.log('latestInstance: ' + latestInstance, instances);
         tempElement.id = latestInstance + cloneSuffix;
         let items: Item[] = [];
-        console.log('duplicating element ' + this.id + " -> " + tempElement.id);
-        console.log('duplicate element items', tempElement.items);
+        Element.logger.log('duplicating element ' + this.id + " -> " + tempElement.id);
+        Element.logger.log('duplicate element items', tempElement.items);
         for ( let i of tempElement.items ) {
             let item = _.cloneDeep(i); // Object.assign({}, i);
             item.id = i.id.replace(this.id, tempElement.id);
@@ -151,31 +160,31 @@ export class Element {
                     ds.triggerItem = ds.triggerItem.replace(this.id, tempElement.id);
                     ds.fixTriggerItem();
                 }
-                console.log('duplicated datasource', ds);
+                Element.logger.log('duplicated datasource', ds);
                 item.datasource = ds;
             }
             item.resetToInitialValue();
             items.push(item);
         }
         tempElement.items = items;
-        State.appendElement(tempElement);
+        Element.metadataService.state.appendElement(tempElement);
     }
 
     remove() {
-        State.removeElement(this);
+        Element.metadataService.state.removeElement(this);
     }
 
     get fixed() {
-        // console.log('element', this.id);
+        // Element.logger.log('element', this.id);
         let atLeastOneNotFixed = false;
         for ( let i of this.items ) {
-            // console.log('item', i, i.fixed);
+            // Element.logger.log('item', i, i.fixed);
             if ( !i.fixed ) {
-                // console.log('ok, not fixed');
+                // Element.logger.log('ok, not fixed');
                 atLeastOneNotFixed = true;
             }
         }
-        // console.log('fixed element');
+        // Element.logger.log('fixed element');
         return !atLeastOneNotFixed;
     }
 }

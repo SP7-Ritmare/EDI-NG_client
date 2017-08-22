@@ -20,7 +20,7 @@
       
     ]]></baseDocument>
         <xsltChain>
-            <xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/RNDT_stylesheet?version=2.00</xslt>
+            <!--<xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/RNDT_stylesheet?version=2.00</xslt>-->
         </xsltChain>
     </settings>
     <endpointTypes>

@@ -9,6 +9,7 @@ import {EdiElementComponent} from '../../ediElement/edi-element-component';
 import {EdiItemComponent} from '../edi-item-component';
 import {State} from '../../../model/State';
 import {availableContexts, Logger} from '../../../utils/logger';
+import {MetadataService} from '../../service/MetadataService';
 @Component({
     selector: 'app-edi-textbox',
     template: `
@@ -34,7 +35,7 @@ export class EdiTextboxComponent extends EdiItemComponent implements OnInit {
     placeholder() {
         if ( this.item.label ) {
             for ( let l of this.item.label ) {
-                if ( l['_xml:lang'] === State.interfaceLanguage ) {
+                if ( l['_xml:lang'] === this.metadataService.state.interfaceLanguage ) {
                     return l['__text'];
                 }
             }

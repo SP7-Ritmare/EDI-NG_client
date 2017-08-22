@@ -5,9 +5,7 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-date-range',
     template: `
-<!--
         <pre>{{item | removeCyclic | json}}</pre>
--->
         <div class="col-md-12">
             <div class="startDate">
                 <div class="form form-label itemLabel">
@@ -46,6 +44,9 @@ export class EdiDateRangeComponent {
     onDateRangeChanged(event: IMyDateRangeModel) {
         // event properties are: event.beginDate, event.endDate, event.formatted,
         // event.beginEpoc and event.endEpoc
-        console.log('onDateRangeChanged(): Formatted: ', event.beginDate, event.endDate);
+        const dates = event.formatted.split(' - ');
+        this.item.start.value = dates[0];
+        this.item.end.value = dates[1];
+        console.log('onDateRangeChanged(): Formatted: ', event.beginDate, event.endDate, this.item);
     }
 }

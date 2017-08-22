@@ -26,5 +26,6 @@ export class AppComponent {
     }*/
     constructor(private meta: Meta, private title: Title, private config: ConfigService) {
         this.title.setTitle('EDI-NG Client v' + config.getConfiguration()['version']);
+
     }
 }

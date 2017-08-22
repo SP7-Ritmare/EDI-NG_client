@@ -16,11 +16,13 @@ export const availableContexts = {
     BBOX: 'bbox',
     ENDPOINTTYPE: 'endpointtype',
     ENDPOINT: 'endpoint',
+    ELEMENT: 'element',
     ITEM: 'item',
     ITEM_COMPONENT: 'itemComponent',
     SPARQL: 'sparql',
     EDI_TEMPLATE_SERVICE: 'EDI_TEMPLATE_SERVICE',
-    STATE: 'state'
+    STATE: 'state',
+    CATALOGUE: 'catalogue'
 }
 export const enabledContexts: any[] = [
     /*
@@ -31,6 +33,10 @@ export const enabledContexts: any[] = [
     availableContexts.ENDPOINT,
     availableContexts.ENDPOINTTYPE
      */
+    availableContexts.CATALOGUE,
+    availableContexts.ITEM,
+    availableContexts.STATE,
+    availableContexts.ELEMENT
 ];
 
 /*

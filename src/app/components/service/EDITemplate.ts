@@ -30,9 +30,11 @@ export class EDITemplate {
     contents: ITemplate;
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
     private loading = false;
+    state: State;
 
     constructor(private http: Http, private metadataService: MetadataService) {
         Item.metadataService = this.metadataService;
+        this.state = metadataService.state;
         this.getTimezones();
     }
 
@@ -214,9 +216,9 @@ export class EDITemplate {
 
     private inferVersion() {
         if (this.contents.settings.userInterfaceLanguage) {
-            State.templateVersion = 2;
+            this.state.templateVersion = 2;
         } else {
-            State.templateVersion = 1;
+            this.state.templateVersion = 1;
         }
     }
 
@@ -228,7 +230,7 @@ export class EDITemplate {
         this.loading = true;
 
         this.path = filename;
-        // State.templateName = filename;
+        // this.state.templateName = filename;
         let headers = new Headers();
         headers.append('Accept', 'application/xml');
         Endpoint.http = this.http;
@@ -237,14 +239,14 @@ export class EDITemplate {
             headers: headers
         })
             .map(res => {
-                State.originalTemplate = res.text();
+                this.state.originalTemplate = res.text();
                 this.contents = this.x2js.xml2json(res.text()).template;
                 this.inferVersion();
-                EDITemplate.logger.log('template version is ' + State.templateVersion);
+                EDITemplate.logger.log('template version is ' + this.state.templateVersion);
                 this.contents = this.fixArrays();
                 this.contents = this.fixBooleans();
 
-                State.template = this.contents;
+                this.state.template = this.contents;
 
                 this.importEndpointTypes();
                 this.importDatasources();
@@ -255,7 +257,7 @@ export class EDITemplate {
                 this.fixDatasources();
                 EDITemplate.logger.log(2222222);
 
-                State.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
+                this.state.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
                 EDITemplate.logger.log('Contents: ', this.contents);
                 this.loading = false;
                 return this.contents;

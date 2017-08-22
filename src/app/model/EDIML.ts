@@ -6,6 +6,8 @@ import {ITemplate} from './Template';
 import {State} from './State';
 import {AlternativeGroup} from './AlternativeGroup';
 import {XML2JSON} from '../utils/XML2JSON';
+import {EDITemplate} from '../components/service/EDITemplate';
+import {MetadataService} from '../components/service/MetadataService';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -16,6 +18,7 @@ export interface IXSLT {
 
 export interface IEDIMLItem {
     id: string;
+    label?: any;
     hasIndex: number;
     element_id: string;
     path: string;
@@ -46,6 +49,7 @@ export interface IEDIMLElement {
 }
 
 export class EDIML {
+    static metadataService: MetadataService;
     contents: {
         generator: string;
         ediVersion: string;
@@ -75,7 +79,7 @@ export class EDIML {
         timestamp: new Date(),
         baseDocument: '',
         xsltChain: [],
-        templateName: State.templateName,
+        templateName: 'template not initialised',
         /*
          templateDocument: '',
          */
@@ -88,9 +92,9 @@ export class EDIML {
          numElements: 0,
          */
         element: []
-    }
-    ;
+    };
     private x2js: XML2JSON = new XML2JSON();
+    ediTemplate: EDITemplate;
 
     toXML() {
         let json = JSON.parse(JSON.stringify(this.contents));
@@ -114,6 +118,7 @@ export class EDIML {
     createBoundingBoxItems(i: Item) {
         let itemEast: IEDIMLItem = {
             id: i.elementId + '_' + i.index + '_eastLongitude',
+            label: i.label,
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -132,6 +137,7 @@ export class EDIML {
         }
         let itemWest: IEDIMLItem = {
             id: i.elementId + '_' + i.index + '_westLongitude',
+            label: i.label,
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -150,6 +156,7 @@ export class EDIML {
         }
         let itemNorth: IEDIMLItem = {
             id: i.elementId + '_' + i.index + '_northLatitude',
+            label: i.label,
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -168,6 +175,7 @@ export class EDIML {
         }
         let itemSouth: IEDIMLItem = {
             id: i.elementId + '_' + i.index + '_southLatitude',
+            label: i.label,
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -190,7 +198,7 @@ export class EDIML {
     createDateRangeItems(i: Item) {
         // TODO: implement this
         let itemStart: IEDIMLItem = {
-            id: i.elementId + '_' + i.index + '_eastLongitude',
+            id: i.elementId + '_' + i.index + '_start',
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -208,7 +216,7 @@ export class EDIML {
             useURN: ( i.useURN ? 'true' : 'false')
         }
         let itemEnd: IEDIMLItem = {
-            id: i.elementId + '_' + i.index + '_westLongitude',
+            id: i.elementId + '_' + i.index + '_end',
             hasIndex: i.index,
             element_id: i.elementId,
             codeValue: i.codeValue,
@@ -229,6 +237,25 @@ export class EDIML {
         return [itemStart, itemEnd];
     }
 
+/*
+    static set metadataService(value: MetadataService) {
+        EDIML.metadataService = value;
+        console.log('State is now', EDIML._metadataService.state.templateName);
+
+/!*
+        this.contents.templateName = EDIML.metadataService.state.templateName;
+        /!*
+         this.contents.templateDocument = State.originalTemplate;
+         *!/
+        this.contents.version = '' + EDIML.metadataService.state.templateVersion;
+*!/
+    }
+
+    static get metadataService() {
+        return this._metadataService;
+    }
+*/
+
     constructor(public template: ITemplate) {
         console.log('EDIML constructor', template);
         this.contents.generator = 'EDI-NG_CLient v.3.0';
@@ -238,13 +265,16 @@ export class EDIML {
         this.contents.timestamp = new Date();
         this.contents.baseDocument = template.settings.baseDocument;
         this.contents.xsltChain = template.settings.xsltChain;
-        console.log('State is now', State.templateName);
 
-        this.contents.templateName = State.templateName;
-        /*
+/**
+ * TODO: set template name and version
+        this.contents.templateName = EDIML.metadataService.state.templateName;
+        /!*
          this.contents.templateDocument = State.originalTemplate;
-         */
-        this.contents.version = '' + State.templateVersion;
+         *!/
+        this.contents.version = '' + EDIML.metadataService.state.templateVersion;
+*/
+
         /*
          this.contents.queryString = '';
          */

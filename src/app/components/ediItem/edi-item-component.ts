@@ -9,6 +9,7 @@ import {EdiElementComponent} from '../ediElement/edi-element-component';
 import {State} from '../../model/State';
 import {CodelistDatasource, SPARQLDatasource, SingletonDatasource, BaseDatasource} from '../../model/Datasource';
 import {availableContexts, Logger} from '../../utils/logger';
+import {MetadataService} from '../service/MetadataService';
 @Component({
     selector: 'app-edi-item',
     templateUrl: './edi-item-component.html',
@@ -22,10 +23,11 @@ export class EdiItemComponent implements OnInit {
     possibleValues: any[];
     @Input() item: Item;
 
-    constructor() {
+    constructor(protected metadataService: MetadataService) {
     }
+
     ngOnInit() {
-        State._interfaceLanguage.asObservable().subscribe(
+        this.metadataService.state._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
         EdiItemComponent.logger.log('init text box', this.item.id, this.item.datasource, this.item.dataType);

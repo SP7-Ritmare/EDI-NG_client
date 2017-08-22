@@ -1,33 +1,21 @@
-/**
- * Created by fabio on 02/03/2017.
- */
-
-import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
-import {XML2JSON} from '../../utils/XML2JSON';
-import {EDITemplate} from '../service/EDITemplate';
-import {ITemplate, Template} from '../../model/Template';
-import {State} from '../../model/State';
-import {AlternativeGroup} from '../../model/AlternativeGroup';
-import {MetadataService} from "../service/MetadataService";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {EDITemplate} from '../service/EDITemplate';
+import {MetadataService} from '../service/MetadataService';
 import {CatalogueService} from '../service/catalogue.service';
+import {Template} from '../../model/Template';
+import {AlternativeGroup} from '../../model/AlternativeGroup';
 import {EDIML} from '../../model/EDIML';
 import {Item} from '../../model/Item';
-import {BaseDatasource} from '../../model/Datasource';
 import {Element} from '../../model/Element';
-
-// const templateUrl = '../assets/RNDT_dataset_v4.00.xml';
-// const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
-const templateUrl = 'assets/RNDT_dataset_v4.00_newFormat.xml';
+import {BaseDatasource} from '../../model/Datasource';
 
 @Component({
-    selector: 'app-main-layout',
-    templateUrl: './main-layout-component.html',
-    styleUrls: ['./main-layout-component.scss'],
-    providers: [EDITemplate],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-template',
+  templateUrl: './template.component.html',
+  styleUrls: ['./template.component.css']
 })
-export class MainLayoutComponent implements AfterViewInit {
+export class TemplateComponent implements AfterViewInit {
     templateName: string;
     title: string;
     template: Template;
@@ -51,11 +39,14 @@ export class MainLayoutComponent implements AfterViewInit {
         window.location.hash = location;
     }
 
+    sendMetadata() {
+        this.metadataService.sendMetadata();
+    }
+
     constructor(private route: ActivatedRoute, private EDITemplate: EDITemplate, public metadataService: MetadataService, private catalogueService: CatalogueService) {
         this.metadataService.state._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
-/*
         this.metadataService.state.queryParameters = this.route.snapshot.queryParams;
         console.log('queryParams', this.route.snapshot.queryParams);
 
@@ -66,7 +57,7 @@ export class MainLayoutComponent implements AfterViewInit {
             this.metadataService.state.templateName = this.templateName;
             console.log('State is', this.metadataService.state.templateName);
 
-            console.log('about to load template', templateUrl);
+            console.log('about to load template', 'assets/templates/' + this.templateName);
             this.EDITemplate.load('assets/templates/' + this.templateName)
                 .subscribe((res) => {
                     this.template = res;
@@ -89,13 +80,12 @@ export class MainLayoutComponent implements AfterViewInit {
                     }
                 });
         });
-*/
     }
-
     ngAfterViewInit() {
         EDIML.metadataService = this.metadataService;
         Item.metadataService = this.metadataService;
         Element.metadataService = this.metadataService;
         BaseDatasource.metadataService = this.metadataService;
     }
+
 }

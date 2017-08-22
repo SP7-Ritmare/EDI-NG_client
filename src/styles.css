@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./assets/edi.css";
+
+/*
+pre {
+    display: none;
+}
+*/
+
+md-sidenav-container {
+    background-color: rgb(169, 195, 223) !important;
+}

@@ -6,6 +6,7 @@ import {Component, Input} from '@angular/core';
 import {AlternativeGroup} from '../../model/AlternativeGroup';
 import {Element} from '../../model/Element';
 import {State} from '../../model/State';
+import {MetadataService} from '../service/MetadataService';
 @Component({
     selector: 'edi-alternative-group',
     template: `
@@ -21,6 +22,9 @@ import {State} from '../../model/State';
 export class EdiAlternativeGroupComponent {
     @Input() group: AlternativeGroup;
 
+    constructor(private metadataService: MetadataService) {
+
+    }
     onTabSelected(event: any) {
         console.log('onTabSelected', event);
         this.group.activateElement(event.index);
@@ -29,7 +33,7 @@ export class EdiAlternativeGroupComponent {
     placeholder(e: Element) {
         if ( e.label ) {
             for ( let l of e.label ) {
-                if ( l['_xml:lang'] === State.interfaceLanguage ) {
+                if ( l['_xml:lang'] === this.metadataService.state.interfaceLanguage ) {
                     return l['__text'];
                 }
             }

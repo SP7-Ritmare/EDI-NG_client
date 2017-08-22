@@ -117,7 +117,10 @@
 .content-header {
   color: #fff;
   font-weight: normal !important;
-  font-size: 19px; }
+  font-size: 19px;
+  text-align: center !important;
+  width: 100% !important;
+}
 
 /*
 .card-header {

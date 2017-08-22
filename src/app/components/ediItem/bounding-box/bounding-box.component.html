@@ -6,46 +6,65 @@
 </div>
 -->
 <p>Interface language: {{interfaceLanguage}}</p>
-<!--
-<pre>{{item.westLongitude.label | json}}</pre>
--->
+<pre>{{item | json}}</pre>
 <div class="col-md-12">
-    <div class="west">
-        <div class="form form-label itemLabel">
-            <div *ngFor="let l of item.westLongitude.label">
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
-            </div>
-        </div>
-        <input type="text" [(ngModel)]="item.westLongitude.value" (keyup)="coordinateChange()">
-    </div>
-    <div class="east">
-        <div class="form form-label itemLabel">
-            <div *ngFor="let l of item.eastLongitude.label">
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
-            </div>
-        </div>
-        <input type="text" [(ngModel)]="item.eastLongitude.value" (keyup)="coordinateChange()">
-    </div>
-    <div class="north">
-        <div class="form form-label itemLabel">
-            <div *ngFor="let l of item.northLatitude.label">
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
-            </div>
-        </div>
-        <input type="text" [(ngModel)]="item.northLatitude.value" (keyup)="coordinateChange()">
-    </div>
-    <div class="south">
-        <div class="form form-label itemLabel">
-            <div *ngFor="let l of item.southLatitude.label">
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
-                <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
-            </div>
-        </div>
-        <input type="text" [(ngModel)]="item.southLatitude.value" (keyup)="coordinateChange()">
-    </div>
+    <table>
+        <tr>
+            <td></td>
+            <td>
+                <div class="north">
+                    <div class="form form-label itemLabel">
+                        <div *ngFor="let l of item.northLatitude.label">
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="item.northLatitude.value" (keyup)="coordinateChange()">
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="west">
+                    <div class="form form-label itemLabel">
+                        <div *ngFor="let l of item.westLongitude.label">
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="item.westLongitude.value" (keyup)="coordinateChange()">
+                </div>
+            </td>
+            <td></td>
+            <td>
+                <div class="east">
+                    <div class="form form-label itemLabel">
+                        <div *ngFor="let l of item.eastLongitude.label">
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="item.eastLongitude.value" (keyup)="coordinateChange()">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div class="south">
+                    <div class="form form-label itemLabel">
+                        <div *ngFor="let l of item.southLatitude.label">
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                            <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="item.southLatitude.value" (keyup)="coordinateChange()">
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
 </div>
 <div class="map-container">
     <div id="map" style="width: 100%; height: 40vh;">

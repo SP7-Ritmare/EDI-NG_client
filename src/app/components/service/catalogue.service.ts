@@ -2,19 +2,21 @@ import {Injectable} from '@angular/core';
 import {Headers, Http, RequestOptions} from '@angular/http';
 import {ConfigService} from './ConfigService';
 import {Observable} from 'rxjs/Observable';
+import {availableContexts, Logger} from '../../utils/logger';
 
 @Injectable()
 export class CatalogueService {
+    static logger = new Logger(availableContexts.CATALOGUE);
     _defaultEDICatalogue = 'wrong url';
     static currentCatalogueUrl: string = null;
 
     constructor(private http: Http, private configService: ConfigService) {
         this._defaultEDICatalogue = configService.getConfiguration()['ediCatalogue'];
-        console.log('default EDI Catalogue', this._defaultEDICatalogue);
+        CatalogueService.logger.log('default EDI Catalogue', this._defaultEDICatalogue);
     }
 
     get catalogueMetadatumURL() {
-        console.log('CatalogueService', 'catalogueMetadatumURL');
+        CatalogueService.logger.log('CatalogueService', 'catalogueMetadatumURL');
         return CatalogueService.currentCatalogueUrl;
     }
 
@@ -24,7 +26,7 @@ export class CatalogueService {
 
     getCatalogueMetadatumURL() {
         if (CatalogueService.currentCatalogueUrl != null) {
-            console.log('CatalogueService', 'catalogueMetadatumURL', CatalogueService.currentCatalogueUrl);
+            CatalogueService.logger.log('CatalogueService', 'catalogueMetadatumURL', CatalogueService.currentCatalogueUrl);
             return Observable.of(CatalogueService.currentCatalogueUrl);
         }
         return this.http.get(this._defaultEDICatalogue + '/requestId')
@@ -39,14 +41,18 @@ export class CatalogueService {
             .post(this._defaultEDICatalogue + '/metadata', metadatum, options)
             .map(res => res.json())
             .subscribe(res => {
-                console.log('sent to catalogue', res);
+                CatalogueService.logger.log('sent to catalogue', res);
                 alert('Your XML has been generated and saved to EDI Catalogue')
             })
     }
 
     search(query: string) {
         return this.http.get(this._defaultEDICatalogue + '/discover/' + query)
-            .map(res => res.json());
+            .map(res => res.json())
+            .map(res => {
+                CatalogueService.logger.log(res);
+                return res;
+            });
     }
 
     getMetadata() {

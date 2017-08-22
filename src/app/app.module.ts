@@ -44,12 +44,13 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { TimeComponent } from './components/ediItem/time/time.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CoreService} from './core.service';
+import { TemplateComponent } from './components/template/template.component';
 
 const appRoutes: Routes = [
     {path: 'select', component: TemplateSelectorComponent},
     {path: 'catalogue-list', component: CatalogueListComponent},
     {path: 'debug', component: DebugWindowComponent},
-    {path: ':template', component: MainLayoutComponent},
+    {path: ':template', component: TemplateComponent},
     {
         path: '',
         redirectTo: '/select',
@@ -102,7 +103,8 @@ export function ConfigLoader(configService: ConfigService) {
         TemplateSelectorComponent,
         TimePickerComponent,
         CatalogueListComponent,
-        TimeComponent
+        TimeComponent,
+        TemplateComponent
     ],
     imports: [
         BrowserModule,

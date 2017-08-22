@@ -122,7 +122,7 @@ export class Item {
         if (i.help) {
             this.help = (Array.isArray(i.help) ? i.help : [i.help]);
         }
-        if (State.templateVersion === 2) {
+        if (Item.metadataService.state.templateVersion === 2) {
             this.index = i['_hasIndex'];
             if (i['_xml:id']) {
                 this.id = i['_xml:id'];
@@ -147,21 +147,21 @@ export class Item {
             }
             if (this.dataType == 'boundingBox') {
                 Item.logger.log('THE BOUNDING BOX ITEM', templateItem);
-                this.eastLongitude = i.eastLongitude;
+                this.eastLongitude = Object.assign({}, i.eastLongitude);
                 if (i.eastLongitude['_queryStringParameter']) {
-                    this.eastLongitude.value = State.getQuerystringParameter(i.eastLongitude['_queryStringParameter'])
+                    this.eastLongitude.value = Item.metadataService.state.getQuerystringParameter(i.eastLongitude['_queryStringParameter'])
                 }
-                this.westLongitude = i.westLongitude;
+                this.westLongitude = Object.assign({}, i.westLongitude);
                 if (i.westLongitude['_queryStringParameter']) {
-                    this.westLongitude.value = State.getQuerystringParameter(i.westLongitude['_queryStringParameter'])
+                    this.westLongitude.value = Item.metadataService.state.getQuerystringParameter(i.westLongitude['_queryStringParameter'])
                 }
-                this.northLatitude = i.northLatitude;
+                this.northLatitude = Object.assign({}, i.northLatitude);
                 if (i.northLatitude['_queryStringParameter']) {
-                    this.northLatitude.value = State.getQuerystringParameter(i.northLatitude['_queryStringParameter'])
+                    this.northLatitude.value = Item.metadataService.state.getQuerystringParameter(i.northLatitude['_queryStringParameter'])
                 }
-                this.southLatitude = i.southLatitude;
+                this.southLatitude = Object.assign({}, i.southLatitude);
                 if (i.southLatitude['_queryStringParameter']) {
-                    this.southLatitude.value = State.getQuerystringParameter(i.southLatitude['_queryStringParameter'])
+                    this.southLatitude.value = Item.metadataService.state.getQuerystringParameter(i.southLatitude['_queryStringParameter'])
                 }
             }
             if (this.dataType === 'autoCompletion') {
@@ -175,9 +175,9 @@ export class Item {
             }
 
             if (this.queryStringParameter) {
-                if (State.getQuerystringParameter(this.queryStringParameter)) {
-                    Item.logger.log('query parameter', this.queryStringParameter, State.getQuerystringParameter(this.queryStringParameter));
-                    this.value = State.getQuerystringParameter(this.queryStringParameter);
+                if (Item.metadataService.state.getQuerystringParameter(this.queryStringParameter)) {
+                    Item.logger.log('query parameter', this.queryStringParameter, Item.metadataService.state.getQuerystringParameter(this.queryStringParameter));
+                    this.value = Item.metadataService.state.getQuerystringParameter(this.queryStringParameter);
                 }
             }
 

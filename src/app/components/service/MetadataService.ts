@@ -11,6 +11,9 @@ import 'rxjs/add/operator/catch';
 import {Observable} from "rxjs";
 import {ConfigService} from './ConfigService';
 import {CatalogueService} from './catalogue.service';
+import {EDITemplate} from './EDITemplate';
+import {Element} from '../../model/Element';
+import {Item} from '../../model/Item';
 
 
 @Injectable()
@@ -21,6 +24,7 @@ export class MetadataService {
     static currentCatalogueUrl: string = null;
 */
     static currentEdimlId: any = null;
+    state: State = new State;
 
     constructor(private http: Http, private configService: ConfigService, private catalogueService: CatalogueService) {
         this._defaultEDICatalogue = configService.getConfiguration()['ediCatalogue'];
@@ -100,7 +104,7 @@ export class MetadataService {
         ;
     }
 
-    sendMetadata() {
+    prepareEDIML() {
         let template;
         let datasources;
 
@@ -109,12 +113,17 @@ export class MetadataService {
         let json = stringify(BaseDatasource.datasources);
         console.log('pruned', JSON.parse(json));
         datasources = JSON.parse(json);
-        if (State.template) {
-            template = JSON.parse(stringify(State.template));
+        if (this.state.template) {
+            template = JSON.parse(stringify(this.state.template));
         }
         console.log('Template', template);
         let ediml = new EDIML(template);
-        ediml.contents.templateName = State.templateName;
+        ediml.contents.templateName = this.state.templateName;
+        return ediml;
+    }
+
+    sendMetadata() {
+        const ediml = this.prepareEDIML();
 
         if ( !ediml.contents.fileId ) {
             this.getEdimlId()

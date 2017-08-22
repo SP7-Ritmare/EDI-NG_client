@@ -3,6 +3,8 @@ import {EdiItemComponent} from '../edi-item-component';
 import {Item} from '../../../model/Item';
 import {State} from '../../../model/State';
 import {EDITemplate} from '../../service/EDITemplate';
+import {MetadataService} from '../../service/MetadataService';
+import {availableContexts, Logger} from '../../../utils/logger';
 
 /**
  * Created by fabio on 22/03/2017.
@@ -35,6 +37,7 @@ import {EDITemplate} from '../../service/EDITemplate';
     providers: [EDITemplate]
 })
 export class EdiAutocompleteComponent extends EdiItemComponent {
+    static logger = new Logger(availableContexts.AUTOCOMPLETION);
     interfaceLanguage: string;
     @Input() item: Item;
     query = '';
@@ -42,10 +45,12 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     private filteredList: any = [];
     elementRef: any;
 
-    constructor(myElement: ElementRef) {
-        super();
-        this.elementRef = myElement;
+/*
+    constructor(protected metadataService: MetadataService, private myElement: ElementRef) {
+        super(metadataService);
+        // TODO: check if inheritance is broken
     }
+*/
 
     renderRow(data: any) {
         let html = `<b style='float:left;width:100%'>${data.c}</b>
@@ -58,7 +63,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     placeholder() {
         if (this.item.label) {
             for (let l of this.item.label) {
-                if (l['_xml:lang'] === State.interfaceLanguage) {
+                if (l['_xml:lang'] === this.metadataService.state.interfaceLanguage) {
                     return l['__text'];
                 }
             }
@@ -68,7 +73,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
 
     filter() {
         if (this.query !== "") {
-            console.log('autocomplete refreshing on ds ' + this.item.datasource.id);
+            EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
             this.item.datasource.refresh({searchParam: this.query});
             this.item.datasource.results.subscribe(res => {
                 this.filteredList = res;
@@ -93,7 +98,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
         this.item.codeValue = item.c;
         this.item.languageNeutral = item.z;
         this.item.urnValue = item.urn;
-        console.log('changed item', this.item);
+        EdiAutocompleteComponent.logger.log('changed item', this.item);
         this.filteredList = [];
     }
 
@@ -101,9 +106,11 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
         var clickedComponent = event.target;
         var inside = false;
         do {
+/*
             if (clickedComponent === this.elementRef.nativeElement) {
                 inside = true;
             }
+*/
             clickedComponent = clickedComponent.parentNode;
         } while (clickedComponent);
         if (!inside) {
@@ -112,6 +119,10 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     }
 
     ngOnInit() {
+/*
+        this.elementRef = this.myElement;
+*/
+
         if (this.item.value) {
             this.query = this.item.value;
             this.filter();

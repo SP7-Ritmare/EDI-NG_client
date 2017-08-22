@@ -6,6 +6,7 @@ import {ITemplateSingleton, ITemplateSPARQL, ITemplateCodelist} from './Template
 import {State} from './State';
 import {Item} from './Item';
 import {availableContexts, Logger} from '../utils/logger';
+import {MetadataService} from '../components/service/MetadataService';
 
 /**
  * Created by fabio on 02/03/2017.
@@ -16,6 +17,8 @@ export interface IQueryOptions {
 }
 
 export class BaseDatasource {
+    static metadataService: MetadataService;
+
     static datasources: BaseDatasource[] = [];
     static logger: Logger = new Logger(availableContexts.DATASOURCE);
     static counter = 0;
@@ -103,7 +106,11 @@ export class BaseDatasource {
                 }
             });
         } else {
-            console.error('endpoint undefined for datasource', this.id);
+            if ( !this.endpoint ) {
+                console.error('endpoint undefined for datasource', this.id);
+            } else {
+                // console.error('$search_param is still in the query', this.id, options, query);
+            }
         }
     }
 
@@ -196,7 +203,7 @@ export class CodelistDatasource extends BaseDatasource implements ICodelist {
         BaseDatasource.logger.log('Codelist fromTemplate', input);
         this.id = input['_xml:id'] as string;
         this.uri = input.uri;
-        this.url = input.url || State.template.settings.sparqlEndpoint;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
         let endpointType = EndpointType.find(input._endpointType);
         BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
         this.endpoint = Endpoint.find(endpointType, this.url);
@@ -225,7 +232,7 @@ export class SPARQLDatasource extends BaseDatasource implements ISPARQL {
     fromTemplate(input: ITemplateSPARQL): void {
         BaseDatasource.logger.log('SPARQL fromTemplate', input);
         this.id = input['_xml:id'] as string;
-        this.url = input.url || State.template.settings.sparqlEndpoint;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
         this.query = input.query;
 
         let endpointType = EndpointType.find(input._endpointType);
@@ -256,7 +263,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
         BaseDatasource.logger.log('fixTriggerItem');
         if (this.triggerItem) {
             if (this.triggerItem.indexOf('_uri') >= 0) {
-                this.triggerItemObject = State.getItem(this.triggerItem.replace('_uri', ''));
+                this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem.replace('_uri', ''));
                 if (this.triggerItemObject) {
                     BaseDatasource.logger.log('creating observer for', this.triggerItem);
                     this.triggerItemObject.valueObject().subscribe(
@@ -277,7 +284,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
                     console.error('trigger item ', this.triggerItem, ' not found');
                 }
             } else {
-                this.triggerItemObject = State.getItem(this.triggerItem);
+                this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem);
                 if (this.triggerItemObject) {
                     this.triggerItemObject.valueObject().subscribe(
                         res => {
@@ -308,7 +315,7 @@ export class SingletonDatasource extends BaseDatasource implements ISPARQL {
     fromTemplate(input: ITemplateSingleton): void {
         BaseDatasource.logger.log('Singleton fromTemplate', input);
         this.id = input['_xml:id'] as string;
-        this.url = input.url || State.template.settings.sparqlEndpoint;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
         this.query = input.query;
         this.triggerItem = input._triggerItem;
 
