@@ -81,13 +81,42 @@ export class Element {
                 item.datasource = ds;
             }
             let newItem = getItem(e, i.id);
-            console.log('fromEDIML newItem', newItem);
+            if ( newItem ) {
+                item.codeValue = newItem.codeValue;
+                item.labelValue = newItem.labelValue;
+                item.urnValue = newItem.urnValue;
+                item.languageNeutral = newItem.languageNeutral;
+                item.value = newItem.value;
 
-            item.codeValue = newItem.codeValue;
-            item.labelValue = newItem.labelValue;
-            item.urnValue = newItem.urnValue;
-            item.languageNeutral = newItem.languageNeutral;
-            item.value = newItem.value;
+            } else {
+                if ( i.dataType == 'boundingBox' ) {
+                    console.log('boundingBox found', getItem(e, i.id + '_westLongitude'));
+                    let westLong = getItem(e, i.id + '_westLongitude');
+                    item.westLongitude = {
+                        hasPath: westLong.path,
+                        value: westLong.value
+                    }
+                    let eastLong = getItem(e, i.id + '_eastLongitude');
+                    item.eastLongitude = {
+                        hasPath: eastLong.path,
+                        value: eastLong.value
+                    }
+                    let northLat = getItem(e, i.id + '_northLatitude');
+                    item.northLatitude = {
+                        hasPath: northLat.path,
+                        value: northLat.value
+                    }
+                    let southLat = getItem(e, i.id + '_southLatitude');
+                    item.southLatitude = {
+                        hasPath: southLat.path,
+                        value: southLat.value
+                    }
+
+                    console.log('fromEDIML - partial item', item);
+                }
+                console.log('ERROR - newItem is undefined', i.id);
+            }
+            console.log('fromEDIML newItem', newItem);
 
             console.log('fromEDIML adding item', item);
             items.push(item);

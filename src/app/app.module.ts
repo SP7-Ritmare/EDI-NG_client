@@ -43,12 +43,13 @@ import { CatalogueListComponent } from './components/catalogue-list/catalogue-li
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { TimeComponent } from './components/ediItem/time/time.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {CoreService} from './core.service';
 
 const appRoutes: Routes = [
     {path: 'select', component: TemplateSelectorComponent},
     {path: 'catalogue-list', component: CatalogueListComponent},
-    {path: ':template', component: MainLayoutComponent},
     {path: 'debug', component: DebugWindowComponent},
+    {path: ':template', component: MainLayoutComponent},
     {
         path: '',
         redirectTo: '/select',
@@ -119,6 +120,7 @@ export function ConfigLoader(configService: ConfigService) {
         FlexLayoutModule
     ],
     providers: [
+        CoreService,
         MetadataService,
         CatalogueService,
         ConfigService,

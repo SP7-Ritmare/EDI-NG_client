@@ -23,6 +23,7 @@ import {MetadataService} from './MetadataService';
 
 @Injectable()
 export class EDITemplate {
+    static logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
     timezones: any[] = [];
     path: string;
     x2js: XML2JSON = new XML2JSON();
@@ -47,7 +48,7 @@ export class EDITemplate {
         this.http.get(url)
             .map(res => res.json())
             .subscribe( res => {
-                console.log('timezones', res);
+                EDITemplate.logger.log('timezones', res);
                 this.timezones = res;
                 for ( let t of this.timezones ) {
                     t.formattedOffset = (t.offset >= 0 ? '+' : '') + this.minTommss(t.offset);
@@ -65,19 +66,19 @@ export class EDITemplate {
     }
 
     getTimezone(s: string) {
-        // console.log('getTimezone', s);
+        // EDITemplate.logger.log('getTimezone', s);
         for ( let t of this.timezones ) {
             if ( t.abbr == s ) {
-                // console.log('getTimezone', 'found', t);
+                // EDITemplate.logger.log('getTimezone', 'found', t);
                 return t;
             }
         }
     }
 
     private importEndpointTypes() {
-        console.log('importEndpointTypes', this.contents.endpointTypes);
+        EDITemplate.logger.log('importEndpointTypes', this.contents.endpointTypes);
         for ( let et of this.contents.endpointTypes.endpointType ) {
-            console.log(et);
+            EDITemplate.logger.log(et);
             let endpointType: EndpointType = new EndpointType(et);
         }
     }
@@ -86,12 +87,12 @@ export class EDITemplate {
         let defaultMetadataEndpoint = this.contents.settings.metadataEndpoint;
         this.metadataService._defaultMetadataEndpoint = defaultMetadataEndpoint;
 
-        console.log('importDatasources', this.contents.datasources);
+        EDITemplate.logger.log('importDatasources', this.contents.datasources);
         for ( let ds of this.contents.datasources.codelist ) {
             let d = new CodelistDatasource();
             d.fromTemplate(ds);
         }
-        console.log('imported codelists', BaseDatasource.datasources);
+        EDITemplate.logger.log('imported codelists', BaseDatasource.datasources);
         for ( let ds of this.contents.datasources.sparql ) {
             let d = new SPARQLDatasource();
             d.fromTemplate(ds);
@@ -100,13 +101,13 @@ export class EDITemplate {
             let d = new SingletonDatasource();
             d.fromTemplate(ds);
         }
-        console.log('imported datasources', BaseDatasource.datasources);
+        EDITemplate.logger.log('imported datasources', BaseDatasource.datasources);
 /*
         for ( let dsType in this.contents.datasources ) {
             if ( this.contents.datasources.hasOwnProperty(dsType) ) {
-                console.log('importDatasource dsType', dsType);
+                EDITemplate.logger.log('importDatasource dsType', dsType);
                 for ( let ds of (this.contents.datasources as any)[dsType] ) {
-                    console.log('importDatasource ds', ds);
+                    EDITemplate.logger.log('importDatasource ds', ds);
                 }
             }
         }
@@ -123,7 +124,7 @@ export class EDITemplate {
 
     private fixArrays() {
         let object: any = this.contents;
-        console.log('fixArrays', this.contents);
+        EDITemplate.logger.log('fixArrays', this.contents);
         if (!isArray(object.group)) {
             object.group = [object.group];
         }
@@ -132,11 +133,11 @@ export class EDITemplate {
         }
         if (!isArray(object.datasources)) {
 //            object.datasources = [object.datasources];
-            console.log('object.datasources', object.datasources);
+            EDITemplate.logger.log('object.datasources', object.datasources);
             // let temp: any[] = [];
             for ( let ds in object.datasources ) {
                 if ( object.datasources.hasOwnProperty(ds) ) {
-                    console.log('fixDatasources', ds, object.datasources[ds]);
+                    EDITemplate.logger.log('fixDatasources', ds, object.datasources[ds]);
                     if ( !isArray(object.datasources[ds]) ) {
                         // temp.push([object.datasources[ds]]);
                         object.datasources[ds] = [object.datasources[ds]];
@@ -146,7 +147,7 @@ export class EDITemplate {
                 }
             }
             // object.datasources = temp;
-            console.log('object.datasources out', object.datasources);
+            EDITemplate.logger.log('object.datasources out', object.datasources);
         }
 
         for (let g of object.group) {
@@ -177,18 +178,18 @@ export class EDITemplate {
 
         };
 
-        console.log('fixGroupsElementsAndItems', object);
+        EDITemplate.logger.log('fixGroupsElementsAndItems', object);
         for (let g of object.group) {
-            console.log('group', g);
+            EDITemplate.logger.log('group', g);
             let elements: (Element|AlternativeGroup)[] = [];
             let doingAlternativeGroup = false;
             let currentAlternativeGroup: AlternativeGroup = new AlternativeGroup();
             for (let e of g.element) {
-                console.log('element', e);
+                EDITemplate.logger.log('element', e);
 
                 let temp: Element = new Element();
                 temp.fromTemplateElement(e);
-                console.log('created element', temp);
+                EDITemplate.logger.log('created element', temp);
                 if ( !doingAlternativeGroup && e['_alternativeTo'] ) {
                     doingAlternativeGroup = true;
                     currentAlternativeGroup = new AlternativeGroup();
@@ -239,7 +240,7 @@ export class EDITemplate {
                 State.originalTemplate = res.text();
                 this.contents = this.x2js.xml2json(res.text()).template;
                 this.inferVersion();
-                console.log('template version is ' + State.templateVersion);
+                EDITemplate.logger.log('template version is ' + State.templateVersion);
                 this.contents = this.fixArrays();
                 this.contents = this.fixBooleans();
 
@@ -250,12 +251,12 @@ export class EDITemplate {
 
                 this.contents = this.fixGroupsElementsAndItems();
 
-                console.log(1111111);
+                EDITemplate.logger.log(1111111);
                 this.fixDatasources();
-                console.log(2222222);
+                EDITemplate.logger.log(2222222);
 
                 State.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
-                console.log('Contents: ', this.contents);
+                EDITemplate.logger.log('Contents: ', this.contents);
                 this.loading = false;
                 return this.contents;
             })

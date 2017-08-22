@@ -13,24 +13,24 @@
             <div class="flex-item" fxFill>
                 <md-card>
                     <div class="flex-item" fxFlex="20%">
-                        <qr-code [value]="m.fileUri" [size]="100"></qr-code>
+                        <qr-code [value]="m._source.fileUri" [size]="100"></qr-code>
                     </div>
                     <div class="flex-container"
                          fxLayout="column">
                         <md-card-title>{{m._id}}</md-card-title>
-                        <md-card-subtitle>{{m.templateName}}</md-card-subtitle>
+                        <md-card-subtitle>{{m._source.templateName}}</md-card-subtitle>
                         <md-card-content>
                             <div class="flex-container"
                                  fxLayout="row">
                                 <div class="flex-item">
-                                    <p><a md-button [routerLink]="'/' + m.templateName" [queryParams]="{ edit: m._id}" target="_blank">Edit</a>
+                                    <p><a md-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}" target="_blank">Edit</a>
                                     </p>
                                 </div>
                                 <div class="flex-item">
-                                    <p><a md-button href="{{m.fileUri}}" target="_blank">EDIML</a></p>
+                                    <p><a md-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
                                 </div>
                                 <div class="flex-item">
-                                    <p><a md-button href="{{m.fileUri}}.xml" target="_blank">XML</a></p>
+                                    <p><a md-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
                                 </div>
                             </div>
 

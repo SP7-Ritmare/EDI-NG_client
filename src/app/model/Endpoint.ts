@@ -14,6 +14,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class Endpoint {
+    static logger = new Logger(availableContexts.ENDPOINT);
     static endpoints: Endpoint[] = [];
     static http: Http;
     private endpointType: EndpointType;
@@ -54,11 +55,11 @@ export class Endpoint {
                     headers: headers
                 });
 
-                console.log('HTTP GET ' + qs);
+                Endpoint.logger.log('HTTP GET ' + qs);
                 Endpoint.http
                     .get(qs, options)
                     .map( res => {
-                        console.log('Res: ', res);
+                        Endpoint.logger.log('Res: ', res);
                         if ( this.endpointType.contentType === ContentTypes.JSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSONP ) {
@@ -69,11 +70,11 @@ export class Endpoint {
                     // .catch((error: any) => Observable.throw(error || 'Server error'));
                     .subscribe(
                         res => {
-                            console.log('endpoint query results', res);
+                            Endpoint.logger.log('endpoint query results', res);
                             result.next(res);
                         },
                         err => {
-                            console.log(err);
+                            Endpoint.logger.log(err);
                         }
                     )
 

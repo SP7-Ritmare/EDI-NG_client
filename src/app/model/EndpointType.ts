@@ -53,7 +53,7 @@ export interface IFunction {
 
 export class EndpointType implements IEndpointType {
     static endpointTypes: EndpointType[] = [];
-
+    static logger = new Logger(availableContexts.ENDPOINTTYPE);
     id: string;
     method: HTTPMethod;
     queryParameter: string;

@@ -5,8 +5,29 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-date-range',
     template: `
-        <my-date-range-picker [options]="myDateRangePickerOptions"
-                              (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>
+<!--
+        <pre>{{item | removeCyclic | json}}</pre>
+-->
+        <div class="col-md-12">
+            <div class="startDate">
+                <div class="form form-label itemLabel">
+                    <div *ngFor="let l of item.start.label">
+                        <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                        <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="endDate">
+                <div class="form form-label itemLabel">
+                    <div *ngFor="let l of item.end.label">
+                        <div *ngIf="l['_xml:lang'] == interfaceLanguage && item.mandatory" class="itemMandatory">{{l.__text}}</div>
+                        <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
+                    </div>
+                </div>
+            </div>
+            <my-date-range-picker [options]="myDateRangePickerOptions"
+                                  (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>
+        </div>
     `
 })
 

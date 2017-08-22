@@ -1,13 +1,14 @@
 import {Response} from '@angular/http';
 import {IFunction} from './EndpointType';
+import {availableContexts, Logger} from '../utils/logger';
 /**
  * Created by fabio on 08/03/2017.
  */
 
 export class EndpointTypeAdapter {
-
+    static logger = new Logger(availableContexts.ENDPOINTTYPE);
     static sparqlAdapter(dataset: any): any[] {
-        console.log('SPARQL adapter', dataset);
+        EndpointTypeAdapter.logger.log('SPARQL adapter', dataset);
             let data = (dataset as any).results.bindings;
             let results: any[] = [];
             for ( let i = 0; i < data.length; i++ ) {
@@ -20,13 +21,13 @@ export class EndpointTypeAdapter {
                 }
                 results.push(record);
             }
-            console.log('SPARQL adapter results: ', results);
+            EndpointTypeAdapter.logger.log('SPARQL adapter results: ', results);
             return results;
     }
 
     static jsonAdapter(res: any): any[] {
         let retVal = res.json();
-        console.log('JSON adapter');
+        EndpointTypeAdapter.logger.log('JSON adapter');
         return retVal;
     }
 }

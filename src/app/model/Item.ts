@@ -6,12 +6,14 @@ import {Visualisation} from './Visualisation';
 import {MetadataService} from '../components/service/MetadataService';
 import {IValueObject, ValueObject} from './ValueObject';
 import {NgZone} from '@angular/core';
+import {availableContexts, Logger} from '../utils/logger';
 
 /**
  * Created by fabio on 05/03/2017.
  */
 
 export class Item {
+    static logger = new Logger(availableContexts.ITEM);
     static metadataService: MetadataService;
     static gmlId = 1;
     id: string;
@@ -41,6 +43,8 @@ export class Item {
     westLongitude: any;
     northLatitude: any;
     southLatitude: any;
+    start: any;
+    end: any;
     queryStringParameter: string;
 
 
@@ -51,7 +55,7 @@ export class Item {
     }
 
     set value(value: any) {
-        console.log('set value', this.id, value);
+        Item.logger.log('set value', this.id, value);
         this._value = value;
         this._valueObject.next(value);
     }
@@ -79,7 +83,7 @@ export class Item {
                     } else if ( this.dataType === 'gmlId' ) {
                         this.value = '' + (Item.gmlId++);
                     } else if ( this.dataType === 'sensorID' ) {
-                        console.log('sensorID', i);
+                        Item.logger.log('sensorID', i);
                         if ( i.hasValue === 'auto' ) {
                             Item.metadataService.getCatalogueMetadatumURL()
                                 .subscribe( res => {
@@ -87,7 +91,7 @@ export class Item {
                                 })
                         }
                     } else {
-                        console.log('fromTemplateItem', this.id, 'else', this.dataType);
+                        Item.logger.log('fromTemplateItem', this.id, 'else', this.dataType);
                         this.value = i.hasValue;
                     }
                 }
@@ -110,7 +114,7 @@ export class Item {
     fromTemplateItem(templateItem: any, elementId: string) {
         let i: any = templateItem;
 
-        console.log('fromTemplateItem', i);
+        Item.logger.log('fromTemplateItem', i);
         this.elementId = elementId;
         if (i.label) {
             this.label = (Array.isArray(i.label) ? i.label : [i.label]);
@@ -136,8 +140,13 @@ export class Item {
             this.queryStringParameter = i['_queryStringParameter'];
             this.outIndex = i['_outIndex'];
 
+            if ( this.dataType === 'dateRange' ) {
+                Item.logger.log('THE DATERANGE ITEM', templateItem);
+                this.start = i.start;
+                this.end = i.end;
+            }
             if (this.dataType == 'boundingBox') {
-                console.log('THE BOUNDING BOX ITEM', templateItem);
+                Item.logger.log('THE BOUNDING BOX ITEM', templateItem);
                 this.eastLongitude = i.eastLongitude;
                 if (i.eastLongitude['_queryStringParameter']) {
                     this.eastLongitude.value = State.getQuerystringParameter(i.eastLongitude['_queryStringParameter'])
@@ -162,12 +171,12 @@ export class Item {
             }
             if (i['_datasource']) {
                 this.datasource = BaseDatasource.find(i['_datasource']);
-                console.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
+                Item.logger.log('item', this.id, 'datasource', i['_datasource'], this.datasource);
             }
 
             if (this.queryStringParameter) {
                 if (State.getQuerystringParameter(this.queryStringParameter)) {
-                    console.log('query parameter', this.queryStringParameter, State.getQuerystringParameter(this.queryStringParameter));
+                    Item.logger.log('query parameter', this.queryStringParameter, State.getQuerystringParameter(this.queryStringParameter));
                     this.value = State.getQuerystringParameter(this.queryStringParameter);
                 }
             }
@@ -181,7 +190,7 @@ export class Item {
                 } else if (this.dataType === 'gmlId') {
                     this.value = '' + (Item.gmlId++);
                 } else if (this.dataType === 'sensorID') {
-                    console.log('sensorID', i);
+                    Item.logger.log('sensorID', i);
                     if (i.hasValue === 'auto') {
                         Item.metadataService.getCatalogueMetadatumURL()
                             .subscribe(res => {
@@ -189,7 +198,7 @@ export class Item {
                             })
                     }
                 } else {
-                    console.log('fromTemplateItem', this.id, 'else', this.dataType);
+                    Item.logger.log('fromTemplateItem', this.id, 'else', this.dataType);
                     this.value = i.hasValue;
                 }
             }

@@ -17,8 +17,10 @@ export const availableContexts = {
     ENDPOINTTYPE: 'endpointtype',
     ENDPOINT: 'endpoint',
     ITEM: 'item',
+    ITEM_COMPONENT: 'itemComponent',
     SPARQL: 'sparql',
-    EDI_TEMPLATE_SERVICE: 'EDI_TEMPLATE_SERVICE'
+    EDI_TEMPLATE_SERVICE: 'EDI_TEMPLATE_SERVICE',
+    STATE: 'state'
 }
 export const enabledContexts: any[] = [
     /*
@@ -26,9 +28,9 @@ export const enabledContexts: any[] = [
      'duplicator',
      availableContexts.DATASOURCE,
      availableContexts.EDI
-     */
     availableContexts.ENDPOINT,
     availableContexts.ENDPOINTTYPE
+     */
 ];
 
 /*
@@ -51,12 +53,12 @@ export class Logger {
         this._context = context;
     }
 
-    log(arg: any) {
+    log(...args: any[]) {
         if (enabledContexts.some(x => x === this._context)) {
             if (this.outputContext) {
                 console.error('context: ' + this._context);
             }
-            console.log(this._context, arg);
+            console.log(this._context, args);
         }
     }
 

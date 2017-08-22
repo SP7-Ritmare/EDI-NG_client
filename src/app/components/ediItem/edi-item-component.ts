@@ -8,6 +8,7 @@ import {MainLayoutComponent} from '../layout/main-layout-component';
 import {EdiElementComponent} from '../ediElement/edi-element-component';
 import {State} from '../../model/State';
 import {CodelistDatasource, SPARQLDatasource, SingletonDatasource, BaseDatasource} from '../../model/Datasource';
+import {availableContexts, Logger} from '../../utils/logger';
 @Component({
     selector: 'app-edi-item',
     templateUrl: './edi-item-component.html',
@@ -15,6 +16,7 @@ import {CodelistDatasource, SPARQLDatasource, SingletonDatasource, BaseDatasourc
     providers: []
 })
 export class EdiItemComponent implements OnInit {
+    static logger = new Logger(availableContexts.ITEM_COMPONENT);
     interfaceLanguage: string;
     datasource: BaseDatasource;
     possibleValues: any[];
@@ -26,19 +28,19 @@ export class EdiItemComponent implements OnInit {
         State._interfaceLanguage.asObservable().subscribe(
             res => this.interfaceLanguage = res
         );
-        console.log('init text box', this.item.id, this.item.datasource, this.item.dataType);
+        EdiItemComponent.logger.log('init text box', this.item.id, this.item.datasource, this.item.dataType);
         if (this.item.datasource && this.item.dataType === 'select') {
             // this.item.datasource.refresh();
             this.item.datasource._currentRow.subscribe(
                 res => {
-                    console.log('ds timeChange on item', this.item.id, res, this.item);
+                    EdiItemComponent.logger.log('ds timeChange on item', this.item.id, res, this.item);
                     this.item.value = res[this.item.field];
                 },
                 err => {
-                    console.log('ds timeChange error', err);
+                    EdiItemComponent.logger.log('ds timeChange error', err);
                 },
                 () => {
-                    console.log('ds timeChange complete');
+                    EdiItemComponent.logger.log('ds timeChange complete');
                 }
             )
         }

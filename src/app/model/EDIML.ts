@@ -187,6 +187,48 @@ export class EDIML {
         return [itemEast, itemWest, itemNorth, itemSouth];
     }
 
+    createDateRangeItems(i: Item) {
+        // TODO: implement this
+        let itemStart: IEDIMLItem = {
+            id: i.elementId + '_' + i.index + '_eastLongitude',
+            hasIndex: i.index,
+            element_id: i.elementId,
+            codeValue: i.codeValue,
+            datasource: ( i.datasource ? i.datasource.id : '' ),
+            datatype: i.dataType,
+            fixed: ( i.fixed ? 'true' : 'false'),
+            isLanguageNeutral: ( i.isLanguageNeutral ? 'true' : 'false' ),
+            labelValue: i.start.value,
+            urnValue: i.urnValue,
+            languageNeutral: i.languageNeutral,
+            value: i.start.value,
+            outIndex: i.outIndex ? '' + i.outIndex : undefined,
+            path: i.start.hasPath,
+            useCode: ( i.useCode ? 'true' : 'false' ),
+            useURN: ( i.useURN ? 'true' : 'false')
+        }
+        let itemEnd: IEDIMLItem = {
+            id: i.elementId + '_' + i.index + '_westLongitude',
+            hasIndex: i.index,
+            element_id: i.elementId,
+            codeValue: i.codeValue,
+            datasource: ( i.datasource ? i.datasource.id : '' ),
+            datatype: i.dataType,
+            fixed: ( i.fixed ? 'true' : 'false'),
+            isLanguageNeutral: ( i.isLanguageNeutral ? 'true' : 'false' ),
+            labelValue: i.end.value,
+            urnValue: i.urnValue,
+            languageNeutral: i.languageNeutral,
+            value: i.end.value,
+            outIndex: i.outIndex ? '' + i.outIndex : undefined,
+            path: i.end.hasPath,
+            useCode: ( i.useCode ? 'true' : 'false' ),
+            useURN: ( i.useURN ? 'true' : 'false')
+        }
+
+        return [itemStart, itemEnd];
+    }
+
     constructor(public template: ITemplate) {
         console.log('EDIML constructor', template);
         this.contents.generator = 'EDI-NG_CLient v.3.0';
@@ -225,6 +267,12 @@ export class EDIML {
                         if ( i.dataType == 'boundingBox' ) {
                             // TODO:
                             let temp = this.createBoundingBoxItems(i);
+                            for (let t of temp) {
+                                element.items.item.push(t);
+                            }
+                        } else if ( i.dataType == 'dateRange' ) {
+                            // TODO:
+                            let temp = this.createDateRangeItems(i);
                             for ( let t of temp ) {
                                 element.items.item.push(t);
                             }

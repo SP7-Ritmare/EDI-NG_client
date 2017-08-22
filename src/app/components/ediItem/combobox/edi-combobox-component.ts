@@ -8,6 +8,7 @@ import {MainLayoutComponent} from '../../layout/main-layout-component';
 import {EdiElementComponent} from '../../ediElement/edi-element-component';
 import {EdiItemComponent} from '../edi-item-component';
 import {State} from '../../../model/State';
+import {availableContexts, Logger} from '../../../utils/logger';
 @Component({
     selector: 'app-edi-combobox',
     template: `
@@ -21,6 +22,7 @@ import {State} from '../../../model/State';
     styleUrls: ['./edi-combobox-component.css']
 })
 export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
+    static logger = new Logger(availableContexts.COMBO);
     interfaceLanguage: string;
     currentValue: string;
     possibleValues: any[] = [];
@@ -31,19 +33,19 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
             c: value.value
         };
         this.datasource.setCurrentRow(values);
-        console.log('COMBOBOX Component', 'combo select', this.item.id, value, this.datasource.currentRow);
+        EdiComboboxComponent.logger.log('COMBOBOX Component', 'combo select', this.item.id, value, this.datasource.currentRow);
         if (this.datasource.currentRow) {
-            console.log('COMBOBOX Component', 'current row', values, this.datasource.currentRow);
+            EdiComboboxComponent.logger.log('COMBOBOX Component', 'current row', values, this.datasource.currentRow);
             this.item.value = this.datasource.currentRow;
-            console.log('new value object', this.item.value);
+            EdiComboboxComponent.logger.log('new value object', this.item.value);
             this.item.labelValue = (this.item.value.a ? this.item.value.a : this.item.value.l);
             this.item.codeValue = this.item.value.c;
             this.item.urnValue = this.datasource.currentRow.urn;
             this.item.languageNeutral = this.datasource.currentRow.z;
             this.currentValue = this.item.codeValue;
-            console.log('COMBOBOX Component', 'new value', this.item.id, this.currentValue);
+            EdiComboboxComponent.logger.log('COMBOBOX Component', 'new value', this.item.id, this.currentValue);
         } else {
-            console.log('COMBOBOX Component', 'no current row on combo');
+            EdiComboboxComponent.logger.log('COMBOBOX Component', 'no current row on combo');
         }
     }
 
@@ -61,12 +63,12 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
     ngAfterViewInit() {
         if (this.item) {
             this.datasource = this.item.datasource;
-            console.log('COMBOBOX Component', 'init combo on item ', this.item, 'datasource', this.datasource);
+            EdiComboboxComponent.logger.log('COMBOBOX Component', 'init combo on item ', this.item, 'datasource', this.datasource);
 
             if (this.datasource) {
                 this.datasource.results.subscribe(
                     res => {
-                        console.log('COMBOBOX Component', 'Item', this.item.id, this.item.codeValue, 'received data', res);
+                        EdiComboboxComponent.logger.log('COMBOBOX Component', 'Item', this.item.id, this.item.codeValue, 'received data', res);
                         this.possibleValues = res;
                         if (res.length > 0 && this.item.codeValue && this.item.codeValue !== '' && !this.currentValue) {
                             this.currentValue = this.item.codeValue;
@@ -76,17 +78,17 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
                         }
                         /*
                          if ( res.length > 0 && this.currentValue ) {
-                         console.log('COMBOBOX Component', 'selecting row', res, this.item, this.currentValue);
+                         EdiComboboxComponent.logger.log('COMBOBOX Component', 'selecting row', res, this.item, this.currentValue);
                          this.selectRow({
                          value: this.currentValue
                          });
                          } else {
-                         console.log('COMBOBOX Component', 'not selecting row', res, this.item, this.currentValue);
+                         EdiComboboxComponent.logger.log('COMBOBOX Component', 'not selecting row', res, this.item, this.currentValue);
                          }
                          */
                     },
                     err => {
-                        console.log('COMBOBOX Component', 'Item data fetch error ' + this.item.id, err);
+                        EdiComboboxComponent.logger.log('COMBOBOX Component', 'Item data fetch error ' + this.item.id, err);
                     });
                 this.datasource.refresh();
             }

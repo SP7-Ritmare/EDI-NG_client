@@ -8,6 +8,7 @@ import {MainLayoutComponent} from '../../layout/main-layout-component';
 import {EdiElementComponent} from '../../ediElement/edi-element-component';
 import {EdiItemComponent} from '../edi-item-component';
 import {State} from '../../../model/State';
+import {availableContexts, Logger} from '../../../utils/logger';
 @Component({
     selector: 'app-edi-textbox',
     template: `
@@ -24,6 +25,7 @@ import {State} from '../../../model/State';
     providers: []
 })
 export class EdiTextboxComponent extends EdiItemComponent implements OnInit {
+    static logger = new Logger(availableContexts.TEXTBOX);
     interfaceLanguage: string;
     pattern: string;
     errorMessage: string;
@@ -40,7 +42,7 @@ export class EdiTextboxComponent extends EdiItemComponent implements OnInit {
         return '';
     }
     onChange(event: any) {
-        console.log('textbox change', this.item.id, event, this.item.value);
+        EdiTextboxComponent.logger.log('textbox change', this.item.id, event, this.item.value);
     }
     ngOnInit() {
       if ( !this.item.value ) {
@@ -70,7 +72,7 @@ export class EdiTextboxComponent extends EdiItemComponent implements OnInit {
                 '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
                 '(\\#[-a-z\\d_]*)?$','iu');
 */
-            console.log('RegEx', oldEDIRegexString);
+            EdiTextboxComponent.logger.log('RegEx', oldEDIRegexString);
             this.pattern = oldEDIRegexString;
             this.errorMessage = this.placeholder() + ' should be a URI';
         }

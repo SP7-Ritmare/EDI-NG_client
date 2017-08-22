@@ -6,7 +6,9 @@
 </div>
 -->
 <p>Interface language: {{interfaceLanguage}}</p>
+<!--
 <pre>{{item.westLongitude.label | json}}</pre>
+-->
 <div class="col-md-12">
     <div class="west">
         <div class="form form-label itemLabel">
@@ -15,7 +17,7 @@
                 <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
             </div>
         </div>
-        <input type="text" [(ngModel)]="item.westLongitude.value">
+        <input type="text" [(ngModel)]="item.westLongitude.value" (keyup)="coordinateChange()">
     </div>
     <div class="east">
         <div class="form form-label itemLabel">
@@ -24,7 +26,7 @@
                 <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
             </div>
         </div>
-        <input type="text" [(ngModel)]="item.eastLongitude.value">
+        <input type="text" [(ngModel)]="item.eastLongitude.value" (keyup)="coordinateChange()">
     </div>
     <div class="north">
         <div class="form form-label itemLabel">
@@ -33,7 +35,7 @@
                 <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
             </div>
         </div>
-        <input type="text" [(ngModel)]="item.northLatitude.value">
+        <input type="text" [(ngModel)]="item.northLatitude.value" (keyup)="coordinateChange()">
     </div>
     <div class="south">
         <div class="form form-label itemLabel">
@@ -42,7 +44,7 @@
                 <div *ngIf="l['_xml:lang'] == interfaceLanguage && !item.mandatory" class="itemNotMandatory">{{l.__text}}</div>
             </div>
         </div>
-        <input type="text" [(ngModel)]="item.southLatitude.value">
+        <input type="text" [(ngModel)]="item.southLatitude.value" (keyup)="coordinateChange()">
     </div>
 </div>
 <div class="map-container">

@@ -1,38 +1,42 @@
 <!--<pre>{{ element.label | json }}</pre>-->
-<!--<pre>{{ element | json }}</pre> -->
-<div *ngIf="showTitle()">
-    <div *ngFor="let l of element.label" class="elementLabel">
-        <div *ngIf="element.mandatory && l['_xml:lang'] == interfaceLanguage" class="elementMandatory">
-            {{l.__text}}
+<!--
+<pre>{{ element | removeCyclic | json }}</pre>
+-->
+<div *ngIf="!element.fixed">
+    <div *ngIf="showTitle()">
+        <div *ngFor="let l of element.label" class="elementLabel">
+            <div *ngIf="element.mandatory && l['_xml:lang'] == interfaceLanguage" class="elementMandatory">
+                {{l.__text}}
+            </div>
+            <div *ngIf="!element.mandatory && l['_xml:lang'] == interfaceLanguage" class="elementNotMandatory">
+                {{l.__text}}
+            </div>
         </div>
-        <div *ngIf="!element.mandatory && l['_xml:lang'] == interfaceLanguage" class="elementNotMandatory">
-            {{l.__text}}
+        <div *ngFor="let h of element.help">
+            <md-icon *ngIf="h['_xml:lang'] == interfaceLanguage" data-toggle="tooltip"
+                     data-placement="right" title="{{h.__text}}">
+                info
+            </md-icon>
         </div>
     </div>
-    <div *ngFor="let h of element.help">
-        <md-icon *ngIf="h['_xml:lang'] == interfaceLanguage" data-toggle="tooltip"
-                 data-placement="right" title="{{h.__text}}">
-            info
-        </md-icon>
+    <div *ngIf="showRemoveButton()">
+        <button href="#" class="btn btn-danger" (click)="removeElement()">
+            <div *ngFor="let l of element.label">
+                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>clear</md-icon> <!--{{l.__text}}--></span>
+            </div>
+        </button>
     </div>
-</div>
-<div *ngIf="showRemoveButton()">
-    <button href="#" class="btn btn-danger" (click)="removeElement()">
-        <div *ngFor="let l of element.label">
-            <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>clear</md-icon> <!--{{l.__text}}--></span>
-        </div>
-    </button>
-</div>
 
-<div *ngFor="let i of element.items">
-    <app-edi-item [item]="i"></app-edi-item>
-</div>
+    <div *ngFor="let i of element.items">
+        <app-edi-item [item]="i"></app-edi-item>
+    </div>
 
-<div *ngIf="showButton()">
-    <button class="btn btn-primary" (click)="duplicateElement($event)">
-        <div *ngFor="let l of element.label">
-            <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>content_copy</md-icon> <!--{{l.__text}}--></span>
-        </div>
-    </button>
+    <div *ngIf="showButton()">
+        <button class="btn btn-primary" (click)="duplicateElement($event)">
+            <div *ngFor="let l of element.label">
+                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>content_copy</md-icon> <!--{{l.__text}}--></span>
+            </div>
+        </button>
+    </div>
 </div>
 

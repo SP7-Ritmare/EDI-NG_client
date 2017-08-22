@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
 import {State} from '../../../model/State';
+import point = L.point;
+import {availableContexts, Logger} from '../../../utils/logger';
 
 @Component({
     selector: 'app-edi-bounding-box',
@@ -8,11 +10,13 @@ import {State} from '../../../model/State';
     styleUrls: ['./bounding-box.component.css']
 })
 export class BoundingBoxComponent extends EdiItemComponent implements OnInit, AfterViewInit {
+    static logger = new Logger(availableContexts.BBOX);
     interfaceLanguage: string;
     options: any;
     drawOptions: any;
     layersControl: any;
     map: any;
+    drawnItems: any;
 
     north: number;
     south: number;
@@ -60,7 +64,7 @@ export class BoundingBoxComponent extends EdiItemComponent implements OnInit, Af
     }
 
     ngAfterViewInit() {
-        console.log('creating map');
+        BoundingBoxComponent.logger.log('creating map');
         this.map = L.map('map', {
             zoom: 10,
             center: [44.987, 10.03]
@@ -70,8 +74,8 @@ export class BoundingBoxComponent extends EdiItemComponent implements OnInit, Af
             maxZoom: 18
         }).addTo(this.map);
 
-        var drawnItems = new L.FeatureGroup();
-        this.map.addLayer(drawnItems);
+        this.drawnItems = new L.FeatureGroup();
+        this.map.addLayer(this.drawnItems);
         var drawControl = new L.Control.Draw({
             draw: {
                 polygon: false,
@@ -80,17 +84,20 @@ export class BoundingBoxComponent extends EdiItemComponent implements OnInit, Af
                 circle: false
             },
             edit: {
-                featureGroup: drawnItems
+                featureGroup: this.drawnItems
             }
         });
         this.map.addControl(drawControl);
-        console.log('map created', this.map);
+        BoundingBoxComponent.logger.log('map created', this.map);
         this.map.on(L.Draw.Event.CREATED, (e: any) => {
+            this.drawnItems.eachLayer( (layer: any) => {
+                this.drawnItems.removeLayer(layer);
+            })
             var type = e.layerType;
             var layer = e.layer;
             var bounds = e.layer.getBounds();
 
-            console.log('event', e.layer.getBounds());
+            BoundingBoxComponent.logger.log('event', e.layer.getBounds());
             this.item.southLatitude.value = bounds.getSouth();
             this.item.northLatitude.value = bounds.getNorth();
             this.item.eastLongitude.value = bounds.getEast();
@@ -100,28 +107,42 @@ export class BoundingBoxComponent extends EdiItemComponent implements OnInit, Af
                 // Do marker specific actions
             }
             // Do whatever else you need to. (save to db; add to map etc)
-            drawnItems.addLayer(layer);
+            this.drawnItems.addLayer(layer);
         });
-        this.map.on(L.Draw.Event.EDITED, (e: any) => {
+        this.map.on(L.Draw.Event.EDITSTOP, (e: any) => {
             var type = e.layerType;
             var layer = e.layer;
             var bounds = e.layer.getBounds();
 
-            console.log('event', e.layer.getBounds());
+            BoundingBoxComponent.logger.log('event', e.layer.getBounds());
             this.item.southLatitude.value = bounds.getSouth();
             this.item.northLatitude.value = bounds.getNorth();
             this.item.eastLongitude.value = bounds.getEast();
             this.item.westLongitude.value = bounds.getWest();
 
+/*
             if (type === 'marker') {
                 // Do marker specific actions
             }
             // Do whatever else you need to. (save to db; add to map etc)
-            drawnItems.addLayer(layer);
+            this.drawnItems.addLayer(layer);
+*/
         });
         this.map.on(L.Draw.Event.DELETED, (e: any) => {
             // TODO: implement this
         });
+    }
+
+    coordinateChange() {
+        this.drawnItems.eachLayer( (layer: any) => {
+            this.drawnItems.removeLayer(layer);
+        })
+
+        var bounds = L.latLngBounds(L.latLng(parseFloat(this.item.northLatitude.value), parseFloat(this.item.eastLongitude.value)), L.latLng(parseFloat(this.item.southLatitude.value), parseFloat(this.item.westLongitude.value)));
+
+        // add rectangle passing bounds and some basic styles
+        L.rectangle(bounds)  .addTo(this.drawnItems);
+
     }
 
     onMapReady(map: L.Map) {
