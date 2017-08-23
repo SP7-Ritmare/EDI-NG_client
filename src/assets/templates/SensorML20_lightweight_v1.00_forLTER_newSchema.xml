@@ -3,7 +3,7 @@
    <settings>
       <userInterfaceLanguage xml:lang="it"/>
       <metadataLanguage selectionItem="ling_md_1"/>
-      <metadataEndpoint>http://localhost:8080/</metadataEndpoint>
+      <metadataEndpoint>https://enygma.it/edi/</metadataEndpoint>
       <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
       <requiresValidation>true</requiresValidation>
       <baseDocument><![CDATA[

@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef} from '@angular/core';
+import {Component, Input, ElementRef, ViewChildren, ViewChild} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
 import {Item} from '../../../model/Item';
 import {State} from '../../../model/State';
@@ -14,29 +14,36 @@ import {availableContexts, Logger} from '../../../utils/logger';
 
 @Component({
     selector: 'app-edi-autocomplete',
+/*
     host: {
         '(document:click)': 'handleClick($event)',
     },
-    template: `
+*/
+    template: `        
         <md-input-container class="md-icon-float md-block md-title">
             <input
                     mdInput
                     class="form-control" type="text" placeholder="{{placeholder()}}" [(ngModel)]="query"
-                    (keyup)=filter() [required]="item.mandatory"
+                    (keyup)="filter($event); false" [required]="item.mandatory"
             >
-            <div class="suggestions" *ngIf="filteredList.length > 0">
-                <ul *ngFor="let item of filteredList">
-                    <li>
+            <div class="suggestions" [hidden]="filteredList.length <= 0">
+                <select #select size="10" (keyup)="filter($event)">
+                    <option *ngFor="let item of filteredList; let i = index" value="item.c" (click)="select(item)" [selected]="i == selectedItem" [attr.data-index]="i">{{item.l}}
+<!--
                         <a (click)="select(item)" [innerHTML]="item.l"></a>
-                    </li>
-                </ul>
+-->
+                    </option>
+                </select>
             </div>
         </md-input-container>
     `,
     styleUrls: ['./edi-autocomplete-component.css'],
     providers: [EDITemplate]
 })
-export class EdiAutocompleteComponent extends EdiItemComponent {
+export class EdiAutocompleteComponent {
+    @ViewChild('select')
+    combo: ElementRef;
+
     static logger = new Logger(availableContexts.AUTOCOMPLETION);
     interfaceLanguage: string;
     @Input() item: Item;
@@ -44,7 +51,10 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
     data: any[] = [];
     private filteredList: any = [];
     elementRef: any;
+    selectedItem = 0;
 
+    constructor(protected metadataService: MetadataService) {
+    }
 /*
     constructor(protected metadataService: MetadataService, private myElement: ElementRef) {
         super(metadataService);
@@ -71,23 +81,36 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
         return '';
     }
 
-    filter() {
-        if (this.query !== "") {
-            EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
-            this.item.datasource.refresh({searchParam: this.query});
-            this.item.datasource.results.subscribe(res => {
-                this.filteredList = res;
-                if (this.filteredList.length == 1) {
-                    this.select(this.filteredList[0]);
-                }
-            });
-            /*
-             this.filteredList = this.data.filter(function(el: any){
-             return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-             }.bind(this));
-             */
+    filter(event: any) {
+        event.stopPropagation();
+        EdiAutocompleteComponent.logger.log('event', event);
+        if ( event.key == 'ArrowDown' && this.selectedItem < this.filteredList.length - 1 ) {
+            this.selectedItem++;
+        } else if ( event.key == 'ArrowUp' && this.selectedItem > 0 ) {
+            this.selectedItem--;
+        } else if ( event.key == 'Enter'/* && this.selectedItem >= 0 && this.selectedItem < this.filteredList.length*/ ) {
+            EdiAutocompleteComponent.logger.log('Enter pressed', 'selecting', this.selectedItem, this.filteredList[this.selectedItem], this.filteredList);
+            this.select(this.filteredList[this.selectedItem]);
         } else {
-            this.filteredList = [];
+            if (this.query !== "") {
+                EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
+                this.item.datasource.refresh({searchParam: this.query});
+                this.item.datasource.results.subscribe(res => {
+                    this.filteredList = res;
+                    EdiAutocompleteComponent.logger.log('results', this.filteredList);
+                    this.combo.nativeElement.focus();
+                    if (this.filteredList.length == 1) {
+                        this.select(this.filteredList[0]);
+                    }
+                });
+                /*
+                 this.filteredList = this.data.filter(function(el: any){
+                 return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+                 }.bind(this));
+                 */
+            } else {
+                this.filteredList = [];
+            }
         }
     }
 
@@ -125,7 +148,7 @@ export class EdiAutocompleteComponent extends EdiItemComponent {
 
         if (this.item.value) {
             this.query = this.item.value;
-            this.filter();
+            this.filter(null);
         }
     }
 }

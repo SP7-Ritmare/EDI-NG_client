@@ -32,11 +32,12 @@ export const enabledContexts: any[] = [
      availableContexts.EDI
     availableContexts.ENDPOINT,
     availableContexts.ENDPOINTTYPE
-     */
     availableContexts.CATALOGUE,
     availableContexts.ITEM,
     availableContexts.STATE,
     availableContexts.ELEMENT
+     */
+    availableContexts.AUTOCOMPLETION
 ];
 
 /*
