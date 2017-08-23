@@ -65,4 +65,8 @@ export class CatalogueService {
             .map( res => res.json());
     }
 
+    saveTemplate(template: any) {
+        CatalogueService.logger.log('saving template', template);
+    }
+
 }

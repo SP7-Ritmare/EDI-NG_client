@@ -20,6 +20,7 @@ import {Logger, availableContexts} from '../../utils/logger';
 import {AlternativeGroup} from '../../model/AlternativeGroup';
 import {Item} from '../../model/Item';
 import {MetadataService} from './MetadataService';
+import {CatalogueService} from './catalogue.service';
 
 @Injectable()
 export class EDITemplate {
@@ -32,7 +33,7 @@ export class EDITemplate {
     private loading = false;
     state: State;
 
-    constructor(private http: Http, private metadataService: MetadataService) {
+    constructor(private http: Http, private metadataService: MetadataService, private catalogueService: CatalogueService) {
         Item.metadataService = this.metadataService;
         this.state = metadataService.state;
         this.getTimezones();
@@ -260,8 +261,9 @@ export class EDITemplate {
                 this.state.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
                 EDITemplate.logger.log('Contents: ', this.contents);
                 this.loading = false;
+
+                this.catalogueService.saveTemplate(this.contents);
                 return this.contents;
-            })
-            ;
+            });
     }
 }

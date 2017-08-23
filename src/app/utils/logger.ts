@@ -37,7 +37,7 @@ export const enabledContexts: any[] = [
     availableContexts.STATE,
     availableContexts.ELEMENT
      */
-    availableContexts.AUTOCOMPLETION
+    availableContexts.CATALOGUE
 ];
 
 /*

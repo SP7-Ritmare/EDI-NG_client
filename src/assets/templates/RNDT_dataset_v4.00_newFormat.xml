@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../edi_template.xsd">
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="edi_template.xsd">
     <settings>
         <userInterfaceLanguage xml:lang="it"/>
         <metadataLanguage selectionItem="ling_md_1"/>
@@ -1413,7 +1413,7 @@
                     </end>
                 </item>
                 <item hasIndex="3" xml:id="est_temp_3" isFixed="true" hasDatatype="autonumber">
-                    <label>progressivo</label>
+                    <label xml:lang="it">progressivo</label>
                     <hasPath>
                         /gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/@gml:id
                     </hasPath>
