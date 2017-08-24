@@ -37,7 +37,8 @@ export const enabledContexts: any[] = [
     availableContexts.STATE,
     availableContexts.ELEMENT
      */
-    availableContexts.CATALOGUE
+    availableContexts.CATALOGUE,
+    availableContexts.EDI_TEMPLATE_SERVICE
 ];
 
 /*

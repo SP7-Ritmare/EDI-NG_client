@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="edi_template.xsd">
+    <metadata>
+        <family>RNDT</family>
+        <name>RNDT v4.0</name>
+        <description>This template</description>
+    </metadata>
     <settings>
         <userInterfaceLanguage xml:lang="it"/>
         <metadataLanguage selectionItem="ling_md_1"/>

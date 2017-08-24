@@ -67,6 +67,25 @@ export class CatalogueService {
 
     saveTemplate(template: any) {
         CatalogueService.logger.log('saving template', template);
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        this.http
+            .post(this._defaultEDICatalogue + '/templates', template, options)
+            .map(res => res.json())
+            .subscribe(res => {
+                CatalogueService.logger.log('Template sent to catalogue', res);
+                // alert('Your XML has been generated and saved to EDI Catalogue')
+            })
+    }
+
+    getTemplates() {
+        return this.http.get(this._defaultEDICatalogue + '/templates')
+            .map( res => res.json());
+    }
+
+    getTemplate(id: string) {
+        return this.http.get(this._defaultEDICatalogue + '/templates/' + encodeURIComponent(id))
+            .map( res => res.json());
     }
 
 }

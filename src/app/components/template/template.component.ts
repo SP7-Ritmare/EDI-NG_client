@@ -58,27 +58,51 @@ export class TemplateComponent implements AfterViewInit {
             console.log('State is', this.metadataService.state.templateName);
 
             console.log('about to load template', 'assets/templates/' + this.templateName);
-            this.EDITemplate.load('assets/templates/' + this.templateName)
-                .subscribe((res) => {
-                    this.template = res;
-                    this.title = this.metadataService.state.templateName;
-                    if ( this.route.snapshot.queryParams['edit'] ) {
-                        let id = this.route.snapshot.queryParams['edit'];
-                        this.catalogueService.getEDIML(id)
-                            .subscribe( res => {
-                                console.log('loaded EDIML', id, res);
-                                this.metadataService.state.mergeWithEDIML(res);
-                                console.log('merged with EDIML', id, this.metadataService.state.template);
-                                this.catalogueService.setId(id);
-                                console.log('Loading EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
-                                this.loading = false;
-                                console.log('Template loaded: ', res);
-                            })
-                    } else {
-                        this.loading = false;
-                        console.log('Template loaded: ', res);
-                    }
-                });
+            if ( this.route.snapshot.queryParams['catalogue'] ) {
+                this.EDITemplate.loadFromCatalogue(this.templateName)
+                    .subscribe((res) => {
+                        this.template = res;
+                        this.title = this.metadataService.state.templateName;
+                        if ( this.route.snapshot.queryParams['edit'] ) {
+                            let id = this.route.snapshot.queryParams['edit'];
+                            this.catalogueService.getEDIML(id)
+                                .subscribe( res => {
+                                    console.log('loaded EDIML', id, res);
+                                    this.metadataService.state.mergeWithEDIML(res);
+                                    console.log('merged with EDIML', id, this.metadataService.state.template);
+                                    this.catalogueService.setId(id);
+                                    console.log('Loading EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
+                                    this.loading = false;
+                                    console.log('Template loaded: ', res);
+                                })
+                        } else {
+                            this.loading = false;
+                            console.log('Template loaded: ', res);
+                        }
+                    });
+            } else {
+                this.EDITemplate.load('assets/templates/' + this.templateName)
+                    .subscribe((res) => {
+                        this.template = res;
+                        this.title = this.metadataService.state.templateName;
+                        if ( this.route.snapshot.queryParams['edit'] ) {
+                            let id = this.route.snapshot.queryParams['edit'];
+                            this.catalogueService.getEDIML(id)
+                                .subscribe( res => {
+                                    console.log('loaded EDIML', id, res);
+                                    this.metadataService.state.mergeWithEDIML(res);
+                                    console.log('merged with EDIML', id, this.metadataService.state.template);
+                                    this.catalogueService.setId(id);
+                                    console.log('Loading EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
+                                    this.loading = false;
+                                    console.log('Template loaded: ', res);
+                                })
+                        } else {
+                            this.loading = false;
+                            console.log('Template loaded: ', res);
+                        }
+                    });
+            }
         });
     }
     ngAfterViewInit() {

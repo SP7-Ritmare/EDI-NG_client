@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="edi_template.xsd">
+   <metadata>
+      <id>http://templates.get-it.it/SensorML20_lightweight_v1.00_forLTER</id>
+      <family>htto://templates.get-it.it/families/SensorML</family>
+      <name>SensorML 2.0 Lightweight for LTER</name>
+      <description>This template is meant to...</description>
+      <author>http://rdfdata.get-it.it/directory/people/1474</author>
+   </metadata>
    <settings>
       <userInterfaceLanguage xml:lang="it"/>
       <metadataLanguage selectionItem="ling_md_1"/>

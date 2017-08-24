@@ -227,6 +227,37 @@ export class EDITemplate {
 
     }
 
+    loadFromCatalogue(id: string): Observable<any> {
+        this.loading = true;
+
+        // this.state.templateName = filename;
+        let headers = new Headers();
+        headers.append('Accept', 'application/json');
+        Endpoint.http = this.http;
+
+        return this.catalogueService.getTemplate(id)
+            .map(res => {
+                EDITemplate.logger.log('template from catalogue', res);
+                this.contents = res;
+                this.state.template = this.contents;
+
+                this.importEndpointTypes();
+                this.importDatasources();
+
+                this.contents = this.fixGroupsElementsAndItems();
+
+                EDITemplate.logger.log(1111111);
+                this.fixDatasources();
+                EDITemplate.logger.log(2222222);
+
+                this.state.interfaceLanguage = this.contents.settings.userInterfaceLanguage['_xml:lang'];
+                EDITemplate.logger.log('Contents: ', this.contents);
+                this.loading = false;
+
+                return this.contents;
+            });
+    }
+
     load(filename: string): Observable<any> {
         this.loading = true;
 
@@ -246,13 +277,22 @@ export class EDITemplate {
                 EDITemplate.logger.log('template version is ' + this.state.templateVersion);
                 this.contents = this.fixArrays();
                 this.contents = this.fixBooleans();
+                this.contents = this.fixGroupsElementsAndItems();
+
+                try {
+                    this.catalogueService.saveTemplate(this.contents);
+                } catch (e) {
+                    EDITemplate.logger.error(e);
+                }
 
                 this.state.template = this.contents;
 
                 this.importEndpointTypes();
                 this.importDatasources();
 
+/*
                 this.contents = this.fixGroupsElementsAndItems();
+*/
 
                 EDITemplate.logger.log(1111111);
                 this.fixDatasources();
@@ -262,7 +302,6 @@ export class EDITemplate {
                 EDITemplate.logger.log('Contents: ', this.contents);
                 this.loading = false;
 
-                this.catalogueService.saveTemplate(this.contents);
                 return this.contents;
             });
     }

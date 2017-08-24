@@ -8,10 +8,12 @@ import {CatalogueService} from '../service/catalogue.service';
 })
 export class CatalogueListComponent implements OnInit {
     metadata: any[] = [];
+    templates: any[] = [];
     search: any = {
         templateName: ''
     };
     query: string;
+    templatesQuery: string;
 
     constructor(private catalogueService: CatalogueService) {
 /*
@@ -21,10 +23,23 @@ export class CatalogueListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getTemplates();
     }
 
     onKeyUp() {
         this.catalogueService.search(this.query)
             .subscribe( res => this.metadata = res);
+    }
+
+    getTemplates() {
+        this.catalogueService.getTemplates()
+            .subscribe( res => {
+                console.log('receiving templates', res);
+                this.templates = res;
+            });
+    }
+
+    encodeURIComponent(s: any) {
+        return encodeURIComponent(s);
     }
 }

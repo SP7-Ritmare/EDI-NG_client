@@ -8,6 +8,7 @@
     <xs:element name="template">
         <xs:complexType>
             <xs:sequence>
+                <xs:element ref="metadata" minOccurs="0"/>
                 <xs:element ref="settings"/>
                 <xs:element ref="endpointTypes"/>
                 <xs:element ref="datasources"/>
@@ -46,6 +47,17 @@
             <xs:field xpath="./@xml:id"></xs:field>
         </xs:key>
 
+    </xs:element>
+    <xs:element name="metadata">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:anyURI" minOccurs="1" />
+                <xs:element name="family" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+                <xs:element name="author" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
     </xs:element>
     <xs:element name="settings">
         <xs:complexType>
