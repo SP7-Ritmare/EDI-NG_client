@@ -237,6 +237,19 @@ export class EDIML {
         return [itemStart, itemEnd];
     }
 
+    sortItems() {
+        for ( let e of this.contents.element ) {
+            e.items.item = e.items.item.sort( (a, b) => {
+                if ( a.outIndex > b.outIndex ) {
+                    return 1;
+                } else if ( a.outIndex < b.outIndex ) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            })
+        }
+    }
 /*
     static set metadataService(value: MetadataService) {
         EDIML.metadataService = value;
@@ -394,6 +407,7 @@ export class EDIML {
         }
 
         this.contents.element = elements;
+        this.sortItems();
         console.log('EDIML', this.contents);
     }
 }
