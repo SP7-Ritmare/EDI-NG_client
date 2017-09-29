@@ -1,10 +1,9 @@
-#FROM tomcat:9-alpine
+FROM kyma/docker-nginx
 
 # This image is a version of the EDI-NG-Client Docker image
 
 MAINTAINER IREA <developers.mi@irea.cnr.it>
 
-FROM kyma/docker-nginx
 COPY dist/ /var/www
 CMD 'nginx'
 
