@@ -47,8 +47,8 @@
     </div>
     <div class="col-md-12" *ngIf="!EDITemplate.loading">
       <form #form="ngForm">
-        <mat-card class="row" *ngFor="let g of template.group">
-          <div class="col-md-11" [id]="g['_xml:id']">
+        <mat-card class="row" *ngFor="let g of template.group" [id]="g['_xml:id']">
+          <div class="col-md-11">
             <mat-card-header class="card-header primary-color white-text">
               <div *ngFor="let l of g.label">
                 <div class="groupLabel" *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
