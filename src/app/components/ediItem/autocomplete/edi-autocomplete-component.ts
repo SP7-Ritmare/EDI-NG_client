@@ -45,7 +45,7 @@ import {BaseDatasource} from '../../../model/Datasource';
       type='text' [placeholder]='placeholder()' [(ngModel)]='query'
       (keyup)='filter($event); false' [required]='item.mandatory' [matAutocomplete]="auto"
     >
-    <mat-autocomplete #auto='matAutocomplete' autoActiveFirstOption [displayWith]="displayFn" (optionSelected)="select($event)">
+    <mat-autocomplete #auto='matAutocomplete' [displayWith]="displayFn" (optionSelected)="select($event)">
       <mat-option *ngFor='let i of filteredList' [value]='i'>
         {{ i.l }}
       </mat-option>
@@ -110,7 +110,7 @@ export class EdiAutocompleteComponent implements OnInit {
     ]
     event.stopPropagation();
     EdiAutocompleteComponent.logger.log('event', event);
-    if ( event.key.length > 1 ) {
+    if ( event.key === 'ArrowUp' || event.key === 'ArrowDown' ) {
       console.log('discarding key', event.key);
       return;
     }
@@ -119,6 +119,7 @@ export class EdiAutocompleteComponent implements OnInit {
       this.item.datasource.refresh({searchParam: this.query});
       this.item.datasource.results.subscribe(res => {
         this.filteredList = res;
+        this.item.datasource.setCurrentRow({});
         // EdiAutocompleteComponent.logger.log('results', this.filteredList);
         // this.combo.nativeElement.focus();
         /*
@@ -134,6 +135,10 @@ export class EdiAutocompleteComponent implements OnInit {
 	   */
     } else {
       this.filteredList = [];
+/*
+      console.log('clearing current row in datasource', this.item.datasource.id, this.query);
+      this.select({c: null});
+*/
     }
 
 /*
@@ -161,6 +166,13 @@ export class EdiAutocompleteComponent implements OnInit {
       this.item.urnValue = item.urn;
       EdiAutocompleteComponent.logger.log('changed item', this.item);
       this.filteredList = [];
+      this.item.datasource.setCurrentRow(item);
+    } else {
+      this.item.value = null;
+      this.item.labelValue = null;
+      this.item.codeValue = null;
+      this.item.languageNeutral = null;
+      this.item.urnValue = null;
     }
   }
 

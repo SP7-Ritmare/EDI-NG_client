@@ -33,13 +33,14 @@ export const enabledContexts: any[] = [
   availableContexts.ENDPOINTTYPE
   availableContexts.CATALOGUE,
   availableContexts.STATE,
-  availableContexts.ELEMENT
+  availableContexts.ELEMENT,
+  availableContexts.EDI_TEMPLATE_SERVICE
    */
   availableContexts.AUTOCOMPLETION,
   availableContexts.ITEM,
   availableContexts.DATASOURCE,
-  availableContexts.CATALOGUE,
-  availableContexts.EDI_TEMPLATE_SERVICE
+  availableContexts.ITEM_COMPONENT,
+  availableContexts.ELEMENT
 ];
 
 /*

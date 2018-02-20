@@ -4,10 +4,11 @@ import {Utils} from '../utils/Utils';
 import {IEDIMLElement} from './EDIML';
 import {availableContexts, Logger} from '../utils/logger';
 import {MetadataService} from '../components/service/MetadataService';
+import {SingletonDatasource} from './Datasource';
 /**
  * Created by fabio on 05/03/2017.
  */
-const cloneSuffix = "_XritX";
+const cloneSuffix = '_XritX';
 
 export class Element {
     static logger = new Logger(availableContexts.ELEMENT);
@@ -59,12 +60,12 @@ export class Element {
         function getItem(e: any, id: string) {
             Element.logger.log('fromEDIML', 'getItem', e, id);
             for ( let i of e.items ) {
-                if ( i.id == id ) {
+                if ( i.id === id ) {
                     return i;
                 }
             }
         }
-        var _ = require('lodash');
+        const _ = require('lodash');
         Element.logger.log('fromEDIML', e);
         this.id = e.id;
         this.alternativeTo = e.alternativeTo;
@@ -77,8 +78,8 @@ export class Element {
             item.elementId = this.id;
             if ( i.datasource ) {
                 let ds = i.datasource.duplicate();
-                if ( ds.triggerItem ) {
-                    ds.triggerItem = ds.triggerItem;
+                if ( ds instanceof SingletonDatasource ) {
+                    // ds.triggerItem = ds.triggerItem;
                     ds.fixTriggerItem();
                 }
                 Element.logger.log('duplicated datasource', ds);
@@ -93,7 +94,7 @@ export class Element {
                 item.value = newItem.value;
 
             } else {
-                if ( i.dataType == 'boundingBox' ) {
+                if ( i.dataType === 'boundingBox' ) {
                     const templateItem = Element.metadataService.state.getItem(i.id);
                     Element.logger.log('boundingBox found', getItem(e, i.id + '_westLongitude'));
                     let westLong = getItem(e, i.id + '_westLongitude');
@@ -134,12 +135,12 @@ export class Element {
     }
 
     duplicate() {
-        var _ = require('lodash');
+        const _ = require('lodash');
         Element.logger.log('duplicate', this);
         let tempElement = _.cloneDeep(this); //  Object.assign({}, this);
         let instances = Element.metadataService.state.getElementInstances(this.represents_element);
         Element.logger.log('instances of', this.id, instances);
-        let latestInstance: string = '';
+        let latestInstance = '';
         for ( let e of instances ) {
             if ( e.id.length > latestInstance.length ) {
                 latestInstance = e.id;
@@ -148,7 +149,8 @@ export class Element {
         Element.logger.log('latestInstance: ' + latestInstance, instances);
         tempElement.id = latestInstance + cloneSuffix;
         let items: Item[] = [];
-        Element.logger.log('duplicating element ' + this.id + " -> " + tempElement.id);
+        const datasources = [];
+        Element.logger.log('duplicating element ' + this.id + ' -> ' + tempElement.id);
         Element.logger.log('duplicate element items', tempElement.items);
         for ( let i of tempElement.items ) {
             let item = _.cloneDeep(i); // Object.assign({}, i);
@@ -156,18 +158,24 @@ export class Element {
             item.elementId = tempElement.id;
             if ( i.datasource ) {
                 let ds = i.datasource.duplicate();
-                if ( ds.triggerItem ) {
+                if ( ds instanceof SingletonDatasource && ds.triggerItem ) {
                     ds.triggerItem = ds.triggerItem.replace(this.id, tempElement.id);
-                    ds.fixTriggerItem();
                 }
                 Element.logger.log('duplicated datasource', ds);
                 item.datasource = ds;
+                datasources.push(ds);
             }
             item.resetToInitialValue();
             items.push(item);
         }
         tempElement.items = items;
         Element.metadataService.state.appendElement(tempElement);
+        for ( let ds of datasources ) {
+          if ( ds.fixTriggerItem ) {
+            ds.clearRowSelection();
+            ds.fixTriggerItem();
+          }
+        }
     }
 
     remove() {

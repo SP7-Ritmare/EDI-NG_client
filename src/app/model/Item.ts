@@ -66,6 +66,8 @@ export class Item {
   }
 
   resetToInitialValue() {
+    Item.logger.log('resetting item', this.id, 'to initial value');
+    this._valueObject = new BehaviorSubject<IValueObject>({});
     if (this.defaultValue) {
       this.value = this.defaultValue;
     } else {
