@@ -11,7 +11,9 @@ import {MetadataService} from '../service/MetadataService';
     selector: 'edi-alternative-group',
     template: `
         <!--<pre>{{ group | removeCyclic | json }}</pre>-->
+<!--
         <h3>Active element: {{group.activeElement}}</h3>
+-->
         <mat-tab-group (selectChange)="onTabSelected($event)">
                 <mat-tab *ngFor="let e of group.elements" label="{{placeholder(e)}}">
                     <app-edi-element [element]="e"></app-edi-element>

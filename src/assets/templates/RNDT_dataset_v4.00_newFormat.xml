@@ -12,17 +12,17 @@
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresValidation>false</requiresValidation>
         <baseDocument><![CDATA[
-      
+
         <gmd:MD_Metadata
             xsi:schemaLocation="http://www.isotc211.org/2005/gmd
             http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
-            xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+            xmlns:gmd="http://www.isotc211.org/2005/gmd"
             xmlns:gco="http://www.isotc211.org/2005/gco"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:gml="http://www.opengis.net/gml/3.2"
             xmlns:xlink="http://www.w3.org/1999/xlink">
         </gmd:MD_Metadata>
-      
+
     ]]></baseDocument>
         <xsltChain>
             <!--<xslt>http://sp7.irea.cnr.it/jboss/MDService/rest/RNDT_stylesheet?version=2.00</xslt>-->
@@ -80,7 +80,7 @@
         </codelist>
         <sparql xml:id="person" endpointType="virtuoso">
             <query><![CDATA[
-        
+
           PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
           SELECT DISTINCT ?c ?l
           FROM <http://ritmare.it/rdfdata/lotrx>
@@ -91,12 +91,12 @@
             FILTER( REGEX( STR(?l), "$search_param", "i") )
           }
           ORDER BY ASC(?l)
-        
+
       ]]></query>
         </sparql>
         <singleton xml:id="personS" endpointType="virtuoso" triggerItem="md_resp_1_uri">
             <query><![CDATA[
-        
+
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst ?home
           FROM <http://ritmare.it/rdfdata/lotrx>
@@ -106,12 +106,12 @@
             # ?o foaf:homepage ?home .
             FILTER(LANG(?inst)='en')
           }
-        
+
       ]]></query>
         </singleton>
         <singleton xml:id="personS_2" endpointType="virtuoso" triggerItem="resp_1_uri">
             <query><![CDATA[
-        
+
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst ?home
           FROM <http://ritmare.it/rdfdata/lotrx>
@@ -121,12 +121,12 @@
             # ?o foaf:homepage ?home .
             FILTER(LANG(?inst)='en')
           }
-        
+
       ]]></query>
         </singleton>
         <singleton xml:id="personS_3" endpointType="virtuoso" triggerItem="pdc_1_uri">
             <query><![CDATA[
-        
+
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst ?home
           FROM <http://ritmare.it/rdfdata/lotrx>
@@ -136,12 +136,12 @@
             # ?o foaf:homepage ?home .
             FILTER(LANG(?inst)='en')
           }
-        
+
       ]]></query>
         </singleton>
         <singleton xml:id="personS_4" endpointType="virtuoso" triggerItem="distr_1_uri">
             <query><![CDATA[
-        
+
           PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
           SELECT ?inst ?home
           FROM <http://ritmare.it/rdfdata/lotrx>
@@ -151,7 +151,7 @@
             # ?o foaf:homepage ?home .
             FILTER(LANG(?inst)='en')
           }
-        
+
       ]]></query>
         </singleton>
         <codelist xml:id="updateFreq" endpointType="virtuoso">
@@ -162,7 +162,7 @@
         </codelist>
         <sparql xml:id="keywordFromContrVoc" endpointType="fuseki">
             <query><![CDATA[
-        
+
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         SELECT ?c ?l
@@ -175,13 +175,13 @@
           FILTER( REGEX( STR(?l), "$search_param", "i") )
         }
         ORDER BY ASC(?l) ASC(?a)
-        
+
       ]]></query>
             <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
         </sparql>
         <singleton xml:id="contrVocSpecs" endpointType="fuseki" triggerItem="keyw_voc_contr_1_uri">
             <query><![CDATA[
-        
+
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX dct: <http://purl.org/dc/terms/>
         SELECT ?l ?date
@@ -195,18 +195,18 @@
           }
           BIND( STRBEFORE(?ts , " ") AS ?date )
         }
-        
-        
+
+
       ]]></query>
             <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
         </singleton>
         <sparql xml:id="paramOss" endpointType="virtuoso">
             <query><![CDATA[
-        
-          PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+
+          PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
           SELECT ?c ?l ?a
           FROM <http://ritmare.it/rdfdata/parameters>
-          WHERE { 
+          WHERE {
             ?c rdf:type skos:Concept.
             OPTIONAL {
             ?c skos:prefLabel ?l.
@@ -218,8 +218,8 @@
             }
             FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
             }
-          ORDER BY ASC(?l) ASC(?a) 
-        
+          ORDER BY ASC(?l) ASC(?a)
+
       ]]></query>
         </sparql>
         <codelist xml:id="restrictionCode" endpointType="virtuoso">
@@ -1322,12 +1322,6 @@
                 /gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox
             </hasRoot>
             <produces>
-                <item hasIndex="2" xml:id="loc_geo_2" isFixed="false" hasDatatype="UUID"
-                      >
-                    <hasPath>
-                        /gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode
-                    </hasPath>
-                </item>
                 <item hasIndex="1" xml:id="loc_geo_1" isFixed="false" hasDatatype="boundingBox">
                     <westLongitude outIndex="1" queryStringParameter="westlon">
                         <label xml:lang="en">W longitude</label>
