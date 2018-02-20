@@ -13,10 +13,10 @@ import {MetadataService} from '../../service/MetadataService';
 @Component({
     selector: 'app-edi-combobox',
     template: `
-        <md-select [(ngModel)]="currentValue" (change)="selectRow($event)"
+        <mat-select [(ngModel)]="currentValue" (change)="selectRow($event)"
                    [required]="item.mandatory">
-            <md-option *ngFor="let v of possibleValues" [value]="v.c">{{v.a ? v.a : v.l}}</md-option>
-        </md-select>
+            <mat-option *ngFor="let v of possibleValues" [value]="v.c">{{v.a ? v.a : v.l}}</mat-option>
+        </mat-select>
             <pre>{{item.value | removeCyclic | json}}</pre>
             <pre>{{currentValue | removeCyclic | json}}</pre>
     `,

@@ -12,11 +12,11 @@ import {MetadataService} from '../service/MetadataService';
     template: `
         <!--<pre>{{ group | removeCyclic | json }}</pre>-->
         <h3>Active element: {{group.activeElement}}</h3>
-        <md-tab-group (selectChange)="onTabSelected($event)">
-                <md-tab *ngFor="let e of group.elements" label="{{placeholder(e)}}">
+        <mat-tab-group (selectChange)="onTabSelected($event)">
+                <mat-tab *ngFor="let e of group.elements" label="{{placeholder(e)}}">
                     <app-edi-element [element]="e"></app-edi-element>
-                </md-tab>
-        </md-tab-group>
+                </mat-tab>
+        </mat-tab-group>
     `
 })
 export class EdiAlternativeGroupComponent {

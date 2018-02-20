@@ -7,6 +7,7 @@ import {Injectable, Inject, ReflectiveInjector, Injector} from '@angular/core';
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 /**
  * Created by fabio on 08/03/2017.
@@ -16,7 +17,7 @@ import 'rxjs/add/operator/catch';
 export class Endpoint {
     static logger = new Logger(availableContexts.ENDPOINT);
     static endpoints: Endpoint[] = [];
-    static http: Http;
+    static http: HttpClient;
     private endpointType: EndpointType;
     private url: string;
     private logger: Logger = new Logger(availableContexts.ENDPOINT);
@@ -45,25 +46,25 @@ export class Endpoint {
                 for (let p of this.endpointType.parameters) {
                     qs += encodeURIComponent(p.name) + '=' + encodeURIComponent(p.value) + '&';
                 }
-                let headers: Headers = new Headers({
+                let headers: HttpHeaders = new HttpHeaders({
                     /*'Accept': this.endpointType.contentType/*,
                     'Content-type': this.endpointType.contentType*/
                 });
 
                 qs += encodeURIComponent(this.endpointType.queryParameter) + '=' + encodeURIComponent(query);
-                let options: RequestOptionsArgs = new RequestOptions({
-                    headers: headers
-                });
+                let options: HttpHeaders = headers;
 
                 Endpoint.logger.log('HTTP GET ' + qs);
                 Endpoint.http
-                    .get(qs, options)
-                    .map( res => {
+                    .get(qs, {
+                      headers: options
+                    })
+                    .map( (res: any) => {
                         Endpoint.logger.log('Res: ', res);
                         if ( this.endpointType.contentType === ContentTypes.JSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSONP ) {
-                            return this.endpointType.adapter(res.json());
+                            return this.endpointType.adapter(res);
                         }
                         return this.endpointType.adapter(res);
                     })

@@ -63,7 +63,7 @@ export class BaseDatasource {
     }
 
     duplicate() {
-        var _ = require('lodash');
+        const _ = require('lodash');
         let ds = _.cloneDeep(this);
         ds.id = ds.id + '.' + (++BaseDatasource.counter);
         ds._results.next([]);

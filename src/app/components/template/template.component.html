@@ -1,12 +1,12 @@
-<md-sidenav-container>
+<mat-sidenav-container>
   <button mdButton (click)="navigation.toggle()">
-    <md-icon>menu</md-icon>
+    <mat-icon>menu</mat-icon>
 <!--
     <md-basic-chip>EDI-NG Client v2.0 alpha</md-basic-chip>
 -->
   </button>
-  <md-sidenav #navigation mode="push" opened="false" style="padding-top: 0px;">
-    <md-card>
+  <mat-sidenav #navigation mode="push" opened="false" style="padding-top: 0px;">
+    <mat-card>
       <!--
               <h1>{{metadataService.catalogueMetadatumURL}}</h1>
       -->
@@ -25,9 +25,9 @@
       <button (click)="showDebug=!showDebug">EDIML</button>
 -->
       <pre *ngIf="showDebug">{{template | removeCyclic | json}}</pre>
-    </md-card>
-    <md-nav-list>
-      <md-list-item *ngFor="let g of template.group">
+    </mat-card>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let g of template.group">
         <!--<a [routerLink]="['/main']" [attr.fragment]="'#' + g['_xml:id']" data-scroll="" class="">-->
         <a (click)="navigation.toggle(); goTo('#' + g['_xml:id'])">
                         <span class="fa fa-anchor solo">
@@ -36,25 +36,25 @@
                             </div>
                         </span>
         </a>
-      </md-list-item>
-    </md-nav-list>
-  </md-sidenav>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
   <!-- Page content -->
   <div id="page-content-wrapper" *ngIf="template.group">
     <div style="padding-top: 100px;" class="col-md-12" *ngIf="EDITemplate.loading">
       Loading template {{templateName}}
-      <md-spinner mode="indeterminate"></md-spinner>
+      <mat-spinner mode="indeterminate"></mat-spinner>
     </div>
     <div class="col-md-12" *ngIf="!EDITemplate.loading">
       <form #form="ngForm">
-        <md-card class="row" *ngFor="let g of template.group">
+        <mat-card class="row" *ngFor="let g of template.group">
           <div class="col-md-11" [id]="g['_xml:id']">
-            <md-card-header class="card-header primary-color white-text">
+            <mat-card-header class="card-header primary-color white-text">
               <div *ngFor="let l of g.label">
                 <div class="groupLabel" *ngIf="l['_xml:lang'] == interfaceLanguage">{{l.__text}}</div>
               </div>
-            </md-card-header>
-            <md-card-content>
+            </mat-card-header>
+            <mat-card-content>
               <!--
                                   <pre>{{g | json}}</pre>
               -->
@@ -63,9 +63,9 @@
                                        *ngIf="isAlternativeGroup(e)"></edi-alternative-group>
                 <app-edi-element [element]="e" *ngIf="!isAlternativeGroup(e)"></app-edi-element>
               </div>
-            </md-card-content>
+            </mat-card-content>
           </div>
-        </md-card>
+        </mat-card>
 
         <!--
                                 <div class="row" *ngFor="let g of template.group">
@@ -97,5 +97,5 @@
             </div>
     -->
   </div>
-</md-sidenav-container>
+</mat-sidenav-container>
 

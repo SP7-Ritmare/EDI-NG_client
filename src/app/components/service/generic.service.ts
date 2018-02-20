@@ -3,6 +3,7 @@ import {Http, Response} from '@angular/http';
 import {Category} from '../../category';
 import 'rxjs/add/operator/map';
 import {Observable, ReplaySubject} from 'rxjs';
+import {HttpClient} from "@angular/common/http";
 
 export interface State {
     counter: number;
@@ -20,7 +21,7 @@ export class GenericService {
     };
     public counter: ReplaySubject<State> = new ReplaySubject(1);
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
         this.dataStore = {categories: []};
         this._categories = [];
         setInterval( () => {

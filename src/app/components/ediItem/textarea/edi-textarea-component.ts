@@ -13,9 +13,9 @@ import {MetadataService} from '../../service/MetadataService';
     selector: 'app-edi-textarea',
     template: `
         <!--<pre>{{item | json}}</pre>-->
-        <md-input-container class="col-md-12">
+        <mat-input-container class="col-md-12">
             <textarea mdInput #pippo="ngModel" [attr.name]="item.id" placeholder="{{placeholder()}}" [(ngModel)]="item.value" pattern="{{pattern}}" [required]="item.mandatory"></textarea>
-        </md-input-container>
+        </mat-input-container>
         <!--<div class="alert alert-danger" *ngIf="!pippo.valid && pippo.touched">Mandatory field</div>-->
     `,
     styleUrls: ['./edi-textarea-component.css'],

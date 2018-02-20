@@ -13,16 +13,16 @@
             </div>
         </div>
         <div *ngFor="let h of element.help">
-            <md-icon *ngIf="h['_xml:lang'] == interfaceLanguage" data-toggle="tooltip"
+            <mat-icon *ngIf="h['_xml:lang'] == interfaceLanguage" data-toggle="tooltip"
                      data-placement="right" title="{{h.__text}}">
                 info
-            </md-icon>
+            </mat-icon>
         </div>
     </div>
     <div *ngIf="showRemoveButton()">
         <button href="#" class="btn btn-danger" (click)="removeElement()">
             <div *ngFor="let l of element.label">
-                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>clear</md-icon> <!--{{l.__text}}--></span>
+                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><mat-icon>clear</mat-icon> <!--{{l.__text}}--></span>
             </div>
         </button>
     </div>
@@ -34,7 +34,7 @@
     <div *ngIf="showButton()">
         <button class="btn btn-primary" (click)="duplicateElement($event)">
             <div *ngFor="let l of element.label">
-                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><md-icon>content_copy</md-icon> <!--{{l.__text}}--></span>
+                <span *ngIf="l['_xml:lang'] == interfaceLanguage"><mat-icon>content_copy</mat-icon> <!--{{l.__text}}--></span>
             </div>
         </button>
     </div>

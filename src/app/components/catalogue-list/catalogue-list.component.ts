@@ -28,12 +28,12 @@ export class CatalogueListComponent implements OnInit {
 
     onKeyUp() {
         this.catalogueService.search(this.query)
-            .subscribe( res => this.metadata = res);
+            .subscribe( (res: any) => this.metadata = res);
     }
 
     getTemplates() {
         this.catalogueService.getTemplates()
-            .subscribe( res => {
+            .subscribe( (res: any) => {
                 console.log('receiving templates', res);
                 this.templates = res;
             });

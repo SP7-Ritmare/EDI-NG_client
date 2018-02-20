@@ -71,7 +71,7 @@ export interface ITemplate {
 export class Template implements ITemplate {
     settings: ITemplateSettings;
     endpointTypes: ITemplateEndpointTypes;
-    datasources: [ITemplateDatasources];
+    datasources: ITemplateDatasources;
     group: ITemplateGroup[];
 
     constructor() {

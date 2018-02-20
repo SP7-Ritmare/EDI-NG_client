@@ -21,6 +21,7 @@ import {AlternativeGroup} from '../../model/AlternativeGroup';
 import {Item} from '../../model/Item';
 import {MetadataService} from './MetadataService';
 import {CatalogueService} from './catalogue.service';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class EDITemplate {
@@ -28,12 +29,12 @@ export class EDITemplate {
     timezones: any[] = [];
     path: string;
     x2js: XML2JSON = new XML2JSON();
-    contents: ITemplate;
+    contents: any; //  ITemplate;
     private logger: Logger = new Logger(availableContexts.EDI_TEMPLATE_SERVICE);
     private loading = false;
     state: State;
 
-    constructor(private http: Http, private metadataService: MetadataService, private catalogueService: CatalogueService) {
+    constructor(private http: HttpClient, private metadataService: MetadataService, private catalogueService: CatalogueService) {
         Item.metadataService = this.metadataService;
         this.state = metadataService.state;
         this.getTimezones();
@@ -49,8 +50,10 @@ export class EDITemplate {
     private getTimezones() {
         let url = 'https://raw.githubusercontent.com/dmfilipenko/timezones.json/master/timezones.json';
         this.http.get(url)
+/*
             .map(res => res.json())
-            .subscribe( res => {
+*/
+            .subscribe( (res: any) => {
                 EDITemplate.logger.log('timezones', res);
                 this.timezones = res;
                 for ( let t of this.timezones ) {
@@ -236,7 +239,7 @@ export class EDITemplate {
         Endpoint.http = this.http;
 
         return this.catalogueService.getTemplate(id)
-            .map(res => {
+            .map((res: any) => {
                 EDITemplate.logger.log('template from catalogue', res);
                 this.contents = res;
                 this.state.template = this.contents;
@@ -263,21 +266,24 @@ export class EDITemplate {
 
         this.path = filename;
         // this.state.templateName = filename;
-        let headers = new Headers();
+        let headers = new HttpHeaders();
         headers.append('Accept', 'application/xml');
         Endpoint.http = this.http;
 
         return this.http.get(filename, {
-            headers: headers
+            headers: headers,
+            responseType: 'text'
         })
             .map(res => {
-                this.state.originalTemplate = res.text();
-                this.contents = this.x2js.xml2json(res.text()).template;
+                this.state.originalTemplate = res;
+                this.contents = this.x2js.xml2json(res).template;
+                EDITemplate.logger.log('RAW template 1', this.x2js.xml2json(res));
+                EDITemplate.logger.log('RAW template 2', this.contents);
                 this.inferVersion();
                 EDITemplate.logger.log('template version is ' + this.state.templateVersion);
                 this.contents = this.fixArrays();
                 this.contents = this.fixBooleans();
-                this.contents = this.fixGroupsElementsAndItems();
+                // this.contents = this.fixGroupsElementsAndItems();
 
                 try {
                     this.catalogueService.saveTemplate(this.contents);
@@ -290,9 +296,7 @@ export class EDITemplate {
                 this.importEndpointTypes();
                 this.importDatasources();
 
-/*
                 this.contents = this.fixGroupsElementsAndItems();
-*/
 
                 EDITemplate.logger.log(1111111);
                 this.fixDatasources();

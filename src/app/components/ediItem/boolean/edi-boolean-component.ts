@@ -7,10 +7,10 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-boolean',
     template: ` 
-         <md-slide-toggle style="clear: both; float: left;" color="primary" [checked]="item.value == 'true'" (change)="onChange($event)"></md-slide-toggle>
-         <md-chip-list style="float: left; margin: 13px 0;">
-             <md-chip color="accent">{{item.value | json}}</md-chip>
-         </md-chip-list>
+         <mat-slide-toggle style="clear: both; float: left;" color="primary" [checked]="item.value == 'true'" (change)="onChange($event)"></mat-slide-toggle>
+         <mat-chip-list style="float: left; margin: 13px 0;">
+             <mat-chip color="accent">{{item.value | json}}</mat-chip>
+         </mat-chip-list>
     `
 })
 export class EdiBooleanComponent {

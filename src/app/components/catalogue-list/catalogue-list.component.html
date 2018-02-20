@@ -1,4 +1,4 @@
-<md-card>
+<mat-card>
     <div class="flex-container"
          fxLayout="column"
          fxLayout.xs="column"
@@ -12,15 +12,15 @@
             <div class="flex-container"
                  fxLayout="row" *ngFor="let m of metadata">
                 <div class="flex-item" fxFill>
-                    <md-card>
+                    <mat-card>
                         <div class="flex-item" fxFlex="20%">
                             <qr-code [value]="m._source.fileUri" [size]="100"></qr-code>
                         </div>
                         <div class="flex-container"
                              fxLayout="column">
-                            <md-card-title>{{m._id}}</md-card-title>
-                            <md-card-subtitle>{{m._source.templateName}} (score: {{m._score | number: '1.2-3'}})</md-card-subtitle>
-                            <md-card-content>
+                            <mat-card-title>{{m._id}}</mat-card-title>
+                            <mat-card-subtitle>{{m._source.templateName}} (score: {{m._score | number: '1.2-3'}})</mat-card-subtitle>
+                            <mat-card-content>
                                 <div class="flex-container"
                                      fxLayout="row">
                                     <div class="flex-item">
@@ -38,15 +38,15 @@
                                 <!--
                                   <pre>{{m | json}}</pre>
                                 -->
-                            </md-card-content>
+                            </mat-card-content>
                         </div>
-                    </md-card>
+                    </mat-card>
                 </div>
             </div>
         </div>
     </div>
-</md-card>
-<md-card>
+</mat-card>
+<mat-card>
     <div class="flex-container"
          fxLayout="column"
          fxLayout.xs="column"
@@ -60,7 +60,7 @@
             <div class="flex-container"
                  fxLayout="row" *ngFor="let m of templates">
                 <div class="flex-item" fxFill>
-                    <md-card>
+                    <mat-card>
                         <div class="flex-item" fxFlex="20%">
                             <qr-code [value]="m._id" [size]="100"></qr-code>
                         </div>
@@ -69,10 +69,10 @@
                             <!--
                                                     <pre style="display: block !important;">{{m._source | json}}</pre>
                             -->
-                            <md-card-title>{{m._source.metadata.name}}</md-card-title>
-                            <md-card-subtitle>Family: {{m._source.metadata.family}}</md-card-subtitle>
-                            <md-card-subtitle>Author: <a target="_blank" href="{{m._source.metadata.author}}">{{m._source.metadata.author}}</a></md-card-subtitle>
-                            <md-card-content>
+                            <mat-card-title>{{m._source.metadata.name}}</mat-card-title>
+                            <mat-card-subtitle>Family: {{m._source.metadata.family}}</mat-card-subtitle>
+                            <mat-card-subtitle>Author: <a target="_blank" href="{{m._source.metadata.author}}">{{m._source.metadata.author}}</a></mat-card-subtitle>
+                            <mat-card-content>
                                 <div class="flex-container"
                                      fxLayout="row">
                                     <div class="flex-item">
@@ -102,11 +102,11 @@
                                     </div>
                                 </div>
 
-                            </md-card-content>
+                            </mat-card-content>
                         </div>
-                    </md-card>
+                    </mat-card>
                 </div>
             </div>
         </div>
     </div>
-</md-card>
+</mat-card>

@@ -16,11 +16,13 @@ import {MetadataService} from '../../service/MetadataService';
 <!--
         <pre *ngIf="item.elementId == 'manufacturer'">{{item | removeCyclic | json}}</pre>
 -->
-        <md-input-container class="col-md-12">
-            <input mdInput #pippo="ngModel" type="text" [attr.name]="item.id" placeholder="{{placeholder()}}" [(ngModel)]="item.value" pattern="{{pattern}}" (change)="onChange($event)" [required]="item.mandatory">
-        </md-input-container>
-        <div class="alert alert-danger" *ngIf="!pippo.valid && pippo.touched && pippo.value.length == 0">Mandatory field</div>
-        <div class="alert alert-danger" *ngIf="!pippo.valid && pippo.touched && pippo.value.length > 0">{{errorMessage}}</div>
+<input matInput #pippo="ngModel" type="text" [attr.name]="item.id" placeholder="{{placeholder()}}" [(ngModel)]="item.value" pattern="{{pattern}}" (change)="onChange($event)" [required]="item.mandatory">
+<!--
+        <mat-form-field class="col-md-12">
+        </mat-form-field>
+-->
+<div class="alert alert-danger" *ngIf="!pippo.valid && pippo.touched && pippo.value.length == 0">Mandatory field</div>
+<div class="alert alert-danger" *ngIf="!pippo.valid && pippo.touched && pippo.value.length > 0">{{errorMessage}}</div>
     `,
     styleUrls: ['./edi-textbox-component.css'],
     providers: []

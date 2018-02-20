@@ -1,44 +1,45 @@
 export const availableContexts = {
-    DATASOURCE: 'datasource',
-    DATASOURCE_POOL: 'datasourcepool',
-    EDI: 'edi',
-    EDIML: 'ediml',
-    TEXTBOX: 'textbox',
-    COMBO: 'combo',
-    AUTOCOMPLETION: 'autocompletion',
-    BOOLEAN: 'bool',
-    DATE: 'date',
-    DATE_RANGE: 'daterange',
-    FUNCTION: 'function',
-    IMAGE: 'image',
-    LABEL: 'label',
-    QRCODE: 'qrcode',
-    BBOX: 'bbox',
-    ENDPOINTTYPE: 'endpointtype',
-    ENDPOINT: 'endpoint',
-    ELEMENT: 'element',
-    ITEM: 'item',
-    ITEM_COMPONENT: 'itemComponent',
-    SPARQL: 'sparql',
-    EDI_TEMPLATE_SERVICE: 'EDI_TEMPLATE_SERVICE',
-    STATE: 'state',
-    CATALOGUE: 'catalogue'
-}
+  DATASOURCE: 'datasource',
+  DATASOURCE_POOL: 'datasourcepool',
+  EDI: 'edi',
+  EDIML: 'ediml',
+  TEXTBOX: 'textbox',
+  COMBO: 'combo',
+  AUTOCOMPLETION: 'autocompletion',
+  BOOLEAN: 'bool',
+  DATE: 'date',
+  DATE_RANGE: 'daterange',
+  FUNCTION: 'function',
+  IMAGE: 'image',
+  LABEL: 'label',
+  QRCODE: 'qrcode',
+  BBOX: 'bbox',
+  ENDPOINTTYPE: 'endpointtype',
+  ENDPOINT: 'endpoint',
+  ELEMENT: 'element',
+  ITEM: 'item',
+  ITEM_COMPONENT: 'itemComponent',
+  SPARQL: 'sparql',
+  EDI_TEMPLATE_SERVICE: 'EDI_TEMPLATE_SERVICE',
+  STATE: 'state',
+  CATALOGUE: 'catalogue'
+};
 export const enabledContexts: any[] = [
-    /*
-     'reorderElement',
-     'duplicator',
-     availableContexts.DATASOURCE,
-     availableContexts.EDI
-    availableContexts.ENDPOINT,
-    availableContexts.ENDPOINTTYPE
-    availableContexts.CATALOGUE,
-    availableContexts.ITEM,
-    availableContexts.STATE,
-    availableContexts.ELEMENT
-     */
-    availableContexts.CATALOGUE,
-    availableContexts.EDI_TEMPLATE_SERVICE
+  /*
+   'reorderElement',
+   'duplicator',
+   availableContexts.EDI
+  availableContexts.ENDPOINT,
+  availableContexts.ENDPOINTTYPE
+  availableContexts.CATALOGUE,
+  availableContexts.STATE,
+  availableContexts.ELEMENT
+   */
+  availableContexts.AUTOCOMPLETION,
+  availableContexts.ITEM,
+  availableContexts.DATASOURCE,
+  availableContexts.CATALOGUE,
+  availableContexts.EDI_TEMPLATE_SERVICE
 ];
 
 /*
@@ -54,40 +55,41 @@ export const enabledContexts: any[] = [
  */
 
 export class Logger {
-    _context: string;
-    outputContext: boolean;
+  _context: string;
+  outputContext: boolean;
 
-    constructor(context: string) {
-        this._context = context;
+  constructor(context: string) {
+    this._context = context;
+  }
+
+  log(...args: any[]) {
+    if (enabledContexts.some(x => x === this._context)) {
+      if (this.outputContext) {
+        console.error('context: ' + this._context);
+      }
+      console.log(this._context, args);
     }
+  }
 
-    log(...args: any[]) {
-        if (enabledContexts.some(x => x === this._context)) {
-            if (this.outputContext) {
-                console.error('context: ' + this._context);
-            }
-            console.log(this._context, args);
-        }
+  error(arg: any) {
+    console.error(arg);
+    return;
+    /*       if (enabledContexts.some(x => x === this._context)) {
+               if (this.outputContext) {
+                   console.error('context: ' + this._context);
+               }
+               console.error(arg);
+           }
+    */
+  }
+
+  warn(arg: any) {
+    if (enabledContexts.some(x => x === this._context)) {
+      if (this.outputContext) {
+        console.error('context: ' + this._context);
+      }
+      console.warn(arg);
     }
-
-    error(arg: any) {
-        console.error(arg);
-        return;
- /*       if (enabledContexts.some(x => x === this._context)) {
-            if (this.outputContext) {
-                console.error('context: ' + this._context);
-            }
-            console.error(arg);
-        }
- */   }
-
-    warn(arg: any) {
-        if (enabledContexts.some(x => x === this._context)) {
-            if (this.outputContext) {
-                console.error('context: ' + this._context);
-            }
-            console.warn(arg);
-        }
-    }
+  }
 
 }

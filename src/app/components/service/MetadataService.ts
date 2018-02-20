@@ -14,19 +14,20 @@ import {CatalogueService} from './catalogue.service';
 import {EDITemplate} from './EDITemplate';
 import {Element} from '../../model/Element';
 import {Item} from '../../model/Item';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 
 @Injectable()
 export class MetadataService {
+  static currentEdimlId: any = null;
     _defaultMetadataEndpoint = 'http://localhost:8080';
     _defaultEDICatalogue = 'wrong url';
 /*
     static currentCatalogueUrl: string = null;
 */
-    static currentEdimlId: any = null;
     state: State = new State;
 
-    constructor(private http: Http, private configService: ConfigService, private catalogueService: CatalogueService) {
+    constructor(private http: HttpClient, private configService: ConfigService, private catalogueService: CatalogueService) {
         this._defaultEDICatalogue = configService.getConfiguration()['ediCatalogue'];
         console.log('default EDI Catalogue', this._defaultEDICatalogue);
     }
@@ -57,7 +58,7 @@ export class MetadataService {
             return Observable.of(MetadataService.currentEdimlId);
         }
         return this.http.get(this._defaultMetadataEndpoint + '/rest/ediml/requestId')
-            .map( res => res.json() )
+            /*.map( res => res.json() )*/
             .map( res => MetadataService.currentEdimlId = res )
     }
 
@@ -76,26 +77,30 @@ export class MetadataService {
     private saveEDIML(ediml: EDIML) {
         let edimlXml = ediml.toXML();
         console.log('EDIML', edimlXml);
-        let headers = new Headers({'Content-Type': 'application/xml'});
-        let options = new RequestOptions({headers: headers});
+        let headers = new HttpHeaders({'Content-Type': 'application/xml'});
+        let options = {headers: headers};
 
         // this._defaultMetadataEndpoint = 'http://localhost:8080';
 
         console.log('about to post metadata', this.http);
         this.http.post(this._defaultMetadataEndpoint + '/rest/metadata', edimlXml, options)
+/*
             .map(res => {
                 console.log('post metadata results', res.json());
                 return res.json();
             })
+*/
             .catch((error: Response | any) => {
                 console.error(error.message || error);
                 return Observable.throw(error.message || error);
             })
-            .subscribe(res => {
+            .subscribe((res: any) => {
                 console.log('post metadata results', res);
                 this.http
                     .get(this._defaultMetadataEndpoint + '/rest/ediml/' + res['edimlId'] + '.json')
+/*
                     .map( res => res.json() )
+*/
                     .subscribe( result => {
                         res['ediml'] = result;
                         this.catalogueService.sendToCatalogue(res);
@@ -135,7 +140,7 @@ export class MetadataService {
                     console.log('ediml modified', ediml.contents);
                     console.log('Saving EDIML', 'CatalogueId', this.catalogueService.getCatalogueMetadatumURL());
                     this.catalogueService.getCatalogueMetadatumURL()
-                        .subscribe( res => {
+                        .subscribe( (res: any) => {
                             ediml.contents.fileUri = res;
                             this.saveEDIML(ediml);
                         })

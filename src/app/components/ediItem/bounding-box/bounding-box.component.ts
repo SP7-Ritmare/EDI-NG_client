@@ -1,9 +1,10 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
 import {State} from '../../../model/State';
-import point = L.point;
+// import point = L.point;
 import {availableContexts, Logger} from '../../../utils/logger';
 import {MetadataService} from '../../service/MetadataService';
+import * as L from 'leaflet';
 
 @Component({
     selector: 'app-edi-bounding-box',
