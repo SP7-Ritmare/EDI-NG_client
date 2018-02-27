@@ -1,3 +1,7 @@
 .tick {
     color: green;
 }
+
+mat-card {
+    width: 50vw;
+}

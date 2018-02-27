@@ -61,6 +61,7 @@ import { NewSidebarComponent } from './layouts/new-sidebar/new-sidebar.component
 import { SimpleLayoutComponent } from './layouts/simple-layout/simple-layout.component';
 import { HeaderComponent } from './layouts/header/header.component';
 import { SendMetadataDialogComponent } from './pages/send-metadata-dialog/send-metadata-dialog.component';
+import { LoadingDialogComponent } from './pages/loading-dialog/loading-dialog.component';
 
 const appRoutes: Routes = [
   {path: 'select', component: TemplateSelectorComponent},
@@ -128,7 +129,8 @@ export function ConfigLoader(configService: ConfigService) {
     NewSidebarComponent,
     SimpleLayoutComponent,
     HeaderComponent,
-    SendMetadataDialogComponent
+    SendMetadataDialogComponent,
+    LoadingDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -185,7 +187,7 @@ export function ConfigLoader(configService: ConfigService) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SendMetadataDialogComponent]
+  entryComponents: [SendMetadataDialogComponent, LoadingDialogComponent]
 })
 export class AppModule {
 }

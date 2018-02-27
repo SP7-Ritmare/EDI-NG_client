@@ -164,9 +164,9 @@ export class MetadataService {
                     status.storing = 0;
                     this.currentStatus.next(status);
                     this.catalogueService.getCatalogueMetadatumURL()
-                        .subscribe( (res: any) => {
-                            console.log('1 received uri', res);
-                            ediml.contents.fileUri = res;
+                        .subscribe( (url: any) => {
+                            console.log('1 received uri', url);
+                            ediml.contents.fileUri = url;
                             this.saveEDIML(ediml);
                         });
                 });

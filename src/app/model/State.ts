@@ -176,7 +176,7 @@ export class State {
     mergeWithEDIML(ediml: any) {
         for ( let e of ediml.elements ) {
             State.logger.log('EDIML', 'doing element', e.id, e.represents_element);
-            if ( e.id == e.represents_element ) {
+            if ( e.id === e.represents_element ) {
                 // base element
                 let element = this.getElement(e.id);
                 State.logger.log('EDIML', 'found element', element);

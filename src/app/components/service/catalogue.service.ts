@@ -28,28 +28,32 @@ export class CatalogueService {
     }
 
     getCatalogueMetadatumURL() {
-        let result = new Subject<any>();
-        if (CatalogueService.currentCatalogueUrl != null) {
+        let result = new Subject<string>();
+        if (CatalogueService.currentCatalogueUrl) {
             CatalogueService.logger.log('CatalogueService', 'catalogueMetadatumURL', CatalogueService.currentCatalogueUrl);
-            result.next(CatalogueService.currentCatalogueUrl);
+            setTimeout( () => {
+                result.next(CatalogueService.currentCatalogueUrl);
+            }, 100);
             // result.complete();
             // return Observable.from(CatalogueService.currentCatalogueUrl);
+        } else {
+            this.http.get(this._defaultEDICatalogue + '/requestId', {responseType: 'text'})
+            /*
+                        .map(res => res.text())
+            */
+                .subscribe(res => {
+                    CatalogueService.currentCatalogueUrl = res;
+                    result.next(res);
+                    // result.complete();
+                });
         }
-        this.http.get(this._defaultEDICatalogue + '/requestId', {responseType: 'text'})
-        /*
-                    .map(res => res.text())
-        */
-            .subscribe(res => {
-                CatalogueService.currentCatalogueUrl = res;
-                result.next(res);
-                // result.complete();
-            });
         return result;
     }
 
     sendToCatalogue(metadatum: any) {
         let headers = new HttpHeaders({'Content-Type': 'application/json'});
         let options = {headers: headers};
+        console.log('sending to catalogue', metadatum);
         return this.http
             .post(this._defaultEDICatalogue + '/metadata', metadatum, options);
         /*.map(res => res.json())*/

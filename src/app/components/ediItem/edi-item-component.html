@@ -1,4 +1,4 @@
-<!--<pre>{{item | removeCyclic | json}}</pre>-->
+<pre *ngIf="item.id === 'ling_md_1'">{{item | removeCyclic | json}}</pre>
 <div class="itemBlock"></div>
 <mat-card [ngSwitch]="item.show" *ngIf="!item.fixed" color="primary">
   <mat-card-title>

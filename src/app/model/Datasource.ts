@@ -8,182 +8,191 @@ import {Item} from './Item';
 import {availableContexts, Logger} from '../utils/logger';
 import {MetadataService} from '../components/service/MetadataService';
 import {Subject} from 'rxjs/Subject';
+import {Util} from 'leaflet';
+import indexOf = Util.indexOf;
 
 /**
  * Created by fabio on 02/03/2017.
  */
 
 export interface IQueryOptions {
-  searchParam?: string;
+    searchParam?: string;
 }
 
 export class BaseDatasource {
-  static metadataService: MetadataService;
+    static metadataService: MetadataService;
 
-  static datasources: BaseDatasource[] = [];
-  static logger: Logger = new Logger(availableContexts.DATASOURCE);
-  static counter = 0;
-  id: string;
-  endpoint: Endpoint;
-  query: string;
-  // protected _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
-  _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
-  currentRowNumber: number;
-  _currentRow: BehaviorSubject<any> = new BehaviorSubject({});
-  _currentRowHolder: any;
-  baseResults: any[];
+    static datasources: BaseDatasource[] = [];
+    static logger: Logger = new Logger(availableContexts.DATASOURCE);
+    static counter = 0;
+    id: string;
+    type = 'BASE';
+    endpoint: Endpoint;
+    query: string;
+    // protected _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
+    _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
+    currentRowNumber: number;
+    _currentRow: BehaviorSubject<any> = new BehaviorSubject({});
+    _currentRowHolder: any;
+    baseResults: any[];
 
-  static find(id: string) {
-    // BaseDatasource.logger.log('searching for datasource with id', id);
-    // BaseDatasource.logger.log('in a set of', BaseDatasource.datasources.length, 'datasources');
-    for (let d of BaseDatasource.datasources) {
-      // BaseDatasource.logger.log('datasource', d);
-      if (d.id === id) {
-        // BaseDatasource.logger.log('comparing', d.id, id);
-        return d;
-      }
-    }
-    BaseDatasource.logger.log('datasource', id, 'not found', BaseDatasource.datasources);
-    return undefined;
-  }
-
-  constructor() {
-    BaseDatasource.datasources.push(this);
-    this._currentRow.subscribe(
-      res => this._currentRowHolder = res
-    );
-  }
-
-  clearRowSelection() {
-    console.log('clearing row selection for datasource', this.id);
-    this.setCurrentRow({});
-    this.currentRowNumber = -1;
-  }
-
-  set currentRow(value: any) {
-    this._currentRowHolder = value;
-    this._currentRow.next(value);
-  }
-
-  get currentRow() {
-    return this._currentRowHolder;
-  }
-
-  duplicate() {
-/*
-    const _ = require('lodash');
-    let ds = _.cloneDeep(this);
-*/
-    let ds = new BaseDatasource();
-    ds.id = this.id + '.' + (++BaseDatasource.counter);
-    ds.query = this.query;
-    ds.endpoint = this.endpoint;
-
-    BaseDatasource.datasources.push(ds);
-    ds._results.next([]);
-    ds._currentRow.next({});
-    ds.currentRowNumber = -1;
-    ds.baseResults = [];
-
-    return ds;
-  }
-
-  refresh(options?: IQueryOptions) {
-    let query: any = this.query;
-
-    if (query.__cdata) {
-      query = query.__cdata;
-    }
-    BaseDatasource.logger.log('query', this.query);
-    if (this.hasOwnProperty('uri')) {
-      query = query.split('$uri$').join((this as any)['uri']);
-    }
-    if (options && options.searchParam) {
-      query = query.split('$search_param').join(options.searchParam);
-      BaseDatasource.logger.log(query);
-    }
-    query = query.split('$metadataLanguage$').join(Configuration.metadataLanguage);
-    // let results = this.endpoint.query(query);
-    //
-    if (this.endpoint && query.indexOf('$search_param') < 0) {
-      BaseDatasource.logger.log('the endpoint is', this.endpoint.query);
-      let dataset = this.endpoint.query(query);
-      BaseDatasource.logger.log('dataset', dataset);
-      dataset.subscribe(res => {
-        this.baseResults = res;
-        this._results.next(res);
-        BaseDatasource.logger.log('datasource', this.id, this._results);
-        if (res.length === 1) {
-          BaseDatasource.logger.log('AUTO setting current row to res[0]', res[0]);
-          this.setCurrentRow(res[0]);
+    static find(id: string) {
+        // BaseDatasource.logger.log('searching for datasource with id', id);
+        // BaseDatasource.logger.log('in a set of', BaseDatasource.datasources.length, 'datasources');
+        for (let d of BaseDatasource.datasources) {
+            // BaseDatasource.logger.log('datasource', d);
+            if (d.id === id) {
+                // BaseDatasource.logger.log('comparing', d.id, id);
+                return d;
+            }
         }
-      });
-    } else {
-      if (!this.endpoint) {
-        console.error('endpoint undefined for datasource', this.id);
-      } else {
-        // console.error('$search_param is still in the query', this.id, options, query);
-      }
+        BaseDatasource.logger.log('datasource', id, 'not found', BaseDatasource.datasources);
+        return undefined;
     }
-  }
 
-  setCurrentRow(values: any) {
-    let keys = Object.keys(values).length;
-    BaseDatasource.logger.log(this.id, 'setting current row to', values, 'number of keys', keys);
-    for (let i = 0; i < this.baseResults.length; i++) {
-      let count = 0;
-      for (let field in values) {
-        if (values.hasOwnProperty(field)) {
-          if (this.baseResults[i].hasOwnProperty(field) && values[field] === this.baseResults[i][field]) {
-            count++;
-          }
-          if (count === keys) {
-            this.currentRowNumber = i;
-            this.currentRow = this.baseResults[i];
-            BaseDatasource.logger.log('row ' + this.currentRowNumber + ' selected', this.baseResults[i]);
-            return;
-          }
+    constructor() {
+        BaseDatasource.datasources.push(this);
+        this._currentRow.subscribe(
+            res => this._currentRowHolder = res
+        );
+    }
+
+    clearRowSelection() {
+        console.log('clearing row selection for datasource', this.id);
+        this.setCurrentRow({});
+        this.currentRowNumber = -1;
+    }
+
+    set currentRow(value: any) {
+        this._currentRowHolder = value;
+        this._currentRow.next(value);
+    }
+
+    get currentRow() {
+        return this._currentRowHolder;
+    }
+
+    duplicate() {
+        /*
+            const _ = require('lodash');
+            let ds = _.cloneDeep(this);
+        */
+        let ds = new BaseDatasource();
+
+        ds.id = this.id + '.' + (++BaseDatasource.counter);
+        ds.type = this.type;
+        ds.query = this.query;
+        ds.endpoint = this.endpoint;
+
+        ds._results.next([]);
+        ds._currentRow.next({});
+        ds.currentRowNumber = -1;
+        ds.baseResults = [];
+        BaseDatasource.datasources.push(ds);
+        ds.refresh();
+
+        return ds;
+    }
+
+    refresh(options?: IQueryOptions) {
+        let query: any = this.query;
+
+        if (query.__cdata) {
+            query = query.__cdata;
         }
-      }
+        BaseDatasource.logger.log('query', this.query);
+        if (this.hasOwnProperty('uri')) {
+            query = query.split('$uri$').join((this as any)['uri']);
+        }
+        if (options && options.searchParam) {
+            query = query.split('$search_param').join(options.searchParam);
+            BaseDatasource.logger.log(query);
+        }
+        query = query.split('$metadataLanguage$').join(Configuration.metadataLanguage);
+        // let results = this.endpoint.query(query);
+        //
+        if (this.endpoint && query.indexOf('$search_param') < 0) {
+            BaseDatasource.logger.log('the endpoint is', this.endpoint.query);
+            let dataset = this.endpoint.query(query);
+            BaseDatasource.logger.log('dataset', dataset);
+            dataset.subscribe(res => {
+                this.baseResults = res;
+                this._results.next(res);
+                BaseDatasource.logger.log('datasource', this.id, this._results);
+                if (res.length === 1) {
+                    BaseDatasource.logger.log('AUTO setting current row to res[0]', res[0]);
+                    this.setCurrentRow(res[0]);
+                }
+            });
+        } else {
+            if (!this.endpoint) {
+                console.error('endpoint undefined for datasource', this.id);
+            } else {
+                // console.error('$search_param is still in the query', this.id, options, query);
+            }
+        }
     }
-  }
 
-  get results(): Observable<any[]> {
-    return this._results.asObservable();
-  }
+    setCurrentRow(values: any) {
+        let keys = Object.keys(values).length;
+        BaseDatasource.logger.log(this.id, 'setting current row to', values, 'number of keys', keys);
+        for (let i = 0; i < this.baseResults.length; i++) {
+            let count = 0;
+            for (let field in values) {
+                if (values.hasOwnProperty(field)) {
+                    if (this.baseResults[i].hasOwnProperty(field) && values[field] === this.baseResults[i][field]) {
+                        count++;
+                    }
+                    if (count === keys) {
+                        this.currentRowNumber = i;
+                        this.currentRow = this.baseResults[i];
+                        BaseDatasource.logger.log('row ' + this.currentRowNumber + ' selected', this.baseResults[i]);
+                        return;
+                    }
+                }
+            }
+        }
+        this.currentRow = null;
+        this.currentRowNumber = -1;
+    }
+
+    get results(): Observable<any[]> {
+        return this._results.asObservable();
+    }
 }
 
 export interface IDatasource extends BaseDatasource {
-  currentRowNumber: number;
-  currentRow: any;
+    currentRowNumber: number;
+    currentRow: any;
 
-  fromTemplate(input: ITemplateSingleton | ITemplateSPARQL | ITemplateCodelist): void;
+    fromTemplate(input: ITemplateSingleton | ITemplateSPARQL | ITemplateCodelist): void;
 
-  setCurrentRow(values: any): void;
+    setCurrentRow(values: any): void;
 }
 
 export interface ICodelist extends BaseDatasource {
-  uri: string;
-  url?: string;
-  query: string;
+    uri: string;
+    url?: string;
+    query: string;
 }
 
 export interface ISPARQL extends BaseDatasource {
-  url: string;
-  searchItem: string;
-  triggerItem: string;
-  singleton: boolean;
+    url: string;
+    searchItem: string;
+    triggerItem: string;
+    singleton: boolean;
 }
 
 export class CodelistDatasource extends BaseDatasource implements ICodelist {
-  uri: string;
-  url?: string;
-  currentRowNumber: number;
-  currentRow: any;
+    type = 'CODELIST';
+    uri: string;
+    url?: string;
+    currentRowNumber: number;
+    currentRow: any;
 
-  constructor() {
-    super();
-    this.query = `PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+    constructor() {
+        super();
+        this.query = `PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
             PREFIX dct:<http://purl.org/dc/terms/>
             PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
@@ -210,159 +219,187 @@ export class CodelistDatasource extends BaseDatasource implements ICodelist {
             	
             }
             ORDER BY ASC(?a) ASC(?l)`;
-  }
+    }
 
-  fromTemplate(input: ITemplateCodelist): void {
-    BaseDatasource.logger.log('Codelist fromTemplate', input);
-    this.id = input['_xml:id'] as string;
-    this.uri = input.uri;
-    this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
-    let endpointType = EndpointType.find(input._endpointType);
-    BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
-    this.endpoint = Endpoint.find(endpointType, this.url);
-    BaseDatasource.logger.log('Codelist fromTemplate OUT', this);
-    /*
-     if ( this.uri && this.endpoint ) {
-     this.refresh();
-     }
-     */
-  }
+    duplicate() {
+        /*
+            const _ = require('lodash');
+            let ds = _.cloneDeep(this);
+        */
+        let ds = new CodelistDatasource();
+
+        ds.id = this.id + '.' + (++BaseDatasource.counter);
+        ds.type = this.type;
+        ds.query = this.query;
+        ds.endpoint = this.endpoint;
+        ds.uri = this.uri;
+        ds.url = this.url;
+
+        ds._results.next([]);
+        ds._currentRow.next({});
+        ds.currentRowNumber = -1;
+        ds.baseResults = [];
+        BaseDatasource.datasources.push(ds);
+        ds.refresh();
+
+        return ds;
+    }
+
+
+    fromTemplate(input: ITemplateCodelist): void {
+        BaseDatasource.logger.log('Codelist fromTemplate', input);
+        this.id = input['_xml:id'] as string;
+        this.uri = input.uri;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
+        let endpointType = EndpointType.find(input._endpointType);
+        BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
+        this.endpoint = Endpoint.find(endpointType, this.url);
+        BaseDatasource.logger.log('Codelist fromTemplate OUT', this);
+        /*
+         if ( this.uri && this.endpoint ) {
+         this.refresh();
+         }
+         */
+    }
 }
 
 export class SPARQLDatasource extends BaseDatasource implements ISPARQL {
-  id: string;
-  url: string;
-  endpoint: Endpoint;
-  query: string;
-  searchItem: string;
-  triggerItem: string;
-  singleton: false;
-  // protected _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
-  // public results: Observable<any[]> = this._results.asObservable();
-  currentRowNumber: number = -1;
-  currentRow: any;
+    id: string;
+    type = 'SPARQL';
+    url: string;
+    endpoint: Endpoint;
+    query: string;
+    searchItem: string;
+    triggerItem: string;
+    singleton: false;
+    // protected _results: BehaviorSubject<any[]> = new BehaviorSubject([]);
+    // public results: Observable<any[]> = this._results.asObservable();
+    currentRowNumber: number = -1;
+    currentRow: any;
 
-  fromTemplate(input: ITemplateSPARQL): void {
-    BaseDatasource.logger.log('SPARQL fromTemplate', input);
-    this.id = input['_xml:id'] as string;
-    this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
-    this.query = input.query;
+    fromTemplate(input: ITemplateSPARQL): void {
+        BaseDatasource.logger.log('SPARQL fromTemplate', input);
+        this.id = input['_xml:id'] as string;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
+        this.query = input.query;
 
-    let endpointType = EndpointType.find(input._endpointType);
-    BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
-    this.endpoint = Endpoint.find(endpointType, this.url);
-    BaseDatasource.logger.log('Singleton fromTemplate OUT', this);
-    /*
-     if ( this.uri && this.endpoint ) {
-     this.refresh();
-     }
-     */
-  }
+        let endpointType = EndpointType.find(input._endpointType);
+        BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
+        this.endpoint = Endpoint.find(endpointType, this.url);
+        BaseDatasource.logger.log('Singleton fromTemplate OUT', this);
+        /*
+         if ( this.uri && this.endpoint ) {
+         this.refresh();
+         }
+         */
+    }
 }
 
 export class SingletonDatasource extends BaseDatasource implements ISPARQL {
-  id: string;
-  endpoint: Endpoint;
-  url: string;
-  query: string;
-  searchItem: string;
-  triggerItem: string;
-  triggerItemObject: Item;
-  singleton: true;
-  currentRowNumber: number = -1;
-  currentRow: any;
-  triggerItemSubject: BehaviorSubject<any>;
+    id: string;
+    type = 'SINGLETON';
+    endpoint: Endpoint;
+    url: string;
+    query: string;
+    searchItem: string;
+    triggerItem: string;
+    triggerItemObject: Item;
+    singleton: true;
+    currentRowNumber: number = -1;
+    currentRow: any;
+    triggerItemSubject: BehaviorSubject<any>;
 
-  fixTriggerItem() {
-    BaseDatasource.logger.log('fixTriggerItem', this);
-    if (this.triggerItem) {
-      if (this.triggerItem.indexOf('_uri') >= 0) {
-        this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem.replace('_uri', ''));
-        if (this.triggerItemObject) {
-          BaseDatasource.logger.log('creating observer for', this.triggerItem);
-          this.triggerItemSubject = this.triggerItemObject.valueObject();
-          this.triggerItemSubject.subscribe(
-            res => {
-              if (res) {
-                BaseDatasource.logger.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
-                this.refresh({searchParam: res.c});
-              } else {
-                BaseDatasource.logger.log('trigger detected NULL value', this.triggerItem, this.triggerItemObject.value, res);
-                this.currentRowNumber = -1;
-                this.currentRow = {};
-              }
-            },
-            err => {
-              BaseDatasource.logger.log('trigger error', err);
-            },
-            () => {
-              BaseDatasource.logger.log('trigger done');
+    fixTriggerItem() {
+        BaseDatasource.logger.log('fixTriggerItem', this);
+        if (this.triggerItem) {
+            if (this.triggerItem.indexOf('_uri') >= 0) {
+                this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem.replace('_uri', ''));
+                if (this.triggerItemObject) {
+                    BaseDatasource.logger.log('creating observer for', this.triggerItem);
+                    this.triggerItemSubject = this.triggerItemObject.valueObject();
+                    this.triggerItemSubject.subscribe(
+                        res => {
+                            if (res) {
+                                BaseDatasource.logger.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
+                                this.refresh({searchParam: res.c});
+                            } else {
+                                BaseDatasource.logger.log('trigger detected NULL value', this.triggerItem, this.triggerItemObject.value, res);
+                                this.currentRowNumber = -1;
+                                this.currentRow = {};
+                            }
+                        },
+                        err => {
+                            BaseDatasource.logger.log('trigger error', err);
+                        },
+                        () => {
+                            BaseDatasource.logger.log('trigger done');
+                        }
+                    );
+                } else {
+                    console.error('trigger item ', this.triggerItem, ' not found');
+                }
+            } else {
+                this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem);
+                if (this.triggerItemObject) {
+                    this.triggerItemObject.valueObject().subscribe(
+                        res => {
+                            if (res) {
+                                BaseDatasource.logger.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
+                                this.refresh({searchParam: res.l});
+                            }
+                        },
+                        err => {
+                            BaseDatasource.logger.log('trigger error', err);
+                        },
+                        () => {
+                            BaseDatasource.logger.log('trigger done');
+                        }
+                    );
+                } else {
+                    console.error('trigger item ', this.triggerItem, ' not found');
+                }
             }
-          );
-        } else {
-          console.error('trigger item ', this.triggerItem, ' not found');
+            BaseDatasource.logger.log('triggerItemObject', this.triggerItemObject);
         }
-      } else {
-        this.triggerItemObject = BaseDatasource.metadataService.state.getItem(this.triggerItem);
-        if (this.triggerItemObject) {
-          this.triggerItemObject.valueObject().subscribe(
-            res => {
-              if (res) {
-                BaseDatasource.logger.log('trigger detected', this.triggerItem, this.triggerItemObject.value, res);
-                this.refresh({searchParam: res.l});
-              }
-            },
-            err => {
-              BaseDatasource.logger.log('trigger error', err);
-            },
-            () => {
-              BaseDatasource.logger.log('trigger done');
-            }
-          );
-        } else {
-          console.error('trigger item ', this.triggerItem, ' not found');
-        }
-      }
-      BaseDatasource.logger.log('triggerItemObject', this.triggerItemObject);
     }
-  }
 
-  duplicate() {
-/*
-    const _ = require('lodash');
-    let ds= _.cloneDeep(this);
-*/
-    let ds = new SingletonDatasource();
-    ds.id = this.id + '.' + (++BaseDatasource.counter);
-    ds.query = this.query;
-    ds.endpoint = this.endpoint;
-    ds.triggerItem = this.triggerItem;
+    duplicate() {
+        /*
+            const _ = require('lodash');
+            let ds= _.cloneDeep(this);
+        */
+        let ds = new SingletonDatasource();
+        ds.id = this.id + '.' + (++BaseDatasource.counter);
+        ds.query = this.query;
+        ds.endpoint = this.endpoint;
+        ds.triggerItem = this.triggerItem;
 
-    BaseDatasource.datasources.push(ds);
-    ds._results.next([]);
-    ds._currentRow.next({});
-    ds.currentRowNumber = -1;
-    ds.baseResults = [];
+        BaseDatasource.datasources.push(ds);
+        ds._results.next([]);
+        ds._currentRow.next({});
+        ds.currentRowNumber = -1;
+        ds.baseResults = [];
+        ds.refresh();
 
-    return ds;
-  }
+        return ds;
+    }
 
-  fromTemplate(input: ITemplateSingleton): void {
-    BaseDatasource.logger.log('Singleton fromTemplate', input);
-    this.id = input['_xml:id'] as string;
-    this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
-    this.query = input.query;
-    this.triggerItem = input._triggerItem;
+    fromTemplate(input: ITemplateSingleton): void {
+        BaseDatasource.logger.log('Singleton fromTemplate', input);
+        this.id = input['_xml:id'] as string;
+        this.url = input.url || BaseDatasource.metadataService.state.template.settings.sparqlEndpoint;
+        this.query = input.query;
+        this.triggerItem = input._triggerItem;
 
-    let endpointType = EndpointType.find(input._endpointType);
-    BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
-    this.endpoint = Endpoint.find(endpointType, this.url);
-    BaseDatasource.logger.log('Singleton fromTemplate OUT', this);
-    /*
-     if ( this.uri && this.endpoint ) {
-     this.refresh();
-     }
-     */
-  }
+        let endpointType = EndpointType.find(input._endpointType);
+        BaseDatasource.logger.log('codelist ', this.id, input._endpointType, endpointType);
+        this.endpoint = Endpoint.find(endpointType, this.url);
+        BaseDatasource.logger.log('Singleton fromTemplate OUT', this);
+        /*
+         if ( this.uri && this.endpoint ) {
+         this.refresh();
+         }
+         */
+    }
 }
 

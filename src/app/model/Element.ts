@@ -4,7 +4,7 @@ import {Utils} from '../utils/Utils';
 import {IEDIMLElement} from './EDIML';
 import {availableContexts, Logger} from '../utils/logger';
 import {MetadataService} from '../components/service/MetadataService';
-import {SingletonDatasource} from './Datasource';
+import {BaseDatasource, CodelistDatasource, SingletonDatasource} from './Datasource';
 /**
  * Created by fabio on 05/03/2017.
  */
@@ -76,13 +76,17 @@ export class Element {
             let item = _.cloneDeep(i); // Object.assign({}, i);
             item.id = i.id;
             item.elementId = this.id;
+
             if ( i.datasource ) {
+                Element.logger.log('item with datasource', i.id, i.datasource);
                 let ds = i.datasource.duplicate();
                 if ( ds instanceof SingletonDatasource ) {
                     // ds.triggerItem = ds.triggerItem;
                     ds.fixTriggerItem();
+                } else {
+                    Element.logger.log('refreshing datasource', ds);
+                    ds.refresh();
                 }
-                Element.logger.log('duplicated datasource', ds);
                 item.datasource = ds;
             }
             let newItem = getItem(e, i.id);

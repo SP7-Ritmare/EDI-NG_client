@@ -61,7 +61,7 @@ export class Endpoint {
                       headers: options
                     })
                     .map( (res: any) => {
-                        Endpoint.logger.log('Res: ', res);
+                        Endpoint.logger.log('Res: ', res, query);
                         if ( this.endpointType.contentType === ContentTypes.JSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSON ||
                             this.endpointType.contentType === ContentTypes.sparqlJSONP ) {

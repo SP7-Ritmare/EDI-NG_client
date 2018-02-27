@@ -2,7 +2,7 @@
  * Created by fabio on 06/03/2017.
  */
 
-import {Component, Input, Host, OnInit} from '@angular/core';
+import {Component, Input, Host, OnInit, AfterViewInit} from '@angular/core';
 import {Item} from '../../../model/Item';
 import {MainLayoutComponent} from '../../layout/main-layout-component';
 import {EdiElementComponent} from '../../ediElement/edi-element-component';
@@ -22,7 +22,7 @@ import {MetadataService} from '../../service/MetadataService';
     `,
     styleUrls: ['./edi-combobox-component.css']
 })
-export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
+export class EdiComboboxComponent extends EdiItemComponent implements OnInit, AfterViewInit {
     static logger = new Logger(availableContexts.COMBO);
     interfaceLanguage: string;
     currentValue: string;
@@ -30,6 +30,19 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
     @Input() item: Item;
 
     selectRow(value: any) {
+/*
+        if ( value === null ) {
+            this.datasource.setCurrentRow(null);
+            this.item.value = this.datasource.currentRow;
+            EdiComboboxComponent.logger.log('new value object', this.item.value);
+            this.item.labelValue = (this.item.value.a ? this.item.value.a : this.item.value.l);
+            this.item.codeValue = this.item.value.c;
+            this.item.urnValue = this.datasource.currentRow.urn;
+            this.item.languageNeutral = this.datasource.currentRow.z;
+            this.currentValue = this.item.codeValue;
+            return;
+        }
+*/
         let values = {
             c: value.value
         };
@@ -64,12 +77,16 @@ export class EdiComboboxComponent extends EdiItemComponent implements OnInit {
     ngAfterViewInit() {
         if (this.item) {
             this.datasource = this.item.datasource;
-            EdiComboboxComponent.logger.log('COMBOBOX Component', 'init combo on item ', this.item, 'datasource', this.datasource);
+            if ( this.item.id === 'ling_md_1' ) {
+                EdiComboboxComponent.logger.log('COMBOBOX Component', 'init combo on item ', this.item, 'datasource', this.datasource);
+            }
 
             if (this.datasource) {
                 this.datasource.results.subscribe(
                     res => {
-                        EdiComboboxComponent.logger.log('COMBOBOX Component', 'Item', this.item.id, this.item.codeValue, 'received data', res);
+                        if ( this.item.id === 'ling_md_1' ) {
+                            EdiComboboxComponent.logger.log('COMBOBOX Component', 'Item', this.item.id, this.item.codeValue, 'received data', res);
+                        }
                         this.possibleValues = res;
                         if (res.length > 0 && this.item.codeValue && this.item.codeValue !== '' && !this.currentValue) {
                             this.currentValue = this.item.codeValue;

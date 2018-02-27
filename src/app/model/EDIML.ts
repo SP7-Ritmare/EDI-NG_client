@@ -408,6 +408,7 @@ export class EDIML {
 
         this.contents.element = elements;
         this.sortItems();
+        this.contents.timestamp = new Date();
         console.log('EDIML', this.contents);
     }
 }

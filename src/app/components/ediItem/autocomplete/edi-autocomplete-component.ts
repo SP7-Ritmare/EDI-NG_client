@@ -33,178 +33,177 @@ import {BaseDatasource} from '../../../model/Datasource';
  */
 
 @Component({
-  selector: 'app-edi-autocomplete',
-  /*
-      host: {
-          '(document:click)': 'handleClick($event)',
-      },
-  */
-  template: `
-    <input
-      matInput
-      type='text' [placeholder]='placeholder()' [(ngModel)]='query'
-      (keyup)='filter($event); false' [required]='item.mandatory' [matAutocomplete]="auto"
-    >
-    <mat-autocomplete #auto='matAutocomplete' [displayWith]="displayFn" (optionSelected)="select($event)">
-      <mat-option *ngFor='let i of filteredList' [value]='i'>
-        {{ i.l }}
-      </mat-option>
-    </mat-autocomplete>
-<!--
-    <mat-form-field class="col-md-12">
-      <pre>{{item | removeCyclic | json}}</pre>
-    </mat-form-field>
--->
+    selector: 'app-edi-autocomplete',
+    /*
+        host: {
+            '(document:click)': 'handleClick($event)',
+        },
+    */
+    template: `
+        <input
+            matInput
+            type='text' [placeholder]='placeholder()' [(ngModel)]='query'
+            (keyup)='filter($event); false' [required]='item.mandatory' [matAutocomplete]="auto"
+        >
+        <mat-autocomplete #auto='matAutocomplete' [displayWith]="displayFn" (optionSelected)="select($event)">
+            <mat-option *ngFor='let i of filteredList' [value]='i'>
+                {{ i.l }}
+            </mat-option>
+        </mat-autocomplete>
+        <!--
+            <mat-form-field class="col-md-12">
+              <pre>{{item | removeCyclic | json}}</pre>
+            </mat-form-field>
+        -->
 
-  `,
-  styleUrls: ['./edi-autocomplete-component.css'],
-  providers: [EDITemplate]
+    `,
+    styleUrls: ['./edi-autocomplete-component.css'],
+    providers: [EDITemplate]
 })
 export class EdiAutocompleteComponent implements OnInit {
-  static logger = new Logger(availableContexts.AUTOCOMPLETION);
-  @ViewChild('select')
-  combo: ElementRef;
+    static logger = new Logger(availableContexts.AUTOCOMPLETION);
+    @ViewChild('select')
+    combo: ElementRef;
 
-  interfaceLanguage: string;
-  @Input() item: Item;
-  query = '';
-  data: any[] = [];
-  private filteredList: any = [];
-  elementRef: any;
-  selectedItem = 0;
+    interfaceLanguage: string;
+    @Input() item: Item;
+    query = '';
+    data: any[] = [];
+    private filteredList: any = [];
+    elementRef: any;
+    selectedItem = 0;
 
-  constructor(protected metadataService: MetadataService) {
-  }
+    constructor(protected metadataService: MetadataService) {
+    }
 
-  /*
-      constructor(protected metadataService: MetadataService, private myElement: ElementRef) {
-          super(metadataService);
-          // TODO: check if inheritance is broken
-      }
-  */
+    /*
+        constructor(protected metadataService: MetadataService, private myElement: ElementRef) {
+            super(metadataService);
+            // TODO: check if inheritance is broken
+        }
+    */
 
-  renderRow(data: any) {
-    let html = `<b style='float:left;width:100%'>${data.c}</b>
+    renderRow(data: any) {
+        let html = `<b style='float:left;width:100%'>${data.c}</b>
                 
                 <span>${data.l}</span>`;
 
-    return html;
-  }
+        return html;
+    }
 
-  placeholder() {
-    if (this.item.label) {
-      for (let l of this.item.label) {
-        if (l['_xml:lang'] === this.metadataService.state.interfaceLanguage) {
-          return l['__text'];
+    placeholder() {
+        if (this.item.label) {
+            for (let l of this.item.label) {
+                if (l['_xml:lang'] === this.metadataService.state.interfaceLanguage) {
+                    return l['__text'];
+                }
+            }
         }
-      }
+        return '';
     }
-    return '';
-  }
 
-  filter(event: any) {
-    const ignoredKeys = [
-      'ArrowUp',
-      'ArrowDown',
-      'Enter',
-    ]
-    event.stopPropagation();
-    EdiAutocompleteComponent.logger.log('event', event);
-    if ( event.key === 'ArrowUp' || event.key === 'ArrowDown' ) {
-      console.log('discarding key', event.key);
-      return;
-    }
-    if (this.query !== '' && this.query.length > 2) {
-      EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
-      this.item.datasource.refresh({searchParam: this.query});
-      this.item.datasource.results.subscribe(res => {
-        this.filteredList = res;
-        this.item.datasource.setCurrentRow({});
-        // EdiAutocompleteComponent.logger.log('results', this.filteredList);
-        // this.combo.nativeElement.focus();
+    filter(event: any) {
+        const ignoredKeys = [
+            'ArrowUp',
+            'ArrowDown',
+            'Enter',
+        ];
+        event.stopPropagation();
+        EdiAutocompleteComponent.logger.log('event', event);
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            console.log('discarding key', event.key);
+            return;
+        }
+        if (this.query !== '' && this.query.length > 2) {
+            EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
+            this.item.datasource.refresh({searchParam: this.query});
+            this.item.datasource.results.subscribe(res => {
+                this.filteredList = res;
+                this.item.datasource.setCurrentRow({});
+                // EdiAutocompleteComponent.logger.log('results', this.filteredList);
+                // this.combo.nativeElement.focus();
+                /*
+                          if (this.filteredList.length === 1) {
+                            this.select(this.filteredList[0]);
+                          }
+                */
+            });
+            /*
+             this.filteredList = this.data.filter(function(el: any){
+             return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+             }.bind(this));
+             */
+        } else {
+            this.filteredList = [];
+            /*
+                  console.log('clearing current row in datasource', this.item.datasource.id, this.query);
+                  this.select({c: null});
+            */
+        }
+
         /*
-				  if (this.filteredList.length === 1) {
-					this.select(this.filteredList[0]);
-				  }
-		*/
-      });
-      /*
-	   this.filteredList = this.data.filter(function(el: any){
-	   return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-	   }.bind(this));
-	   */
-    } else {
-      this.filteredList = [];
-/*
-      console.log('clearing current row in datasource', this.item.datasource.id, this.query);
-      this.select({c: null});
-*/
+            if (event.key === 'ArrowDown' && this.selectedItem < this.filteredList.length - 1) {
+              this.selectedItem++;
+            } else if (event.key === 'ArrowUp' && this.selectedItem > 0) {
+              this.selectedItem--;
+            } else if (event.key === 'Enter'/!* && this.selectedItem >= 0 && this.selectedItem < this.filteredList.length*!/) {
+              EdiAutocompleteComponent.logger.log('Enter pressed', 'selecting', this.selectedItem, this.filteredList[this.selectedItem], this.filteredList);
+              this.select(this.filteredList[this.selectedItem]);
+            } else {
+            }
+        */
     }
 
-/*
-    if (event.key === 'ArrowDown' && this.selectedItem < this.filteredList.length - 1) {
-      this.selectedItem++;
-    } else if (event.key === 'ArrowUp' && this.selectedItem > 0) {
-      this.selectedItem--;
-    } else if (event.key === 'Enter'/!* && this.selectedItem >= 0 && this.selectedItem < this.filteredList.length*!/) {
-      EdiAutocompleteComponent.logger.log('Enter pressed', 'selecting', this.selectedItem, this.filteredList[this.selectedItem], this.filteredList);
-      this.select(this.filteredList[this.selectedItem]);
-    } else {
+    select(originalItem: any) {
+        console.log('selected item', originalItem);
+        if (originalItem && originalItem.hasOwnProperty('option') && originalItem.option.hasOwnProperty('value')) {
+            const item = originalItem.option.value;
+            // this.query = item.l;
+            this.item.value = item;
+            this.item.labelValue = item.l ? item.l : item.a;
+            this.item.codeValue = item.c;
+            this.item.languageNeutral = item.z;
+            this.item.urnValue = item.urn;
+            EdiAutocompleteComponent.logger.log('changed item', this.item);
+            this.filteredList = [];
+            this.item.datasource.setCurrentRow(item);
+        } else {
+            this.item.value = null;
+            this.item.labelValue = null;
+            this.item.codeValue = null;
+            this.item.languageNeutral = null;
+            this.item.urnValue = null;
+        }
     }
-*/
-  }
 
-  select(originalItem: any) {
-    console.log('selected item', originalItem);
-    if ( originalItem && originalItem.hasOwnProperty('option') && originalItem.option.hasOwnProperty('value') ) {
-      const item = originalItem.option.value;
-      // this.query = item.l;
-      this.item.value = item;
-      this.item.labelValue = item.l ? item.l : item.a;
-      this.item.codeValue = item.c;
-      this.item.languageNeutral = item.z;
-      this.item.urnValue = item.urn;
-      EdiAutocompleteComponent.logger.log('changed item', this.item);
-      this.filteredList = [];
-      this.item.datasource.setCurrentRow(item);
-    } else {
-      this.item.value = null;
-      this.item.labelValue = null;
-      this.item.codeValue = null;
-      this.item.languageNeutral = null;
-      this.item.urnValue = null;
+    handleClick(event: any) {
+        let clickedComponent = event.target;
+        let inside = false;
+        do {
+            /*
+                        if (clickedComponent === this.elementRef.nativeElement) {
+                            inside = true;
+                        }
+            */
+            clickedComponent = clickedComponent.parentNode;
+        } while (clickedComponent);
+        if (!inside) {
+            this.filteredList = [];
+        }
     }
-  }
 
-  handleClick(event: any) {
-    let clickedComponent = event.target;
-    let inside = false;
-    do {
-      /*
-                  if (clickedComponent === this.elementRef.nativeElement) {
-                      inside = true;
-                  }
-      */
-      clickedComponent = clickedComponent.parentNode;
-    } while (clickedComponent);
-    if (!inside) {
-      this.filteredList = [];
+    displayFn(item?: any): string | undefined {
+        return item ? item.l : undefined;
     }
-  }
 
-  displayFn(item?: any): string | undefined {
-    return item ? item.l : undefined;
-  }
+    ngOnInit() {
+        /*
+                this.elementRef = this.myElement;
+        */
 
-  ngOnInit() {
-    /*
-            this.elementRef = this.myElement;
-    */
-
-    console.log('AUTOCOMPLETE', this.item);
-    if (this.item.value) {
-      this.query = this.item.value;
-      this.filter(null);
+        if (this.item.value) {
+            this.query = this.item.value;
+            this.filter(null);
+        }
     }
-  }
 }

@@ -15,7 +15,7 @@
           <div class="flex-item" fxFill>
             <mat-card fxLayout="row">
               <div class="flex-item" fxFlex="20%">
-                <qr-code [value]="m._source.fileUri" [size]="80"></qr-code>
+                <qr-code [value]="m._source.fileUri" [size]="50"></qr-code>
               </div>
               <div class="flex-container"
                    fxLayout="column">
@@ -26,15 +26,15 @@
                   <div class="flex-container"
                        fxLayout="row">
                     <div class="flex-item">
-                      <p><a md-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}"
+                      <p><a mat-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}"
                             target="_blank">Edit</a>
                       </p>
                     </div>
                     <div class="flex-item">
-                      <p><a md-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
+                      <p><a mat-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
                     </div>
                     <div class="flex-item">
-                      <p><a md-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
+                      <p><a mat-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
                     </div>
                   </div>
 
