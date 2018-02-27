@@ -5,8 +5,10 @@ import {Item} from '../../../model/Item';
 @Component({
     selector: 'app-edi-date-range',
     template: `
+<!--
         <pre>{{item | removeCyclic | json}}</pre>
-        <div class="col-md-12">
+-->
+        <div>
             <div class="startDate">
                 <div class="form form-label itemLabel">
                     <div *ngFor="let l of item.start.label">

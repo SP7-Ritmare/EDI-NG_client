@@ -3,9 +3,11 @@
 }
 
 .elementMandatory {
-    text-shadow: 4px 4px 8px white;
+    /*text-shadow: 4px 4px 8px white;*/
+
 }
 
 .elementMandatory::after {
     content: '*';
+    color: red;
 }

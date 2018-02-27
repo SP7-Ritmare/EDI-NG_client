@@ -8,3 +8,8 @@ pre {
 md-sidenav-container {
     background-color: rgb(169, 195, 223) !important;
 }
+
+body {
+  padding: 0px;
+  margin: 0px;
+}

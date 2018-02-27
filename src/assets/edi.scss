@@ -50,6 +50,8 @@ html, body {
   color: mat-color($primary, 800);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-stretch: condensed;
+  height: 100%;
+  min-height: 100%;
 }
 .card-header {
   background-color: mat-color($primary, 800);
@@ -78,10 +80,11 @@ input.mat-input-element {
   font-weight: bold;
 }
 .elementNotMandatory {
-  color: #000;
-  font-weight: bold;
+  color: mat-color($primary, 800);
+  font-weight: normal;
 }
 
+/*
 .header {
   position: fixed;
   background-color: mat-color($primary, 800);
@@ -91,6 +94,7 @@ input.mat-input-element {
   height: 100px;
   z-index: 100;
 }
+*/
 
 .container {
   padding-left: 0 !important;

@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-title>Sending metadata</mat-card-title>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item *ngIf="status.preparing >= 0">
+                Precompiling metadata &nbsp;&nbsp; <span class="tick" *ngIf="status.preparing === 100">&#10003;</span>
+            </mat-list-item>
+            <mat-list-item *ngIf="status.sending >= 0">
+                Compiling metadata &nbsp;&nbsp; <span class="tick" *ngIf="status.sending === 100">&#10003;</span>
+            </mat-list-item>
+            <mat-list-item *ngIf="status.storing >= 0">
+                Storing metadata to EDI Catalogue &nbsp;&nbsp; <span class="tick" *ngIf="status.storing === 100">&#10003;</span>
+            </mat-list-item>
+            <mat-list-item mat-line>
+            </mat-list-item>
+            <mat-list-item *ngIf="status.storing === 100">
+                Successfully saved
+            </mat-list-item>
+            <mat-list-item *ngIf="status.storing === 100">
+                <button mat-button color="primary" mat-dialog-close>Ok</button>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+</mat-card>

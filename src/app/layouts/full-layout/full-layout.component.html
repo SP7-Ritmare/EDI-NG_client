@@ -1,0 +1,11 @@
+<div fxLayout="column" fxFlexFill="">
+  <app-header></app-header>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened="true">
+      <app-new-sidebar (saving)="openDialog()"></app-new-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content class="content">
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

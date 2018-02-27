@@ -42,7 +42,8 @@ export class Endpoint {
         let result: BehaviorSubject<any[]> = new BehaviorSubject([]);
         switch (this.endpointType.method) {
             case HTTPMethod.GET:
-                let qs: string = this.url + '?';
+                let qs: string;
+                qs = this.url + (this.url.indexOf('?') >= 0 ? '&' : '?');
                 for (let p of this.endpointType.parameters) {
                     qs += encodeURIComponent(p.name) + '=' + encodeURIComponent(p.value) + '&';
                 }

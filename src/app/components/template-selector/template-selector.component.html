@@ -1,5 +1,5 @@
-<button [routerLink]="['/catalogue-list']">Catalogue</button>
-
-<div *ngFor="let t of templates">
-  <a [routerLink]="['/', t]">{{t}}</a>
-</div>
+<app-simple-layout>
+  <div *ngFor="let t of templates">
+    <a [routerLink]="['/', t]">{{t}}</a>
+  </div>
+</app-simple-layout>

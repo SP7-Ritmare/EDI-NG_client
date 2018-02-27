@@ -10,7 +10,7 @@ import {State} from '../../model/State';
 // const templateUrl = 'assets/SensorML20_lightweight_v1.00_forLTER_newSchema.xml';
 
 @Component({
-    selector: 'app-sidebar',
+    selector: 'edi-sidebar',
     templateUrl: './edi-sidebar-component.html',
     styleUrls: ['./edi-sidebar-component.css'],
     providers: []
