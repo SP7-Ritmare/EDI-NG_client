@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef, ViewChildren, ViewChild, OnInit} from '@angular/core';
+import {Component, Input, ElementRef, ViewChildren, ViewChild, OnInit, AfterViewInit, ChangeDetectorRef, NgZone} from '@angular/core';
 import {EdiItemComponent} from '../edi-item-component';
 import {Item} from '../../../model/Item';
 import {State} from '../../../model/State';
@@ -6,6 +6,7 @@ import {EDITemplate} from '../../service/EDITemplate';
 import {MetadataService} from '../../service/MetadataService';
 import {availableContexts, Logger} from '../../../utils/logger';
 import {BaseDatasource} from '../../../model/Datasource';
+import {MatAutocomplete} from '@angular/material';
 
 /*
     <!--      <mat-input-container class='md-icon-float md-block md-title'>
@@ -40,9 +41,14 @@ import {BaseDatasource} from '../../../model/Datasource';
         },
     */
     template: `
+<!--
+        <pre>{{ query | json }}</pre>
+        <button mat-button (click)="test()">test</button>
+-->
         <input
+            #input
             matInput
-            type='text' [placeholder]='placeholder()' [(ngModel)]='query'
+            type='text' [placeholder]='placeholder()' [(ngModel)]='query.l'
             (keyup)='filter($event); false' [required]='item.mandatory' [matAutocomplete]="auto"
         >
         <mat-autocomplete #auto='matAutocomplete' [displayWith]="displayFn" (optionSelected)="select($event)">
@@ -60,20 +66,28 @@ import {BaseDatasource} from '../../../model/Datasource';
     styleUrls: ['./edi-autocomplete-component.css'],
     providers: [EDITemplate]
 })
-export class EdiAutocompleteComponent implements OnInit {
+export class EdiAutocompleteComponent implements OnInit, AfterViewInit {
     static logger = new Logger(availableContexts.AUTOCOMPLETION);
     @ViewChild('select')
     combo: ElementRef;
 
+    @ViewChild('input') input: ElementRef;
+    @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
+
     interfaceLanguage: string;
     @Input() item: Item;
-    query = '';
+    query: any = {
+        c: undefined,
+        l: undefined,
+        a: undefined
+    };
     data: any[] = [];
     private filteredList: any = [];
     elementRef: any;
     selectedItem = 0;
+    mustSetValue = false;
 
-    constructor(protected metadataService: MetadataService) {
+    constructor(protected metadataService: MetadataService, private cdRef: ChangeDetectorRef, private zone: NgZone) {
     }
 
     /*
@@ -103,23 +117,34 @@ export class EdiAutocompleteComponent implements OnInit {
     }
 
     filter(event: any) {
+        if ( !event ) {
+            return;
+        }
         const ignoredKeys = [
             'ArrowUp',
             'ArrowDown',
             'Enter',
         ];
-        event.stopPropagation();
+        // event.stopPropagation();
         EdiAutocompleteComponent.logger.log('event', event);
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             console.log('discarding key', event.key);
             return;
         }
-        if (this.query !== '' && this.query.length > 2) {
+        if (this.query.l && this.query.l !== '' && this.query.l.length > 2) {
             EdiAutocompleteComponent.logger.log('autocomplete refreshing on ds ' + this.item.datasource.id);
-            this.item.datasource.refresh({searchParam: this.query});
+            this.item.datasource.refresh({searchParam: this.query.l});
             this.item.datasource.results.subscribe(res => {
                 this.filteredList = res;
-                this.item.datasource.setCurrentRow({});
+                if ( this.mustSetValue ) {
+                    this.mustSetValue = false;
+                    if ( this.item.datasource.baseResults.length > 0 ) {
+                        console.log('setting current row to', this.item.datasource.id, this.item.datasource.baseResults[0]);
+                        this.select(this.item.datasource.baseResults[0]);
+                    }
+                } else {
+                    this.item.datasource.setCurrentRow({});
+                }
                 // EdiAutocompleteComponent.logger.log('results', this.filteredList);
                 // this.combo.nativeElement.focus();
                 /*
@@ -192,18 +217,51 @@ export class EdiAutocompleteComponent implements OnInit {
         }
     }
 
-    displayFn(item?: any): string | undefined {
-        return item ? item.l : undefined;
+    displayFn(item?: any) {
+        const result = item && item.l ? item.l : item;
+        console.log('displayFn', item, result);
+        return result;
+    }
+
+    test() {
+        console.log(this.item);
+        this.item.value = this.item.datasource.baseResults[0];
+/*
+        this.input.nativeElement.focus();
+        this.matAutocomplete._keyManager.setFirstItemActive();
+*/
     }
 
     ngOnInit() {
+        console.log('value is', this.item.value);
+        if (this.item.value) {
+            this.query = this.item.value = {
+                ttValue: this.item.codeValue,
+                c: this.item.codeValue,
+                l: this.item.labelValue
+            };
+            this.mustSetValue = true;
+            this.filter(this.query);
+/*
+            setTimeout( () => {
+                this.select({
+                    ttValue: this.item.codeValue,
+                    c: this.item.codeValue,
+                    l: this.item.labelValue
+                });
+            }, 1000);
+*/
+            // this.matAutocomplete.options.first.select();
+        } else {
+            this.query = {
+            };
+        }
+        console.log('query', this.query);
+    }
+    ngAfterViewInit() {
         /*
                 this.elementRef = this.myElement;
         */
 
-        if (this.item.value) {
-            this.query = this.item.value;
-            this.filter(null);
-        }
     }
 }

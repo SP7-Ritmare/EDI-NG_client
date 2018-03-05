@@ -40,11 +40,6 @@
         </xsltChain>
 </settings>
 <endpointTypes>
-<endpointType xml:id="EnvThes" method="GET" queryParameter="query">
-<parameters>
-<parameter name="output" value="json"/>
-</parameters>
-</endpointType>
 <endpointType xml:id="virtuoso" method="GET" queryParameter="query">
 <parameters>
 <parameter name="format" value="application/sparql-results+json"/>
@@ -52,11 +47,9 @@
 <parameter name="fname" value="undefined"/>
 </parameters>
 </endpointType>
-<endpointType xml:id="fuseki1" method="GET" queryParameter="query">
+<endpointType xml:id="fuseki" method="GET" queryParameter="query">
 <parameters>
-<parameter name="format" value="application/sparql-results+json"/>
-<parameter name="save" value="display"/>
-<parameter name="fname" value="undefined"/>
+<parameter name="output" value="json"/>
 </parameters>
 </endpointType>
 </endpointTypes>
@@ -65,45 +58,51 @@
 <uri>http://inspire-registry.jrc.ec.europa.eu/registers/Languages/items</uri>
 <url>http://sparql/sparql.get-it.it/sparql</url>
 </codelist>
-<sparql xml:id="outputs" endpointType="EnvThes">
+<sparql xml:id="keywords" endpointType="virtuoso">
 <query><![CDATA[
                 
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT * WHERE {
-                        SERVICE <http://vocabs.ceh.ac.uk/evn/tbl/sparql> {
-                            GRAPH <urn:x-evn-pub:envthes>{
-                                {
-                                    BIND (<http://vocabs.lter-europe.net/EnvThes/10004> as ?root)
-                                    ?root (skos:narrower*) ?narrow.
-                                    ?narrow skos:prefLabel ?l.
-                                }
-                                FILTER( REGEX( STR(?l), "$search_param", "i") )
-                            }
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "it")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
                         }
-                    }
-                
+                        ORDER BY ASC(?l) ASC(?a) 
+                        
             ]]></query>
-<url>http://sdi.adamassoft.it/proxy/?proxyTo=http://vocabs.ceh.ac.uk/evn/tbl/sparql</url>
 </sparql>
-<singleton xml:id="outputsS" endpointType="EnvThes" triggerItem="output_param_1_uri">
+<singleton xml:id="keywordsS" endpointType="virtuoso" triggerItem="output_param_1_uri">
 <query><![CDATA[
                 
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT * WHERE {
-                        SERVICE <http://vocabs.ceh.ac.uk/evn/tbl/sparql> {
-                            GRAPH <urn:x-evn-pub:envthes>{
-                                {
-                                    BIND (<http://vocabs.lter-europe.net/EnvThes/10004> as ?root)
-                                    ?root (skos:narrower*) ?narrow.
-                                    ?narrow skos:prefLabel ?l.
-                                }
-                                FILTER( REGEX( STR(?l), "$search_param", "i") )
-                            }
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                        SELECT ?c ?l ?a
+                        FROM <http://ritmare.it/rdfdata/parameters>
+                        WHERE {
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "it")
+                          }
+                          FILTER( REGEX( STR(?c), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
                         }
-                    }
-                
+                        ORDER BY ASC(?l) ASC(?a)
+                        
             ]]></query>
-<url>http://sdi.adamassoft.it/proxy/?proxyTo=http://vocabs.ceh.ac.uk/evn/tbl/sparql</url>
 </singleton>
-<sparql xml:id="sensorType" endpointType="fuseki1">
+<sparql xml:id="sensorType" endpointType="fuseki">
 <query><![CDATA[
                 
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -127,14 +126,13 @@
             ]]></query>
 <url>http://vocab.nerc.ac.uk/sparql/sparql</url>
 </sparql>
-<singleton xml:id="manufacturers" endpointType="fuseki1">
+<singleton xml:id="manufacturers" endpointType="virtuoso">
 <query><![CDATA[
                 
-                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>
-                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#>                        
                         SELECT ?c ?l 
-                        WHERE {
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
                           ?c rdf:type foaf:Organization.
                           ?c foaf:name ?l.
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
@@ -142,21 +140,20 @@
                         ORDER BY ASC(?l)                        
                         
             ]]></query>
-<url>http://fuseki1.get-it.it/manufacturers/sparql</url>
 </singleton>
-<singleton xml:id="info_manufacturers" endpointType="fuseki1" triggerItem="manuf_name_3_uri">
+<singleton xml:id="info_manufacturers" endpointType="virtuoso" triggerItem="manuf_name_3_uri">
 <query><![CDATA[
                 
                         PREFIX addr: <http://wymiwyg.org/ontologies/foaf/postaddress#>
                         PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                        SELECT DISTINCT ?phone ?addr ?town ?region ?postcode ?country ?email ?homepage
-                          WHERE {
+                        SELECT ?phone fn:concat(?l1, ', ', ?l2) AS ?addr ?town ?region ?postcode ?country ?email ?homepage
+                        FROM <http://ritmare.it/rdfdata/manufacturers>
+                        WHERE { 
                           OPTIONAL {
-                            <$search_param> foaf:phone ?phone.
+                            <$search_param> foaf:phone ?phone .
                           }
                           OPTIONAL {
-                            <$search_param> foaf:email ?email.
+                            <$search_param> vcard:email ?email.
                           }
                           OPTIONAL {
                             <$search_param> foaf:homepage ?homepage.
@@ -245,30 +242,38 @@
 <singleton xml:id="uom" endpointType="virtuoso">
 <query><![CDATA[
                 
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT * WHERE {
-                        SERVICE <http://vocabs.ceh.ac.uk/evn/tbl/sparql> {
-                            GRAPH <urn:x-evn-pub:envthes>{
-                                {
-                                    BIND (<http://vocabs.lter-europe.net/EnvThes/10185> as ?root)
-                                    ?root (skos:narrower*) ?narrow.
-                                    ?narrow skos:prefLabel ?l.
-                                    ?narrow skos:altLabel ?c.
-                                }
-                            }
+                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+                        SELECT ?c ?l ?urn
+                        FROM <http://ritmare.it/rdfdata/units>
+                        WHERE { 
+                          ?c rdf:type skos:Concept.
+                          OPTIONAL {
+                            ?c skos:prefLabel ?l.
+                            FILTER( LANG(?l) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:prefLabel ?a.
+                            FILTER( LANG(?a) = "en")
+                          }
+                          OPTIONAL {
+                            ?c skos:altLabel ?urn.
+                            FILTER( LANG(?urn) = "en")
+                          }
+                          FILTER( REGEX( STR(?l), "$search_param", "i") || REGEX( STR(?a), "$search_param", "i") )
                         }
-                    }
-                
+                        ORDER BY ASC(?l) ASC(?a)
+                        
             ]]></query>
 </singleton>
 <singleton xml:id="owners" endpointType="virtuoso">
 <query><![CDATA[
                 
-                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX ns: <http://www.w3.org/2006/vcard/ns#> 
                         SELECT ?c ?l
+                        FROM <http://ritmare.it/rdfdata/project>
                         WHERE { 
                           ?c rdf:type foaf:Person .
-                          ?c foaf:mbox ?l.
+                          ?c ns:email ?l.
                           FILTER( REGEX( STR(?l), "$search_param", "i") )
                         }
                         ORDER BY ASC(?l)
@@ -278,19 +283,17 @@
 <singleton xml:id="info_owner" endpointType="virtuoso" triggerItem="owner_1_uri">
 <query><![CDATA[
                 
-                PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        SELECT ?fullname ?email ?phone ?homepage ?l ?addr ?town ?postcode ?country
+                        PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                        SELECT ?phone ?addr ?email ?town ?country ?postcode ?homepage ?fullname ?l
                         WHERE { 
+                          OPTIONAL {
+                            <$search_param> foaf:phone ?phone .
+                          }
                           OPTIONAL {
                             <$search_param> foaf:fullName ?fullname .
                           }
                           OPTIONAL {
-                            <$search_param> foaf:mbox ?email .
-                          }
-  						  OPTIONAL {
-                            <$search_param> foaf:phone ?phone .
+                            <$search_param> vcard:email ?email .
                           }
                           OPTIONAL {
                             <$search_param> vcard:org ?b3 .
@@ -298,25 +301,21 @@
                             ?b3 foaf:name ?l .
                           }
                           {
-                            <$search_param> vcard:org/vcard:hasAddress ?b1 .
+                            <$search_param> vcard:hasAddress ?b1 .
                             ?b1 vcard:street-address ?addr .
                             ?b1 vcard:locality ?town .
                             ?b1 vcard:postal-code ?postcode .
                             ?b1 vcard:country-name ?b2 .
-                            #?b2 foaf:name ?country .
+                            ?b2 foaf:name ?country .
+                          } UNION {
+                            ?b3 vcard:hasAddress ?b1 .
+                            ?b1 vcard:street-address ?addr .
+                            ?b1 vcard:locality ?town .
+                            ?b1 vcard:postal-code ?postcode .
+                            ?b1 vcard:country-name ?b2 .
+                            ?b2 foaf:name ?country .
                           }
-  							#UNION {
-                          #  ?b3 vcard:hasAddress ?b1 .
-                          #  ?b1 vcard:street-address ?addr .
-                          #  ?b1 vcard:locality ?town .
-                          #  ?b1 vcard:postal-code ?postcode .
-                          #  ?b1 vcard:country-name ?b2 .
-                          #  ?b2 foaf:name ?country .
-                          #}
-                          #FILTER(lang(?l)='it')
-						  SERVICE <http://sparql.get-it.it> {
-    						?b2 foaf:name ?country . 
-  						  }
+                          FILTER(lang(?l)='it')
                         }
                         LIMIT 1
                         
@@ -1028,14 +1027,14 @@
 <help xml:lang="en">Parameter measured by the system/sensor/platform and related information. Several parameters, and related information, can be inserted.</help>
 <hasRoot>/swes:InsertSensor/swes:procedureDescription/sml:PhysicalSystem/sml:outputs/sml:OutputList</hasRoot>
 <produces>
-<item hasIndex="1" xml:id="output_param_1" outIndex="5" isFixed="false" hasDatatype="autoCompletion" datasource="outputs">
+<item hasIndex="1" xml:id="output_param_1" outIndex="5" isFixed="false" hasDatatype="autoCompletion" datasource="keywords">
 <label xml:lang="it">Nome parametro misurato</label>
 <label xml:lang="en">Output signal</label>
 <help xml:lang="it">Nome del parametro misurato. Iniziare a digitare tre lettere per ottenere dei suggerimenti da vocabolario controllato.</help>
 <help xml:lang="en">Measured parameter. Start typing the first three letters to obtain suggested autocompletion from controlled vocabularies.</help>
 <hasPath>sml:output/@name</hasPath>
 </item>
-<item hasIndex="3" xml:id="output_param_3" outIndex="6" field="narrow" isFixed="true" hasDatatype="select" datasource="outputsS">
+<item hasIndex="3" xml:id="output_param_3" outIndex="6" field="c" isFixed="true" hasDatatype="select" datasource="keywordsS">
 <hasPath>sml:output/swe:Quantity/@definition</hasPath>
 <hasValue>sml:output/@name</hasValue>
 </item>

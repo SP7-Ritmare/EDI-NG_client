@@ -28,7 +28,7 @@ export const enabledContexts: any[] = [
     /*
      'reorderElement',
      'duplicator',
-     availableContexts.EDI
+    availableContexts.EDI
     availableContexts.ENDPOINT,
     availableContexts.ENDPOINTTYPE
     availableContexts.STATE,
@@ -38,9 +38,9 @@ export const enabledContexts: any[] = [
     availableContexts.ITEM,
     availableContexts.ITEM_COMPONENT,
     availableContexts.ELEMENT
-      availableContexts.ENDPOINT,
-      availableContexts.DATASOURCE,
-      availableContexts.COMBO
+    availableContexts.ENDPOINT,
+    availableContexts.COMBO
+    availableContexts.DATASOURCE,
     availableContexts.CATALOGUE,
      */
 ];

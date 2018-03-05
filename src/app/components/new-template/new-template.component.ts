@@ -91,6 +91,7 @@ export class NewTemplateComponent implements AfterViewInit {
             */
             this.EDITemplate.load('assets/templates/' + this.templateName)
                 .subscribe((res) => {
+                    console.log('template is loaded');
                     this.template = res;
                     this.title = this.metadataService.state.templateName;
                     if (this.route.snapshot.queryParams['edit']) {
@@ -99,6 +100,7 @@ export class NewTemplateComponent implements AfterViewInit {
                             .subscribe(res2 => {
                                 console.log('loaded EDIML', id, res2);
                                 this.metadataService.state.mergeWithEDIML(res2);
+                                this.EDITemplate.fixDatasources();
                                 console.log('merged with EDIML', id, this.metadataService.state.template);
                                 console.log('datasources after merge', BaseDatasource.datasources);
                                 this.catalogueService.setId(id);
@@ -127,9 +129,9 @@ export class NewTemplateComponent implements AfterViewInit {
     }
 
     test() {
-        BaseDatasource.find('languages.1').refresh();
-        console.log('languages', BaseDatasource.find('languages'));
-        console.log('languages.1', BaseDatasource.find('languages.1'));
+        BaseDatasource.find('person').refresh();
+        console.log('person', BaseDatasource.find('person.5'));
+        console.log('personS', BaseDatasource.find('personS.6'));
     }
 
 
