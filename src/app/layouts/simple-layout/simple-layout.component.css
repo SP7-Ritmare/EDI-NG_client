@@ -1,0 +1,9 @@
+
+.content {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: auto;
+}
+.mat-sidenav-container {
+    height: 100%;
+}

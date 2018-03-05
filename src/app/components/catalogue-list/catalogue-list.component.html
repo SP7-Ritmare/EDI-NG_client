@@ -1,118 +1,108 @@
 <app-simple-layout>
-  <mat-card>
-    <div class="flex-container"
-         fxLayout="column"
-         fxLayout.xs="column"
-         fxLayoutAlign="center center"
-         fxLayoutAlign.xs="start">
-
-      <div class="flex-item" fxFlex fxFlexAlign="start">
-        Search metadata: <input type="text" [(ngModel)]="query" (keyup)="onKeyUp()">
-      </div>
-      <div class="flex-item" fxFlex>
-        <div class="flex-container"
-             fxLayout="row" *ngFor="let m of metadata">
-          <div class="flex-item" fxFill>
-            <mat-card fxLayout="row">
-              <div class="flex-item" fxFlex="20%">
-                <qr-code [value]="m._source.fileUri" [size]="50"></qr-code>
-              </div>
-              <div class="flex-container"
-                   fxLayout="column">
-                <mat-card-title>{{m._id}}</mat-card-title>
-                <mat-card-subtitle>{{m._source.templateName}} (score: {{m._score | number: '1.2-3'}})
-                </mat-card-subtitle>
-                <mat-card-content>
-                  <div class="flex-container"
-                       fxLayout="row">
-                    <div class="flex-item">
-                      <p><a mat-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}"
-                            target="_blank">Edit</a>
-                      </p>
-                    </div>
-                    <div class="flex-item">
-                      <p><a mat-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
-                    </div>
-                    <div class="flex-item">
-                      <p><a mat-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
-                    </div>
-                  </div>
-
-                  <!--
-                    <pre>{{m | json}}</pre>
-                  -->
-                </mat-card-content>
-              </div>
-            </mat-card>
-          </div>
+        <div>
+            Search metadata: <input type="text" [(ngModel)]="query" (keyup)="onKeyUp()">
         </div>
-      </div>
-    </div>
-  </mat-card>
-  <mat-card style="display: none">
-    <div class="flex-container"
-         fxLayout="column"
-         fxLayout.xs="column"
-         fxLayoutAlign="center center"
-         fxLayoutAlign.xs="start">
+    <div fxLayout="column">
+        <div class="results">
+            <mat-card *ngFor="let m of metadata" fxLayout="row">
+                <div fxFlex="30">
+                    <qr-code [value]="m._source.fileUri" [size]="80"></qr-code>
+                </div>
+                <div fxFlex="70">
+                    <mat-card-title>{{m._id}}</mat-card-title>
+                    <mat-card-subtitle>{{m._source.templateName}} (score: {{m._score | number: '1.2-3'}})
+                    </mat-card-subtitle>
+                    <mat-card-content fxLayout="row">
+                        <div>
+                            <p><a mat-button [routerLink]="'/' + m._source.templateName"
+                                  [queryParams]="{ edit: m._id}"
+                                  target="_blank">Edit</a>
+                            </p>
+                        </div>
+                        <div>
+                            <p><a mat-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
+                        </div>
+                        <div>
+                            <p><a mat-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
+                        </div>
 
-      <div class="flex-item" fxFlex fxFlexAlign="start">
-        Available templates (experimental feature)
-      </div>
-      <div class="flex-item" fxFlex>
-        <div class="flex-container"
-             fxLayout="row" *ngFor="let m of templates">
-          <div class="flex-item" fxFill>
-            <mat-card>
-              <div class="flex-item" fxFlex="20%">
-                <qr-code [value]="m._id" [size]="100"></qr-code>
-              </div>
-              <div class="flex-container"
-                   fxLayout="column">
-                <!--
-                                        <pre style="display: block !important;">{{m._source | json}}</pre>
-                -->
-                <mat-card-title>{{m._source.metadata.name}}</mat-card-title>
-                <mat-card-subtitle>Family: {{m._source.metadata.family}}</mat-card-subtitle>
-                <mat-card-subtitle>Author: <a target="_blank" href="{{m._source.metadata.author}}">{{m._source.metadata.author}}</a>
-                </mat-card-subtitle>
-                <mat-card-content>
-                  <div class="flex-container"
-                       fxLayout="row">
-                    <div class="flex-item">
-                      <p>
-                        {{m._source.metadata.description}}
-                      </p>
-                    </div>
-
-                    <!--
-                                                    <div class="flex-item">
-                                                        <p><a md-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}" target="_blank">Edit</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="flex-item">
-                                                        <p><a md-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
-                                                    </div>
-                                                    <div class="flex-item">
-                                                        <p><a md-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
-                                                    </div>
-                    -->
-                    <div class="flex-item">
-                      <p><a md-button alt="This feature is still under fevelopment" target="_blank">Use (feature still
-                        under development)</a>
                         <!--
-                                                            <p><a md-button [routerLink]="'/' + encodeURIComponent(m._id)" [queryParams]="{ catalogue: true}" target="_blank">Use</a>
+                          <pre>{{m | json}}</pre>
                         -->
-                      </p>
-                    </div>
-                  </div>
-
-                </mat-card-content>
-              </div>
+                    </mat-card-content>
+                </div>
             </mat-card>
+        </div>
+    </div>
+    <div class="tail">
+
+    </div>
+    <!--
+      <mat-card style="display: none">
+        <div class="flex-container"
+             fxLayout="column"
+             fxLayout.xs="column"
+             fxLayoutAlign="center center"
+             fxLayoutAlign.xs="start">
+
+          <div class="flex-item" fxFlex fxFlexAlign="start">
+            Available templates (experimental feature)
+          </div>
+          <div class="flex-item" fxFlex>
+            <div class="flex-container"
+                 fxLayout="row" *ngFor="let m of templates">
+              <div class="flex-item" fxFill>
+                <mat-card>
+                  <div class="flex-item" fxFlex="20%">
+                    <qr-code [value]="m._id" [size]="100"></qr-code>
+                  </div>
+                  <div class="flex-container"
+                       fxLayout="column">
+                    &lt;!&ndash;
+                                            <pre style="display: block !important;">{{m._source | json}}</pre>
+                    &ndash;&gt;
+                    <mat-card-title>{{m._source.metadata.name}}</mat-card-title>
+                    <mat-card-subtitle>Family: {{m._source.metadata.family}}</mat-card-subtitle>
+                    <mat-card-subtitle>Author: <a target="_blank" href="{{m._source.metadata.author}}">{{m._source.metadata.author}}</a>
+                    </mat-card-subtitle>
+                    <mat-card-content>
+                      <div class="flex-container"
+                           fxLayout="row">
+                        <div class="flex-item">
+                          <p>
+                            {{m._source.metadata.description}}
+                          </p>
+                        </div>
+
+                        &lt;!&ndash;
+                                                        <div class="flex-item">
+                                                            <p><a md-button [routerLink]="'/' + m._source.templateName" [queryParams]="{ edit: m._id}" target="_blank">Edit</a>
+                                                            </p>
+                                                        </div>
+                                                        <div class="flex-item">
+                                                            <p><a md-button href="{{m._source.fileUri}}" target="_blank">EDIML</a></p>
+                                                        </div>
+                                                        <div class="flex-item">
+                                                            <p><a md-button href="{{m._source.fileUri}}.xml" target="_blank">XML</a></p>
+                                                        </div>
+                        &ndash;&gt;
+                        <div class="flex-item">
+                          <p><a md-button alt="This feature is still under fevelopment" target="_blank">Use (feature still
+                            under development)</a>
+                            &lt;!&ndash;
+                                                                <p><a md-button [routerLink]="'/' + encodeURIComponent(m._id)" [queryParams]="{ catalogue: true}" target="_blank">Use</a>
+                            &ndash;&gt;
+                          </p>
+                        </div>
+                      </div>
+
+                    </mat-card-content>
+                  </div>
+                </mat-card>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </mat-card>
+      </mat-card>
+    -->
 </app-simple-layout>

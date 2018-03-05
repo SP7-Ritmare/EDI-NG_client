@@ -1,3 +1,13 @@
 .flex-container {
     margin-top: 16px;
 }
+
+.results {
+    width: 80%;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+.tail {
+    height: 200px;
+}
