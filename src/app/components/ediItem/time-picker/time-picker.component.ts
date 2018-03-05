@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {EDITemplate} from '../../service/EDITemplate';
 
 export interface TimePickerValue {
@@ -19,12 +19,7 @@ export class TimePickerComponent implements OnInit {
     hours: number[] = [];
     minutes: number[] = [];
     seconds: number[] = [];
-    currentValue: TimePickerValue = {
-        hours: '0',
-        minutes: '0',
-        seconds: '0',
-        timezone: 'CUT'
-    }
+    @Input() currentValue: TimePickerValue;
 
     constructor(public template: EDITemplate) {
         for ( let i = 0; i < 60; i++ ) {

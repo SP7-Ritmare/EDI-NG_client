@@ -21,15 +21,16 @@ export class TimeComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('time component', this.item.value);
     }
 
     private pad(num: string, size: number) {
-        var s = "000000000" + parseInt(num);
+        const s = '000000000' + parseInt(num, 10);
         return s.substr(s.length - size);
     }
 
     private toString() {
-        if ( this.template && this.template.getTimezone ) {
+        if (this.template && this.template.getTimezone) {
             return this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') + 'Z';
         } else {
             return '';

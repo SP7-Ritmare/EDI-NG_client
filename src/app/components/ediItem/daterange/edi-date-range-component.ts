@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IMyDateRangeModel, IMyOptions} from 'mydaterangepicker';
 import {Item} from '../../../model/Item';
-import moment = require('moment');
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-edi-date-range',

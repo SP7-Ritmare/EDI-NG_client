@@ -57,9 +57,9 @@ export class Element {
     }
 
     fromEDIML(e: IEDIMLElement) {
-        function getItem(e: any, id: string) {
-            Element.logger.log('fromEDIML', 'getItem', e, id);
-            for ( let i of e.items ) {
+        function getItem(element: any, id: string) {
+            Element.logger.log('fromEDIML', 'getItem', element, id);
+            for ( let i of element.items ) {
                 if ( i.id === id ) {
                     return i;
                 }

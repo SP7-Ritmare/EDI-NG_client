@@ -10,7 +10,9 @@ import * as moment from 'moment';
     template: `
         <my-date-picker [options]="myDatePickerOptions"
                         (dateChanged)="onDateChanged($event)" [(ngModel)]="date"></my-date-picker>
-        <time-picker *ngIf="hasTime" (timeChange)="timeChanged($event)" [(ngModel)]="time"></time-picker>
+        <time-picker *ngIf="hasTime" (timeChange)="timeChanged($event)" [currentValue]="time" ngDefaultControl>
+            
+        </time-picker>
         <pre>{{toString()}}</pre>
     `
 })
@@ -21,7 +23,7 @@ export class EdiDateComponent implements OnInit {
         _date: DateModel;
     */
     @Input() item: Item;
-    @Input() hasTime: boolean = false;
+    @Input() hasTime = false;
 
     time: TimePickerValue = {
         hours: '0',
@@ -42,10 +44,13 @@ export class EdiDateComponent implements OnInit {
     }
 
     private toString() {
+        console.log('this.date', this.date);
         if (this.hasTime) {
-            return this.date + 'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) + (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') + 'Z';
+            return moment().set(this.date).format('YYYY-MM-DD') +
+                'T' + this.pad(this.time.hours, 2) + ':' + this.pad(this.time.minutes, 2) + ':' + this.pad(this.time.seconds, 2) +
+                (this.template.getTimezone(this.time.timezone) ? this.template.getTimezone(this.time.timezone).formattedOffset : '') /* + 'Z'*/;
         } else {
-            return this.date;
+            return moment().set(this.date).format('YYYY-MM-DD');
         }
     }
 
@@ -63,6 +68,7 @@ export class EdiDateComponent implements OnInit {
     }
 
     timeChanged(event: TimePickerValue) {
+        console.log('timeChanged', event);
         this.time = event;
         this.item.value = this.toString();
         console.log('EDIDateComponent', 'time changed', event);
@@ -71,7 +77,7 @@ export class EdiDateComponent implements OnInit {
 
     ngOnInit() {
         if (this.item.value) {
-            console.log('date', this.item.value);
+            console.log('date', this.item.id, this.item.value);
             if ( this.item.value === '$TODAY$' ) {
                 this.item.value = moment().format('YYYY-MM-DD');
             }
@@ -88,7 +94,7 @@ export class EdiDateComponent implements OnInit {
                 seconds: '' + moment(this.item.value).second(),
                 timezone: 'UTC'
             }
-            console.log('date formatted', this.date);
+            console.log('date formatted', this.date, this.time);
         } else {
             this.date = {
                 date: {

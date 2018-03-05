@@ -78,7 +78,7 @@ export class EDITemplate {
     getTimezone(s: string) {
         // EDITemplate.logger.log('getTimezone', s);
         for (let t of this.timezones) {
-            if (t.abbr == s) {
+            if (t.abbr === s) {
                 // EDITemplate.logger.log('getTimezone', 'found', t);
                 return t;
             }
