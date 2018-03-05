@@ -27,8 +27,13 @@ export class EdiItemComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.metadataService.state._interfaceLanguage.asObservable().subscribe(
-            res => this.interfaceLanguage = res
+        console.log('EdiItemComponent ngOnInit');
+        this.metadataService.state._interfaceLanguage.subscribe(
+            res => {
+                if ( res !== null ) {
+                    this.interfaceLanguage = res;
+                }
+            }
         );
         EdiItemComponent.logger.log('init text box', this.item.id, this.item.datasource, this.item.dataType);
         if (this.item.datasource && this.item.dataType === 'select') {

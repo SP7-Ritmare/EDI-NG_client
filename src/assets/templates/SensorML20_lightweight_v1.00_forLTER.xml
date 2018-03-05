@@ -14,7 +14,7 @@
         <languageSelection>
             <byItem>ling_md_1</byItem>
         </languageSelection>
-        <metadataEndpoint>http://edi.get-it.it/</metadataEndpoint>
+        <metadataEndpoint>https://enygma.it/edi/</metadataEndpoint>
         <sparqlEndpoint>http://sparql.get-it.it</sparqlEndpoint>
         <requiresAuthentication>false</requiresAuthentication>
         <requiresValidation>true</requiresValidation>

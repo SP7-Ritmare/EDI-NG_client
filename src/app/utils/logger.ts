@@ -38,11 +38,11 @@ export const enabledContexts: any[] = [
     availableContexts.ITEM,
     availableContexts.ITEM_COMPONENT,
     availableContexts.ELEMENT
-    availableContexts.ENDPOINT,
     availableContexts.COMBO
-    availableContexts.DATASOURCE,
     availableContexts.CATALOGUE,
      */
+    availableContexts.DATASOURCE,
+    availableContexts.ENDPOINT,
 ];
 
 /*

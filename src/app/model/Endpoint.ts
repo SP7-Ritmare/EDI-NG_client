@@ -7,7 +7,7 @@ import {Injectable, Inject, ReflectiveInjector, Injector} from '@angular/core';
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 /**
  * Created by fabio on 08/03/2017.
@@ -23,8 +23,8 @@ export class Endpoint {
     private logger: Logger = new Logger(availableContexts.ENDPOINT);
 
     static find(endpointType: EndpointType, url: string): Endpoint {
-        for ( let e of Endpoint.endpoints ) {
-            if ( e.endpointType === endpointType && e.url === url ) {
+        for (let e of Endpoint.endpoints) {
+            if (e.endpointType === endpointType && e.url === url) {
                 return e;
             }
         }
@@ -48,37 +48,41 @@ export class Endpoint {
                     qs += encodeURIComponent(p.name) + '=' + encodeURIComponent(p.value) + '&';
                 }
                 let headers: HttpHeaders = new HttpHeaders({
-                    /*'Accept': this.endpointType.contentType/*,
+                    'Accept': this.endpointType.contentType || 'application/sparql-results+json; charset=utf-8, application/json; charset=utf-8'/*,
                     'Content-type': this.endpointType.contentType*/
                 });
 
                 qs += encodeURIComponent(this.endpointType.queryParameter) + '=' + encodeURIComponent(query);
-                let options: HttpHeaders = headers;
+                // let options: HttpHeaders = headers;
 
-                Endpoint.logger.log('HTTP GET ' + qs);
+                // Endpoint.logger.log('HTTP GET', this.endpointType, this.endpointType.contentType);
                 Endpoint.http
                     .get(qs, {
-                      headers: options
+                        headers: headers
                     })
-                    .map( (res: any) => {
-                        Endpoint.logger.log('Res: ', res, query);
-                        if ( this.endpointType.contentType === ContentTypes.JSON ||
-                            this.endpointType.contentType === ContentTypes.sparqlJSON ||
-                            this.endpointType.contentType === ContentTypes.sparqlJSONP ) {
-                            return this.endpointType.adapter(res);
-                        }
-                        return this.endpointType.adapter(res);
-                    })
-                    // .catch((error: any) => Observable.throw(error || 'Server error'));
-                    .subscribe(
-                        res => {
-                            Endpoint.logger.log('endpoint query results', res);
-                            result.next(res);
+                    .subscribe((res: any) => {
+                            Endpoint.logger.log('Res: ', res, query);
+                            if (this.endpointType.contentType === ContentTypes.JSON ||
+                                this.endpointType.contentType === ContentTypes.sparqlJSON ||
+                                this.endpointType.contentType === ContentTypes.sparqlJSONP) {
+                            }
+                            result.next(this.endpointType.adapter(res));
                         },
                         err => {
                             Endpoint.logger.log(err);
-                        }
-                    )
+                        });
+                /*
+                                    // .catch((error: any) => Observable.throw(error || 'Server error'));
+                                    .subscribe(
+                                        res => {
+                                            Endpoint.logger.log('endpoint query results', res);
+                                            result.next(res);
+                                        },
+                                        err => {
+                                            Endpoint.logger.log(err);
+                                        }
+                                    )
+                */
 
                 break;
             case HTTPMethod.POST:

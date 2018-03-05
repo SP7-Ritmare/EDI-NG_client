@@ -128,6 +128,23 @@ export class Element {
 
                     Element.logger.log('fromEDIML - partial item', item);
                 }
+                if ( i.dataType === 'dateRange' ) {
+                    const templateItem = Element.metadataService.state.getItem(i.id);
+                    Element.logger.log('dateRange found', getItem(e, i.id + '_start'));
+                    let start = getItem(e, i.id + '_start');
+                    item.start = {
+                        label: templateItem.start.label,
+                        hasPath: start.path,
+                        value: start.value
+                    }
+                    let end = getItem(e, i.id + '_end');
+                    item.end = {
+                        label: templateItem.end.label,
+                        hasPath: end.path,
+                        value: end.value
+                    }
+                    Element.logger.log('fromEDIML - partial item', item);
+                }
                 Element.logger.log('ERROR - newItem is undefined', i.id);
             }
             Element.logger.log('fromEDIML newItem', newItem);

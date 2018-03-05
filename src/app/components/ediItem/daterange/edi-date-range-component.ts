@@ -1,13 +1,14 @@
-
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IMyDateRangeModel, IMyOptions} from 'mydaterangepicker';
 import {Item} from '../../../model/Item';
+import moment = require('moment');
+
 @Component({
     selector: 'app-edi-date-range',
     template: `
-<!--
-        <pre>{{item | removeCyclic | json}}</pre>
--->
+        <!--
+                <pre>{{item | removeCyclic | json}}</pre>
+        -->
         <div>
             <div class="startDate">
                 <div class="form form-label itemLabel">
@@ -26,19 +27,22 @@ import {Item} from '../../../model/Item';
                 </div>
             </div>
             <my-date-range-picker [options]="myDateRangePickerOptions"
-                                  (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>
+                                  (dateRangeChanged)="onDateRangeChanged($event)" [(ngModel)]="value"></my-date-range-picker>
         </div>
     `
 })
 
-export class EdiDateRangeComponent {
+export class EdiDateRangeComponent implements OnInit {
     @Input() item: Item;
     private myDateRangePickerOptions: IMyOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
     };
 
-    constructor() { }
+    value: any;
+
+    constructor() {
+    }
 
     // dateRangeChanged callback function called when the user apply the date range. This is
     // mandatory callback in this option. There are also optional inputFieldChanged and
@@ -50,5 +54,18 @@ export class EdiDateRangeComponent {
         this.item.start.value = dates[0];
         this.item.end.value = dates[1];
         console.log('onDateRangeChanged(): Formatted: ', event.beginDate, event.endDate, this.item);
+    }
+
+    ngOnInit() {
+        console.log('Daterange', this.item);
+        if ( this.item.start.value && this.item.end.value ) {
+            const start = this.item.start.value;
+            const end = this.item.end.value;
+
+            this.value = {
+                beginDate: {year: '' + moment(start).year(), month: '' + (moment(start).month() + 1), day: '' + moment(start).date()},
+                endDate: {year: '' + moment(end).year(), month: '' + (moment(end).month() + 1), day: '' + moment(end).date()}
+            };
+        }
     }
 }
