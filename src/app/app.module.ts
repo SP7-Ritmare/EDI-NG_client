@@ -23,7 +23,6 @@ import {EdiDateRangeComponent} from './components/ediItem/daterange/edi-date-ran
 import {RouterModule, Routes} from '@angular/router';
 import {EdiAlternativeGroupComponent} from './components/alternativeGroup/edi-alternative-group-component';
 import {RemoveCyclicPipe} from './components/pipes/remove-cyclic.pipe';
-import {TypeaheadDirective} from 'ng2-bootstrap';
 import {EdiQRCodeComponent} from './components/ediItem/qrcode/edi-qrcode-component';
 import {QRCodeComponent} from 'ng2-qrcode';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -112,7 +111,9 @@ export function ConfigLoader(configService: ConfigService) {
     RemoveCyclicPipe,
     NumberValidatorDirective,
     DebugWindowComponent,
+/*
     TypeaheadDirective,
+*/
     EdiQRCodeComponent,
     /*
             QRCodeComponent,

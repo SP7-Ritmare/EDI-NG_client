@@ -34,7 +34,7 @@ import * as moment from 'moment';
 
 export class EdiDateRangeComponent implements OnInit {
     @Input() item: Item;
-    private myDateRangePickerOptions: IMyOptions = {
+    myDateRangePickerOptions: IMyOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
     };

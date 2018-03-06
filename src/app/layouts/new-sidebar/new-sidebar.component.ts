@@ -15,6 +15,7 @@ export class NewSidebarComponent implements OnInit {
   interfaceLanguage = 'en';
   @Output()
   saving = new EventEmitter();
+  showDebug = false;
 
   constructor(private template: EDITemplate,  public metadataService: MetadataService) {
     this.template.stateSubject

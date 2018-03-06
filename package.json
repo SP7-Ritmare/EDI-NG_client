@@ -51,7 +51,6 @@
     "moment": "2.21.0",
     "mydatepicker": "^1.7.14",
     "mydaterangepicker": "^1.4.3",
-    "ng2-bootstrap": "^1.4.2",
     "ng2-qrcode": "^0.1.1",
     "ngx-filter-pipe": "1.0.2",
     "node-ts": "^2.1.2",

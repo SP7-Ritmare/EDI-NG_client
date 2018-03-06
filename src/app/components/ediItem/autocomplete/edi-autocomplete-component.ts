@@ -82,7 +82,7 @@ export class EdiAutocompleteComponent implements OnInit, AfterViewInit {
         a: undefined
     };
     data: any[] = [];
-    private filteredList: any = [];
+    filteredList: any = [];
     elementRef: any;
     selectedItem = 0;
     mustSetValue = false;

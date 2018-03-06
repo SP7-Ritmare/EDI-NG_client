@@ -33,7 +33,7 @@ export class EdiDateComponent implements OnInit {
     };
     date: any = null;
 
-    private myDatePickerOptions: IMyOptions = {
+    myDatePickerOptions: IMyOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
     };
@@ -43,7 +43,7 @@ export class EdiDateComponent implements OnInit {
         return s.substr(s.length - size);
     }
 
-    private toString() {
+    toString() {
         console.log('this.date', this.date);
         if (this.hasTime) {
             return moment().set(this.date).format('YYYY-MM-DD') +
