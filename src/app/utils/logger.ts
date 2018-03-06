@@ -35,13 +35,13 @@ export const enabledContexts: any[] = [
     availableContexts.ELEMENT,
     availableContexts.EDI_TEMPLATE_SERVICE
     availableContexts.AUTOCOMPLETION,
-    availableContexts.ITEM,
     availableContexts.ITEM_COMPONENT,
     availableContexts.COMBO
     availableContexts.CATALOGUE,
     availableContexts.DATASOURCE,
     availableContexts.ENDPOINT,
      */
+    availableContexts.ITEM,
     availableContexts.ELEMENT
 ];
 
