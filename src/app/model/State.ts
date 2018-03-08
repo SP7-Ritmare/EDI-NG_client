@@ -174,6 +174,9 @@ export class State {
     }
 
     mergeWithEDIML(ediml: any) {
+        console.log('EDIML merge', ediml);
+        this.template.fileId = ediml.fileId;
+        this.template.fileUri = ediml.fileUri;
         for ( let e of ediml.elements ) {
             State.logger.log('EDIML', 'doing element', e.id, e.represents_element);
             if ( e.id === e.represents_element ) {

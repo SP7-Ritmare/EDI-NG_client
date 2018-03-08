@@ -278,6 +278,8 @@ export class EDIML {
         this.contents.timestamp = new Date();
         this.contents.baseDocument = template.settings.baseDocument;
         this.contents.xsltChain = template.settings.xsltChain;
+        this.contents.fileId = template.fileId;
+        this.contents.fileUri = template.fileUri;
 
 /**
  * TODO: set template name and version
@@ -307,18 +309,22 @@ export class EDIML {
                         items: {item: []}
                     };
                     for (let i of e1.items) {
-                        if ( i.dataType == 'boundingBox' ) {
+                        if ( i.dataType === 'boundingBox' ) {
                             // TODO:
                             let temp = this.createBoundingBoxItems(i);
                             for (let t of temp) {
                                 element.items.item.push(t);
                             }
-                        } else if ( i.dataType == 'dateRange' ) {
+                        } else if ( i.dataType === 'dateRange' ) {
                             // TODO:
                             let temp = this.createDateRangeItems(i);
                             for ( let t of temp ) {
                                 element.items.item.push(t);
                             }
+/*
+                        } else if ( i.dataType === 'date' ) {
+                            console.log('this is a date', i);
+*/
                         } else {
                             let item: IEDIMLItem = {
                                 id: i.elementId + '_' + i.index,
@@ -344,11 +350,11 @@ export class EDIML {
                                 item.labelValue = item.value['l'] ? item.value['l'] : item.value['a'];
                                 item.languageNeutral = item.value['z'];
 
-                                if (item.isLanguageNeutral == 'true') {
+                                if (item.isLanguageNeutral === 'true') {
                                     item.value = item.languageNeutral;
-                                } else if (item.useCode == 'true') {
+                                } else if (item.useCode === 'true') {
                                     item.value = item.codeValue;
-                                } else if (item.useURN == 'true') {
+                                } else if (item.useURN === 'true') {
                                     item.value = item.urnValue;
                                 } else {
                                     item.value = item.labelValue;

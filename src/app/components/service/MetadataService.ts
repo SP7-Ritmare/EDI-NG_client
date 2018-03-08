@@ -100,7 +100,7 @@ export class MetadataService {
 
         // this._defaultMetadataEndpoint = 'http://localhost:8080';
 
-        console.log('about to post metadata', this.http);
+        console.log('about to post metadata', ediml);
         this.http.post(this._defaultMetadataEndpoint + '/rest/metadata', edimlXml, options)
 /*
             .catch((error: Response | any) => {

@@ -46,7 +46,7 @@ export interface ITemplateDatasources {
 }
 
 export interface ITemplateGroup {
-    element: (Element|AlternativeGroup)[]
+    element: (Element|AlternativeGroup)[];
 }
 
 export interface ITemplateSettings {
@@ -62,6 +62,8 @@ export interface ITemplateSettings {
     }];
 }
 export interface ITemplate {
+    fileId: string;
+    fileUri: string;
     settings: ITemplateSettings;
     endpointTypes: ITemplateEndpointTypes;
     datasources: ITemplateDatasources;
@@ -69,6 +71,8 @@ export interface ITemplate {
 }
 
 export class Template implements ITemplate {
+    fileId: string;
+    fileUri: string;
     settings: ITemplateSettings;
     endpointTypes: ITemplateEndpointTypes;
     datasources: ITemplateDatasources;
