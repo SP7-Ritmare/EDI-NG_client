@@ -30,6 +30,7 @@ export class EdiItemComponent implements OnInit {
         console.log('EdiItemComponent ngOnInit');
         this.metadataService.state._interfaceLanguage.subscribe(
             res => {
+                console.log('interface language', res);
                 if ( res !== null ) {
                     this.interfaceLanguage = res;
                 }

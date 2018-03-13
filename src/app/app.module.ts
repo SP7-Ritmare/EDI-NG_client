@@ -24,7 +24,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {EdiAlternativeGroupComponent} from './components/alternativeGroup/edi-alternative-group-component';
 import {RemoveCyclicPipe} from './components/pipes/remove-cyclic.pipe';
 import {EdiQRCodeComponent} from './components/ediItem/qrcode/edi-qrcode-component';
-import {QRCodeComponent} from 'ng2-qrcode';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {QRCodeModule} from 'angular2-qrcode';
 import {MetadataService} from './components/service/MetadataService';
@@ -44,151 +43,174 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {CoreService} from './core.service';
 import {TemplateComponent} from './components/template/template.component';
 import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialog, MatDialogModule, MatFormFieldModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule, MatMenuModule, MatPaginatorModule, MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule,
-  MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatTab, MatTableModule, MatTabsModule,
-  MatToolbarModule, MatTooltipModule
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDialog,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTab,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule
 } from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
 import {EDITemplate} from './components/service/EDITemplate';
-import { NewTemplateComponent } from './components/new-template/new-template.component';
-import { FullLayoutComponent } from './layouts/full-layout/full-layout.component';
-import { NewSidebarComponent } from './layouts/new-sidebar/new-sidebar.component';
-import { SimpleLayoutComponent } from './layouts/simple-layout/simple-layout.component';
-import { HeaderComponent } from './layouts/header/header.component';
-import { SendMetadataDialogComponent } from './pages/send-metadata-dialog/send-metadata-dialog.component';
-import { LoadingDialogComponent } from './pages/loading-dialog/loading-dialog.component';
+import {NewTemplateComponent} from './components/new-template/new-template.component';
+import {FullLayoutComponent} from './layouts/full-layout/full-layout.component';
+import {NewSidebarComponent} from './layouts/new-sidebar/new-sidebar.component';
+import {SimpleLayoutComponent} from './layouts/simple-layout/simple-layout.component';
+import {HeaderComponent} from './layouts/header/header.component';
+import {SendMetadataDialogComponent} from './pages/send-metadata-dialog/send-metadata-dialog.component';
+import {LoadingDialogComponent} from './pages/loading-dialog/loading-dialog.component';
+import {SettingsComponent} from './pages/settings/settings.component';
 
 const appRoutes: Routes = [
-  {path: 'select', component: TemplateSelectorComponent},
-  {path: 'catalogue-list', component: CatalogueListComponent},
-  {path: 'debug', component: DebugWindowComponent},
-  {path: ':template', component: NewTemplateComponent},
-  {
-    path: '',
-    redirectTo: '/select',
-    pathMatch: 'full'
-  }
+    {path: 'select', component: TemplateSelectorComponent},
+    {path: 'settings', component: SettingsComponent},
+    {path: 'catalogue-list', component: CatalogueListComponent},
+    {path: 'debug', component: DebugWindowComponent},
+    {path: ':template', component: NewTemplateComponent},
+    {
+        path: '',
+        redirectTo: '/select',
+        pathMatch: 'full'
+    }
 
-  /*
-   { path: 'login', component: LoginComponent },
-   { path: 'main', component: MainPageComponent},
-   { path: 'customers', component: CustomerListComponent},
-   { path: 'customers/:id', component: CustomerEditComponent },
-   { path: 'customers/new', component: CustomerEditComponent },
-   { path: '',
-   redirectTo: '/login',
-   pathMatch: 'full'
-   }
-   */
+    /*
+     { path: 'login', component: LoginComponent },
+     { path: 'main', component: MainPageComponent},
+     { path: 'customers', component: CustomerListComponent},
+     { path: 'customers/:id', component: CustomerEditComponent },
+     { path: 'customers/new', component: CustomerEditComponent },
+     { path: '',
+     redirectTo: '/login',
+     pathMatch: 'full'
+     }
+     */
 ];
 
 export function ConfigLoader(configService: ConfigService) {
 // Note: this factory need to return a function (that return a promise)
 
-  return () => configService.load(environment.configFile);
+    return () => configService.load(environment.configFile);
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CategoryListComponent,
-    MainLayoutComponent,
-    SidebarComponent,
-    EdiElementComponent,
-    EdiItemComponent,
-    EdiComboboxComponent,
-    EdiTextboxComponent,
-    EdiTextareaComponent,
-    EdiAutocompleteComponent,
-    EdiBooleanComponent,
-    EdiDateComponent,
-    EdiDateRangeComponent,
-    EdiAlternativeGroupComponent,
-    RemoveCyclicPipe,
-    NumberValidatorDirective,
-    DebugWindowComponent,
-/*
-    TypeaheadDirective,
-*/
-    EdiQRCodeComponent,
-    /*
-            QRCodeComponent,
-    */
-    BoundingBoxComponent,
-    UuidComponent,
-    TemplateSelectorComponent,
-    TimePickerComponent,
-    CatalogueListComponent,
-    TimeComponent,
-    TemplateComponent,
-    NewTemplateComponent,
-    FullLayoutComponent,
-    NewSidebarComponent,
-    SimpleLayoutComponent,
-    HeaderComponent,
-    SendMetadataDialogComponent,
-    LoadingDialogComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    MyDatePickerModule,
-    MyDateRangePickerModule,
-    RouterModule.forRoot(appRoutes),
-    BrowserAnimationsModule,
-    QRCodeModule,
-    LeafletModule,
-    LeafletDrawModule,
-    FilterPipeModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatChipsModule,
-    MatListModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    FlexLayoutModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatGridListModule,
-    MatAutocompleteModule,
-    MatTabsModule,
-    MatDialogModule
+    declarations: [
+        AppComponent,
+        CategoryListComponent,
+        MainLayoutComponent,
+        SidebarComponent,
+        EdiElementComponent,
+        EdiItemComponent,
+        EdiComboboxComponent,
+        EdiTextboxComponent,
+        EdiTextareaComponent,
+        EdiAutocompleteComponent,
+        EdiBooleanComponent,
+        EdiDateComponent,
+        EdiDateRangeComponent,
+        EdiAlternativeGroupComponent,
+        RemoveCyclicPipe,
+        NumberValidatorDirective,
+        DebugWindowComponent,
+        /*
+            TypeaheadDirective,
+        */
+        EdiQRCodeComponent,
+        /*
+                QRCodeComponent,
+        */
+        BoundingBoxComponent,
+        UuidComponent,
+        TemplateSelectorComponent,
+        TimePickerComponent,
+        CatalogueListComponent,
+        TimeComponent,
+        TemplateComponent,
+        NewTemplateComponent,
+        FullLayoutComponent,
+        NewSidebarComponent,
+        SimpleLayoutComponent,
+        HeaderComponent,
+        SendMetadataDialogComponent,
+        LoadingDialogComponent,
+        SettingsComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        MyDatePickerModule,
+        MyDateRangePickerModule,
+        RouterModule.forRoot(appRoutes),
+        BrowserAnimationsModule,
+        QRCodeModule,
+        LeafletModule,
+        LeafletDrawModule,
+        FilterPipeModule,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatChipsModule,
+        MatListModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        FlexLayoutModule,
+        MatRadioModule,
+        MatRippleModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatGridListModule,
+        MatAutocompleteModule,
+        MatTabsModule,
+        MatDialogModule
 
-  ],
-  providers: [
-    CoreService,
-    MetadataService,
-    CatalogueService,
-    ConfigService,
-    EDITemplate,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: ConfigLoader,
-      deps: [ConfigService],
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [SendMetadataDialogComponent, LoadingDialogComponent]
+    ],
+    providers: [
+        CoreService,
+        MetadataService,
+        CatalogueService,
+        ConfigService,
+        EDITemplate,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: ConfigLoader,
+            deps: [ConfigService],
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent],
+    entryComponents: [SendMetadataDialogComponent, LoadingDialogComponent]
 })
 export class AppModule {
 }

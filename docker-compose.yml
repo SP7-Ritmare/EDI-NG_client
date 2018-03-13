@@ -1,0 +1,29 @@
+version: '3'
+services:
+  webapp:
+    depends_on:
+      - backend
+    build: .
+    ports:
+      - 80:80
+    networks:
+      - edi-client-net
+    links:
+      - backend
+    restart: always
+  backend:
+    build: src/server/
+    networks:
+      - edi-client-net
+    ports:
+      - 4000:3000
+    restart: always
+  edi-server:
+    image: fabiopav/edi-ng_server:2.0
+    networks:
+      - edi-client-net
+    ports:
+      - 8080:8080
+    restart: always
+networks:
+  edi-client-net:

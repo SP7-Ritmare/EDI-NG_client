@@ -3,39 +3,42 @@
  */
 import {Injectable} from '@angular/core';
 import {Headers, Http, RequestOptions} from '@angular/http';
-import {BaseDatasource} from "../../model/Datasource";
-import {State} from "../../model/State";
-import {EDIML} from "../../model/EDIML";
+import {BaseDatasource} from '../../model/Datasource';
+import {State} from '../../model/State';
+import {EDIML} from '../../model/EDIML';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {ConfigService} from './ConfigService';
 import {CatalogueService} from './catalogue.service';
 import {EDITemplate} from './EDITemplate';
 import {Element} from '../../model/Element';
 import {Item} from '../../model/Item';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
 
 export interface IMetadataServiceStatus {
-  preparing: number;
-  sending: number;
-  storing: number;
+    preparing: number;
+    sending: number;
+    storing: number;
 };
 
 @Injectable()
 export class MetadataService {
-  static currentEdimlId: any = null;
+    static currentEdimlId: any = null;
     _defaultMetadataEndpoint = 'http://localhost:8080';
+    readonly localMetadataEndpoint = '/server';
+    useLocal = false;
     _defaultEDICatalogue = 'wrong url';
-/*
-    static currentCatalogueUrl: string = null;
-*/
+    /*
+        static currentCatalogueUrl: string = null;
+    */
     state: State = new State;
     private readonly initialStatus: IMetadataServiceStatus = {
-      preparing: -1,
-      sending: -1,
-      storing: -1
+        preparing: -1,
+        sending: -1,
+        storing: -1
     };
 
     currentStatus: BehaviorSubject<IMetadataServiceStatus> = new BehaviorSubject<IMetadataServiceStatus>(this.initialStatus);
@@ -46,10 +49,36 @@ export class MetadataService {
     }
 
     set defaultMetadataEndpoint(value) {
-        this._defaultMetadataEndpoint = value;
+        if (!this.useLocal) {
+            this._defaultMetadataEndpoint = value;
+        } else {
+            this._defaultMetadataEndpoint = this.localMetadataEndpoint;
+        }
     }
+
     get defaultMetadataEndpoint() {
         return this._defaultMetadataEndpoint;
+    }
+
+    checkLocalBackend() {
+        let res = new Subject();
+        this.http.get('/server/rest/test')
+            .subscribe((result: any) => {
+                    if (result.url) {
+                        this.useLocal = true;
+                        this._defaultMetadataEndpoint = this.localMetadataEndpoint;
+                        console.log('default EDI server set to', this._defaultMetadataEndpoint);
+                    } else {
+                        this.useLocal = false;
+                        console.log('checkLocalBackend returns', result);
+                    }
+                    res.next(result);
+                },
+                err => {
+                    console.log('error', err);
+                    res.next(err);
+                });
+        return res;
     }
 
     /**
@@ -67,12 +96,12 @@ export class MetadataService {
     }
 
     getEdimlId() {
-        if ( MetadataService.currentEdimlId != null ) {
+        if (MetadataService.currentEdimlId != null) {
             return Observable.of(MetadataService.currentEdimlId);
         }
         return this.http.get(this._defaultMetadataEndpoint + '/rest/ediml/requestId')
-            /*.map( res => res.json() )*/
-            .map( res => MetadataService.currentEdimlId = res )
+        /*.map( res => res.json() )*/
+            .map(res => MetadataService.currentEdimlId = res);
     }
 
     get catalogueMetadatumURL() {
@@ -85,11 +114,11 @@ export class MetadataService {
 
     sendToCatalogue(metadatum: any) {
         this.catalogueService.sendToCatalogue(metadatum)
-          .subscribe( res => {
-            let status = this.currentStatus.getValue();
-            status.storing = 100;
-            this.currentStatus.next(status);
-          });
+            .subscribe(res => {
+                let status = this.currentStatus.getValue();
+                status.storing = 100;
+                this.currentStatus.next(status);
+            });
     }
 
     private saveEDIML(ediml: EDIML) {
@@ -100,19 +129,20 @@ export class MetadataService {
 
         // this._defaultMetadataEndpoint = 'http://localhost:8080';
 
-        console.log('about to post metadata', ediml);
+
+        console.log('about to post metadata', ediml, this.useLocal, this._defaultMetadataEndpoint);
         this.http.post(this._defaultMetadataEndpoint + '/rest/metadata', edimlXml, options)
-/*
-            .catch((error: Response | any) => {
-                console.error(error.message || error);
-                return Observable.throw(error.message || error);
-            })
-*/
+        /*
+                    .catch((error: Response | any) => {
+                        console.error(error.message || error);
+                        return Observable.throw(error.message || error);
+                    })
+        */
             .subscribe((res: any) => {
                 console.log('post metadata results', res);
                 this.http
                     .get(this._defaultMetadataEndpoint + '/rest/ediml/' + res['edimlId'] + '.json')
-                    .subscribe( result => {
+                    .subscribe(result => {
                         res['ediml'] = result;
                         this.sendToCatalogue(res);
                     });
@@ -145,42 +175,46 @@ export class MetadataService {
     }
 
     sendMetadata() {
-      const ediml = this.prepareEDIML();
+        this.checkLocalBackend()
+            .subscribe((result: any) => {
 
-      let status = this.currentStatus.getValue();
-      status.sending = 0;
-      this.currentStatus.next(status);
+                const ediml = this.prepareEDIML();
 
-      if ( !ediml.contents.fileId ) {
-            this.getEdimlId()
-                .subscribe( res => {
-                    console.log('received id', res);
-                    ediml.contents.fileId = res.id;
-                    ediml.contents.fileUri = res.uri;
-                    ediml.contents.starterKit = res.starterKit || 'noSK';
-                    console.log('ediml modified', ediml.contents);
-                    console.log('Saving EDIML', 'CatalogueId'/*, this.catalogueService.getCatalogueMetadatumURL()*/);
+                let status = this.currentStatus.getValue();
+                status.sending = 0;
+                this.currentStatus.next(status);
+
+                if (!ediml.contents.fileId) {
+                    this.getEdimlId()
+                        .subscribe(res => {
+                            console.log('received id', res);
+                            ediml.contents.fileId = res.id;
+                            ediml.contents.fileUri = res.uri;
+                            ediml.contents.starterKit = res.starterKit || 'noSK';
+                            console.log('ediml modified', ediml.contents);
+                            console.log('Saving EDIML', 'CatalogueId'/*, this.catalogueService.getCatalogueMetadatumURL()*/);
+                            status.sending = 100;
+                            status.storing = 0;
+                            this.currentStatus.next(status);
+                            this.catalogueService.getCatalogueMetadatumURL()
+                                .subscribe((url: any) => {
+                                    console.log('1 received uri', url);
+                                    ediml.contents.fileUri = url;
+                                    this.saveEDIML(ediml);
+                                });
+                        });
+                } else {
                     status.sending = 100;
                     status.storing = 0;
                     this.currentStatus.next(status);
                     this.catalogueService.getCatalogueMetadatumURL()
-                        .subscribe( (url: any) => {
-                            console.log('1 received uri', url);
-                            ediml.contents.fileUri = url;
+                        .subscribe(res => {
+                            console.log('2 received uri', res);
+                            ediml.contents.fileUri = res;
                             this.saveEDIML(ediml);
                         });
-                });
-        } else {
-            status.sending = 100;
-            status.storing = 0;
-            this.currentStatus.next(status);
-            this.catalogueService.getCatalogueMetadatumURL()
-                .subscribe( res => {
-                    console.log('2 received uri', res);
-                    ediml.contents.fileUri = res;
-                    this.saveEDIML(ediml);
-                });
-        }
+                }
+            });
 
     }
 }

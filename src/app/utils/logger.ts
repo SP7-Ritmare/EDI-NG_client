@@ -40,9 +40,9 @@ export const enabledContexts: any[] = [
     availableContexts.CATALOGUE,
     availableContexts.DATASOURCE,
     availableContexts.ENDPOINT,
-     */
     availableContexts.ITEM,
     availableContexts.ELEMENT
+     */
 ];
 
 /*

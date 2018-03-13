@@ -24,6 +24,7 @@ import {CatalogueService} from './catalogue.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subject} from 'rxjs/Subject';
+import {ConfigService} from './ConfigService';
 
 @Injectable()
 export class EDITemplate {
@@ -36,18 +37,38 @@ export class EDITemplate {
     private loading = false;
     state: State;
     stateSubject: BehaviorSubject<State> = new BehaviorSubject<State>(null);
+    backendPresent = false;
 
-    constructor(private http: HttpClient, private metadataService: MetadataService, private catalogueService: CatalogueService) {
+    constructor(private http: HttpClient, private metadataService: MetadataService, private catalogueService: CatalogueService, private configService: ConfigService) {
         Item.metadataService = this.metadataService;
         this.state = metadataService.state;
         this.stateSubject.next(this.state);
         this.getTimezones();
+        this.checkLocalBackend();
+    }
+
+    checkLocalBackend() {
+        this.http.get('/api/').subscribe((res: any) => {
+                console.log('backend returns', res);
+                if (res.status === 200 || res.status === 302) {
+                    this.backendPresent = true;
+                    this.metadataService.useLocal = true;
+                } else {
+                    this.backendPresent = false;
+                    this.metadataService.useLocal = false;
+                }
+            },
+            err => {
+                console.log('backend unavailable');
+                this.backendPresent = false;
+                this.metadataService.useLocal = false;
+            });
     }
 
     private minTommss(minutes: number) {
-        var sign = minutes < 0 ? '-' : '';
-        var min = Math.floor(Math.abs(minutes));
-        var sec = Math.floor((Math.abs(minutes) * 60) % 60);
+        const sign = minutes < 0 ? '-' : '';
+        const min = Math.floor(Math.abs(minutes));
+        const sec = Math.floor((Math.abs(minutes) * 60) % 60);
         return sign + (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
     }
 

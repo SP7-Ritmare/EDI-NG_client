@@ -1,0 +1,13 @@
+<app-simple-layout>
+    <mat-card-title>Settings</mat-card-title>
+    <mat-list>
+        <mat-list-item>
+            <mat-input-container>
+                <input matInput placeholder="Use EDI Catalogue at" [(ngModel)]="catalogueUrl">
+            </mat-input-container>
+        </mat-list-item>
+        <mat-list-item>
+            <button mat-button color="primary" (click)="save()">Save</button>
+        </mat-list-item>
+    </mat-list>
+</app-simple-layout>
