@@ -10,10 +10,6 @@
     <script src="js/assets.js"></script>
     <script src="js/ol.js"></script>
 
-
-    <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
-    <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
-
     <script language="javascript">
         function onTemplateLoaded(data) {
             console.log("fatto");
@@ -24,7 +20,7 @@
         }
         $(document).ready(function () {
             // ediml.setPostCallbackError(pippo);
-            edi.loadLocalTemplate("DCAT_AP_IT", "1.00", onTemplateLoaded);
+            edi.loadLocalTemplate("DCAT_AP_IT", "1.01", onTemplateLoaded);
             $("#ediml").hide();
             $("#sendMetadata").click(ediml.post);
         });
