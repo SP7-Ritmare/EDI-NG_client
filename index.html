@@ -1,27 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta charset="utf-8">
-    <title>RITMARE - EDI client samples</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <!--
-    -->
-    <link rel="stylesheet" href="css/mdeditor.css">
-    <link rel="stylesheet" href="css/datepicker3.css">
-    <link rel="stylesheet" href="css/typeahead.css">
-    <link rel="stylesheet" href="http://openlayers.org/en/v3.2.0/css/ol.css" type="text/css">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Geoinformation Enabling ToolkIT starterkit">
+    <meta name="author" content="Get-It development team">
+    <link rel="shortcut icon" href="http://skmi.irea.cnr.it/static/geosk/img/favicon.ico">
+    <title>EDI metadata editor</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="academicons-1.7.0/css/academicons.css"/>
+
+    <!-- Custom styles for this template -->
+    <!--link href="justified-nav.css" rel="stylesheet"-->
 </head>
-<body>
-<div class="content-wrap">
-    <div id="mdcontent"></div>
-    <div id="ediml">
 
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["setDomains", ["*.edidemo.get-it.it"]]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+        var u = "//monitor.get-it.it/piwik/";
+        _paq.push(['setTrackerUrl', u + 'piwik.php']);
+        _paq.push(['setSiteId', 2]);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<noscript><p><img src="//monitor.get-it.it/piwik/piwik.php?idsite=2" style="border:0;" alt=""/></p></noscript>
+<!-- End Piwik Code -->
+
+<script src="js/cookieconsent.min.js"></script>
+
+<body>
+
+<div class="container">
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <h2>Geoinformation Enabling ToolkIT starterkit<sup>&REG;</sup></h2>
+
+        <h1>EDI metadata editor</h1>
+
+        <p class="lead">A template-driven metadata authoring tool that can be easily customized to any XML-based
+            metadata
+            format and to a specific workgroup, institute, or project. The tool is Free
+            Open Source Software (FOSS), available under GNU GPL v3 and developed by researchers
+            from <a target="_blank" href="http://www.irea.cnr.it">IREA</a>
+            and
+            <a target="_blank" href="http://www.ismar.cnr.it">ISMAR</a>, two Institutes of the
+            <a target="_blank" href="http://www.cnr.it/sitocnr/home.html"> National Research Council of Italy (CNR)</a>,
+            in the context of the
+            <a target="_blank" href="http://www.ritmare.it/"><img src="images/logoRitmare.png" height="30"> Flagship Project.</a></br>
+            Try the links below to EDIt one of the following metadata schemas.</br>
+            Have a look at this paper: <i>EDI – A Template-Driven Metadata Editor for Research Data</i> <a href="http://dx.doi.org/10.5334/jors.106" target="_blank" title="JORS paper"><i class="ai ai-doi"></i></a> <a href="http://dx.doi.org/10.5334/jors.106" target="_blank" title="JORS paper">10.5334/jors.106</a>
+        </p>
+
+        <p class="col-lg-4 col-md-4"><a target="_blank" href="https://github.com/SP7-Ritmare/EDI-NG_client"><i
+                class="fa fa-github"></i> Get EDI
+            code</a></p>
+        <p class="col-lg-4 col-md-4"><a target="_blank" href="credits.html">Credits</a></p>
+        <p class="col-lg-4 col-md-4"><a target="_blank" href="http://www.get-it.it/EDIDoc/EDIDoc.html">Documentation</a></p>
     </div>
     <div class="container">
-        <h1>RITMARE EDI client samples</h1>
+        <!--<h1>RITMARE EDI client samples</h1>
         <script> var elements = []; </script>
         <div class="row">
             <div class="tabbable tabs-left">
@@ -36,11 +89,11 @@
                         <a href="foaf.html">FOAF</a>
                     </li>
                     <li>
-                    	<a href="SensorML101.html">SensorML v1.0.1</a>
-                	</li>
-                	<li>
-                    	<a href="SensorML20_lightweight.html">SensorML v2.0.0 LigthWeight Profile</a>
-                	</li>
+                        <a href="SensorML101.html">SensorML v1.0.1</a>
+                    </li>
+                    <li>
+                        <a href="SensorML20_lightweight.html">SensorML v2.0.0 LigthWeight Profile</a>
+                    </li>
                 </ul>
                 <article class="span8" id="mdcontent">
                     <div id="theForm">
@@ -49,12 +102,263 @@
                         </div>
                     </div>
                 </article>
+            </div>-->
+
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <h2>RNDT</h2>
+
+                <p>Template for Italian repository of territorial data (Repertorio Nazionale dei Dati
+                    Territoriali)</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Languages, data types, reference system codes, responsible party roles, and INSPIRE themes:
+                        <a target="_blank" href="http://inspire.ec.europa.eu/codelist/">INSPIRE codelists</a>
+                    </li>
+                    <li>Keywords: <a target="_blank" href="http://gcmd.nasa.gov/learn/keyword_list.html">Global
+                        Change Master Directory Science Keyword variables</a>, <a
+                            href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> SeaDataNet Parameter Discovery Vocabulary and <a href="http://eurovoc.europa.eu/" target="_blank">EUROVOC</a>
+                    </li>
+                    <li>Responsible parties, points of contact, etc.: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph. In this demo
+                        search for the Fellowship of
+                        the Ring characters.
+                    </li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/RNDT_dataset.html" role="button">Try it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>INSPIRE</h2>
+
+                <p>Template for INSPIRE MD</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Languages, data types, reference system codes, responsible party roles, and INSPIRE themes:
+                        <a target="_blank" href="http://inspire.ec.europa.eu/codelist/">INSPIRE codelists</a>
+                    </li>
+                    <li>Keywords: <a target="_blank" href="http://gcmd.nasa.gov/learn/keyword_list.html">Global
+                        Change Master Directory Science Keyword variables</a>, <a
+                            href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> NERC
+                        vocabulary and <a href="http://eurovoc.europa.eu/" target="_blank">EUROVOC</a>
+                    </li>
+                    <li>Responsible parties, points of contact, etc.: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph. In this demo
+                        search for the Fellowship of the Ring characters.
+                    </li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/INSPIRE_dataset.html" role="button">Try it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>SensorML v1.0.1</h2>
+
+                <p>Template for SensorML v1.0.1</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a> BODC Parameter Usage Vocabulary
+                        and <a
+                                href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> SeaDataNet Parameter Discovery Vocabulary
+                    </li>
+                    <li>Units of measure: <a href="http://vocab.nerc.ac.uk/collection/P06/current" target="_blank">P06</a>
+                        BODC data storage units
+                    </li>
+                    <li>Sensor types: <a href="http://vocab.nerc.ac.uk/collection/P10/current"
+                                         target="_blank">P10</a> Global Change Master Directory Instrument Keywords
+                    </li>
+                    <li>Manufacturers: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph version of <a
+                            href="http://www.esonetyellowpages.com/" target="_blank">Esonet Yellow Pages</a>.
+                    <li>Operators, and owners: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph. In this demo search for the
+                        Fellowship of
+                        the Ring characters.
+                    </li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/SensorML101.html" role="button">Try it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>SensorML v2.0.0</h2>
+
+                <p>Template for SensorML v2.0.0 SOS lightweight profile</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a> BODC Parameter Usage Vocabulary
+                        and <a
+                                href="http://vocab.nerc.ac.uk/collection/P02/current" target="_blank">P02</a> SeaDataNet Parameter Discovery Vocabulary
+                    </li>
+                    <li>Units of measure: <a href="http://vocab.nerc.ac.uk/collection/P06/current" target="_blank">P06</a>
+                        BODC data storage units
+                    </li>
+                    <li>Sensor types: <a href="http://vocab.nerc.ac.uk/collection/P10/current"
+                                         target="_blank">P10</a> Global Change Master Directory Instrument Keywords
+                    </li>
+                    <li>Manufacturers: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph version of <a
+                            href="http://www.esonetyellowpages.com/" target="_blank">Esonet Yellow Pages</a>.
+                    <li>Operators, and owners: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph. In this demo search for the
+                        Fellowship of
+                        the Ring characters.
+                    </li>
+                </ul>
+                </p>
+                <p><a class="btn btn-success" href="dist/SensorML20_lightweight.html" role="button">Try
+                    it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>SensorML v2.0.0 Vessel Profile</h2>
+
+                <p>Template for SensorML v2.0.0 Vessel profile</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Vessels and platform collection: <a href="http://vocab.nerc.ac.uk/collection/C17/current"
+                                                            target="_blank">C17</a> ICES Platform Codes
+                    </li>
+                    <li>Device category: <a href="http://vocab.nerc.ac.uk/collection/L05/current" target="_blank">L05</a>
+                        SeaDataNet device categories
+                    </li>
+                    <li>Platform category: <a href="http://vocab.nerc.ac.uk/collection/L06/current" target="_blank">L06</a>
+                        SeaVoX Platform Categories
+                    </li>
+                    <li>SensorML type vocabulary: <a href="http://vocab.nerc.ac.uk/collection/W01/current"
+                                                     target="_blank">W01</a> SeaDataNet Sensor Web Enablement and SensorML type vocabulary
+                    </li>
+                    <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a>
+                        BODC Parameter Usage Vocabulary
+                    </li>
+                    <li>Units of measure: <a href="http://vocab.nerc.ac.uk/collection/P06/current" target="_blank">P06</a>
+                        BODC data storage units
+                    </li>
+                    <li>Manufacturers: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph version of <a
+                            href="http://www.esonetyellowpages.com/" target="_blank">Esonet Yellow Pages</a>.
+                    <li>Operators, and owners: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph. In this demo search for the
+                        Fellowship of
+                        the Ring characters.
+                    </li>
+                </ul>
+                </p>
+                <p><a class="btn btn-success" href="dist/SensorML20_Vessel.html" role="button">Try it &raquo;</a>
+                </p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>SensorML v2.0.0 Vessel Components History</h2>
+
+                <p>Template for SensorML v2.0.0 Vessel components event history during cruise</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a>
+                        BODC Parameter Usage Vocabulary
+                    </li>
+                    <li>SeaVoX Device Catalogue: <a href="http://vocab.nerc.ac.uk/collection/L22/current/"
+                                                    target="_blank">L22</a> SeaVoX Device Catalogue
+                    </li>
+                </ul>
+                </p>
+                <p><a class="btn btn-success" href="dist/SensorML20_VesselCompHistory.html" role="button">Try
+                    it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>SensorML v2.0.0 Vessel Event History</h2>
+
+                <p>Template for SensorML v2.0.0 Vessel event history during cruise</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Parameters: <a href="http://vocab.nerc.ac.uk/collection/P01/current" target="_blank">P01</a>
+                        BODC Parameter Usage Vocabulary
+                    </li>
+                    <li>SeaVoX Device Catalogue: <a href="http://vocab.nerc.ac.uk/collection/L22/current/"
+                                                    target="_blank">L22</a> NERC vocabularies
+                    </li>
+                </ul>
+                </p>
+                <p><a class="btn btn-success" href="dist/SensorML20_VesselEventHistory.html" role="button">Try
+                    it &raquo;</a></p>
+            </div>
+            <!--div class="col-md-6 col-lg-6">
+                <h2>Darwin Core (DwC)</h2>
+
+                <p>Template for Darwin Core (DwC)</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Toponyms: a RDF </li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/DwC.html" role="button">Try it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>DCAT-AP-IT</h2>
+
+                <p>Template for DCAT Italian Profile (DCAT-AP-IT)</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li></li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/DwC.html" role="button">Try it &raquo;</a></p>
+            </div-->
+            <div class="col-md-6 col-lg-6">
+                <h2>Environmental Monitoring Facility (EMF)</h2>
+
+                <p>Template for Environmental Monitoring Facility (EMF)</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Media Monitored values: <a href="http://inspire.ec.europa.eu/codelist/MediaValue" target="_blank">INSPIRE EMF code list</a> shared by GET-IT SPARQL EndPoint</li>
+                    <li>Measurement Regime values: <a href="http://inspire.ec.europa.eu/codelist/MeasurementRegimeValue" target="_blank">INSPIRE EMF code list</a> shared by GET-IT SPARQL EndPoint</li>
+                    <li>Legislation Level values: <a href="http://inspire.ec.europa.eu/codelist/LegislationLevelValue" target="_blank">INSPIRE EMF code list</a> shared by GET-IT SPARQL EndPoint</li>
+                    <li>Purpose of Collection: code list shared by <a href="http://onto.nerc.ac.uk/EF/purposeOfCollection" target="_blank">CEH TopBraid Environmental Monitoring Facility vocabulary</a></li>
+                    <li>Responsible party role: code list shared by <a href="http://onto.nerc.ac.uk/EF/responsiblePartyRole" target="_blank">CEH TopBraid Environmental Monitoring Facility vocabulary</a></li>
+                    <li>Responsible parties, points of contact, etc.: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph.</li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/EMF.html" role="button">Try it &raquo;</a></p>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <h2>Environmental Monitoring Network (EMN)</h2>
+
+                <p>Template for Environmental Monitoring Network (EMN)</p>
+
+                <p>RDF sources:
+                <ul>
+                    <li>Media Monitored values: <a href="http://inspire.ec.europa.eu/codelist/MediaValue" target="_blank">INSPIRE EMF code list</a> shared by our SPARQL EndPoint</li>
+                    <li>Measurement Regime values: <a href="http://inspire.ec.europa.eu/codelist/MeasurementRegimeValue" target="_blank">INSPIRE EMF code list</a> shared by GET-IT SPARQL EndPoint</li>
+                    <li>Legislation Level values: <a href="http://inspire.ec.europa.eu/codelist/LegislationLevelValue" target="_blank">INSPIRE EMF code list</a> shared by GET-IT SPARQL EndPoint</li>
+                    <li>Purpose of Collection: code list shared by <a href="http://onto.nerc.ac.uk/EF/purposeOfCollection" target="_blank">CEH TopBraid Environmental Monitoring Facility vocabulary</a></li>
+                    <li>Responsible party role: code list shared by <a href="http://onto.nerc.ac.uk/EF/responsiblePartyRole" target="_blank">CEH TopBraid Environmental Monitoring Facility vocabulary</a></li>
+                    <li>Responsible parties, points of contact, etc.: <a href="http://www.foaf-project.org" target="_blank">FOAF (Friends Of A Friend)</a> graph.</li>
+                </ul>
+                </p>
+
+                <p><a class="btn btn-success" href="dist/EMN.html" role="button">Try it &raquo;</a></p>
             </div>
         </div>
-    </div>
-    <div id="debug">
+
+        <!-- Site footer -->
+        <footer class="footer">
+            <hr>
+            <div class="col-lg-6">
+                <p>2015 <a href="http://www.get-it.it" target="_blank">Geoinformation Enabling ToolkIT
+                    starterkit<sup>&REG;</sup></a></p>
+            </div>
+            <div class="col-lg-6">
+                <p>Icons by <a href="http://fontawesome.io/" target="_blank">Font Awesome</a> and <a href="http://jpswalsh.github.io/academicons/" target="_blank">Academicons</a></p>
+            </div>
+        </footer>
 
     </div>
+    <!-- /container -->
+</div>
 </div>
 </body>
 </html>

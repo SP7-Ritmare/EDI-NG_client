@@ -158,7 +158,7 @@ module.exports = function (grunt) {
                     "css/mdeditor.css",
                     "css/datepicker3.css",
                     "css/typeahead.css",
-                    "css/ol.css",
+                    "http://www.get-it.it/cdn/ol/v3.2.0/css/ol.css",
                 ],
                 dest: 'css/assets.css'
             },

@@ -172,6 +172,12 @@
             <xsl:if test="defaultValue">
                 <xsl:copy-of select="defaultValue" />
             </xsl:if>
+            <xsl:if test="useCode">
+                <xsl:attribute name="useCode"><xsl:value-of select="useCode" /></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="useURN">
+                <xsl:attribute name="useURN"><xsl:value-of select="useURN" /></xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates select="westLongitude" />
             <xsl:apply-templates select="eastLongitude" />
             <xsl:apply-templates select="northLatitude" />
