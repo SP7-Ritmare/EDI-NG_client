@@ -40,6 +40,7 @@
     <!-- sml:capabilities -->
     <xsl:template match="sml:capabilities[not(.//swe:value)]" />
     <xsl:template match="swe:DataRecord[not(.//swe:value)]" />
+    <xsl:template match="//swe:value_offering" />
     
     <!-- sml:contacts -->
     <xsl:template match="sml:contact[@xlink:arcrole='http://mmisw.org/ont/ioos/definition/manufacturerName' and not(./gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString) ]"/>
@@ -59,7 +60,7 @@
     <!-- sml:output -->
     <xsl:template match="sml:outputs/sml:OutputList/dateTime">
         <xsl:if test="text()='true'">
-            <sml:output name="phenomenonTime" xlink:href="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+            <sml:output name="phenomenonTime">
                 <swe:Time definition="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
                     <swe:uom xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
                 </swe:Time>
