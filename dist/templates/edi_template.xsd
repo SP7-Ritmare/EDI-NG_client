@@ -190,7 +190,7 @@
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="help"/>
           <xs:element ref="label"/>
-          <xs:element ref="hasRoot"/>
+          <xs:element ref="hasRoot" minOccurs="1"/>
         </xs:choice>
         <xs:element ref="produces"/>
       </xs:sequence>
@@ -242,6 +242,9 @@
             <xs:enumeration value="date" />
             <xs:enumeration value="text" />
             <xs:enumeration value="int" />
+            <xs:enumeration value="real" />
+            <xs:enumeration value="float" />
+            <xs:enumeration value="double" />
             <xs:enumeration value="boundingBox" />
             <xs:enumeration value="dateRange" />
             <xs:enumeration value="autonumber" />

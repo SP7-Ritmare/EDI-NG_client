@@ -126,6 +126,7 @@ var DataSourcePool = (function(){
             setLanguage: function(lang) {
                 language = lang;
                 for ( var i = 0; i < datasources.length; i++ ) {
+                    console.log("setting language for datasource", datasources[i].parameters.id, "to", lang);
                     datasources[i].setLanguage(lang);
                 }
             },
@@ -260,6 +261,8 @@ var DataSourcePool = (function(){
                 if ( newTriggerItem ) {
                     setDatasourceTrigger(newTriggerItem, newDs);
                 }
+                //
+                datasources.push(newDs);
                 return newDs;
             },
             generateNewId: generateNewId,
@@ -384,6 +387,8 @@ var DataSourcePool = (function(){
             refreshAll: function() {
                 DataSourcePool.getInstance().clearPromises();
                 $("#theForm").addClass("loading");
+
+
                 for ( var i = 0; i < datasources.length; i++ ) {
                     var ds = datasources[i];
                     if ( typeof ds.parameters.triggerItem !== "undefined" ) {

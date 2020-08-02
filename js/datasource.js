@@ -190,12 +190,14 @@ var DataSource = function(params) {
     }
 
     function loadData(justPrepareLoad) {
+        console.log("refresh requested for datasource", parameters.id, language);
         if ( typeof justPrepareLoad === "undefined" ) {
             justPrepareLoad = false;
         }
         if ( isLoading ) {
             return;
         }
+        console.log("refreshing datasource", parameters.id, language);
         isLoading = true;
         if ( typeof parameters.triggerItem !== "undefined" ) {
             logger.log("datasource " + parameters.id + " depends on trigger " + parameters.triggerItem);
@@ -221,6 +223,7 @@ var DataSource = function(params) {
             case DataSourceType.virtuosoCodelist:
                 var sparql = new SPARQL(parameters.url, edi.getEndpointTypes(parameters.endpointType));
                 // logger.log("load data for " + parameters.id);
+                console.log("Loading codelist", parameters.id, language)
                 var jqXHR = sparql.query(parameters.uri, dataSuccess, dataError, language);
                 DataSourcePool.getInstance().addPromise(jqXHR);
                 break;

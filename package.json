@@ -21,10 +21,13 @@
   "homepage": "https://github.com/fabiopavesi/EDI-NG_client#readme",
   "devDependencies": {
     "grunt-bower-concat": "^1.0.0",
-    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "load-grunt-tasks": "^3.5.0"
+    "grunt-contrib-uglify": "^1.0.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "dependencies": {
+    "grunt": "^1.2.1"
   }
 }

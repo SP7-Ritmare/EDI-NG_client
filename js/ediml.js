@@ -147,7 +147,20 @@ var ediml = (function () {
                 prettyPrint();
             }
 
+            console.log("Sending metadata", content.elements)
 
+/*
+            $.ajax({
+                type: "POST",
+                url: metadataEndpoint + "rest/metadata",
+                dataType: "json",
+                contentType: "application/json",
+                processData: true,
+                data: (content.elements),
+                success: successCallback,
+                error: errorCallback
+            });
+*/
             $.ajax({
                 type: "POST",
                 url: metadataEndpoint + "rest/metadata",
@@ -189,13 +202,19 @@ var ediml = (function () {
         if (typeof edimlId === "undefined" || edimlId == "") {
             return;
         }
+
+        // getEdimlAsJSON(edimlId, callback);
+        getEdimlAsXML(edimlId, callback);
+    };
+
+    function getEdimlAsXML(edimlId, callback) {
         $.ajax({
             url: metadataEndpoint + "rest/ediml/" + edimlId,
             dataType: "xml",
             success: function (data) {
                 var x2j = new X2JS();
                 var json = x2j.xml2json(data);
-                logger.log(json);
+                console.log(json.elements.element[0].items.item.value);
                 var elementsToReorder = [];
 
                 for (var i = 0; i < json.elements.element.length; i++) {
@@ -208,10 +227,45 @@ var ediml = (function () {
                 for (var i = 0; i < elementsToReorder.length; i++) {
                     reorderElements(json.elements.element, elementsToReorder[i]);
                 }
+                console.log("contents from xml", json.elements);
                 callback(json.elements);
             }
         });
-    };
+    }
+
+    function getEdimlAsJSON(edimlId, callback) {
+        fetch(metadataEndpoint + "rest/ediml/" + edimlId)
+            .then( response => response.json())
+            .then( json => {
+                console.log(json.elements[0].items[0].value)
+                const temp = Object.assign([], json.elements);
+                json.elements = {
+                    element: temp
+                };
+                console.log("JSON elements", json.elements)
+
+                var elementsToReorder = [];
+
+                for (var i = 0; i < json.elements.element.length; i++) {
+                    if (Array.isArray(json.elements.element[i].items)) {
+                        const temp = Object.assign([], json.elements.element[i].items);
+                        json.elements.element[i].items = {
+                            item: temp
+                        };
+                    }
+                    if (json.elements.element[i].id != json.elements.element[i].represents_element) {
+                        if (!contains(elementsToReorder, json.elements.element[i].represents_element)) {
+                            elementsToReorder.push(json.elements.element[i].represents_element);
+                        }
+                    }
+                }
+                for (var i = 0; i < elementsToReorder.length; i++) {
+                    reorderElements(json.elements.element, elementsToReorder[i]);
+                }
+                console.log("contents from JSON", json.elements);
+                callback(json.elements);
+            })
+    }
 
     function contains(array, item) {
         for (var i = 0; i < array.length; i++) {

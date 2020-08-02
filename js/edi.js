@@ -124,6 +124,8 @@ var edi = (function () {
                 logger.log(datasource.parameters.triggerItem);
                 logger.log(newTriggerItem);
                 var newDs = DataSourcePool.getInstance().duplicateDatasource(id, newTriggerItem, newSearchItem);
+                newDs.addListener(fillInCombos);
+
                 var newDsId = newDs.parameters.id;
                 newDs.refresh();
                 // DataSourcePool.getInstance().add(newDs);
@@ -379,6 +381,9 @@ var edi = (function () {
                 html += "<option value='" + ( data[i].c ? data[i].c : "" ) + "'" + (data[i].z ? " language_neutral='" + data[i].z + "'" : "") + ">" + ( data[i].a ? data[i].a : ( data[i].l ? data[i].l : data[i].z ) ) + "</option>";
             }
         }
+        if (datasource.indexOf("presentationForms") >= 0) {
+            console.log("HTML", datasource, html);
+        }
         $("select").filter("*[datasource='" + datasource + "']").each(function () {
             self = $(this);
             var originalValue = self.val();
@@ -404,6 +409,9 @@ var edi = (function () {
 
             logger.log(self.attr("id") + " = " + self.val());
         });
+        if (datasource.indexOf("presentationForms") >= 0) {
+            console.log("toBeRefreshed", toBeRefreshed);
+        }
         for (var i = 0; i < toBeRefreshed.length; i++) {
             // logger.log(toBeRefreshed);
             var item = ediml.findItemById(toBeRefreshed[i]);

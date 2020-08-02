@@ -10,3 +10,5 @@ SensorML101.xsl
 .idea/misc.xml
 
 .idea/misc.xml
+/templates/
+/node_modules/
