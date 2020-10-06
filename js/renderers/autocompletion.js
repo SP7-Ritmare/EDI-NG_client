@@ -76,13 +76,13 @@ var Autocompletion = (function() {
                     ds.setCurrentRow("c", datum.c);
                 }).blur(function(event) {
                     logger.log("Changed: " + event.target.value);
-                    if ( event.target.value.trim() == "" ) {
+                    var ds = DataSourcePool.getInstance().findById(item.datasource);
+                    if ( event.target.value.trim() == "" || !ds.getCurrentRow() ) {
                         $("#" + id + "_uri").val("");
                         $("#" + id + "_uri").trigger("change");
                         $("#" + id + "_urn").val();
                         $("#" + id + "_urn").trigger("change");
                         ediml.updateItemForControl($("#" + id));
-                        var ds = DataSourcePool.getInstance().findById(item.datasource);
                         ds.setCurrentRow("c", -1);
                     }
                 });
