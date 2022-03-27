@@ -12,3 +12,6 @@ SensorML101.xsl
 .idea/misc.xml
 /templates/
 /node_modules/
+/bower_components
+/dist/
+/*.html
