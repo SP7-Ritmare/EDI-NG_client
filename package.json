@@ -1,6 +1,6 @@
 {
   "name": "edi_ng_client",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "EDI-NG_client ============= EDI-NG is a configurable HTML form page generator. Its purpose is to provide advanced forms with validation features in order to create geo-metadata.",
   "main": "index.js",
   "directories": {
