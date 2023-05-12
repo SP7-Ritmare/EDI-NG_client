@@ -16,7 +16,8 @@ var availableContexts = {
     BBOX: "bbox",
     ENDPOINTTYPE: "endpointtype",
     ITEM: "item",
-    SPARQL: "sparql"
+    SPARQL: "sparql",
+    SLIDER_FLOAT: "slider_float",
 }
 var enabledContexts = [
     /*

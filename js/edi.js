@@ -689,7 +689,9 @@ var edi = (function () {
         return data;
     }
 
+
     function onTemplateLoaded(template, version, data) {
+        console.log('template as loaded', data)
         settings = data.settings;
         $("#template-version").text(template + " v" + version);
         $("title", "head").text(template + " v" + version)
@@ -903,6 +905,7 @@ var edi = (function () {
                 }
                 var x2j = new X2JS({});
                 logger.log(xml);
+                console.log('xml loaded', xml)
                 data = x2j.xml2json(xml);
                 console.log(data);
                 onTemplateLoaded(template, version, data.template);

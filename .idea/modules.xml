@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/EDI-NG.iml" filepath="$PROJECT_DIR$/.idea/EDI-NG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/node_launcher.iml" filepath="$PROJECT_DIR$/node_launcher.iml" />
     </modules>
   </component>
 </project>

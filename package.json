@@ -28,6 +28,6 @@
     "load-grunt-tasks": "^3.5.2"
   },
   "dependencies": {
-    "grunt": "^1.4.1"
+    "grunt": "^1.6.1"
   }
 }

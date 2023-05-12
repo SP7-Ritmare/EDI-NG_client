@@ -1,3 +1,6 @@
+node_launcher/node_modules/
+node_launcher/src/static/
+dist/
 
 SensorML101.xsl
 
