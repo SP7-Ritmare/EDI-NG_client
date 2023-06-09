@@ -2,62 +2,129 @@ const template = document.createElement('template')
 template.innerHTML = `
             <style>
                 .container {
-                }
-                .float-slider-container {
-                    display: flex;
-                    width: 100%;
-                    justify-content: center;
-                }
-                .start, .end {
-                    flex: 1;
+                    margin-bottom: 22px;
                 }
                 .start {
                     text-align: right;
                 }
+                .end {
+                    text-align: left;
+                }
+                /*
+                .float-slider-container {
+                    display: grid;
+                    grid-template-rows: 20px 20px;
+                    grid-template-columns: 10px 1fr 10px;
+                    !*
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    justify-content: center;
+                    margin-bottom: 100px;
+                    gap: 100px;
+                    *!
+                }
+                .start, .end {
+                    // flex: 1;
+                    grid-row-start: 2;
+                    grid-row-end: 2;
+                }
+                .start {
+                    grid-column-start: 1;
+                    grid-column-end: 1;
+                    text-align: right;
+                }
+                .end {
+                    grid-column-start: 3;
+                    grid-column-end: 3;
+                    text-align: right;
+                }
                 .in {
-                    flex: 3;
+                    grid-column-start: 2;
+                    grid-column-end: 2;
+                    grid-row-start: 2;
+                    grid-row-end: 2;
+                    !*flex: 5;*!
                 }
                 .currentValue {
                     width: 100%;
                     margin: 0 auto;
                     text-align: center;
+                    grid-column-start: 2;
+                    grid-column-end: 2;
+                    grid-row-start: 1;
+                    grid-row-end: 1;
+                    flex: 5;
                 }
+                */
             </style>
             <div class="container">
-                <slot></slot>
-                <div class="currentValue"></div>
+                <div class="row">
+                    <div class="col-md-12 text-center currentValue"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 start"></div>
+                    <div class="col-md-8 center-block in">
+                        <input class="in" type="range" 
+                            value="" 
+                            min="" 
+                            max=""
+                            step=""
+                        >
+                    </div>
+                    <div class="col-md-2 end"></div>
+                </div>
+            </div>
+<!--
+            <div class="container">
                 <div class="float-slider-container">
+                    <div class="currentValue"></div>
                     <label class="start"></label>
                     <input class="in" type="range" 
                         value="" 
                         min="" 
                         max=""
-                        step="any"
+                        step=""
                         >
                     <label class="end"></label>            
                 </div>  
+                <br>
+                <br>
+                <br>
+                <br>
             </div>
+-->
 `
 
 class FloatSlider extends HTMLElement {
     static handledAttributes = [
         'min',
         'max',
+        'step',
         'value'
     ]
 
     constructor() {
         super();
         this.refresh()
-        this.attachShadow({mode: "open"});
+        // this.attachShadow({mode: "open"});
 
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        // this.shadowRoot.appendChild(template.content.cloneNode(true));
+        // this.innerHtml = template.content.cloneNode(true)
         // this.appendChild(this.template);
+        this.append(template.content.cloneNode(true))
+
         this.getAllAttributes()
+        this.start = this.getRootNode().querySelector('.start')
+        this.end = this.getRootNode().querySelector('.end')
+        this.value = this.getRootNode().querySelector('.currentValue')
+        this.input = this.getRootNode().querySelector('.in')
+/*
         this.start = this.shadowRoot.querySelector('.start')
         this.end = this.shadowRoot.querySelector('.end')
         this.value = this.shadowRoot.querySelector('.currentValue')
         this.input = this.shadowRoot.querySelector('.in')
+*/
         console.log('slider initialising',
             this.start,
             this.end,
@@ -96,6 +163,9 @@ class FloatSlider extends HTMLElement {
         console.log(name, 'changed', oldValue, newValue)
         if (name === 'value')
             this.updateValue(newValue)
+        if (name === 'step') {
+            this.input.setAttribute('step', newValue)
+        }
         if (name === 'min') {
             this.start.innerHTML = newValue
             this.input.setAttribute('min', newValue)

@@ -83,6 +83,9 @@
 <script src="js/renderers/label.js"></script>
 <script src="js/renderers/textbox.js"></script>
 <script src="js/renderers/bounding_box.js"></script>
+<script src="js/raphael-2.1.0-min.js"></script>
+<script src="js/qrcodesvg.js"></script>
+<script src="js/renderers/qrcode.js"></script>
 <script src="js/renderers/sliderfloat.js"></script>
 <script src="js/jquery-dateFormat.js"></script>
 <script src="js/jquery.string.1.1.0.js"></script>
@@ -99,6 +102,7 @@
 
     $(document).ready(function () {
         edi.loadLocalTemplate("test", "3", onTemplateLoaded);
+        // edi.loadLocalTemplate("RNDT_dataset", "4.00_forRITMARE_newEdiTemplate", onTemplateLoaded);
 
         $("#ediml").hide();
         $("#sendMetadata").click(ediml.post);

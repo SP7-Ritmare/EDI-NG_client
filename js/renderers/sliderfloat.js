@@ -22,13 +22,33 @@ class SliderFloat {
             var element = temp.element;
             var item = temp.item;
             console.log('slider item start', item)
+            /*
+                        let control = $.parseHTML(`
+                        <div id="${item.id}"
+
+                                ${item.hasDatatype}-input
+
+                                >
+                            <div class="row">
+                                <div class="col-md-12 text-center currentValue">${item.value}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 start">${item.min}</div>
+                                <div class="col-md-8 center-block in">
+                                    <input class="${defaults.controlCSS}" type="range" min="${item.min}" max="${item.max}" step="${item.step}">
+                                </div>
+                                <div class="col-md-2 end">${item.max}</div>
+                            </div>
+                        </div>
+                            `)
+            */
             let control = $.parseHTML(`
-                <edi-float-slider 
+                <edi-float-slider
                     id="${item.id}"
-                    class="${defaults.controlCSS}" 
                     ${item.hasDatatype}-input
                     min="${item.min}"
                     max="${item.max}"
+                    step="${item.step}"
                 ></edi-float-slider
                 >`)
 

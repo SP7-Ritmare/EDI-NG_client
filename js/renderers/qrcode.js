@@ -14,6 +14,7 @@ class QRCode {
     static render() {
         var control;
         $("control_qrcode").each(function() {
+            console.log('Found QRCode', $(this))
             var temp = edi.getTempStructure()[$(this).attr("id")];
             var element = temp.element;
             var item = temp.item;
@@ -52,6 +53,7 @@ class QRCode {
             }
             control.change(function() {
                 var div = "qr_" + $(this).attr("id");
+                $('#' + div + ' svg').remove()
                 var qrcodesvg   = new Qrcodesvg( $(this).val(), div, 250, {"ecclevel" : 1});
 
                 //add a bevel effect on patterns with a radius of 5.

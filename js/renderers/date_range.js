@@ -74,12 +74,26 @@ class DateRange {
                     labels += "<label for='" + item.id + "_start' language='" + item.start.label[k]["_xml:lang"] + "";
                     labels += "'>" + item.start.label[k]["__text"] + "</label>";
                 }
+                if (item.start.defaultValue) {
+                    $(control).datepicker("update", item.start.defaultValue);
+                } else {
+                    $(control).datepicker()
+                }
+
+                console.log('item start', item.start)
             }
             if (item.end && item.end.label) {
                 for (var k = 0; k < item.end.label.length; k++) {
                     labels2 += "<label for='" + item.id + "_end' language='" + item.end.label[k]["_xml:lang"] + "";
                     labels2 += "'>" + item.end.label[k]["__text"] + "</label>";
                 }
+                if (item.end.defaultValue) {
+                    $(control2).datepicker("update", item.end.defaultValue);
+                } else {
+                    $(control2).datepicker()
+                }
+
+                console.log('item end', item.end)
             }
 
             $(labels).addClass(defaults.labelCSS);
