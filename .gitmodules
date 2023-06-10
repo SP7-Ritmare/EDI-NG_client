@@ -1,0 +1,3 @@
+[submodule "lib/EDI_NG_server"]
+	path = lib/EDI_NG_server
+	url = https://github.com/SP7-Ritmare/EDI-NG_server.git
