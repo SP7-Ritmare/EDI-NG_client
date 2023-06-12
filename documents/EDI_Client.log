@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.6.2)  9 JUN 2023 10:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.6.2)  11 JUN 2023 19:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -712,19 +712,21 @@ Package pdftex.def Info: ./img//Textarea.png  used on input line 342.
 <./img//FloatSlider.png, id=305, 784.9325pt x 181.67876pt>
 File: ./img//FloatSlider.png Graphic file (type png)
 <use ./img//FloatSlider.png>
-Package pdftex.def Info: ./img//FloatSlider.png  used on input line 391.
+Package pdftex.def Info: ./img//FloatSlider.png  used on input line 392.
 (pdftex.def)             Requested size: 284.52756pt x 65.85616pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 392.
+(caption)                particular \caption on input line 393.
 See the caption package documentation for explanation.
 
+Package mdframed Info: Not enough space on this page on input line 398.
 [9 <./img//Textarea.png>]
+Package mdframed Info: Not enough space on this page on input line 398.
 <./img//Codelist.png, id=312, 1000.73875pt x 557.08125pt>
 File: ./img//Codelist.png Graphic file (type png)
 <use ./img//Codelist.png>
-Package pdftex.def Info: ./img//Codelist.png  used on input line 434.
+Package pdftex.def Info: ./img//Codelist.png  used on input line 435.
 (pdftex.def)             Requested size: 284.52756pt x 158.38728pt.
 
 
@@ -734,58 +736,62 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./img//Autocompletion.png, id=340, 984.67876pt x 503.8825pt>
 File: ./img//Autocompletion.png Graphic file (type png)
 <use ./img//Autocompletion.png>
-Package pdftex.def Info: ./img//Autocompletion.png  used on input line 455.
+Package pdftex.def Info: ./img//Autocompletion.png  used on input line 456.
 (pdftex.def)             Requested size: 284.52756pt x 145.59935pt.
  [11 <./img//Codelist.png> <./img//Autocompletion.png>]
 <./img//String.png, id=354, 977.6525pt x 144.54pt>
 File: ./img//String.png Graphic file (type png)
 <use ./img//String.png>
-Package pdftex.def Info: ./img//String.png  used on input line 507.
+Package pdftex.def Info: ./img//String.png  used on input line 508.
 (pdftex.def)             Requested size: 284.52756pt x 42.06549pt.
  [12 <./img//String.png>]
-Overfull \hbox (0.29755pt too wide) in paragraph at lines 527--528
+Overfull \hbox (0.29755pt too wide) in paragraph at lines 535--536
 []\OT1/lmr/m/n/10 In the ex-am-ple above, once the XML doc-u-ment is fully writ
 -ten, the \OT1/lmr/bx/n/10 xml:lang
  []
 
 
-Overfull \hbox (121.18825pt too wide) in paragraph at lines 527--528
+Overfull \hbox (121.18825pt too wide) in paragraph at lines 535--536
 \OT1/lmr/m/n/10 at-tribute of \OT1/lmr/bx/n/10 dct:description \OT1/lmr/m/n/10 
 is set to equal the same at-tribute in \OT1/lmr/bx/n/10 /rdf:RDF/dcatapit:Datas
 et/dct:title\OT1/lmr/m/n/10 . 
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-556.
+564.
 (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 <./img//Date.png, id=367, 985.6825pt x 410.53375pt>
 File: ./img//Date.png Graphic file (type png)
 <use ./img//Date.png>
-Package pdftex.def Info: ./img//Date.png  used on input line 563.
+Package pdftex.def Info: ./img//Date.png  used on input line 571.
 (pdftex.def)             Requested size: 284.52756pt x 118.50674pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [13] [14 <./img//Date.png>]
-<./img//BoundingBox.png, id=424, 821.0675pt x 823.075pt>
+<./img//BoundingBox.png, id=420, 821.0675pt x 823.075pt>
 File: ./img//BoundingBox.png Graphic file (type png)
 <use ./img//BoundingBox.png>
-Package pdftex.def Info: ./img//BoundingBox.png  used on input line 628.
+Package pdftex.def Info: ./img//BoundingBox.png  used on input line 636.
 (pdftex.def)             Requested size: 284.52756pt x 285.21709pt.
- [15 <./img//BoundingBox.png>] (./EDI_Client.aux)
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[15] [16 <./img//BoundingBox.png>] (./EDI_Client.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `EDI_Client.out' has not changed.
-(rerunfilecheck)             Checksum: DCA7A80AAA7212F74D8CDC59B8F88CF1;4692.
+(rerunfilecheck)             Checksum: D74CD7B2A8F4E7D6BE01E45900EAF85F;4687.
  ) 
 Here is how much of TeX's memory you used:
- 16015 strings out of 480247
- 254765 string characters out of 5896152
- 899403 words of memory out of 5000000
+ 16016 strings out of 480247
+ 254771 string characters out of 5896152
+ 899402 words of memory out of 5000000
  33522 multiletter control sequences out of 15000+600000
  514229 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -797,10 +803,10 @@ lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/
 fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.p
 fb></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/typ
 e1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt8.pfb>
-Output written on EDI_Client.pdf (15 pages, 1082663 bytes).
+Output written on EDI_Client.pdf (16 pages, 1083251 bytes).
 PDF statistics:
- 528 PDF objects out of 1000 (max. 8388607)
- 470 compressed objects within 5 object streams
- 183 named destinations out of 1000 (max. 500000)
+ 532 PDF objects out of 1000 (max. 8388607)
+ 473 compressed objects within 5 object streams
+ 184 named destinations out of 1000 (max. 500000)
  395 words of extra memory for PDF output out of 10000 (max. 10000000)
 

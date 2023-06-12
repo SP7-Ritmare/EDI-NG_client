@@ -1,0 +1,68 @@
+# Java builder
+FROM ubuntu:22.04 AS java-build
+RUN apt update -qq && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt install -y postgresql postgresql-client
+RUN apt-get install -y openjdk-8-jdk && \
+	apt-get install -y ant && \
+	apt-get install -y maven
+
+RUN mvn --version
+WORKDIR /build
+
+COPY lib/EDI_NG_server/EDI-T .
+RUN mvn clean package
+RUN ls -altrh target
+
+RUN cp /build/target/*.jar edi.jar
+
+# Node builder
+FROM ubuntu:22.04 AS node-build
+RUN apt update -qq && \
+    apt install -y curl git && \
+    curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh && \
+    bash /tmp/nodesource_setup.sh && \
+    apt install nodejs
+
+WORKDIR /build
+COPY . .
+ARG PREPARING_DOCKER=1
+WORKDIR /build/node_launcher
+RUN npm i && node src/index.js
+
+# Final image
+FROM ubuntu:22.04
+ARG DEBIAN_FRONTEND=noninteractive
+ENV RUNNNG_IN_DOCKER=1
+
+RUN apt update -qq && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt install -y postgresql postgresql-client
+RUN apt-get install -y openjdk-8-jdk
+
+RUN apt install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh && \
+    bash /tmp/nodesource_setup.sh && \
+    apt install nodejs
+
+COPY ./dockerisation/pg_hba.conf /etc/postgresql/14/main/
+COPY ./dockerisation/postgresql.conf /etc/postgresql/14/main/
+
+USER postgres
+RUN /etc/init.d/postgresql start && \
+    psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"  && \
+    createdb -O postgres edi
+
+WORKDIR /app
+COPY --from=node-build /build/node_launcher .
+COPY --from=java-build /build/edi.jar .
+COPY ./dockerisation/application.properties .
+COPY ./dockerisation/run.sh .
+
+EXPOSE 8080 8086
+
+ENTRYPOINT ["/app/run.sh"]

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <title>GET-IT EDI - Template list</title>
+    <link rel="stylesheet" href="css/assets.css">
+    <link rel="stylesheet" href="css/ol.css">
+
+    <script src="js/assets.js"></script>
+    <script src="js/ol.js"></script>
+
+
+
+</head>
+<body>
+<div class="content-wrap">
+    <div id="mdcontent">
+        <ul>
+        <%
+            for (let f of files) {
+        %>
+                <li><a href="<%= f.html %>" target="_blank"><%= f.xml %></a></li>
+        <%
+            }
+        %>
+        </ul>
+    </div>
+    <div id="ediml">
+
+    </div>
+</div>
+</body>
+</html>

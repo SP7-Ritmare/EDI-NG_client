@@ -351,7 +351,8 @@ Simplest control type: a small rectangle accepting generic text.
 \subsubsection{URN}
 \label{URN}
 
-Accepts a string and verifies it's an URN.
+Calculated by the server if \textbf{isFixed="true"}.
+Server will generate a valid and unique URN for you.
 
 \subsubsection{URI}
 \label{URI}
@@ -509,12 +510,19 @@ Each \textit{select} item must declare the field it represents in the datasouce.
 \end{figure}
 
 
-\subsubsection{dependent}
-\label{dependent}
+% \subsubsection{dependent}
+% \label{dependent}
+
+\subsubsection{function}
+\label{function}
+
+Special data type.
+Its value is calculated by the server by using its template \textit{hasValue} as an XPath run \textbf{against the parts of document that have already been generated}.
+
 \subsubsection{ref}
 \label{ref}
 
-Special datatype.
+Special data type.
 In the generated metadata document, it copies the Xpath specified in the \textit{hasValue} attribute to the Xpath specified by the \textit{hasPath} attribute.
 
 \begin{lstlisting}[language=xml]
