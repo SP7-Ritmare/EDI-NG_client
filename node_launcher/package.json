@@ -11,6 +11,7 @@
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-http-proxy": "^1.6.3",
+    "http-proxy-middleware": "^2.0.6",
     "fast-xml-parser": "^4.2.0",
     "grunt": "^1.6.1",
     "grunt-bower-concat": "^1.0.0",
@@ -20,6 +21,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "load-grunt-tasks": "^5.1.0",
     "node-fetch": "^3.3.1",
-    "sync-runner": "^1.0.0"
+    "sync-runner": "^1.0.0",
+    "uuid": "^9.0.0"
   }
 }

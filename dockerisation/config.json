@@ -1,4 +1,5 @@
 {
   "registry": "registry.adamassoft.it",
-  "imageName": "edi-all-inclusive"
+  "imageName": "edi-all-inclusive",
+  "template_dir": "./templates"
 }
