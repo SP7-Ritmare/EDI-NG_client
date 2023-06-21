@@ -1,0 +1,35 @@
+	\subsection{Settings}
+
+\subsubsection{userInterfaceLanguage}
+
+Labels can be defined in as many languages as required, by using the \textit{xml:lang} attribute.
+
+The userInterfaceLanguage tag defines which \textit{xml:lang} value should be selected for labels and help tooltips.
+
+\subsubsection{metadataLanguage}
+
+Defines the language to be used when retrieving datasets from datasources.
+
+\subsubsection{metadataEndpoint}
+Defines the endpoint of the EDI Server instance that should be used to convert the metadata into its XML format.
+
+\subsubsection{sparqlEndpoint}
+\label{sparqlEndpoint}
+Defines the default SparQL endpoint.
+
+\subsubsection{requiresValidation}
+Can be set to false (default is true), if you want the metadata to be sent even if they have some errors.
+
+\subsubsection{baseDocument}
+This is, as the name suggests, the base of the XML document to be generated: it is a CDATA and it must include the root element, along with any namespaces that need to be defined.
+
+\subsubsection{xsltChain}
+\label{xsltChain}
+
+A chain of XSL Transformations can be specified to further process the XML generated.
+
+\begin{quote}{\textbf{Warning}}
+	
+	It is the template author's responsibility to make sure they are correct.
+\end{quote}
+

@@ -1,0 +1,24 @@
+	\subsection{endpointTypes}
+Contains one or more endpointType tags.
+Each tag defines the interface to communicate with a SparQL endpoint.
+
+It must have these attributes:
+\begin{center}
+	\begin{tabular}{ | p{0.2\textwidth} | p{0.7\textwidth} | }
+		\hline
+		Attribute & Description \\ 
+		\hline
+		xml:id & virtuoso or fuseki \\  
+		\hline
+		method & GET or POST \\
+		\hline
+		query & name of the parameter holding the query \\
+		\hline
+	\end{tabular}
+\end{center}
+
+And the child tag \textit{parameters}, whose children are \textit{parameter} tags.
+Each parameter defines a query-string parameter with name and value to be sent to the endpoint.
+
+Name and value are specified as attributes of the \textit{parameter} tags.
+

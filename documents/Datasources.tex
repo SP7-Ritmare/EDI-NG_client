@@ -1,0 +1,48 @@
+	\subsection{datasources}
+Datasources provide valid values for specific \textit{items}.
+
+A collection of datasources: each datasource can be one of \textit{codelist}, \textit{sparql} or \textit{singleton}.
+
+\subsubsection{sparql}
+The most general type of datasource is a SparQL query.
+
+It has two attributes:
+\begin{center}
+	\begin{tabular}{ | p{0.2\textwidth} | p{0.7\textwidth} | }
+		\hline
+		Attribute & Description \\ 
+		\hline
+		xml:id & unique id \\  
+		\hline
+		endpointType & reference to an existing (declared) endpointType \\
+		\hline
+	\end{tabular}
+\end{center}
+
+It requires one child tag named \textit{query}, specifying the SparQL query.
+\\
+\\
+Optional child tag \textit{url} allows to override the \textit{sparqlEndpoint} (see \ref{sparqlEndpoint}) specified in the \textit{settings} tag.
+\\
+Query can include a \textit{\$search\_param} token, which, if found, will be given a value based, for example, on user text.
+
+\subsubsection{codelist}
+A codelist is a simplified version of a \textit{sparql} datasource, based on a pre-defined query, accessed via its URI, specified by the child tag \textit{uri}.
+\\
+\\
+Optional child tag \textit{url} allows to override the \textit{sparqlEndpoint} (see \ref{sparqlEndpoint}) specified in the \textit{settings} tag.
+\\
+
+\subsubsection{singleton}
+\label{singleton}
+A singleton is a special stateful \textit{sparql} datasource guaranteed to have only a single instance, so that it can be used to keep some items aligned to some other item whenever the latter changes.
+
+The item triggering said alignment is specified by the attribute \textit{triggerItem}.
+
+Another datasource is always needed, for the singleton to work: the trigger item refers to a sparql or codelist datasource, whereas the dependent items are connected to it via the singleton, which will refresh and select a single row of the singleton dataset, which is linked, in turn, to the uri of the row selected by the trigger item.
+\\
+\\
+Optional child tag \textit{url} allows to override the \textit{sparqlEndpoint} (see \ref{sparqlEndpoint}) specified in the \textit{settings} tag.
+\\
+
+
