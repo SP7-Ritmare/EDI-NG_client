@@ -269,12 +269,14 @@ const main = async () => {
 
     app.use('/', express.static(`${__dirname}/static`))
 
+/*
     app.get('/server/rest/ediml/requestId', (req, res) => {
         res.json({
             id: 1
         })
     })
 
+*/
     app.use('/server', createProxyMiddleware({
         target: 'http://localhost:8086',
         changeOrigin: true,
