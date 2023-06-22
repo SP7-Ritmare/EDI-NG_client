@@ -184,7 +184,7 @@ async function buildClient() {
     })
     fs.cpSync("../test.html", "./src/static/index.html")
     fs.cpSync("../js", "./src/static/js", {recursive: true, overwrite: true})
-    // fs.cpSync("../templates", "./src/static/templates", {recursive: true, overwrite: true})
+    fs.cpSync("../templates", "./src/static/templates", {recursive: true, overwrite: true})
     fs.cpSync("../xslt", "./src/static/xslt", {recursive: true, overwrite: true})
     fs.cpSync("../images", "./src/static/images", {recursive: true, overwrite: true})
     fs.cpSync("../fonts", "./src/static/fonts", {recursive: true, overwrite: true})
@@ -198,7 +198,7 @@ const main = async () => {
     if (!Config.RUNNNG_IN_DOCKER || Config.PREPARING_DOCKER) {
         // THis part is only needed while developing or while preparing a docker image
         await buildClient();
-        await copyTemplates(Config.TEMPLATE_DIR, Config.TEMPLATE_DIR, Config.METADATA_ENDPOINT_OVERRIDE || 'http://localhost:8086')
+        // await copyTemplates(Config.TEMPLATE_DIR, Config.TEMPLATE_DIR, Config.METADATA_ENDPOINT_OVERRIDE || 'http://localhost:8086')
         await createDownloadableClient()
     }
     if (Config.PREPARING_DOCKER) {
@@ -282,8 +282,8 @@ const main = async () => {
         logLevel: "debug"
     }))
 
-    app.listen(8080);
-    console.log('Server is listening on port 8080');
+    app.listen(Config.PORT);
+    console.log('Server is listening on port', Config.PORT);
 
 }
 

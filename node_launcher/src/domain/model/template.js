@@ -4,12 +4,21 @@ import {Logger, availableContexts} from '../../utils/logger.js'
 import fetch from 'node-fetch'
 import fs from 'fs'
 import {XMLParser} from "fast-xml-parser";
+import {Config, shouldOverrideMetadataEndpoint} from "../../config.js";
 
 const logger = new Logger(availableContexts.TEMPLATE);
 
 export class Template {
   constructor() {
     this.ready = false;
+  }
+
+  replaceMetadataEndpoint(contents, endpoint) {
+    if (!endpoint) return contents
+
+    if (!endpoint.endsWith('/')) endpoint = endpoint + '/'
+    const regex = /<metadataEndpoint>(.*)<\/metadataEndpoint>/g
+    return String(contents).replace(regex, `<metadataEndpoint>${endpoint}</metadataEndpoint>`)
   }
 
   async load(filename) {
@@ -21,6 +30,10 @@ export class Template {
       data = await response.text()
     } else {
       data = fs.readFileSync(filename)
+    }
+    if (shouldOverrideMetadataEndpoint()) {
+      console.log('Overriding metadata endpoint with', Config.METADATA_ENDPOINT_OVERRIDE)
+      data = this.replaceMetadataEndpoint(data, Config.METADATA_ENDPOINT_OVERRIDE)
     }
     console.log('xml', data)
     const options = {

@@ -3,6 +3,14 @@ import express from "express";
 import {Template} from "../model/template.js";
 import {Config} from "../../config.js";
 
+function replaceMetadataEndpoint(contents, endpoint) {
+  if (!endpoint) return contents
+
+  if (!endpoint.endsWith('/')) endpoint = endpoint + '/'
+  const regex = /<metadataEndpoint>(.*)<\/metadataEndpoint>/g
+  return String(contents).replace(regex, `<metadataEndpoint>${endpoint}</metadataEndpoint>`)
+}
+
 export const TemplateController = express.Router()
 
 TemplateController.get('/', async (req, res) => {
