@@ -37,13 +37,13 @@ node src/index.js
  ## REST APIs
 
 | Method | Path                              | Description                                                                                                           | Returns                          |
-|--------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------|----------------------------------|
-| GET    | /index.html                       | Returns a page with links to all available templates                                                                  | HTML page                        |
-| GET    | /api/templates                    | Returns an array of all available template names                                                                      | JSON array of strings            |
-| GET    | /api/templates/:template_filename | Returns the template with overridden **metadataEndpoint** if **DO_OVERRIDE_METADATA_ENDPOINT** is true                | XML for template                 |
-| GET    | /assets/*                         | Mediates access for EDI Client to its assets                                                                          | Any format, depending on request |
-| GET    | /*.html                           | Builds an HTML page to access the template having the same name as the HTML requested with ".html" replaced by ".xml" | HTML                             |
-| <any>> | /server/*                         | Proxies all requests to the local metadata endpoint                                                                   | depends on request               |
+|-------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------|----------------------------------|
+| GET   | /index.html                       | Returns a page with links to all available templates                                                                  | HTML page                        |
+| GET   | /api/templates                    | Returns an array of all available template names                                                                      | JSON array of strings            |
+| GET   | /api/templates/:template_filename | Returns the template with overridden **metadataEndpoint** if **DO_OVERRIDE_METADATA_ENDPOINT** is true                | XML for template                 |
+| GET   | /assets/*                         | Mediates access for EDI Client to its assets                                                                          | Any format, depending on request |
+| GET   | /*.html                           | Builds an HTML page to access the template having the same name as the HTML requested with ".html" replaced by ".xml" | HTML                             |
+| <any> | /server/*                         | Proxies all requests to the local metadata endpoint                                                                   | depends on request               |
 
 
 
